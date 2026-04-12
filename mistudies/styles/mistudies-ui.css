@@ -1,0 +1,414 @@
+/* ============================================================
+   MISTUDIES — UI COMPONENTS
+   Sidebar, search, study cards, progress, TOC, tags.
+   All classes prefixed with ms- to avoid conflicts.
+   ============================================================ */
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.ms-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--nav-width);
+  height: 100vh;
+  background: var(--ms-primary-950);
+  border-right: 1px solid var(--ms-surface-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+  padding: var(--sp-4) 0;
+}
+
+.ms-sidebar-header {
+  padding: var(--sp-2) var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--ms-surface-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.ms-back {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ms-text-muted);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.ms-back:hover { color: var(--ms-text-secondary); }
+
+.ms-brand {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ms-text-primary);
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+.ms-search {
+  padding: var(--sp-3) var(--sp-3);
+  position: relative;
+}
+
+.ms-search-input {
+  width: 100%;
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--ms-surface);
+  border: 1px solid var(--ms-surface-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--ms-text-primary);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.ms-search-input::placeholder {
+  color: var(--ms-text-muted);
+}
+
+.ms-search-input:focus {
+  border-color: var(--ms-amber-500);
+}
+
+.ms-search-count {
+  font-size: 10px;
+  color: var(--ms-text-muted);
+  margin-top: 4px;
+  display: block;
+}
+
+/* ============================================================
+   SIDEBAR NAVIGATION
+   ============================================================ */
+.ms-nav {
+  padding: var(--sp-3) 0;
+  flex: 1;
+}
+
+.ms-nav-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ms-text-muted);
+  padding: 0 var(--sp-3) var(--sp-1);
+}
+
+.ms-nav-link {
+  display: block;
+  padding: 8px var(--sp-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--ms-text-secondary);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.ms-nav-link:hover {
+  color: var(--ms-text-primary);
+  background: var(--ms-surface-light);
+}
+
+.ms-nav-link.active {
+  color: var(--ms-amber-500);
+  border-left-color: var(--ms-amber-500);
+  background: rgba(230, 162, 30, 0.04);
+  font-weight: 500;
+}
+
+/* ============================================================
+   TAGS
+   ============================================================ */
+.ms-nav-tags {
+  padding: var(--sp-3);
+  border-top: 1px solid var(--ms-surface-border);
+}
+
+.ms-tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--sp-1);
+}
+
+.ms-tag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--ms-surface);
+  color: var(--ms-text-secondary);
+  border: 1px solid var(--ms-surface-border);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.ms-tag:hover {
+  background: var(--ms-surface-hover);
+  color: var(--ms-text-primary);
+}
+
+.ms-tag.active {
+  background: rgba(230, 162, 30, 0.12);
+  color: var(--ms-amber-500);
+  border-color: rgba(230, 162, 30, 0.25);
+}
+
+/* ============================================================
+   MAIN CONTENT AREA
+   ============================================================ */
+.ms-main {
+  margin-left: var(--nav-width);
+  min-height: 100vh;
+}
+
+.ms-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-6);
+}
+
+/* Reading-optimized content */
+.ms-reading {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.ms-reading p {
+  font-size: var(--text-body);
+  line-height: 1.85;
+  color: var(--ms-text-secondary);
+  margin-bottom: var(--sp-3);
+}
+
+.ms-reading h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  color: var(--ms-text-primary);
+  margin-top: var(--sp-8);
+  margin-bottom: var(--sp-3);
+}
+
+.ms-reading h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-h4);
+  color: var(--ms-text-primary);
+  margin-top: var(--sp-6);
+  margin-bottom: var(--sp-2);
+}
+
+/* ============================================================
+   STUDY CARDS
+   ============================================================ */
+.ms-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-3);
+}
+
+.ms-card {
+  background: var(--ms-surface);
+  border: 1px solid var(--ms-surface-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-4);
+  transition: all var(--duration-base) var(--ease-out);
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+
+.ms-card:hover {
+  border-color: var(--ms-primary-700);
+  transform: translateY(-3px);
+  background: var(--ms-surface-hover);
+  box-shadow: 0 12px 32px rgba(12, 17, 23, 0.4);
+}
+
+.ms-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--sp-2);
+}
+
+.ms-card-category {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ms-sage-500);
+}
+
+.ms-card-date {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: var(--ms-text-muted);
+}
+
+.ms-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ms-text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--sp-1);
+}
+
+.ms-card-desc {
+  font-size: var(--text-sm);
+  color: var(--ms-text-secondary);
+  line-height: 1.65;
+  margin-bottom: var(--sp-3);
+}
+
+.ms-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ms-card-tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--ms-surface);
+  color: var(--ms-text-muted);
+  border: 1px solid var(--ms-surface-border);
+}
+
+.ms-card-reading {
+  font-size: 10px;
+  color: var(--ms-text-muted);
+  margin-left: auto;
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+.ms-progress {
+  position: relative;
+  height: 4px;
+  background: var(--ms-surface);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ms-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ms-sage-500), var(--ms-amber-500));
+  border-radius: 2px;
+  transition: width 0.8s var(--ease-out);
+}
+
+.ms-progress-label {
+  font-size: 10px;
+  color: var(--ms-text-muted);
+  margin-top: 4px;
+  display: block;
+}
+
+/* ============================================================
+   TABLE OF CONTENTS
+   ============================================================ */
+.ms-toc {
+  position: sticky;
+  top: var(--sp-4);
+  padding: var(--sp-3);
+  background: var(--ms-surface);
+  border: 1px solid var(--ms-surface-border);
+  border-radius: var(--radius-md);
+}
+
+.ms-toc-label {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ms-text-muted);
+  margin-bottom: var(--sp-2);
+  display: block;
+}
+
+.ms-toc-list {
+  list-style: none;
+  counter-reset: toc;
+}
+
+.ms-toc-list li {
+  counter-increment: toc;
+}
+
+.ms-toc-link {
+  display: block;
+  padding: 6px 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--ms-text-secondary);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: var(--sp-2);
+  transition: all var(--duration-fast);
+}
+
+.ms-toc-link::before {
+  content: counter(toc, decimal-leading-zero) " ";
+  font-size: 10px;
+  color: var(--ms-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.ms-toc-link:hover {
+  color: var(--ms-text-primary);
+}
+
+.ms-toc-link.active {
+  color: var(--ms-amber-500);
+  border-left-color: var(--ms-amber-500);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .ms-sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .ms-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .ms-main {
+    margin-left: 0;
+  }
+
+  .ms-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-content {
+    padding: var(--sp-4) var(--sp-3);
+  }
+}

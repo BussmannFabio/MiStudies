@@ -1,0 +1,363 @@
+/* ============================================================
+   GNEXZ — NAVIGATION & FOOTER
+   Shared nav and footer for all public pages.
+   ============================================================ */
+
+/* ============================================================
+   TOP NAV (public pages)
+   ============================================================ */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-3) var(--sp-6);
+  transition: background var(--duration-base) var(--ease-out);
+}
+
+/* Optional: add scroll background */
+.site-nav--scrolled {
+  background: rgba(10, 19, 32, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(46, 74, 99, 0.15);
+}
+
+.nav-logo {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  transition: opacity var(--duration-fast);
+}
+
+.nav-logo:hover { opacity: 0.8; }
+
+.nav-links {
+  display: flex;
+  gap: var(--sp-4);
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+  padding: var(--sp-1) 0;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--yellow-500);
+  transition: width var(--duration-base) var(--ease-out);
+}
+
+.nav-links a:hover {
+  color: var(--neutral-200);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a.active {
+  color: var(--yellow-500);
+}
+
+.nav-links a.active::after {
+  width: 100%;
+  background: var(--yellow-500);
+}
+
+/* ── Back Link (subpages) ── */
+.nav-back {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--neutral-500);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--duration-fast);
+}
+
+.nav-back:hover { color: var(--neutral-200); }
+
+/* ── Mobile Toggle ── */
+.nav-toggle {
+  display: none;
+  position: relative;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid rgba(46, 74, 99, 0.4);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--neutral-200);
+  transition: all var(--duration-base) var(--ease-out);
+}
+
+/* Toggle active state */
+.nav-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+/* ============================================================
+   SIDEBAR NAV (docs/brandbook pages)
+   ============================================================ */
+.nav-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--nav-width);
+  height: 100vh;
+  background: var(--blue-950);
+  border-right: 1px solid rgba(46, 74, 99, 0.4);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+  padding: var(--sp-8) 0 var(--sp-4);
+}
+
+.nav-sidebar .nav-logo-block {
+  padding: 0 var(--sp-4) var(--sp-6);
+  border-bottom: 1px solid rgba(46, 74, 99, 0.3);
+}
+
+.nav-sidebar .nav-logo-name {
+  font-family: var(--font-serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  display: block;
+  line-height: 1.2;
+}
+
+.nav-sidebar .nav-logo-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--neutral-500);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+.nav-sidebar .nav-list {
+  list-style: none;
+  padding: var(--sp-4) 0 0;
+  flex: 1;
+}
+
+.nav-sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--sp-4);
+  text-decoration: none;
+  color: var(--neutral-500);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out);
+  border-left: 2px solid transparent;
+}
+
+.nav-sidebar .nav-link:hover {
+  color: var(--neutral-200);
+  background: rgba(46, 74, 99, 0.2);
+}
+
+.nav-sidebar .nav-link.active {
+  color: var(--yellow-500);
+  border-left-color: var(--yellow-500);
+  background: rgba(242, 183, 5, 0.04);
+}
+
+.nav-sidebar .nav-num {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--blue-700);
+  letter-spacing: 0.05em;
+  min-width: 18px;
+}
+
+.nav-sidebar .nav-link.active .nav-num {
+  color: var(--yellow-700);
+}
+
+.nav-sidebar .nav-footer-block {
+  padding: var(--sp-4);
+  border-top: 1px solid rgba(46, 74, 99, 0.3);
+}
+
+.nav-sidebar .nav-footer-text {
+  font-size: 10px;
+  color: var(--neutral-800);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ============================================================
+   SITE FOOTER
+   ============================================================ */
+.site-footer {
+  background: var(--blue-950);
+  border-top: 1px solid rgba(46, 74, 99, 0.3);
+  padding: var(--sp-8) var(--sp-6);
+}
+
+.footer-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-logo {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.footer-tagline {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--neutral-800);
+}
+
+.footer-nav {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+.footer-nav a {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.footer-nav a:hover { color: var(--neutral-200); }
+
+.footer-copy {
+  font-size: 11px;
+  color: var(--neutral-800);
+  font-weight: 400;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .site-nav {
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+
+  /* Mobile menu open */
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 19, 32, 0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--sp-6);
+    z-index: 150;
+  }
+
+  .nav-links.open a {
+    font-size: var(--text-body-lg);
+    color: var(--neutral-200);
+  }
+
+  /* Sidebar on mobile */
+  .nav-sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .nav-sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Footer */
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

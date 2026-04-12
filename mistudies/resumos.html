@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resumos — MiStudies</title>
+  <meta name="description" content="Acervo de resumos organizados por matéria, professor e tag. Busca e filtros para acessar rápido e revisar melhor.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Global DNA -->
+  <link rel="stylesheet" href="../styles/tokens.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/layout.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/nav-footer.css">
+
+  <!-- MiStudies Theme -->
+  <link rel="stylesheet" href="styles/mistudies-theme.css">
+  <link rel="stylesheet" href="styles/mistudies-ui.css">
+
+  <style>
+    /* ============================================================
+       RESUMOS — Page-specific styles
+       Sidebar + content hub with filters and search.
+       ============================================================ */
+
+    /* ── PAGE HEADER ── */
+    .resumos-header {
+      background: var(--ms-primary-950);
+      padding: var(--sp-8) var(--sp-12) var(--sp-6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .resumos-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74, 107, 90, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74, 107, 90, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .resumos-header-content {
+      position: relative;
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
+    .resumos-eyebrow {
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ms-sage-500);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      margin-bottom: var(--sp-3);
+    }
+
+    .resumos-eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--ms-sage-500);
+    }
+
+    .resumos-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-h1);
+      font-weight: 600;
+      color: var(--ms-text-primary);
+      line-height: 0.95;
+      margin-bottom: var(--sp-2);
+    }
+
+    .resumos-title em {
+      font-style: italic;
+      color: rgba(163, 196, 176, 0.4);
+      font-weight: 300;
+    }
+
+    .resumos-sub {
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      color: var(--ms-text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── SEARCH BAR ── */
+    .resumos-search {
+      background: var(--ms-primary-900);
+      border-top: 1px solid var(--ms-surface-border);
+      border-bottom: 1px solid var(--ms-surface-border);
+      padding: var(--sp-3) var(--sp-12);
+      display: flex;
+      gap: var(--sp-3);
+      align-items: center;
+    }
+
+    .resumos-search-box {
+      flex: 1;
+      position: relative;
+    }
+
+    .resumos-search-box input {
+      width: 100%;
+      padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-5);
+      background: var(--ms-surface);
+      border: 1px solid var(--ms-surface-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      color: var(--ms-text-primary);
+      outline: none;
+      transition: border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .resumos-search-box input:focus {
+      border-color: var(--ms-amber-500);
+    }
+
+    .resumos-search-box input::placeholder {
+      color: var(--ms-text-muted);
+    }
+
+    .resumos-search-icon {
+      position: absolute;
+      left: var(--sp-2);
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: var(--text-sm);
+      color: var(--ms-text-muted);
+      pointer-events: none;
+    }
+
+    .resumos-result-count {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ms-text-muted);
+      white-space: nowrap;
+    }
+
+    /* ── MAIN LAYOUT (sidebar + content) ── */
+    .resumos-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 200px);
+      background: var(--ms-primary-900);
+    }
+
+    /* ── SIDEBAR ── */
+    .resumos-sidebar {
+      padding: var(--sp-4) var(--sp-3);
+      border-right: 1px solid var(--ms-surface-border);
+      background: var(--ms-primary-950);
+      position: sticky;
+      top: 60px;
+      height: fit-content;
+      max-height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+
+    .resumos-sidebar-section {
+      margin-bottom: var(--sp-4);
+    }
+
+    .resumos-sidebar-label {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ms-text-muted);
+      margin-bottom: var(--sp-1);
+      padding: 0 var(--sp-1);
+      display: block;
+    }
+
+    .resumos-filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .resumos-filter-pill {
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      font-weight: 400;
+      padding: 7px var(--sp-2);
+      border-radius: var(--radius-sm);
+      border: none;
+      background: transparent;
+      color: var(--ms-text-secondary);
+      cursor: pointer;
+      text-align: left;
+      transition: all var(--duration-fast) var(--ease-out);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .resumos-filter-pill:hover {
+      background: var(--ms-surface);
+      color: var(--ms-text-primary);
+    }
+
+    .resumos-filter-pill.active {
+      background: rgba(230, 162, 30, 0.08);
+      color: var(--ms-amber-500);
+      font-weight: 500;
+    }
+
+    .filter-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .filter-count {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--ms-text-muted);
+      opacity: 0.6;
+    }
+
+    .resumos-filter-pill.active .filter-count {
+      color: var(--ms-amber-700);
+    }
+
+    /* Tags in sidebar */
+    .resumos-tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .resumos-tag-pill {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--ms-surface-border);
+      background: var(--ms-surface);
+      color: var(--ms-text-secondary);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .resumos-tag-pill:hover {
+      background: var(--ms-surface-hover);
+      color: var(--ms-text-primary);
+    }
+
+    .resumos-tag-pill.active {
+      background: rgba(230, 162, 30, 0.12);
+      color: var(--ms-amber-500);
+      border-color: rgba(230, 162, 30, 0.25);
+    }
+
+    /* ── CONTENT AREA ── */
+    .resumos-content {
+      padding: var(--sp-5) var(--sp-6);
+    }
+
+    .resumos-section-label {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ms-text-muted);
+      margin-bottom: var(--sp-3);
+      display: block;
+    }
+
+    /* ── MATÉRIA CARDS (visual grid) ── */
+    .materias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--sp-2);
+      margin-bottom: var(--sp-6);
+    }
+
+    .mat-card {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--ms-surface-border);
+      cursor: pointer;
+      transition: all var(--duration-base) var(--ease-out);
+    }
+
+    .mat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(12, 17, 23, 0.3);
+    }
+
+    .mat-card.selected {
+      outline: 2px solid var(--ms-amber-500);
+      outline-offset: 2px;
+    }
+
+    .mc-head {
+      padding: var(--sp-3);
+    }
+
+    .mc-icon {
+      font-size: 1.4rem;
+      margin-bottom: var(--sp-1);
+      display: block;
+    }
+
+    .mc-name {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ms-text-primary);
+      line-height: 1.2;
+    }
+
+    .mc-info {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      color: var(--ms-text-muted);
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+    }
+
+    .mc-foot {
+      background: rgba(0, 0, 0, 0.25);
+      padding: var(--sp-1) var(--sp-3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mc-count {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--ms-text-muted);
+    }
+
+    .mc-arrow {
+      font-size: 0.75rem;
+      color: var(--ms-text-muted);
+      transition: color var(--duration-fast);
+    }
+
+    .mat-card:hover .mc-arrow {
+      color: var(--ms-amber-500);
+    }
+
+    /* ── DIVIDER ── */
+    .resumos-divider {
+      height: 1px;
+      background: var(--ms-surface-border);
+      margin-bottom: var(--sp-4);
+    }
+
+    /* ── LIST HEADER ── */
+    .resumos-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--sp-2);
+    }
+
+    .active-filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .active-tag {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: rgba(107, 143, 122, 0.15);
+      color: var(--ms-sage-300);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      letter-spacing: 0.04em;
+    }
+
+    .active-tag .rm {
+      cursor: pointer;
+      opacity: 0.6;
+      font-size: 0.7rem;
+      transition: opacity var(--duration-fast);
+    }
+
+    .active-tag .rm:hover { opacity: 1; }
+
+    /* ── RESUMO ROWS ── */
+    .resumos-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .resumo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--ms-surface-border);
+      background: var(--ms-surface);
+      text-decoration: none;
+      color: var(--ms-text-primary);
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .resumo-row:hover {
+      border-color: var(--ms-sage-500);
+      background: var(--ms-surface-hover);
+      transform: translateX(3px);
+      box-shadow: 0 4px 12px rgba(12, 17, 23, 0.2);
+    }
+
+    .rr-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .rr-body { flex: 1; min-width: 0; }
+
+    .rr-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--ms-text-primary);
+    }
+
+    .rr-meta {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .rr-tag {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 100px;
+      background: rgba(107, 143, 122, 0.1);
+      color: var(--ms-sage-300);
+      border: 1px solid rgba(107, 143, 122, 0.12);
+    }
+
+    .rr-tipo {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 100px;
+      background: rgba(230, 162, 30, 0.12);
+      color: var(--ms-amber-500);
+      border: 1px solid rgba(230, 162, 30, 0.2);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .rr-prof {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      color: var(--ms-text-muted);
+    }
+
+    .rr-date {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      color: var(--ms-text-muted);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .rr-arrow {
+      font-size: 0.8rem;
+      color: var(--ms-amber-500);
+      opacity: 0;
+      transition: opacity var(--duration-fast);
+      flex-shrink: 0;
+    }
+
+    .resumo-row:hover .rr-arrow { opacity: 1; }
+
+    /* ── SIDEBAR OVERLAY (hidden on desktop) ── */
+    .sidebar-overlay {
+      display: none;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: var(--sp-8) var(--sp-4);
+      color: var(--ms-text-muted);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      letter-spacing: 0.06em;
+      display: none;
+    }
+
+    .empty-state.show { display: block; }
+
+    /* ── MOBILE SIDEBAR TOGGLE ── */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      bottom: var(--sp-3);
+      right: var(--sp-3);
+      z-index: 90;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--ms-amber-500);
+      color: var(--ms-primary-950);
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: transform var(--duration-fast) var(--ease-out);
+    }
+
+    .sidebar-toggle:hover {
+      transform: scale(1.05);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .resumos-header {
+        padding: var(--sp-6) var(--sp-3) var(--sp-4);
+      }
+
+      .resumos-search {
+        padding: var(--sp-2) var(--sp-3);
+        flex-wrap: wrap;
+      }
+
+      .resumos-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .resumos-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform var(--duration-base) var(--ease-out);
+        border-right: 1px solid var(--ms-surface-border);
+        padding-top: var(--sp-8);
+      }
+
+      .resumos-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(12, 17, 23, 0.6);
+        z-index: 199;
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+      }
+
+      .sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .resumos-content {
+        padding: var(--sp-3);
+      }
+
+      .materias-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body class="mistudies-page">
+
+  <!-- ── NAV ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">gaaabriel</a>
+    <ul class="nav-links">
+      <li><a href="../gnexz/index.html">Gnexz</a></li>
+      <li><a href="../nossoape/">Nosso Apê</a></li>
+      <li><a href="index.html" class="active">MiStudies</a></li>
+      <li><a href="../gabriel/index.html">Pessoal</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── PAGE HEADER ── -->
+  <header class="resumos-header">
+    <div class="resumos-header-content">
+      <span class="resumos-eyebrow">Acervo pessoal</span>
+      <h1 class="resumos-title">Resu<em>mos</em></h1>
+      <p class="resumos-sub">Organizado por matéria, tipo, professor e tag</p>
+    </div>
+  </header>
+
+  <!-- ── SEARCH ── -->
+  <div class="resumos-search">
+    <div class="resumos-search-box">
+      <span class="resumos-search-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      <input type="text" id="searchInput" placeholder="Buscar por título, matéria, tipo, professor ou tag...">
+    </div>
+    <span class="resumos-result-count" id="resultCount">0 conteúdos</span>
+  </div>
+
+  <!-- ── MAIN LAYOUT ── -->
+  <div class="resumos-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="resumos-sidebar" id="sidebar">
+      <div class="resumos-sidebar-section">
+        <span class="resumos-sidebar-label">Matéria</span>
+        <div class="resumos-filter-group" id="filterMateria"></div>
+      </div>
+
+      <div class="resumos-sidebar-section">
+        <span class="resumos-sidebar-label">Tipo</span>
+        <div class="resumos-filter-group" id="filterTipo"></div>
+      </div>
+
+      <div class="resumos-sidebar-section">
+        <span class="resumos-sidebar-label">Professor</span>
+        <div class="resumos-filter-group" id="filterProf"></div>
+      </div>
+
+      <div class="resumos-sidebar-section">
+        <span class="resumos-sidebar-label">Tags</span>
+        <div class="resumos-tags-wrap" id="filterTag"></div>
+      </div>
+    </aside>
+
+    <!-- OVERLAY (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- CONTENT -->
+    <main class="resumos-content">
+      <span class="resumos-section-label">Por matéria</span>
+      <div class="materias-grid" id="materiasGrid"></div>
+
+      <div class="resumos-divider"></div>
+
+      <div class="resumos-list-header">
+        <span class="resumos-section-label" style="margin:0;">Todos os conteúdos</span>
+        <div class="active-filters" id="activeFilters"></div>
+      </div>
+
+      <div class="resumos-list" id="resumosList"></div>
+      <div class="empty-state" id="emptyState">Nenhum conteúdo encontrado</div>
+    </main>
+  </div>
+
+  <!-- SIDEBAR TOGGLE (mobile) -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Filtros">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+  </button>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">MiStudies</span>
+        <span class="footer-tagline">por gaaabriel</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">Hub</a>
+        <a href="escopo-PI.html">Escopo</a>
+        <a href="sistema-producao.html">Sistemas</a>
+        <a href="tpm-oee.html">TPM & OEE</a>
+      </nav>
+      <p class="footer-copy">&copy; 2026 MiStudies — gaaabriel.com</p>
+    </div>
+  </footer>
+
+  <!-- ── SCRIPTS ── -->
+  <script>
+    /* ────────────────────────────────────────────
+       DADOS — edite aqui para adicionar resumos
+    ──────────────────────────────────────────── */
+    const MATERIAS = [
+      { id: 'engprod',     nome: 'Eng. Produção',          icon: '⚙️', cor: '#4A6B5A', prof: '' },
+      { id: 'marketing',   nome: 'Marketing',              icon: '📣', cor: '#2D3F52', prof: 'Prof. Ana' },
+      { id: 'financas',    nome: 'Finanças',                icon: '💹', cor: '#1E2A38', prof: 'Prof. Carlos' },
+      { id: 'estatistica', nome: 'Estatística',             icon: '📊', cor: '#4A6B5A', prof: 'Prof. Ana' },
+      { id: 'rh',          nome: 'Gestão de Pessoas',       icon: '👥', cor: '#2D3F52', prof: 'Prof. Marta' },
+      { id: 'direito',     nome: 'Direito Empresarial',     icon: '⚖️', cor: '#1E2A38', prof: 'Prof. João' },
+      { id: 'logistica',   nome: 'Logística',               icon: '🚚', cor: '#4A6B5A', prof: 'Prof. Roberto' },
+    ];
+
+    /* Tipos de conteúdo */
+    const TIPOS = ['Resumo', 'MasterClass', 'Apresentação', 'Material Técnico', 'Hub'];
+
+    const RESUMOS = [
+      /* ── Eng. Produção (páginas completas) ── */
+      { id: 100, titulo: 'Escopo da Engenharia de Produção',         materia: 'engprod', tags: ['operações','processos','gestão'],       prof: '—',             data: 'Mar 2026', tipo: 'MasterClass',      arquivo: 'escopo-PI.html' },
+      { id: 101, titulo: 'Sistemas de Produção',                     materia: 'engprod', tags: ['layout','fluxos','produção'],           prof: '—',             data: 'Mar 2026', tipo: 'Material Técnico', arquivo: 'sistema-producao.html' },
+      { id: 102, titulo: 'TPM & OEE',                                materia: 'engprod', tags: ['TPM','OEE','eficiência'],               prof: '—',             data: 'Mar 2026', tipo: 'Apresentação',     arquivo: 'tpm-oee.html' },
+      /* ── Marketing ── */
+      { id: 1,  titulo: 'Fundamentos do Marketing Mix (4Ps)',        materia: 'marketing',   tags: ['4Ps','estratégia','produto'],    prof: 'Prof. Ana',     data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
+      { id: 2,  titulo: 'Segmentação e Posicionamento de Mercado',   materia: 'marketing',   tags: ['segmentação','STP'],             prof: 'Prof. Ana',     data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
+      { id: 3,  titulo: 'Branding e Gestão de Marca',                materia: 'marketing',   tags: ['branding','marca'],              prof: 'Prof. Ana',     data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
+      /* ── Finanças ── */
+      { id: 4,  titulo: 'Análise de Demonstrações Financeiras',      materia: 'financas',    tags: ['DRE','balanço','contábil'],      prof: 'Prof. Carlos',  data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
+      { id: 5,  titulo: 'Fluxo de Caixa e Capital de Giro',          materia: 'financas',    tags: ['fluxo de caixa','liquidez'],     prof: 'Prof. Carlos',  data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
+      /* ── Estatística ── */
+      { id: 6,  titulo: 'Distribuição Normal e Desvio Padrão',       materia: 'estatistica', tags: ['distribuição','desvio'],         prof: 'Prof. Ana',     data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
+      { id: 7,  titulo: 'Regressão Linear Simples',                  materia: 'estatistica', tags: ['regressão','correlação'],        prof: 'Prof. Ana',     data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
+      /* ── Gestão de Pessoas ── */
+      { id: 8,  titulo: 'Recrutamento e Seleção de Pessoas',         materia: 'rh',          tags: ['recrutamento','seleção'],        prof: 'Prof. Marta',   data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
+      { id: 9,  titulo: 'Avaliação de Desempenho e Feedback',        materia: 'rh',          tags: ['desempenho','feedback'],         prof: 'Prof. Marta',   data: 'Jan 2026', tipo: 'Resumo', arquivo: '#' },
+      /* ── Direito ── */
+      { id: 10, titulo: 'Tipos de Sociedade Empresarial',            materia: 'direito',     tags: ['LTDA','SA','jurídico'],          prof: 'Prof. João',    data: 'Jan 2026', tipo: 'Resumo', arquivo: '#' },
+      /* ── Logística ── */
+      { id: 11, titulo: 'Gestão de Estoque e Armazenagem',           materia: 'logistica',   tags: ['estoque','FIFO','LIFO'],         prof: 'Prof. Roberto', data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
+      { id: 12, titulo: 'Planejamento da Cadeia de Suprimentos',     materia: 'logistica',   tags: ['supply chain','cadeia'],         prof: 'Prof. Roberto', data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
+    ];
+
+    /* ─ Estado ─ */
+    let filterMateria = 'all';
+    let filterProf    = 'all';
+    let filterTipo    = 'all';
+    let filterTags    = new Set();
+    let searchQuery   = '';
+
+    /* ─ Helpers ─ */
+    const $ = id => document.getElementById(id);
+    const getMateria = id => MATERIAS.find(m => m.id === id);
+
+    /* ─ Build sidebar matérias ─ */
+    function buildSidebarMaterias() {
+      const wrap = $('filterMateria');
+      wrap.innerHTML = '';
+
+      const allBtn = document.createElement('button');
+      allBtn.className = 'resumos-filter-pill active';
+      allBtn.dataset.filter = 'materia';
+      allBtn.dataset.value = 'all';
+      allBtn.innerHTML = `<span class="filter-dot" style="background:var(--ms-sage-500);"></span>Todas<span class="filter-count">${RESUMOS.length}</span>`;
+      wrap.appendChild(allBtn);
+
+      MATERIAS.forEach(m => {
+        const count = RESUMOS.filter(r => r.materia === m.id).length;
+        if (!count) return;
+        const btn = document.createElement('button');
+        btn.className = 'resumos-filter-pill';
+        btn.dataset.filter = 'materia';
+        btn.dataset.value = m.id;
+        btn.innerHTML = `<span class="filter-dot" style="background:${m.cor};"></span>${m.nome}<span class="filter-count">${count}</span>`;
+        wrap.appendChild(btn);
+      });
+    }
+
+    /* ─ Build sidebar tipos ─ */
+    function buildSidebarTipos() {
+      const wrap = $('filterTipo');
+      wrap.innerHTML = '';
+
+      const allBtn = document.createElement('button');
+      allBtn.className = 'resumos-filter-pill active';
+      allBtn.dataset.filter = 'tipo';
+      allBtn.dataset.value = 'all';
+      allBtn.innerHTML = `<span class="filter-dot" style="background:var(--ms-amber-500);"></span>Todos<span class="filter-count">${RESUMOS.length}</span>`;
+      wrap.appendChild(allBtn);
+
+      TIPOS.forEach(tipo => {
+        const count = RESUMOS.filter(r => r.tipo === tipo).length;
+        if (!count) return;
+        const btn = document.createElement('button');
+        btn.className = 'resumos-filter-pill';
+        btn.dataset.filter = 'tipo';
+        btn.dataset.value = tipo;
+        btn.innerHTML = `<span class="filter-dot" style="background:var(--ms-amber-700);"></span>${tipo}<span class="filter-count">${count}</span>`;
+        wrap.appendChild(btn);
+      });
+    }
+
+    /* ─ Build sidebar profs ─ */
+    function buildSidebarProfs() {
+      const wrap = $('filterProf');
+      wrap.innerHTML = '';
+
+      const allBtn = document.createElement('button');
+      allBtn.className = 'resumos-filter-pill active';
+      allBtn.dataset.filter = 'prof';
+      allBtn.dataset.value = 'all';
+      allBtn.innerHTML = `<span class="filter-dot" style="background:var(--ms-text-muted);"></span>Todos`;
+      wrap.appendChild(allBtn);
+
+      const profs = [...new Set(RESUMOS.map(r => r.prof))].sort();
+      profs.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'resumos-filter-pill';
+        btn.dataset.filter = 'prof';
+        btn.dataset.value = p;
+        btn.innerHTML = `<span class="filter-dot" style="background:var(--ms-text-muted);"></span>${p}`;
+        wrap.appendChild(btn);
+      });
+    }
+
+    /* ─ Build sidebar tags ─ */
+    function buildSidebarTags() {
+      const wrap = $('filterTag');
+      wrap.innerHTML = '';
+      const allTags = [...new Set(RESUMOS.flatMap(r => r.tags))].sort();
+      allTags.forEach(tag => {
+        const btn = document.createElement('button');
+        btn.className = 'resumos-tag-pill';
+        btn.dataset.filter = 'tag';
+        btn.dataset.value = tag;
+        btn.textContent = tag;
+        wrap.appendChild(btn);
+      });
+    }
+
+    /* ─ Build cards grid ─ */
+    function buildMateriaCards() {
+      const grid = $('materiasGrid');
+      grid.innerHTML = '';
+      MATERIAS.forEach(m => {
+        const count = RESUMOS.filter(r => r.materia === m.id).length;
+        if (!count) return;
+        const card = document.createElement('div');
+        card.className = 'mat-card' + (filterMateria === m.id ? ' selected' : '');
+        card.innerHTML = `
+          <div class="mc-head" style="background:${m.cor};">
+            <span class="mc-icon">${m.icon}</span>
+            <div class="mc-name">${m.nome}</div>
+            ${m.prof ? `<div class="mc-info">${m.prof}</div>` : ''}
+          </div>
+          <div class="mc-foot">
+            <span class="mc-count">${count} conteúdo${count > 1 ? 's' : ''}</span>
+            <span class="mc-arrow">→</span>
+          </div>`;
+        card.addEventListener('click', () => {
+          filterMateria = filterMateria === m.id ? 'all' : m.id;
+          filterProf = 'all';
+          filterTags.clear();
+          syncSidebarMateria();
+          syncSidebarProf();
+          syncSidebarTags();
+          buildMateriaCards();
+          render();
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    /* ─ Sync sidebar estados ─ */
+    function syncSidebarMateria() {
+      document.querySelectorAll('[data-filter="materia"]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === filterMateria);
+      });
+    }
+    function syncSidebarProf() {
+      document.querySelectorAll('[data-filter="prof"]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === filterProf);
+      });
+    }
+    function syncSidebarTipo() {
+      document.querySelectorAll('[data-filter="tipo"]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === filterTipo);
+      });
+    }
+    function syncSidebarTags() {
+      document.querySelectorAll('[data-filter="tag"]').forEach(btn => {
+        btn.classList.toggle('active', filterTags.has(btn.dataset.value));
+      });
+    }
+
+    /* ─ Filtrar resumos ─ */
+    function filtered() {
+      return RESUMOS.filter(r => {
+        const byMateria = filterMateria === 'all' || r.materia === filterMateria;
+        const byProf    = filterProf    === 'all' || r.prof    === filterProf;
+        const byTipo    = filterTipo    === 'all' || r.tipo    === filterTipo;
+        const byTags    = filterTags.size === 0   || [...filterTags].every(t => r.tags.includes(t));
+        const bySearch  = !searchQuery || [r.titulo, r.materia, r.prof, r.tipo, ...r.tags]
+          .join(' ').toLowerCase().includes(searchQuery.toLowerCase());
+        return byMateria && byProf && byTipo && byTags && bySearch;
+      });
+    }
+
+    /* ─ Render lista ─ */
+    function render() {
+      const list  = $('resumosList');
+      const empty = $('emptyState');
+      const items = filtered();
+
+      list.innerHTML = '';
+      empty.classList.toggle('show', items.length === 0);
+      $('resultCount').textContent = `${items.length} conteúdo${items.length !== 1 ? 's' : ''}`;
+
+      items.forEach(r => {
+        const m = getMateria(r.materia);
+        const row = document.createElement('a');
+        row.className = 'resumo-row';
+        row.href = r.arquivo;
+        const tipoBadge = r.tipo && r.tipo !== 'Resumo'
+          ? `<span class="rr-tipo">${r.tipo}</span>` : '';
+        row.innerHTML = `
+          <span class="rr-dot" style="background:${m ? m.cor : 'var(--ms-sage-500)'};"></span>
+          <div class="rr-body">
+            <div class="rr-title">${tipoBadge}${r.titulo}</div>
+            <div class="rr-meta">
+              ${r.tags.map(t => `<span class="rr-tag">${t}</span>`).join('')}
+              ${r.prof && r.prof !== '—' ? `<span class="rr-prof">· ${r.prof}</span>` : ''}
+            </div>
+          </div>
+          <span class="rr-date">${r.data}</span>
+          <span class="rr-arrow">→</span>`;
+        list.appendChild(row);
+      });
+
+      renderActiveFilters();
+    }
+
+    /* ─ Active filter pills ─ */
+    function renderActiveFilters() {
+      const wrap = $('activeFilters');
+      wrap.innerHTML = '';
+
+      const add = (label, onRemove) => {
+        const pill = document.createElement('span');
+        pill.className = 'active-tag';
+        pill.innerHTML = `${label} <span class="rm">&times;</span>`;
+        pill.querySelector('.rm').addEventListener('click', onRemove);
+        wrap.appendChild(pill);
+      };
+
+      if (filterMateria !== 'all') {
+        const m = getMateria(filterMateria);
+        add(m ? m.nome : filterMateria, () => { filterMateria = 'all'; syncSidebarMateria(); buildMateriaCards(); render(); });
+      }
+      if (filterTipo !== 'all') {
+        add(filterTipo, () => { filterTipo = 'all'; syncSidebarTipo(); render(); });
+      }
+      if (filterProf !== 'all') {
+        add(filterProf, () => { filterProf = 'all'; syncSidebarProf(); render(); });
+      }
+      filterTags.forEach(tag => {
+        add(tag, () => { filterTags.delete(tag); syncSidebarTags(); render(); });
+      });
+      if (searchQuery) {
+        add(`"${searchQuery}"`, () => { $('searchInput').value = ''; searchQuery = ''; render(); });
+      }
+    }
+
+    /* ─ Event listeners ─ */
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-filter]');
+      if (!btn) return;
+      const { filter, value } = btn.dataset;
+
+      if (filter === 'materia') {
+        filterMateria = value;
+        syncSidebarMateria();
+        buildMateriaCards();
+      } else if (filter === 'tipo') {
+        filterTipo = value;
+        syncSidebarTipo();
+      } else if (filter === 'prof') {
+        filterProf = value;
+        syncSidebarProf();
+      } else if (filter === 'tag') {
+        if (filterTags.has(value)) filterTags.delete(value);
+        else filterTags.add(value);
+        syncSidebarTags();
+      }
+      render();
+    });
+
+    $('searchInput').addEventListener('input', e => {
+      searchQuery = e.target.value;
+      render();
+    });
+
+    /* ─ Mobile sidebar toggle ─ */
+    const sidebarToggle = $('sidebarToggle');
+    const sidebar = $('sidebar');
+    const sidebarOverlay = $('sidebarOverlay');
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+      });
+    }
+
+    /* ─ Nav toggle (shared) ─ */
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+      });
+    }
+
+    /* ─ Nav scroll ─ */
+    const nav = document.querySelector('.site-nav');
+    if (nav) {
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('site-nav--scrolled', window.scrollY > 60);
+      });
+    }
+
+    /* ─ Init ─ */
+    buildSidebarMaterias();
+    buildSidebarTipos();
+    buildSidebarProfs();
+    buildSidebarTags();
+    buildMateriaCards();
+    render();
+  </script>
+
+</body>
+</html>

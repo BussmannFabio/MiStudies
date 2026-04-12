@@ -1,0 +1,48 @@
+/* ============================================================
+   MISTUDIES — THEME
+   Color overrides only. Inherits all other tokens from global.
+   This file creates the MiStudies visual identity while
+   maintaining the same structural DNA as the main site.
+   ============================================================ */
+
+:root {
+  /* ── Primary — Deep Slate (study focus) ── */
+  --ms-primary-950: #0C1117;
+  --ms-primary-900: #131B24;
+  --ms-primary-800: #1E2A38;
+  --ms-primary-700: #2D3F52;
+
+  /* ── Secondary — Warm Sage (organic calm) ── */
+  --ms-sage-700: #4A6B5A;
+  --ms-sage-500: #6B8F7A;
+  --ms-sage-300: #A3C4B0;
+
+  /* ── Accent — Amber (highlight / progress) ── */
+  --ms-amber-700: #C47F17;
+  --ms-amber-500: #E6A21E;
+  --ms-amber-300: #F5C563;
+
+  /* ── Surfaces ── */
+  --ms-surface: rgba(30, 42, 56, 0.5);
+  --ms-surface-hover: rgba(45, 63, 82, 0.5);
+  --ms-surface-border: rgba(45, 63, 82, 0.35);
+  --ms-surface-light: rgba(163, 196, 176, 0.06);
+
+  /* ── Text overrides for MiStudies context ── */
+  --ms-text-primary: #E8E4DE;
+  --ms-text-secondary: #9BA8B4;
+  --ms-text-muted: #5E6D7A;
+}
+
+/* ── MiStudies Body Override ── */
+body.mistudies-page {
+  background-color: var(--ms-primary-900);
+}
+
+body.mistudies-page ::-webkit-scrollbar-track {
+  background: var(--ms-primary-900);
+}
+
+body.mistudies-page ::-webkit-scrollbar-thumb {
+  background: var(--ms-primary-700);
+}

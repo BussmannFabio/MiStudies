@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MasterClass — Gestão da Produção, Operações e Processos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue-950: #0A1320;
+  --blue-900: #0F1C2E;
+  --blue-800: #1C2F45;
+  --blue-700: #2E4A63;
+  --green-900: #2F4F46;
+  --green-700: #4E6B5D;
+  --green-500: #7A9186;
+  --neutral-950: #0D0D0D;
+  --neutral-900: #1A1A1A;
+  --neutral-800: #3A3A3A;
+  --neutral-500: #8A8A8A;
+  --neutral-200: #E5E5E5;
+  --neutral-100: #F5F5F5;
+  --white: #FFFFFF;
+  --yellow-700: #D4A017;
+  --yellow-500: #F2B705;
+  --yellow-300: #FFCC33;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--blue-950);
+  color: var(--neutral-200);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--blue-950); }
+::-webkit-scrollbar-thumb { background: var(--blue-700); border-radius: 3px; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: rgba(10,19,32,0.97); border-right: 1px solid rgba(46,74,99,0.3);
+  overflow-y: auto; z-index: 100; padding: 48px 0 32px;
+  backdrop-filter: blur(12px);
+}
+.nav-brand { padding: 0 28px 32px; border-bottom: 1px solid rgba(46,74,99,0.25); }
+.nav-brand h2 { font-family: var(--font-serif); font-size: 1.3rem; color: var(--white); font-weight: 600; line-height: 1.2; }
+.nav-brand span { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--neutral-500); font-weight: 500; display: block; margin-top: 4px; }
+.nav-links { list-style: none; padding: 20px 0; }
+.nav-links a {
+  display: block; padding: 9px 28px; text-decoration: none;
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--neutral-500);
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+.nav-links a:hover { color: var(--neutral-200); background: rgba(46,74,99,0.15); }
+.nav-links a.active { color: var(--yellow-500); border-left-color: var(--yellow-500); }
+.nav-num { font-size: 0.6rem; color: var(--blue-700); margin-right: 8px; font-weight: 600; }
+
+/* ── MAIN ── */
+.main { margin-left: 240px; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; padding: 80px 60px;
+  background: linear-gradient(170deg, var(--blue-950) 0%, var(--blue-900) 40%, var(--green-900) 100%);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -200px; right: -200px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(242,183,5,0.06) 0%, transparent 70%);
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -150px; left: -150px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(47,79,70,0.3) 0%, transparent 70%);
+}
+.hero-label {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em;
+  color: var(--yellow-500); font-weight: 600; margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+.hero h1 {
+  font-family: var(--font-serif); font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 600; color: var(--white); line-height: 1.15;
+  max-width: 700px; position: relative; z-index: 1;
+}
+.hero-sub {
+  font-size: 1.1rem; color: var(--neutral-200); opacity: 0.8;
+  max-width: 560px; margin-top: 24px; line-height: 1.7;
+  position: relative; z-index: 1;
+}
+.hero-meta {
+  display: flex; gap: 40px; margin-top: 48px; position: relative; z-index: 1;
+}
+.hero-meta-item { text-align: center; }
+.hero-meta-item .val { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; color: var(--yellow-500); display: block; }
+.hero-meta-item .lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--neutral-500); font-weight: 500; }
+
+/* ── SECTIONS ── */
+.section {
+  padding: 80px 60px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.section-alt {
+  background: var(--blue-900);
+}
+.section-green {
+  background: linear-gradient(135deg, var(--green-900) 0%, var(--blue-900) 100%);
+}
+.section-full {
+  max-width: 100%;
+  padding: 80px 60px;
+}
+.section-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* ── TYPOGRAPHY ── */
+.sec-number {
+  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--yellow-500); font-weight: 600; margin-bottom: 8px; display: block;
+}
+.sec-title {
+  font-family: var(--font-serif); font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 600; color: var(--white); line-height: 1.2; margin-bottom: 28px;
+}
+.sec-subtitle {
+  font-family: var(--font-serif); font-size: 1.4rem;
+  font-weight: 500; color: var(--white); line-height: 1.3; margin-bottom: 16px; margin-top: 36px;
+}
+p { margin-bottom: 16px; color: var(--neutral-200); font-size: 0.95rem; line-height: 1.8; }
+.text-accent { color: var(--yellow-500); font-weight: 600; }
+.text-muted { color: var(--neutral-500); }
+.text-white { color: var(--white); }
+
+/* ── CARDS ── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 24px; }
+.card {
+  background: rgba(28,47,69,0.5); border: 1px solid rgba(46,74,99,0.3);
+  border-radius: 12px; padding: 28px; transition: all 0.3s ease;
+}
+.card:hover { border-color: rgba(242,183,5,0.3); transform: translateY(-2px); }
+.card-icon { font-size: 1.8rem; margin-bottom: 12px; display: block; }
+.card h4 { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; color: var(--white); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+.card p { font-size: 0.85rem; color: var(--neutral-200); opacity: 0.8; margin-bottom: 0; }
+
+.card-accent {
+  border-left: 3px solid var(--yellow-500);
+  background: rgba(242,183,5,0.04);
+}
+
+/* ── TABLES ── */
+.table-wrap { overflow-x: auto; margin-top: 24px; border-radius: 10px; border: 1px solid rgba(46,74,99,0.3); }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+thead { background: rgba(28,47,69,0.7); }
+th {
+  padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.75rem;
+  text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow-500);
+  border-bottom: 1px solid rgba(46,74,99,0.4);
+}
+td {
+  padding: 12px 18px; border-bottom: 1px solid rgba(46,74,99,0.15);
+  color: var(--neutral-200); vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(46,74,99,0.1); }
+td em { color: var(--green-500); font-style: italic; }
+td strong { color: var(--white); font-weight: 600; }
+
+/* ── QUOTE / HIGHLIGHT ── */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(47,79,70,0.3), rgba(28,47,69,0.4));
+  border-left: 3px solid var(--yellow-500); border-radius: 0 10px 10px 0;
+  padding: 28px 32px; margin: 28px 0;
+}
+.highlight-box p { margin-bottom: 0; }
+
+.quote-box {
+  background: rgba(28,47,69,0.3); border-radius: 12px; padding: 28px 32px; margin: 20px 0;
+  border: 1px solid rgba(46,74,99,0.2); position: relative;
+}
+.quote-box::before { content: '"'; position: absolute; top: 8px; left: 16px; font-family: var(--font-serif); font-size: 3rem; color: var(--yellow-500); opacity: 0.3; }
+.quote-box p { padding-left: 20px; font-style: italic; color: var(--neutral-200); opacity: 0.9; margin-bottom: 8px; }
+.quote-author { font-size: 0.8rem; color: var(--yellow-500); font-weight: 600; font-style: normal; padding-left: 20px; }
+
+/* ── TAGS / PILLS ── */
+.tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.tag {
+  display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 0.75rem;
+  font-weight: 600; letter-spacing: 0.04em; border: 1px solid rgba(46,74,99,0.4);
+  color: var(--neutral-200); background: rgba(28,47,69,0.4);
+}
+.tag-yellow { border-color: rgba(242,183,5,0.4); color: var(--yellow-500); background: rgba(242,183,5,0.08); }
+.tag-green { border-color: rgba(122,145,134,0.5); color: var(--green-500); background: rgba(47,79,70,0.2); }
+
+/* ── TIMELINE ── */
+.timeline { position: relative; margin-top: 32px; padding-left: 32px; }
+.timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--yellow-500), var(--green-500)); }
+.timeline-item { position: relative; margin-bottom: 36px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -28px; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--yellow-500); border: 3px solid var(--blue-950);
+}
+.timeline-item h4 { font-size: 0.9rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.timeline-item .meta { font-size: 0.7rem; color: var(--yellow-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.timeline-item p { font-size: 0.85rem; color: var(--neutral-200); opacity: 0.85; margin-bottom: 8px; }
+.timeline-item ul { list-style: none; padding: 0; }
+.timeline-item ul li {
+  position: relative; padding-left: 18px; font-size: 0.85rem;
+  color: var(--neutral-200); opacity: 0.85; margin-bottom: 6px;
+}
+.timeline-item ul li::before { content: '›'; position: absolute; left: 0; color: var(--yellow-500); font-weight: 700; }
+
+/* ── BLOOM LEVELS ── */
+.bloom-bar { display: flex; margin-top: 24px; border-radius: 10px; overflow: hidden; }
+.bloom-level {
+  flex: 1; padding: 18px 14px; text-align: center; transition: all 0.3s ease;
+  cursor: default;
+}
+.bloom-level:hover { filter: brightness(1.15); }
+.bloom-level .lvl-name { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; display: block; margin-bottom: 4px; }
+.bloom-level .lvl-verb { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; display: block; }
+.bloom-l1 { background: rgba(47,79,70,0.4); color: var(--green-500); }
+.bloom-l1 .lvl-verb { color: var(--white); }
+.bloom-l2 { background: rgba(47,79,70,0.55); color: var(--green-500); }
+.bloom-l2 .lvl-verb { color: var(--white); }
+.bloom-l3 { background: rgba(78,107,93,0.5); color: var(--green-500); }
+.bloom-l3 .lvl-verb { color: var(--white); }
+.bloom-l4 { background: rgba(212,160,23,0.2); color: var(--yellow-500); }
+.bloom-l4 .lvl-verb { color: var(--white); }
+.bloom-l5 { background: rgba(212,160,23,0.35); color: var(--yellow-500); }
+.bloom-l5 .lvl-verb { color: var(--white); }
+.bloom-l6 { background: rgba(242,183,5,0.45); color: var(--yellow-700); }
+.bloom-l6 .lvl-verb { color: var(--white); }
+
+/* ── STAT CALLOUTS ── */
+.stat-row { display: flex; gap: 24px; margin: 28px 0; flex-wrap: wrap; }
+.stat-item { flex: 1; min-width: 160px; text-align: center; padding: 24px; background: rgba(28,47,69,0.4); border-radius: 12px; border: 1px solid rgba(46,74,99,0.25); }
+.stat-val { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--yellow-500); display: block; }
+.stat-lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--neutral-500); font-weight: 500; margin-top: 4px; }
+
+/* ── MODULE CARDS ── */
+.mod-card {
+  background: rgba(28,47,69,0.35); border: 1px solid rgba(46,74,99,0.25);
+  border-radius: 14px; padding: 36px; margin-bottom: 28px; position: relative;
+  overflow: hidden;
+}
+.mod-card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  background: linear-gradient(to bottom, var(--yellow-500), var(--green-500));
+}
+.mod-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.mod-num { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--yellow-500); font-weight: 700; }
+.mod-title { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600; color: var(--white); }
+.mod-meta { display: flex; gap: 16px; flex-wrap: wrap; }
+.mod-meta-tag { font-size: 0.7rem; padding: 4px 12px; border-radius: 16px; background: rgba(46,74,99,0.3); color: var(--neutral-200); border: 1px solid rgba(46,74,99,0.3); }
+.mod-meta-tag strong { color: var(--yellow-500); }
+.mod-content ul { list-style: none; padding: 0; }
+.mod-content ul li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 0.9rem; color: var(--neutral-200); line-height: 1.7; }
+.mod-content ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--yellow-500); }
+.mod-content p { font-size: 0.9rem; }
+
+/* ── PBL STEPS ── */
+.pbl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 20px; }
+.pbl-step {
+  background: rgba(47,79,70,0.2); border: 1px solid rgba(122,145,134,0.25);
+  border-radius: 12px; padding: 24px; position: relative;
+}
+.pbl-step-num {
+  position: absolute; top: -10px; left: 20px; background: var(--yellow-500);
+  color: var(--blue-950); font-size: 0.65rem; font-weight: 700; padding: 3px 12px;
+  border-radius: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.pbl-step h5 { font-size: 0.85rem; color: var(--white); font-weight: 700; margin-bottom: 8px; margin-top: 8px; }
+.pbl-step p { font-size: 0.82rem; margin-bottom: 8px; }
+.pbl-step ul { list-style: none; padding: 0; }
+.pbl-step ul li { font-size: 0.82rem; padding-left: 16px; position: relative; margin-bottom: 4px; color: var(--neutral-200); opacity: 0.85; }
+.pbl-step ul li::before { content: '—'; position: absolute; left: 0; color: var(--green-500); }
+
+/* ── VALUE PROPS ── */
+.val-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
+.val-item {
+  display: flex; align-items: flex-start; gap: 14px; padding: 20px;
+  background: rgba(28,47,69,0.3); border-radius: 10px;
+  border: 1px solid rgba(46,74,99,0.2);
+}
+.val-icon { color: var(--yellow-500); font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+.val-item p { margin-bottom: 0; font-size: 0.88rem; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center; padding: 60px; border-top: 1px solid rgba(46,74,99,0.2);
+  background: var(--blue-950);
+}
+.footer p { color: var(--neutral-500); font-size: 0.8rem; margin-bottom: 0; }
+.footer .brand { font-family: var(--font-serif); font-size: 1.2rem; color: var(--white); font-weight: 600; margin-bottom: 8px; display: block; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav { display: none; }
+  .main { margin-left: 0; }
+  .section, .section-full { padding: 50px 28px; }
+  .hero { padding: 60px 28px; }
+  .bloom-bar { flex-wrap: wrap; }
+  .bloom-level { min-width: 33%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav">
+  <div class="nav-brand">
+    <h2>Gabriel Ferreira</h2>
+    <span>MasterClass · Escopo</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#visao"><span class="nav-num">01</span> Visão Geral</a></li>
+    <li><a href="#ideia"><span class="nav-num">02</span> Ideia Central</a></li>
+    <li><a href="#tema"><span class="nav-num">03</span> Tema</a></li>
+    <li><a href="#publico"><span class="nav-num">04</span> Público-Alvo</a></li>
+    <li><a href="#justificativa"><span class="nav-num">05</span> Justificativa</a></li>
+    <li><a href="#referenciais"><span class="nav-num">5A</span> Referenciais</a></li>
+    <li><a href="#objetivo"><span class="nav-num">06</span> Obj. Geral</a></li>
+    <li><a href="#bloom"><span class="nav-num">07</span> Bloom</a></li>
+    <li><a href="#indicadores"><span class="nav-num">7A</span> Indicadores</a></li>
+    <li><a href="#problema"><span class="nav-num">08</span> Problema Central</a></li>
+    <li><a href="#proposta"><span class="nav-num">09</span> Proposta de Valor</a></li>
+    <li><a href="#resultados"><span class="nav-num">10</span> Resultados</a></li>
+    <li><a href="#modulos"><span class="nav-num">11</span> Módulos</a></li>
+    <li><a href="#cruzada"><span class="nav-num">12</span> Tabela Cruzada</a></li>
+    <li><a href="#conceitos"><span class="nav-num">13</span> Conceitos</a></li>
+    <li><a href="#metodologia"><span class="nav-num">14</span> Metodologia</a></li>
+    <li><a href="#abordagem"><span class="nav-num">15</span> Abordagem</a></li>
+    <li><a href="#tom"><span class="nav-num">16</span> Tom</a></li>
+    <li><a href="#diferencial"><span class="nav-num">17</span> Diferencial</a></li>
+    <li><a href="#entregaveis"><span class="nav-num">18</span> Entregáveis</a></li>
+    <li><a href="#sintese"><span class="nav-num">19</span> Síntese</a></li>
+  </ul>
+</nav>
+
+<main class="main">
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <span class="hero-label">Jornada Intensiva de Formação</span>
+  <h1>Gestão da Produção, Operações e Processos</h1>
+  <p class="hero-sub">Escopo revisado com embasamento didático (Taxonomia de Bloom, indicadores de aprendizagem, técnicas pedagógicas) e acadêmico (referenciais teóricos da literatura).</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="val">6</span>
+      <span class="lbl">Módulos</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="val">9</span>
+      <span class="lbl">Autores Ref.</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="val">~110</span>
+      <span class="lbl">Minutos</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1. VISÃO GERAL ═══════════════ -->
+<section class="section" id="visao">
+  <span class="sec-number">Seção 01</span>
+  <h2 class="sec-title">Visão Geral do Curso</h2>
+  <p>O curso terá como foco apresentar, de forma <strong class="text-accent">prática e aplicada</strong>, os principais fundamentos da gestão da produção, das operações e dos processos organizacionais, demonstrando como essas áreas influenciam diretamente a eficiência, a qualidade, os custos, os prazos e os resultados de uma organização.</p>
+  <p>A proposta é construir uma aula que não fique restrita à teoria, mas que ajude o público a entender como esses conceitos aparecem no dia a dia das empresas.</p>
+  <div class="highlight-box">
+    <p><strong class="text-white">Fio condutor:</strong> As etapas da <span class="text-accent">construção de um loteamento</span> — do projeto inicial à entrega das unidades. Esse contexto permite ilustrar planejamento, gargalos, desperdícios, padronização e melhoria de processos de forma concreta e reconhecível.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ 2. IDEIA CENTRAL ═══════════════ -->
+<section class="section section-alt" id="ideia">
+  <span class="sec-number">Seção 02</span>
+  <h2 class="sec-title">Ideia Central</h2>
+  <div class="highlight-box">
+    <p style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--white); font-weight: 500; line-height: 1.6; margin-bottom: 0;">Produzir bem não depende apenas de fazer mais, mas de <span class="text-accent">organizar recursos, pessoas, fluxos, atividades e decisões</span> de forma inteligente.</p>
+  </div>
+  <h3 class="sec-subtitle">Perguntas que orientam a aula</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-icon">🔍</span>
+      <p>O que é gestão da produção na prática?</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">⚙️</span>
+      <p>Qual a diferença entre produção, operações e processos?</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📋</span>
+      <p>Por que empresas eficientes organizam processos antes de cobrar resultados?</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎯</span>
+      <p>Como identificar e eliminar gargalos, desperdícios e retrabalhos?</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📈</span>
+      <p>Quais ferramentas permitem melhorar operações de forma contínua?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 3. TEMA ═══════════════ -->
+<section class="section" id="tema">
+  <span class="sec-number">Seção 03</span>
+  <h2 class="sec-title">Tema do Curso</h2>
+  <p style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--white); font-weight: 500; text-align: center; margin: 32px 0;">Gestão da Produção, Operações e Processos</p>
+  <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card" style="text-align: center; border-top: 3px solid var(--yellow-500);">
+      <h4>Produção</h4>
+      <p>Planejamento e controle do que é produzido</p>
+    </div>
+    <div class="card" style="text-align: center; border-top: 3px solid var(--green-500);">
+      <h4>Operações</h4>
+      <p>Execução das atividades que mantêm a organização funcionando</p>
+    </div>
+    <div class="card" style="text-align: center; border-top: 3px solid var(--blue-700);">
+      <h4>Processos</h4>
+      <p>Como as etapas se conectam, são padronizadas e podem ser melhoradas</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 4. PÚBLICO-ALVO ═══════════════ -->
+<section class="section section-alt" id="publico">
+  <span class="sec-number">Seção 04</span>
+  <h2 class="sec-title">Público-Alvo</h2>
+  <p>Estudantes de administração, engenharia, logística e áreas correlatas, além de pessoas interessadas em compreender como empresas organizam sua produção, suas operações e seus processos.</p>
+  <p>Também se enquadram como público-alvo futuros gestores e profissionais em formação que desejem desenvolver uma visão prática sobre eficiência operacional, produtividade, qualidade e melhoria contínua.</p>
+  <div class="tag-row" style="margin-top: 24px;">
+    <span class="tag tag-yellow">Administração</span>
+    <span class="tag tag-yellow">Engenharia</span>
+    <span class="tag tag-yellow">Logística</span>
+    <span class="tag tag-green">Futuros Gestores</span>
+    <span class="tag tag-green">Profissionais em Formação</span>
+    <span class="tag">Áreas Correlatas</span>
+  </div>
+</section>
+
+<!-- ═══════════════ 5. JUSTIFICATIVA ═══════════════ -->
+<section class="section section-green" id="justificativa">
+  <div class="section-inner">
+    <span class="sec-number">Seção 05</span>
+    <h2 class="sec-title">Justificativa do Curso</h2>
+    <p>O tema é relevante porque toda organização depende de operações bem estruturadas para alcançar bons resultados. Mesmo quando a empresa possui bons produtos, tecnologia ou profissionais capacitados, ela pode perder competitividade se apresentar processos mal definidos, falhas de comunicação, desperdícios, atrasos ou baixa produtividade.</p>
+
+    <h3 class="sec-subtitle">Embasamento Acadêmico</h3>
+
+    <div class="quote-box">
+      <p>A competitividade estratégica de uma organização não depende apenas de inovação de produto, mas fundamentalmente de excelência operacional — medida por cinco objetivos de desempenho: qualidade, custo, velocidade, confiabilidade e flexibilidade.</p>
+      <span class="quote-author">— Slack, Chambers & Johnston (2018)</span>
+    </div>
+
+    <div class="quote-box">
+      <p>O <em>muda</em> — o desperdício — é a principal barreira à produtividade nas organizações. Identificar e eliminar atividades que consomem recursos sem agregar valor é a forma mais direta de aumentar a eficiência sem necessariamente ampliar a capacidade instalada.</p>
+      <span class="quote-author">— Womack & Jones (1996)</span>
+    </div>
+
+    <div class="quote-box">
+      <p>A otimização local de partes de um sistema não garante a otimização do sistema como um todo. Toda organização possui ao menos um gargalo — e é nele que a gestão deve concentrar esforços para elevar o desempenho global.</p>
+      <span class="quote-author">— Goldratt (1984)</span>
+    </div>
+
+    <h3 class="sec-subtitle">Evidências Empíricas</h3>
+    <div class="stat-row">
+      <div class="stat-item">
+        <span class="stat-val">15–30%</span>
+        <span class="stat-lbl">Redução de custo operacional com princípios Lean</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val">10–15%</span>
+        <span class="stat-lbl">Desperdício em empreendimentos da construção civil</span>
+      </div>
+    </div>
+    <p class="text-muted" style="font-size: 0.8rem;">Fontes: McKinsey Global Institute; CBIC — Câmara Brasileira da Indústria da Construção.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ 5A. REFERENCIAIS ═══════════════ -->
+<section class="section" id="referenciais">
+  <span class="sec-number">Seção 5A</span>
+  <h2 class="sec-title">Referenciais Teóricos</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Autor</th><th>Obra</th><th>Contribuição Central</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Slack, Chambers & Johnston</strong></td>
+          <td><em>Operations Management</em>, 8ª ed. (2018)</td>
+          <td>5 objetivos de desempenho; modelo Input-Transformação-Output; 4 Vs (volume, variedade, variação, visibilidade)</td>
+        </tr>
+        <tr>
+          <td><strong>Womack & Jones</strong></td>
+          <td><em>Lean Thinking</em> (1996)</td>
+          <td>5 princípios lean; identificação e eliminação dos 7 desperdícios (<em>muda</em>)</td>
+        </tr>
+        <tr>
+          <td><strong>Goldratt, E.M.</strong></td>
+          <td><em>A Meta</em> (1984)</td>
+          <td>Teoria das Restrições (TOC); gestão de gargalos; método drum-buffer-rope</td>
+        </tr>
+        <tr>
+          <td><strong>Ohno, T.</strong></td>
+          <td><em>Toyota Production System</em> (1988)</td>
+          <td>Just-in-Time; produção puxada vs. empurrada; takt time; autonomação</td>
+        </tr>
+        <tr>
+          <td><strong>Shingo, S.</strong></td>
+          <td><em>Zero Quality Control</em> (1986)</td>
+          <td>Poka-yoke; inspeção na fonte; padronização; SMED</td>
+        </tr>
+        <tr>
+          <td><strong>Harrington, H.J.</strong></td>
+          <td><em>Business Process Improvement</em> (1991)</td>
+          <td>Redesenho de processos; eliminação sistemática de desperdícios; melhoria de fluxo</td>
+        </tr>
+        <tr>
+          <td><strong>Imai, M.</strong></td>
+          <td><em>Kaizen</em> (1986)</td>
+          <td>Melhoria contínua incremental; filosofia de pequenas melhorias diárias</td>
+        </tr>
+        <tr>
+          <td><strong>Deming, W.E.</strong></td>
+          <td><em>Out of the Crisis</em> (1986)</td>
+          <td>Ciclo PDCA; controle estatístico de processos; cultura de qualidade</td>
+        </tr>
+        <tr>
+          <td><strong>Rother & Shook</strong></td>
+          <td><em>Learning to See</em> (2003)</td>
+          <td>Value Stream Mapping (VSM); visualização de fluxos de valor e desperdícios</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ 6. OBJETIVO GERAL ═══════════════ -->
+<section class="section section-alt" id="objetivo">
+  <span class="sec-number">Seção 06</span>
+  <h2 class="sec-title">Objetivo Geral</h2>
+  <div class="highlight-box">
+    <p style="font-size: 1.05rem; color: var(--white); line-height: 1.8; margin-bottom: 0;">Apresentar os fundamentos da gestão da produção, das operações e dos processos, demonstrando sua importância para a <span class="text-accent">eficiência organizacional</span>, a <span class="text-accent">qualidade dos resultados</span> e a <span class="text-accent">melhoria contínua</span> nas empresas — utilizando as etapas da construção de um loteamento como fio condutor prático.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ 7. OBJETIVOS ESPECÍFICOS (BLOOM) ═══════════════ -->
+<section class="section" id="bloom">
+  <span class="sec-number">Seção 07</span>
+  <h2 class="sec-title">Objetivos Específicos — Taxonomia de Bloom</h2>
+  <p>Organizados em progressão cognitiva crescente, do nível mais básico (Lembrar) ao mais elevado (Criar):</p>
+
+  <div class="bloom-bar">
+    <div class="bloom-level bloom-l1"><span class="lvl-name">Lembrar</span><span class="lvl-verb">Definir</span></div>
+    <div class="bloom-level bloom-l2"><span class="lvl-name">Compreender</span><span class="lvl-verb">Explicar</span></div>
+    <div class="bloom-level bloom-l3"><span class="lvl-name">Aplicar</span><span class="lvl-verb">Demonstrar</span></div>
+    <div class="bloom-level bloom-l4"><span class="lvl-name">Analisar</span><span class="lvl-verb">Identificar</span></div>
+    <div class="bloom-level bloom-l5"><span class="lvl-name">Avaliar</span><span class="lvl-verb">Avaliar</span></div>
+    <div class="bloom-level bloom-l6"><span class="lvl-name">Criar</span><span class="lvl-verb">Propor</span></div>
+  </div>
+
+  <div class="table-wrap" style="margin-top: 28px;">
+    <table>
+      <thead>
+        <tr><th>Nível Bloom</th><th>Verbo</th><th>Objetivo Específico</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Lembrar</strong></td>
+          <td>Definir</td>
+          <td>Definir os conceitos de produção, operações e processos com precisão terminológica</td>
+        </tr>
+        <tr>
+          <td><strong>Compreender</strong></td>
+          <td>Explicar</td>
+          <td>Explicar as diferenças e conexões entre produção, operações e processos com exemplos aplicados</td>
+        </tr>
+        <tr>
+          <td><strong>Aplicar</strong></td>
+          <td>Demonstrar</td>
+          <td>Demonstrar como o planejamento e o controle da produção funcionam em um contexto real (loteamento)</td>
+        </tr>
+        <tr>
+          <td><strong>Analisar</strong></td>
+          <td>Identificar</td>
+          <td>Identificar gargalos, desperdícios, retrabalhos e falhas operacionais em fluxos de processo</td>
+        </tr>
+        <tr>
+          <td><strong>Avaliar</strong></td>
+          <td>Avaliar</td>
+          <td>Avaliar a qualidade de um processo e justificar oportunidades de melhoria com critérios de tempo, custo e qualidade</td>
+        </tr>
+        <tr>
+          <td><strong>Criar</strong></td>
+          <td>Propor</td>
+          <td>Propor um redesenho de processo com base nos conceitos e ferramentas apresentados</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ 7A. INDICADORES ═══════════════ -->
+<section class="section section-alt" id="indicadores">
+  <span class="sec-number">Seção 7A</span>
+  <h2 class="sec-title">Indicadores de Aprendizagem por Objetivo</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Objetivo Específico</th><th>Indicador Observável</th><th>Forma de Verificação</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Definir produção, operações e processos</td>
+          <td>O aluno define cada conceito com palavras próprias e aponta 2+ exemplos distintos</td>
+          <td>Quiz rápido ou escrita livre (2 min)</td>
+        </tr>
+        <tr>
+          <td>Explicar diferenças e conexões</td>
+          <td>O aluno mapeia as relações entre os três conceitos em diagrama com ≥3 conexões válidas</td>
+          <td>Mapa conceitual</td>
+        </tr>
+        <tr>
+          <td>Demonstrar planejamento e controle</td>
+          <td>O aluno identifica ≥2 etapas de planejamento ausentes no cenário-problema do loteamento</td>
+          <td>Análise de caso</td>
+        </tr>
+        <tr>
+          <td>Identificar falhas operacionais</td>
+          <td>O aluno aponta ≥3 gargalos ou desperdícios no diagrama de processo apresentado</td>
+          <td>Tarefa de anotação</td>
+        </tr>
+        <tr>
+          <td>Avaliar e justificar melhorias</td>
+          <td>O aluno apresenta 2+ intervenções viáveis com impacto justificado (tempo, custo ou qualidade)</td>
+          <td>Apresentação no PBL</td>
+        </tr>
+        <tr>
+          <td>Propor redesenho de processo</td>
+          <td>O aluno articula trade-offs explícitos na proposta e demonstra coerência sistêmica</td>
+          <td>Discussão reflexiva e pitch</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ 8. PROBLEMA CENTRAL ═══════════════ -->
+<section class="section" id="problema">
+  <span class="sec-number">Seção 08</span>
+  <h2 class="sec-title">Problema Central</h2>
+  <div class="highlight-box" style="text-align: center;">
+    <p style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--white); font-weight: 500; line-height: 1.6; margin-bottom: 0;">Como a gestão da produção, das operações e dos processos pode contribuir para que uma organização seja mais <span class="text-accent">eficiente</span>, <span class="text-accent">produtiva</span> e <span class="text-accent">competitiva</span>?</p>
+  </div>
+  <h3 class="sec-subtitle">Perguntas Complementares</h3>
+  <div class="val-grid">
+    <div class="val-item">
+      <span class="val-icon">›</span>
+      <p>Por que processos bem definidos impactam diretamente os resultados de uma empresa?</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">›</span>
+      <p>Como melhorar a operação de uma organização sem depender apenas de mais recursos?</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">›</span>
+      <p>De que forma a gestão da produção ajuda a reduzir falhas, desperdícios e atrasos?</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">›</span>
+      <p>O que acontece quando se otimiza uma etapa isolada sem considerar o sistema como um todo?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 9. PROPOSTA DE VALOR ═══════════════ -->
+<section class="section section-alt" id="proposta">
+  <span class="sec-number">Seção 09</span>
+  <h2 class="sec-title">Proposta de Valor da Aula</h2>
+  <div class="val-grid">
+    <div class="val-item">
+      <span class="val-icon">⚡</span>
+      <p><strong class="text-white">Operação não é apenas execução</strong> — é estratégia aplicada.</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">💰</span>
+      <p><strong class="text-white">Processo mal definido</strong> gera custo oculto.</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">🧠</span>
+      <p><strong class="text-white">Produtividade</strong> não significa correr mais, e sim organizar melhor.</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">✅</span>
+      <p><strong class="text-white">Qualidade</strong> depende de método, fluxo e controle.</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">📈</span>
+      <p><strong class="text-white">Melhorar processos</strong> é uma forma prática de aumentar resultados.</p>
+    </div>
+    <div class="val-item">
+      <span class="val-icon">🔗</span>
+      <p><strong class="text-white">O gargalo do sistema</strong> determina o resultado do sistema — não o elo mais rápido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 10. RESULTADOS ESPERADOS ═══════════════ -->
+<section class="section" id="resultados">
+  <span class="sec-number">Seção 10</span>
+  <h2 class="sec-title">Resultados Esperados para o Público</h2>
+  <div class="card-grid">
+    <div class="card card-accent">
+      <p>Compreender o papel da gestão da produção nas organizações</p>
+    </div>
+    <div class="card card-accent">
+      <p>Reconhecer a importância das operações para o funcionamento do negócio</p>
+    </div>
+    <div class="card card-accent">
+      <p>Identificar o que é um processo e por que ele precisa ser estruturado</p>
+    </div>
+    <div class="card card-accent">
+      <p>Perceber falhas e oportunidades de melhoria em fluxos operacionais</p>
+    </div>
+    <div class="card card-accent">
+      <p>Relacionar produtividade, qualidade, tempo e custo à organização dos processos</p>
+    </div>
+    <div class="card card-accent">
+      <p>Enxergar a melhoria contínua como vantagem competitiva</p>
+    </div>
+    <div class="card card-accent" style="grid-column: 1 / -1;">
+      <p>Aplicar ao menos uma ferramenta de análise de processos (<span class="text-accent">SIPOC</span>, <span class="text-accent">PDCA</span> ou <span class="text-accent">VSM simplificado</span>) em um contexto prático</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 11. ESTRUTURA — MÓDULOS ═══════════════ -->
+<section class="section section-green" id="modulos">
+  <div class="section-inner">
+    <span class="sec-number">Seção 11</span>
+    <h2 class="sec-title">Estrutura Macro do Conteúdo</h2>
+
+    <!-- M1 -->
+    <div class="mod-card">
+      <div class="mod-header">
+        <div>
+          <span class="mod-num">Módulo 1</span>
+          <h3 class="mod-title">Introdução ao Tema</h3>
+        </div>
+        <div class="mod-meta">
+          <span class="mod-meta-tag"><strong>Bloom:</strong> Lembrar / Compreender</span>
+          <span class="mod-meta-tag"><strong>Tempo:</strong> 8–10 min</span>
+        </div>
+      </div>
+      <div class="mod-meta" style="margin-bottom: 16px;">
+        <span class="mod-meta-tag"><strong>Técnica:</strong> Gancho provocativo + linha do tempo visual</span>
+        <span class="mod-meta-tag"><strong>Ref.:</strong> Slack et al. — 5 objetivos de desempenho</span>
+      </div>
+      <div class="highlight-box" style="margin-top: 0;">
+        <p style="font-style: italic; margin-bottom: 0;"><em>"Uma construtora perdeu 3 meses de prazo e 15% do orçamento em um loteamento por uma falha de sequenciamento de processos. O que deu errado?"</em></p>
+      </div>
+      <div class="mod-content">
+        <ul>
+          <li>Por que operações e processos importam estrategicamente</li>
+          <li>Os 5 objetivos de desempenho operacional: qualidade, custo, velocidade, confiabilidade e flexibilidade (Slack et al.)</li>
+          <li>Linha do tempo visual das etapas do loteamento como âncora para os módulos seguintes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- M2 -->
+    <div class="mod-card">
+      <div class="mod-header">
+        <div>
+          <span class="mod-num">Módulo 2</span>
+          <h3 class="mod-title">Conceitos Fundamentais</h3>
+        </div>
+        <div class="mod-meta">
+          <span class="mod-meta-tag"><strong>Bloom:</strong> Compreender / Aplicar</span>
+          <span class="mod-meta-tag"><strong>Tempo:</strong> 12–15 min</span>
+        </div>
+      </div>
+      <div class="mod-meta" style="margin-bottom: 16px;">
+        <span class="mod-meta-tag"><strong>Técnica:</strong> Mapa conceitual + tabela comparativa + SIPOC</span>
+        <span class="mod-meta-tag"><strong>Ref.:</strong> Slack et al. — modelo I-T-O; 4 Vs</span>
+      </div>
+      <div class="mod-content">
+        <ul>
+          <li>Definições de <strong class="text-white">produção</strong>, <strong class="text-white">operações</strong> e <strong class="text-white">processos</strong>: distinções e conexões</li>
+          <li>Modelo <strong class="text-accent">Input-Transformação-Output</strong>: toda operação transforma entradas em saídas</li>
+          <li><strong class="text-accent">4 Vs</strong>: volume, variedade, variação da demanda e visibilidade — como configuram diferentes tipos de operação</li>
+          <li>Introdução ao <strong class="text-accent">SIPOC</strong> (Supplier → Input → Process → Output → Customer) como ferramenta de mapeamento</li>
+          <li>Aplicação ao loteamento: quem são os fornecedores, quais os insumos, quais os processos, quais os produtos e quem são os clientes de cada etapa?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- M3 -->
+    <div class="mod-card">
+      <div class="mod-header">
+        <div>
+          <span class="mod-num">Módulo 3</span>
+          <h3 class="mod-title">Gestão da Produção na Prática</h3>
+        </div>
+        <div class="mod-meta">
+          <span class="mod-meta-tag"><strong>Bloom:</strong> Aplicar / Analisar</span>
+          <span class="mod-meta-tag"><strong>Tempo:</strong> 18–20 min</span>
+        </div>
+      </div>
+      <div class="mod-meta" style="margin-bottom: 16px;">
+        <span class="mod-meta-tag"><strong>Técnica:</strong> Exemplo trabalhado com 3 pontos de decisão + think-aloud</span>
+        <span class="mod-meta-tag"><strong>Ref.:</strong> Goldratt (TOC); Ohno (JIT); Slack (capacidade)</span>
+      </div>
+      <div class="mod-content">
+        <ul>
+          <li><strong class="text-white">Planejamento e Controle da Produção (PPC)</strong>: o que planejar, como controlar e por que o desvio entre plano e execução é inevitável sem método</li>
+          <li><strong class="text-white">Capacidade produtiva</strong>: o que é, como calcular e como dimensionar recursos no loteamento (equipes, máquinas, materiais)</li>
+          <li><strong class="text-accent">Teoria das Restrições — TOC</strong> (Goldratt): toda operação tem ao menos um gargalo; método drum-buffer-rope</li>
+          <li><strong class="text-accent">Just-in-Time</strong> (Ohno): lógica puxada vs. empurrada; conceito de <strong class="text-white">takt time</strong> — o ritmo ideal sincronizado à demanda</li>
+          <li>Exemplo aplicado: em qual etapa do loteamento está o gargalo? O que acontece quando se tenta acelerar uma etapa que não é a restrição?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- M4 -->
+    <div class="mod-card">
+      <div class="mod-header">
+        <div>
+          <span class="mod-num">Módulo 4</span>
+          <h3 class="mod-title">Processos Organizacionais</h3>
+        </div>
+        <div class="mod-meta">
+          <span class="mod-meta-tag"><strong>Bloom:</strong> Analisar / Avaliar</span>
+          <span class="mod-meta-tag"><strong>Tempo:</strong> 15–18 min</span>
+        </div>
+      </div>
+      <div class="mod-meta" style="margin-bottom: 16px;">
+        <span class="mod-meta-tag"><strong>Técnica:</strong> Simulação de gargalo + diagrama de desperdícios + PDCA</span>
+        <span class="mod-meta-tag"><strong>Ref.:</strong> Womack & Jones; Shingo; Imai; Deming</span>
+      </div>
+      <div class="mod-content">
+        <ul>
+          <li><strong class="text-white">Fluxo de atividades</strong> e como mapear processos visualmente (introdução ao VSM — Value Stream Mapping)</li>
+          <li><strong class="text-accent">Os 7 desperdícios do Lean</strong> (Womack & Jones): superprodução, espera, transporte desnecessário, processamento excessivo, estoque, movimentação e defeitos — com exemplos no loteamento</li>
+          <li><strong class="text-accent">Padronização</strong> (Shingo): por que padronizar reduz retrabalho; poka-yoke como prevenção de erros</li>
+          <li><strong class="text-accent">PDCA</strong> (Deming): ciclo Plan-Do-Check-Act como estrutura de melhoria contínua</li>
+          <li><strong class="text-accent">Kaizen</strong> (Imai): filosofia de pequenas melhorias diárias vs. grandes inovações pontuais</li>
+          <li><strong class="text-white">Atividade:</strong> identificar ≥3 desperdícios em um diagrama de processo propositalmente falho</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- M5 -->
+    <div class="mod-card" style="border: 1px solid rgba(242,183,5,0.25);">
+      <div class="mod-header">
+        <div>
+          <span class="mod-num" style="font-size: 0.75rem;">⭐ Módulo 5 — Núcleo Prático</span>
+          <h3 class="mod-title">Aplicação Prática</h3>
+        </div>
+        <div class="mod-meta">
+          <span class="mod-meta-tag"><strong>Bloom:</strong> Avaliar / Criar</span>
+          <span class="mod-meta-tag"><strong>Tempo:</strong> 45–50 min</span>
+        </div>
+      </div>
+      <div class="mod-meta" style="margin-bottom: 16px;">
+        <span class="mod-meta-tag"><strong>Técnica:</strong> PBL com papéis funcionais + redesenho + pitch</span>
+        <span class="mod-meta-tag"><strong>Ref.:</strong> Harrington; Rother & Shook (VSM); todos os frameworks</span>
+      </div>
+
+      <div class="pbl-grid">
+        <div class="pbl-step">
+          <span class="pbl-step-num">Etapa 1 · 5 min</span>
+          <h5>Trigger Scenario</h5>
+          <p>Snapshot do loteamento com falhas embutidas:</p>
+          <ul>
+            <li>Sequência fora de ordem: redes elétricas antes da compactação</li>
+            <li>Ausência de pontos de controle de qualidade</li>
+            <li>Equipe de pavimentação ociosa com terraplenagem em atraso</li>
+          </ul>
+          <p style="color: var(--yellow-500); font-weight: 600; font-style: italic;">"O que está errado aqui? O que isso vai custar?"</p>
+        </div>
+        <div class="pbl-step">
+          <span class="pbl-step-num">Etapa 2 · 25 min</span>
+          <h5>PBL com Papéis Funcionais</h5>
+          <p>4 equipes com funções distintas:</p>
+          <ul>
+            <li><strong style="color:var(--white);">Planejamento:</strong> sequência lógica e recursos</li>
+            <li><strong style="color:var(--white);">Operações:</strong> fluxo de execução e gargalos</li>
+            <li><strong style="color:var(--white);">Qualidade:</strong> inspeções, retrabalhos e defeitos</li>
+            <li><strong style="color:var(--white);">Logística:</strong> abastecimento, transporte e estoques</li>
+          </ul>
+          <p>Cada equipe diagnostica pela ótica da sua função e negocia com as demais.</p>
+        </div>
+        <div class="pbl-step">
+          <span class="pbl-step-num">Etapa 3 · 15 min</span>
+          <h5>Redesenho Rápido de Processo</h5>
+          <ul>
+            <li>Template SIPOC impresso</li>
+            <li>VSM simplificado (papel craft ou quadro)</li>
+            <li>Ciclo PDCA aplicado</li>
+            <li>Pitch de 2 min: proposta com justificativa em tempo, custo ou qualidade</li>
+          </ul>
+        </div>
+        <div class="pbl-step">
+          <span class="pbl-step-num">Etapa 4 · 5 min</span>
+          <h5>Feedback entre Pares + Síntese</h5>
+          <ul>
+            <li>Identificar trade-offs das propostas</li>
+            <li>Lições transferíveis para outros setores (hospital, fábrica, restaurante)</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="margin-top: 20px; font-size: 0.82rem; color: var(--neutral-500);"><strong style="color: var(--neutral-200);">Materiais de apoio:</strong> quadro branco ou papel craft, template SIPOC impresso, post-its, canetas coloridas</p>
+    </div>
+
+    <!-- M6 -->
+    <div class="mod-card">
+      <div class="mod-header">
+        <div>
+          <span class="mod-num">Módulo 6</span>
+          <h3 class="mod-title">Fechamento</h3>
+        </div>
+        <div class="mod-meta">
+          <span class="mod-meta-tag"><strong>Bloom:</strong> Compreender / Lembrar (consolidação)</span>
+          <span class="mod-meta-tag"><strong>Tempo:</strong> 8–10 min</span>
+        </div>
+      </div>
+      <div class="mod-meta" style="margin-bottom: 16px;">
+        <span class="mod-meta-tag"><strong>Técnica:</strong> Exit ticket "muddiest point" + mapa mental coletivo</span>
+        <span class="mod-meta-tag"><strong>Ref.:</strong> Revisão integrada — todos os autores</span>
+      </div>
+      <div class="mod-content">
+        <ul>
+          <li>Retomada dos conceitos centrais em formato de mapa mental coletivo</li>
+          <li>Conexão explícita entre os módulos: definição → análise → melhoria → aplicação</li>
+          <li><strong class="text-accent">Exit ticket:</strong> cada participante escreve <em>"o conceito que ficou mais claro"</em> e <em>"a dúvida que ainda tenho"</em></li>
+          <li><strong class="text-white">Mensagem final:</strong> operação eficiente não é destino, é processo contínuo de melhoria</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 12. TABELA CRUZADA ═══════════════ -->
+<section class="section" id="cruzada">
+  <span class="sec-number">Seção 12</span>
+  <h2 class="sec-title">Tabela Cruzada: Módulo × Bloom × Metodologia × Referencial</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Módulo</th><th>Objetivo (Bloom)</th><th>Metodologia</th><th>Referencial Teórico</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>M1 — Introdução</strong></td>
+          <td>Lembrar: reconhecer a relevância estratégica</td>
+          <td>Gancho provocativo + linha do tempo visual</td>
+          <td>Slack et al. — 5 objetivos</td>
+        </tr>
+        <tr>
+          <td><strong>M2 — Conceitos</strong></td>
+          <td>Compreender: explicar diferenças e conexões</td>
+          <td>Mapa conceitual + tabela comparativa + SIPOC</td>
+          <td>Slack et al. — modelo I-T-O e 4 Vs</td>
+        </tr>
+        <tr>
+          <td><strong>M3 — Produção</strong></td>
+          <td>Aplicar: demonstrar PPC, TOC e JIT na prática</td>
+          <td>Exemplo trabalhado com 3 pontos de decisão</td>
+          <td>Goldratt (TOC); Ohno (JIT); Slack (capacidade)</td>
+        </tr>
+        <tr>
+          <td><strong>M4 — Processos</strong></td>
+          <td>Analisar: identificar desperdícios e gargalos</td>
+          <td>Simulação de gargalo + diagrama + PDCA</td>
+          <td>Womack & Jones; Shingo; Imai; Deming</td>
+        </tr>
+        <tr>
+          <td><strong>M5 — Aplicação</strong></td>
+          <td>Avaliar / Criar: propor redesenho justificado</td>
+          <td>PBL com papéis + SIPOC/VSM + pitch</td>
+          <td>Harrington; Rother & Shook; todos</td>
+        </tr>
+        <tr>
+          <td><strong>M6 — Fechamento</strong></td>
+          <td>Compreender: consolidar e identificar lacunas</td>
+          <td>Exit ticket + mapa mental coletivo</td>
+          <td>Revisão metacognitiva — todos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ 13. CONCEITOS ═══════════════ -->
+<section class="section section-alt" id="conceitos">
+  <span class="sec-number">Seção 13</span>
+  <h2 class="sec-title">Conceitos Inseridos no Conteúdo Programático</h2>
+  <p>Conceitos que foram incorporados ao escopo com profundidade:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Conceito</th><th>Módulo</th><th>Referencial</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>TOC — Teoria das Restrições</td><td>M3</td><td>Goldratt (1984)</td></tr>
+        <tr><td>Just-in-Time e takt time</td><td>M3</td><td>Ohno (1988)</td></tr>
+        <tr><td>Capacidade produtiva</td><td>M3</td><td>Slack et al. (2018)</td></tr>
+        <tr><td>7 desperdícios do Lean</td><td>M4</td><td>Womack & Jones (1996)</td></tr>
+        <tr><td>PDCA</td><td>M4</td><td>Deming (1986)</td></tr>
+        <tr><td>Kaizen</td><td>M4</td><td>Imai (1986)</td></tr>
+        <tr><td>Padronização e poka-yoke</td><td>M4</td><td>Shingo (1986)</td></tr>
+        <tr><td>Value Stream Mapping (VSM)</td><td>M4 / M5</td><td>Rother & Shook (2003)</td></tr>
+        <tr><td>SIPOC</td><td>M2 / M5</td><td>ASQ / Lean methodology</td></tr>
+        <tr><td>Modelo Input-Transformação-Output</td><td>M2</td><td>Slack et al. (2018)</td></tr>
+        <tr><td>4 Vs das operações</td><td>M2</td><td>Slack et al. (2018)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ 14. METODOLOGIA ═══════════════ -->
+<section class="section" id="metodologia">
+  <span class="sec-number">Seção 14</span>
+  <h2 class="sec-title">Metodologia do Curso</h2>
+  <p>A metodologia combina exposição conceitual breve com participação ativa do público. A progressão segue a curva de aprendizagem: <strong class="text-accent">conceito → exemplo → prática → criação</strong>.</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="meta">Fase 1 · M1</div>
+      <h4>Ativação</h4>
+      <p>Gancho provocativo, pergunta-problema</p>
+    </div>
+    <div class="timeline-item">
+      <div class="meta">Fase 2 · M2, M3</div>
+      <h4>Construção Conceitual</h4>
+      <p>Exposição dialogada, mapas conceituais, tabelas comparativas</p>
+    </div>
+    <div class="timeline-item">
+      <div class="meta">Fase 3 · M3, M4</div>
+      <h4>Aprofundamento Analítico</h4>
+      <p>Exemplos trabalhados, simulação de gargalo, diagramas</p>
+    </div>
+    <div class="timeline-item">
+      <div class="meta">Fase 4 · M5</div>
+      <h4>Aplicação e Criação</h4>
+      <p>PBL com papéis funcionais, redesenho de processo, pitch</p>
+    </div>
+    <div class="timeline-item">
+      <div class="meta">Fase 5 · M6</div>
+      <h4>Consolidação</h4>
+      <p>Exit ticket, mapa mental coletivo</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 15. ABORDAGEM ═══════════════ -->
+<section class="section section-alt" id="abordagem">
+  <span class="sec-number">Seção 15</span>
+  <h2 class="sec-title">Abordagem do Curso</h2>
+  <p>O curso terá abordagem <strong class="text-white">teórico-prática</strong>, com linguagem acessível e foco em aplicação. A prioridade será conectar os conceitos com situações reais encontradas em ambientes produtivos e organizacionais — especialmente nas etapas da construção de um loteamento —, tornando o conteúdo mais claro, útil e relevante para públicos de administração, engenharia e logística.</p>
+</section>
+
+<!-- ═══════════════ 16. TOM ═══════════════ -->
+<section class="section" id="tom">
+  <span class="sec-number">Seção 16</span>
+  <h2 class="sec-title">Tom da Apresentação</h2>
+  <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card" style="text-align: center;">
+      <span class="card-icon">🎯</span>
+      <h4>Clareza</h4>
+      <p>Na explicação</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <span class="card-icon">⚡</span>
+      <h4>Objetividade</h4>
+      <p>Na condução</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <span class="card-icon">💬</span>
+      <h4>Profissional</h4>
+      <p>Porém didática</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <span class="card-icon">🔥</span>
+      <h4>Dinamismo</h4>
+      <p>Para engajamento</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <span class="card-icon">📐</span>
+      <h4>Gradual</h4>
+      <p>Evitando tecnicismo</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <span class="card-icon">📚</span>
+      <h4>Autoridade</h4>
+      <p>Referenciada</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 17. DIFERENCIAL ═══════════════ -->
+<section class="section section-green" id="diferencial">
+  <div class="section-inner">
+    <span class="sec-number">Seção 17</span>
+    <h2 class="sec-title">Diferencial da Aula</h2>
+    <div class="card-grid" style="grid-template-columns: 1fr;">
+      <div class="card" style="background: rgba(242,183,5,0.06); border-color: rgba(242,183,5,0.2);">
+        <h4 style="color: var(--yellow-500);">Fio condutor único</h4>
+        <p>O loteamento como exemplo progressivo em todos os módulos — permitindo que o público acompanhe a evolução e aplique cada novo conceito sobre o mesmo contexto. Cria coerência narrativa e facilita a transferência de aprendizado.</p>
+      </div>
+      <div class="card" style="background: rgba(242,183,5,0.06); border-color: rgba(242,183,5,0.2);">
+        <h4 style="color: var(--yellow-500);">Visibilidade das perdas invisíveis</h4>
+        <p>Mostrar que operações existem em qualquer organização e que processos ruins geram perdas muitas vezes invisíveis. Eficiência não depende apenas de tecnologia: pequenas melhorias em método, padronização e fluxo — princípios do Kaizen — podem gerar grande impacto.</p>
+      </div>
+      <div class="card" style="background: rgba(242,183,5,0.06); border-color: rgba(242,183,5,0.2);">
+        <h4 style="color: var(--yellow-500);">Nível cognitivo elevado (Criar)</h4>
+        <p>O Módulo 5 eleva o nível cognitivo para <strong class="text-white">Criar</strong> (Bloom), garantindo que o público não apenas compreenda os conceitos, mas os aplique em uma situação real com restrições, negociação e tomada de decisão.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 18. ENTREGÁVEIS ═══════════════ -->
+<section class="section" id="entregaveis">
+  <span class="sec-number">Seção 18</span>
+  <h2 class="sec-title">Entregáveis Orientados por este Escopo</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4>Conteúdo Programático</h4>
+      <p>Definição do conteúdo programático por módulo</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Divisão de Temas</h4>
+      <p>Divisão dos temas entre os integrantes do grupo</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Metodologia Formalizada</h4>
+      <p>Formalização da metodologia da aula com técnicas pedagógicas específicas</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Slides e Materiais</h4>
+      <p>Construção dos slides e materiais de apoio (diagrama do loteamento, template SIPOC, diagrama de desperdícios)</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Dinâmica PBL</h4>
+      <p>Desenvolvimento da dinâmica do Módulo 5 (cenário-problema com falhas, papéis funcionais, templates)</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Banner</h4>
+      <p>Elaboração do texto do banner</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Apresentação</h4>
+      <p>Preparação da apresentação simulada e da apresentação final</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 19. SÍNTESE ═══════════════ -->
+<section class="section section-alt" id="sintese">
+  <span class="sec-number">Seção 19</span>
+  <h2 class="sec-title">Síntese para Alinhamento do Grupo</h2>
+  <p>O curso será estruturado em torno do tema <strong class="text-accent">Gestão da Produção, Operações e Processos</strong>, com foco em demonstrar como esses elementos impactam produtividade, qualidade, custos, prazos e eficiência nas organizações. O exemplo prático central será a construção de um loteamento, utilizado em todos os módulos como fio condutor.</p>
+  <p>A progressão didática seguirá a <strong class="text-white">Taxonomia de Bloom</strong>: dos módulos iniciais de definição e compreensão até o módulo de aplicação, em que o público propõe redesenhos de processo com ferramentas concretas (SIPOC, PDCA, VSM simplificado). O embasamento teórico inclui autores clássicos — Slack, Goldratt, Womack, Ohno, Shingo, Deming, Imai — garantindo solidez acadêmica.</p>
+  <div class="highlight-box" style="margin-top: 28px;">
+    <p style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--white); font-weight: 500; margin-bottom: 0;">O <span class="text-accent">Módulo 5</span> é o núcleo prático da jornada: uma dinâmica PBL com papéis funcionais, cenário-problema real e pitch de propostas de melhoria.</p>
+  </div>
+  <p style="margin-top: 28px; font-size: 0.82rem; color: var(--neutral-500); font-style: italic;">Documento preparado para apoio ao planejamento acadêmico do grupo. Versão revisada com embasamento didático-acadêmico.</p>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <span class="brand">Gabriel Ferreira</span>
+  <p>Escopo Revisado e Aprofundado · Jornada Intensiva de Formação</p>
+  <p style="margin-top: 8px;">Gestão da Produção, Operações e Processos</p>
+</footer>
+
+</main>
+
+<!-- ═══════════════ NAV SCROLL HIGHLIGHT ═══════════════ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('.nav-links a');
+  const sections = [];
+
+  links.forEach(link => {
+    const id = link.getAttribute('href')?.replace('#', '');
+    if (id) {
+      const el = document.getElementById(id);
+      if (el) sections.push({ el, link });
+    }
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = sections.find(s => s.el === entry.target);
+        if (match) match.link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s.el));
+});
+</script>
+
+</body>
+</html>
