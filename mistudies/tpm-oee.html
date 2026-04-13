@@ -4,32 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TPM & OEE — Excelência Operacional</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
   onload="document.addEventListener('DOMContentLoaded',()=>renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))"></script>
 <style>
   :root {
-    --bg: #080809;
-    --surface: #101013;
-    --surface2: #18181D;
-    --border: #22222A;
-    --text: #EAE6DF;
-    --text-muted: #6B6870;
-    --text-secondary: #A09CA6;
-    --amber: #C8872A;
-    --amber-light: #E0A245;
-    --amber-dim: rgba(200,135,42,0.12);
-    --blue: #3A7CC0;
-    --blue-dim: rgba(58,124,192,0.12);
-    --green: #2E9959;
-    --green-dim: rgba(46,153,89,0.12);
-    --red: #C03A3A;
-    --red-dim: rgba(192,58,58,0.12);
-    --gold: #BFA46A;
-    --serif: 'Cormorant Garamond', Georgia, serif;
-    --sans: 'Montserrat', sans-serif;
+    --bg: #f8f9fa;
+    --surface: #f3f4f5;
+    --surface2: #e1e3e4;
+    --border: #c1c4c5;
+    --text: #191c1d;
+    --text-muted: #757684;
+    --text-secondary: #454652;
+    --amber: #0032b5; /* primary */
+    --amber-light: #006e6e; /* secondary */
+    --amber-dim: rgba(0,50,181,0.05);
+    --blue: #0032b5;
+    --blue-dim: rgba(0,50,181,0.05);
+    --green: #006a6a;
+    --green-dim: rgba(0,106,106,0.05);
+    --red: #f59e0b; /* amber for warnings */
+    --red-dim: rgba(245,158,11,0.05);
+    --gold: #0032b5;
+    --serif: 'Manrope', Georgia, serif;
+    --sans: 'Inter', sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -207,10 +208,10 @@
   }
 
   /* ACCENT CARD */
-  .card-amber { border-color: rgba(200,135,42,0.3); background: var(--amber-dim); }
-  .card-blue  { border-color: rgba(58,124,192,0.3); background: var(--blue-dim); }
-  .card-green { border-color: rgba(46,153,89,0.3);  background: var(--green-dim); }
-  .card-red   { border-color: rgba(192,58,58,0.3);  background: var(--red-dim); }
+  .card-amber { border-color: rgba(0,50,181,0.3); background: var(--amber-dim); }
+  .card-blue  { border-color: rgba(0,50,181,0.3); background: var(--blue-dim); }
+  .card-green { border-color: rgba(0,106,106,0.3);  background: var(--green-dim); }
+  .card-red   { border-color: rgba(245,158,11,0.3);  background: var(--red-dim); }
 
   /* STAT / BIG NUMBER */
   .big-num {
@@ -246,7 +247,7 @@
   /* FORMULA BOX */
   .formula-box {
     background: var(--amber-dim);
-    border: 1px solid rgba(200,135,42,0.35);
+    border: 1px solid rgba(0,50,181,0.35);
     padding: 24px 36px;
     display: inline-flex; align-items: center; gap: 20px;
     flex-wrap: wrap;

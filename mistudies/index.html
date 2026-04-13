@@ -1,786 +1,335 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MiStudies — Estudar com clareza e estrutura</title>
-  <meta name="description" content="Hub de resumos, materiais e apresentações organizados com método. Conteúdos estruturados para quem aprende melhor com foco e acesso direto ao que importa.">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="MiStudies — Hub de Estudos">
-  <meta property="og:description" content="Conteúdos organizados para quem aprende melhor com método, foco e acesso direto ao que importa.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://gaaabriel.com/mistudies">
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Global DNA -->
-  <link rel="stylesheet" href="../styles/tokens.css">
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/layout.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/nav-footer.css">
-
-  <!-- MiStudies Theme -->
-  <link rel="stylesheet" href="styles/mistudies-theme.css">
-  <link rel="stylesheet" href="styles/mistudies-ui.css">
-
-  <style>
-    /* ============================================================
-       MISTUDIES HOME — Page-specific styles
-       Landing/Hub hybrid page.
-       ============================================================ */
-
-    /* ── HERO ── */
-    .ms-hero {
-      min-height: 85vh;
-      background: var(--ms-primary-950);
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      padding: var(--sp-16) var(--sp-12) var(--sp-12);
-      overflow: hidden;
-    }
-
-    .ms-hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 50% at 70% 40%, rgba(74, 107, 90, 0.08) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(45, 63, 82, 0.1) 0%, transparent 55%),
-        linear-gradient(160deg, var(--ms-primary-950) 0%, var(--ms-primary-900) 100%);
-    }
-
-    .ms-hero-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .ms-hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(45, 63, 82, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(45, 63, 82, 0.03) 1px, transparent 1px);
-      background-size: 64px 64px;
-    }
-
-    /* Decorative shapes — study/structure vibe */
-    .ms-hero-shapes {
-      position: absolute;
-      top: var(--sp-8);
-      right: var(--sp-12);
-      width: 200px;
-      height: 200px;
-      opacity: 0.4;
-    }
-
-    .ms-hero-shapes::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 1px solid rgba(74, 107, 90, 0.15);
-      border-radius: var(--radius-lg);
-      transform: rotate(12deg);
-    }
-
-    .ms-hero-shapes::after {
-      content: '';
-      position: absolute;
-      inset: 30px;
-      border: 1px solid rgba(230, 162, 30, 0.08);
-      border-radius: var(--radius-md);
-      transform: rotate(-8deg);
-    }
-
-    .ms-hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 680px;
-    }
-
-    .ms-hero-eyebrow {
-      font-family: var(--font-sans);
-      font-size: var(--text-xs);
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--ms-sage-500);
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-      margin-bottom: var(--sp-4);
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 0.8s var(--ease-out) 0.2s forwards;
-    }
-
-    .ms-hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--ms-sage-500);
-    }
-
-    .ms-hero-headline {
-      font-family: var(--font-serif);
-      font-size: clamp(3rem, 6.5vw, 5rem);
-      font-weight: 600;
-      line-height: 0.98;
-      color: var(--ms-text-primary);
-      letter-spacing: -0.015em;
-      margin-bottom: var(--sp-4);
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 1s var(--ease-out) 0.4s forwards;
-    }
-
-    .ms-hero-headline em {
-      font-style: italic;
-      color: rgba(163, 196, 176, 0.45);
-      font-weight: 300;
-    }
-
-    .ms-hero-sub {
-      font-family: var(--font-serif);
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-      font-weight: 400;
-      font-style: italic;
-      color: var(--ms-text-muted);
-      margin-bottom: var(--sp-5);
-      line-height: 1.55;
-      max-width: 540px;
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 0.9s var(--ease-out) 0.6s forwards;
-    }
-
-    .ms-hero-desc {
-      font-family: var(--font-sans);
-      font-size: clamp(0.88rem, 1.2vw, 1rem);
-      font-weight: 400;
-      color: var(--ms-text-secondary);
-      max-width: 480px;
-      line-height: 1.8;
-      margin-bottom: var(--sp-6);
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 0.9s var(--ease-out) 0.8s forwards;
-    }
-
-    .ms-hero-actions {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-3);
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 0.9s var(--ease-out) 1s forwards;
-    }
-
-    /* Primary CTA — amber */
-    .ms-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--sp-1);
-      padding: var(--sp-2) var(--sp-5);
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--ms-primary-950);
-      background: var(--ms-amber-500);
-      border: none;
-      border-radius: var(--radius-md);
-      text-decoration: none;
-      cursor: pointer;
-      transition: all var(--duration-base) var(--ease-out);
-    }
-
-    .ms-btn-primary:hover {
-      background: var(--ms-amber-300);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(230, 162, 30, 0.2);
-    }
-
-    .ms-btn-primary svg {
-      width: 16px;
-      height: 16px;
-      transition: transform var(--duration-base) var(--ease-out);
-    }
-
-    .ms-btn-primary:hover svg {
-      transform: translateX(3px);
-    }
-
-    /* Secondary CTA — ghost/sage */
-    .ms-btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--sp-1);
-      padding: var(--sp-2) var(--sp-4);
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      font-weight: 500;
-      color: var(--ms-sage-300);
-      background: transparent;
-      border: 1px solid var(--ms-surface-border);
-      border-radius: var(--radius-md);
-      text-decoration: none;
-      cursor: pointer;
-      transition: all var(--duration-base) var(--ease-out);
-    }
-
-    .ms-btn-ghost:hover {
-      border-color: var(--ms-sage-500);
-      background: rgba(107, 143, 122, 0.06);
-      transform: translateY(-1px);
-    }
-
-    /* ── METRICS BAR ── */
-    .ms-metrics {
-      background: var(--ms-primary-900);
-      border-top: 1px solid var(--ms-surface-border);
-      border-bottom: 1px solid var(--ms-surface-border);
-      padding: var(--sp-5) var(--sp-12);
-    }
-
-    .ms-metrics-inner {
-      max-width: var(--content-max);
-      margin: 0 auto;
-      display: flex;
-      justify-content: center;
-      gap: var(--sp-12);
-    }
-
-    .ms-metric {
-      text-align: center;
-    }
-
-    .ms-metric-num {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 3.5vw, 2.75rem);
-      font-weight: 600;
-      color: var(--ms-amber-500);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .ms-metric-label {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ms-text-muted);
-    }
-
-    /* ── HOW IT WORKS ── */
-    .ms-how {
-      background: var(--ms-primary-950);
-      padding: var(--section-pad) var(--sp-12);
-    }
-
-    .ms-how-inner {
-      max-width: var(--content-max);
-      margin: 0 auto;
-    }
-
-    .ms-how-header {
-      margin-bottom: var(--sp-8);
-    }
-
-    .ms-section-eyebrow {
-      font-family: var(--font-sans);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--ms-sage-500);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: var(--sp-3);
-    }
-
-    .ms-section-eyebrow::before {
-      content: '';
-      display: block;
-      width: 16px;
-      height: 1px;
-      background: var(--ms-sage-500);
-    }
-
-    .ms-section-title {
-      font-family: var(--font-serif);
-      font-size: var(--text-h2);
-      font-weight: 600;
-      color: var(--ms-text-primary);
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-    }
-
-    .ms-how-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--sp-4);
-    }
-
-    .ms-step {
-      background: var(--ms-surface);
-      border: 1px solid var(--ms-surface-border);
-      border-radius: var(--radius-xl);
-      padding: var(--sp-5);
-      transition: all var(--duration-base) var(--ease-out);
-    }
-
-    .ms-step:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(12, 17, 23, 0.3);
-      border-color: var(--ms-primary-700);
-    }
-
-    .ms-step-num {
-      font-family: var(--font-sans);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--ms-amber-500);
-      margin-bottom: var(--sp-3);
-      display: block;
-    }
-
-    .ms-step-title {
-      font-family: var(--font-serif);
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: var(--ms-text-primary);
-      line-height: 1.2;
-      margin-bottom: var(--sp-2);
-    }
-
-    .ms-step-desc {
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      color: var(--ms-text-secondary);
-      line-height: 1.7;
-    }
-
-    /* ── FEATURED CONTENT ── */
-    .ms-featured {
-      background: var(--ms-primary-900);
-      padding: var(--section-pad) var(--sp-12);
-    }
-
-    .ms-featured-inner {
-      max-width: var(--content-max);
-      margin: 0 auto;
-    }
-
-    .ms-featured-header {
-      display: flex;
-      align-items: baseline;
-      gap: var(--sp-4);
-      margin-bottom: var(--sp-8);
-    }
-
-    .ms-featured-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, var(--ms-surface-border), transparent);
-    }
-
-    /* Card accent line on hover */
-    .ms-featured .ms-card {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ms-featured .ms-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--ms-sage-500), var(--ms-amber-500));
-      opacity: 0;
-      transition: opacity var(--duration-base) var(--ease-out);
-    }
-
-    .ms-featured .ms-card:hover::before {
-      opacity: 1;
-    }
-
-    .ms-card-type {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 500;
-      padding: 3px 10px;
-      border-radius: 100px;
-      background: rgba(107, 143, 122, 0.1);
-      color: var(--ms-sage-300);
-      border: 1px solid rgba(107, 143, 122, 0.15);
-    }
-
-    /* ── VISION SECTION ── */
-    .ms-vision {
-      background: var(--ms-primary-950);
-      padding: var(--section-pad) var(--sp-12);
-      position: relative;
-    }
-
-    .ms-vision::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--ms-surface-border), transparent);
-    }
-
-    .ms-vision-inner {
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .ms-vision-eyebrow {
-      font-family: var(--font-sans);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--ms-amber-500);
-      margin-bottom: var(--sp-3);
-    }
-
-    .ms-vision-title {
-      font-family: var(--font-serif);
-      font-size: var(--text-h2);
-      font-weight: 600;
-      color: var(--ms-text-primary);
-      line-height: 1.1;
-      margin-bottom: var(--sp-4);
-    }
-
-    .ms-vision-title em {
-      font-style: italic;
-      color: rgba(163, 196, 176, 0.45);
-    }
-
-    .ms-vision-text {
-      font-family: var(--font-sans);
-      font-size: var(--text-body);
-      color: var(--ms-text-secondary);
-      line-height: 1.85;
-      margin-bottom: var(--sp-6);
-    }
-
-    /* ── FOOTER EXTRAS ── */
-    .ms-footer-phrase {
-      font-family: var(--font-serif);
-      font-size: var(--text-sm);
-      font-style: italic;
-      color: rgba(232, 228, 222, 0.25);
-      margin-top: var(--sp-3);
-      max-width: 380px;
-      line-height: 1.6;
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .ms-hero {
-        padding: var(--sp-8) var(--sp-3) var(--sp-6);
-        min-height: 80vh;
-      }
-
-      .ms-hero-shapes { display: none; }
-
-      .ms-hero-actions {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--sp-2);
-      }
-
-      .ms-metrics {
-        padding: var(--sp-4) var(--sp-3);
-      }
-
-      .ms-metrics-inner {
-        gap: var(--sp-6);
-      }
-
-      .ms-how {
-        padding: var(--sp-8) var(--sp-3);
-      }
-
-      .ms-how-grid {
-        grid-template-columns: 1fr;
-        gap: var(--sp-3);
-      }
-
-      .ms-featured {
-        padding: var(--sp-8) var(--sp-3);
-      }
-
-      .ms-featured .ms-card-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .ms-vision {
-        padding: var(--sp-8) var(--sp-3);
-      }
-    }
-  </style>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MiStudies — Estudar com clareza e estrutura</title>
+    <meta name="description" content="Hub de resumos, materiais e apresentações organizados com método.">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                "colors": {
+                        "primary": "#0032b5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0344ec",
+                        "on-primary-container": "#c8d0ff",
+                        "secondary": "#006a6a",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#90efef",
+                        "on-secondary-container": "#006e6e",
+                        "tertiary": "#2b3b8d",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#4453a7",
+                        "on-tertiary-container": "#c9cfff",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "surface-variant": "#e1e3e4",
+                        "on-surface-variant": "#454652",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline": "#757684",
+                        "amber-500": "#f59e0b",
+                        "amber-100": "#fef3c7"
+                },
+                "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                },
+                "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                }
+              },
+            },
+          }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .bg-signature-gradient { background: linear-gradient(135deg, #0032b5 0%, #0344ec 100%); }
+    </style>
 </head>
-<body class="mistudies-page">
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-white">
 
-  <!-- ── NAV ── -->
-  <nav class="site-nav">
-    <a href="../index.html" class="nav-logo">gaaabriel</a>
-    <ul class="nav-links">
-      <li><a href="../gnexz/index.html">Gnexz</a></li>
-      <li><a href="../nossoape/">Nosso Ape</a></li>
-      <li><a href="index.html" class="active">MiStudies</a></li>
-      <li><a href="../gabriel/index.html">Pessoal</a></li>
-    </ul>
-    <button class="nav-toggle" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- ── HERO ── -->
-  <section class="ms-hero">
-    <div class="ms-hero-bg"></div>
-    <div class="ms-hero-grid"></div>
-    <div class="ms-hero-shapes"></div>
-
-    <div class="ms-hero-content">
-      <span class="ms-hero-eyebrow">Hub de Estudos</span>
-      <h1 class="ms-hero-headline">
-        Estudar com<br>clareza <em>e<br>estrutura.</em>
-      </h1>
-      <p class="ms-hero-sub">
-        Conteúdos organizados para quem aprende melhor com método, foco e acesso direto ao que importa.
-      </p>
-      <p class="ms-hero-desc">
-        O MiStudies reúne resumos, materiais e apresentações em um só lugar. É um hub para estudantes e profissionais que valorizam organização, contexto e revisão prática. Aqui, o estudo deixa de ser disperso e ganha ritmo.
-      </p>
-      <div class="ms-hero-actions">
-        <a href="#conteudos" class="ms-btn-primary">
-          Explorar conteúdos
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-        <a href="#visao" class="ms-btn-ghost">Acompanhar lançamento</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── METRICS BAR ── -->
-  <div class="ms-metrics">
-    <div class="ms-metrics-inner">
-      <div class="ms-metric">
-        <div class="ms-metric-num">12+</div>
-        <span class="ms-metric-label">materiais organizados</span>
-      </div>
-      <div class="ms-metric">
-        <div class="ms-metric-num">4</div>
-        <span class="ms-metric-label">áreas estruturadas</span>
-      </div>
-      <div class="ms-metric">
-        <div class="ms-metric-num">150+</div>
-        <span class="ms-metric-label">páginas de estudo</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── HOW IT WORKS ── -->
-  <section class="ms-how">
-    <div class="ms-how-inner">
-      <div class="ms-how-header">
-        <span class="ms-section-eyebrow">Como funciona</span>
-        <h2 class="ms-section-title">Do conteúdo ao entendimento</h2>
-      </div>
-
-      <div class="ms-how-grid">
-        <div class="ms-step">
-          <span class="ms-step-num">01</span>
-          <h3 class="ms-step-title">Conteúdo com contexto</h3>
-          <p class="ms-step-desc">Cada material parte de um tema central e organiza os conceitos essenciais com clareza. O objetivo é entender o assunto antes de decorar.</p>
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 glass-nav bg-surface/70 border-b border-surface-container-high">
+    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+        <a href="index.html" class="text-2xl font-black text-primary tracking-tighter font-headline">gaaabriel</a>
+        
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="../gnexz/index.html">Gnexz</a>
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="resumos.html">Acervos</a>
+            <a class="text-primary border-b-2 border-primary pb-1 font-body font-bold transition-colors" href="index.html">MiStudies</a>
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="dashboard.html">Área do Professor</a>
         </div>
-        <div class="ms-step">
-          <span class="ms-step-num">02</span>
-          <h3 class="ms-step-title">Estrutura por lógica</h3>
-          <p class="ms-step-desc">Os conteúdos são agrupados por área, tema e tipo de material. Isso facilita revisar, comparar assuntos e manter uma linha de raciocínio.</p>
+
+        <div class="flex items-center gap-4">
+            <button class="md:hidden text-on-surface-variant">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
         </div>
-        <div class="ms-step">
-          <span class="ms-step-num">03</span>
-          <h3 class="ms-step-title">Acesso sem ruído</h3>
-          <p class="ms-step-desc">Tudo fica mais fácil de encontrar, reler e retomar. Menos tempo procurando arquivos, mais tempo estudando com foco.</p>
+    </div>
+</nav>
+
+<main class="pt-24">
+    <!-- Hero Section -->
+    <section class="relative px-8 py-20 lg:py-32 max-w-7xl mx-auto overflow-hidden">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 z-10">
+                <span class="text-secondary font-bold tracking-widest text-sm uppercase mb-4 block">Hub de Estudos</span>
+                <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.1] font-headline">
+                    Estudar com<br/>
+                    clareza <span class="text-primary italic">e estrutura.</span>
+                </h1>
+                <p class="text-xl text-on-surface-variant leading-relaxed mb-6 font-body italic max-w-xl">
+                    Conteúdos organizados para quem aprende melhor com método, foco e acesso direto ao que importa.
+                </p>
+                <p class="text-base text-on-surface-variant leading-relaxed mb-10 max-w-xl font-body">
+                    O MiStudies reúne resumos, materiais e apresentações em um só lugar. É um hub para estudantes e profissionais que valorizam organização, contexto e revisão prática.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#conteudos" class="inline-flex justify-center items-center gap-2 bg-signature-gradient text-on-primary px-10 py-4 rounded-xl text-lg font-bold shadow-lg transition-all duration-300 hover:-translate-y-1">
+                        Explorar conteúdos
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                    <a href="#visao" class="inline-flex justify-center items-center bg-surface-container-highest text-on-surface px-10 py-4 rounded-xl text-lg font-bold transition-all duration-300 hover:bg-surface-container-high">
+                        Acompanhar lançamento
+                    </a>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-5 relative">
+                <!-- Metrics Bar transformed into Visual Element -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-surface-container-low p-8 rounded-3xl shadow-sm text-center flex flex-col justify-center min-h-[200px]">
+                        <span class="text-5xl font-headline font-black text-primary mb-2">12+</span>
+                        <span class="text-sm uppercase tracking-wider font-bold text-on-surface-variant">materiais<br>organizados</span>
+                    </div>
+                    <div class="bg-secondary-container p-8 rounded-3xl shadow-sm text-center flex flex-col justify-center min-h-[200px] mt-12">
+                        <span class="text-5xl font-headline font-black text-secondary mb-2">4</span>
+                        <span class="text-sm uppercase tracking-wider font-bold text-on-secondary-container">áreas<br>estruturadas</span>
+                    </div>
+                    <div class="bg-surface-container-highest p-8 rounded-3xl shadow-sm text-center flex flex-col justify-center min-h-[200px] col-span-2">
+                        <span class="text-6xl font-headline font-black text-primary mb-2">150+</span>
+                        <span class="text-sm uppercase tracking-wider font-bold text-on-surface-variant">páginas de estudo criadas</span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── DIVIDER ── -->
-  <div class="divider"></div>
-
-  <!-- ── FEATURED CONTENT ── -->
-  <section id="conteudos" class="ms-featured">
-    <div class="ms-featured-inner">
-      <div class="ms-featured-header">
-        <div>
-          <span class="ms-section-eyebrow">Biblioteca</span>
-          <h2 class="ms-section-title">Conteúdos em destaque</h2>
+    <!-- How it Works Section: Tonal Shifting Zone -->
+    <section class="bg-surface-container-low py-24 px-8 mt-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-secondary font-bold tracking-widest text-sm uppercase mb-4 block">Como Funciona</span>
+                <h2 class="text-4xl font-extrabold tracking-tight text-on-surface font-headline">Do conteúdo ao entendimento</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- Step 1 -->
+                <div class="group">
+                    <div class="w-16 h-16 bg-surface-container-lowest rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-primary transition-colors duration-300">
+                        <span class="font-headline font-black text-primary group-hover:text-white text-2xl transition-colors">01</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-headline">Conteúdo com contexto</h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body">
+                        Cada material parte de um tema central e organiza os conceitos essenciais com clareza. O objetivo é entender o assunto antes de decorar.
+                    </p>
+                </div>
+                <!-- Step 2 -->
+                <div class="group">
+                    <div class="w-16 h-16 bg-surface-container-lowest rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-secondary transition-colors duration-300">
+                        <span class="font-headline font-black text-secondary group-hover:text-white text-2xl transition-colors">02</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-headline">Estrutura por lógica</h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body">
+                        Os conteúdos são agrupados por área, tema e tipo de material. Isso facilita revisar, comparar assuntos e manter uma linha de raciocínio.
+                    </p>
+                </div>
+                <!-- Step 3 -->
+                <div class="group">
+                    <div class="w-16 h-16 bg-surface-container-lowest rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-tertiary transition-colors duration-300">
+                        <span class="font-headline font-black text-tertiary group-hover:text-white text-2xl transition-colors">03</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-headline">Acesso sem ruído</h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body">
+                        Tudo fica mais fácil de encontrar, reler e retomar. Menos tempo procurando arquivos, mais tempo estudando com foco.
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="ms-featured-line"></div>
-      </div>
+    </section>
 
-      <div class="ms-card-grid">
-        <a href="escopo-PI.html" class="ms-card">
-          <div class="ms-card-header">
-            <span class="ms-card-category">Eng. Produção</span>
-            <span class="ms-card-type">~15 min</span>
-          </div>
-          <h3 class="ms-card-title">Escopo da Produção</h3>
-          <p class="ms-card-desc">Uma visão ampla sobre gestão da produção, operações e processos. Ideal para construir base e entender o campo com mais clareza.</p>
-          <div class="ms-card-footer">
-            <span class="ms-card-tag">Operações</span>
-            <span class="ms-card-tag">Processos</span>
-            <span class="ms-card-tag">Gestão</span>
-            <span class="ms-card-reading">MasterClass</span>
-          </div>
-        </a>
+    <!-- Featured Content / Bento Grid -->
+    <section id="conteudos" class="py-32 px-8 max-w-7xl mx-auto">
+        <div class="mb-16 flex items-end justify-between">
+            <div>
+                <span class="text-secondary font-bold tracking-widest text-sm uppercase mb-3 block">Biblioteca</span>
+                <h2 class="text-4xl font-extrabold tracking-tight text-on-surface font-headline">Conteúdos em destaque</h2>
+            </div>
+            <div class="hidden md:block flex-1 ml-12 h-px bg-gradient-to-r from-surface-container-highest border-0"></div>
+        </div>
 
-        <a href="sistema-producao.html" class="ms-card">
-          <div class="ms-card-header">
-            <span class="ms-card-category">Eng. Produção</span>
-            <span class="ms-card-type">~12 min</span>
-          </div>
-          <h3 class="ms-card-title">Sistemas de Produção</h3>
-          <p class="ms-card-desc">Material técnico sobre sistemas produtivos, layouts, fluxos e classificações. Direto para organizar conceitos que costumam se confundir.</p>
-          <div class="ms-card-footer">
-            <span class="ms-card-tag">Layout</span>
-            <span class="ms-card-tag">Fluxos</span>
-            <span class="ms-card-tag">Produção</span>
-            <span class="ms-card-reading">Técnico</span>
-          </div>
-        </a>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 relative z-10">
+            <!-- Featured Card 1 -->
+            <a href="escopo-PI.html" class="md:col-span-8 bg-surface-container-lowest border border-surface-container-high p-10 hover:shadow-2xl hover:border-primary/50 transition-all duration-300 rounded-[2rem] flex flex-col justify-between min-h-[380px] group">
+                <div>
+                    <div class="flex gap-3 mb-6">
+                        <span class="px-4 py-1.5 bg-surface-container text-on-surface-variant rounded-full text-xs font-bold uppercase tracking-wider">Eng. Produção</span>
+                        <span class="px-4 py-1.5 bg-secondary/10 text-secondary rounded-full text-xs font-bold uppercase tracking-wider">~15 min</span>
+                    </div>
+                    <h3 class="text-4xl font-extrabold mb-4 font-headline text-on-surface group-hover:text-primary transition-colors">Escopo da Produção</h3>
+                    <p class="text-on-surface-variant text-lg max-w-xl font-body">
+                        Uma visão ampla sobre gestão da produção, operações e processos. Ideal para construir base e entender o campo com mais clareza.
+                    </p>
+                </div>
+                <div class="mt-8 flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-lg text-xs font-medium">Operações</span>
+                    <span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-lg text-xs font-medium">Processos</span>
+                    <span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-lg text-xs font-medium">Gestão</span>
+                </div>
+            </a>
 
-        <a href="tpm-oee.html" class="ms-card">
-          <div class="ms-card-header">
-            <span class="ms-card-category">Eng. Produção</span>
-            <span class="ms-card-type">Interativo</span>
-          </div>
-          <h3 class="ms-card-title">TPM & OEE</h3>
-          <p class="ms-card-desc">Apresentação interativa sobre manutenção produtiva total e eficiência global de equipamentos, com fórmulas e aplicação prática.</p>
-          <div class="ms-card-footer">
-            <span class="ms-card-tag">TPM</span>
-            <span class="ms-card-tag">OEE</span>
-            <span class="ms-card-tag">Eficiência</span>
-            <span class="ms-card-reading">Apresentação</span>
-          </div>
-        </a>
+            <!-- Featured Card 2 -->
+            <a href="sistema-producao.html" class="md:col-span-4 bg-primary text-on-primary p-10 hover:bg-primary-container transition-colors duration-300 rounded-[2rem] flex flex-col justify-between group">
+                <div>
+                    <div class="flex gap-3 mb-6 opacity-90">
+                        <span class="px-4 py-1.5 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider">Eng. Produção</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 font-headline">Sistemas de Produção</h3>
+                    <p class="opacity-80 font-body text-sm leading-relaxed mb-6">
+                        Material técnico sobre sistemas produtivos, layouts, fluxos e classificações. Direto para organizar conceitos que costumam se confundir.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 font-bold group-hover:gap-4 transition-all">
+                    Acessar Material Técnico <span class="material-symbols-outlined">arrow_forward</span>
+                </div>
+            </a>
 
-        <a href="resumos.html" class="ms-card">
-          <div class="ms-card-header">
-            <span class="ms-card-category">Multidisciplinar</span>
-            <span class="ms-card-type">Hub</span>
-          </div>
-          <h3 class="ms-card-title">Resumos Gerais</h3>
-          <p class="ms-card-desc">Um hub multidisciplinar com busca e filtros por matéria, professor e tags. Feito para acessar rápido e revisar melhor.</p>
-          <div class="ms-card-footer">
-            <span class="ms-card-tag">Resumos</span>
-            <span class="ms-card-tag">Filtros</span>
-            <span class="ms-card-tag">Revisão</span>
-            <span class="ms-card-reading">Agregador</span>
-          </div>
-        </a>
-      </div>
+            <!-- Featured Card 3 -->
+            <a href="tpm-oee.html" class="md:col-span-4 bg-surface-container-high p-10 hover:bg-surface-container-highest transition-colors duration-300 rounded-[2rem] flex flex-col justify-between group">
+                <div>
+                    <div class="flex gap-3 mb-6">
+                        <span class="px-4 py-1.5 bg-tertiary/10 text-tertiary rounded-full text-xs font-bold uppercase tracking-wider">Interativo</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-headline text-on-surface">TPM & OEE</h3>
+                    <p class="text-on-surface-variant font-body text-sm leading-relaxed mb-6">
+                        Apresentação interativa sobre manutenção produtiva total e eficiência global de equipamentos, com fórmulas e aplicação prática.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 font-bold text-tertiary group-hover:gap-4 transition-all">
+                    Ver Apresentação <span class="material-symbols-outlined">arrow_forward</span>
+                </div>
+            </a>
+
+            <!-- Featured Card 4 (Hub) -->
+            <a href="resumos.html" class="md:col-span-8 bg-surface-container-highest p-1 p-[2px] rounded-[2rem] hover:scale-[1.01] transition-transform duration-300">
+                <div class="bg-surface-container-lowest h-full w-full rounded-[1.9rem] p-10 flex flex-col md:flex-row gap-8 items-center border border-surface-container">
+                    <div class="flex-1">
+                        <div class="flex gap-3 mb-4">
+                            <span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold uppercase tracking-wider">Multidisciplinar</span>
+                            <span class="px-4 py-1.5 bg-surface-container text-on-surface-variant rounded-full text-xs font-bold uppercase tracking-wider">Hub</span>
+                        </div>
+                        <h3 class="text-3xl font-extrabold mb-4 font-headline text-on-surface">Resumos Gerais</h3>
+                        <p class="text-on-surface-variant font-body leading-relaxed mb-6">
+                            Um hub multidisciplinar com busca e filtros por matéria, professor e tags. Feito para acessar rápido e revisar melhor.
+                        </p>
+                        <div class="flex items-center gap-2 font-bold text-primary">
+                            Acessar Acervo <span class="material-symbols-outlined">arrow_forward</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:grid grid-cols-2 gap-4 flex-shrink-0">
+                        <div class="w-16 h-16 bg-surface-container rounded-2xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-3xl text-primary">search</span>
+                        </div>
+                        <div class="w-16 h-16 bg-surface-container rounded-2xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-3xl text-secondary">filter_list</span>
+                        </div>
+                        <div class="w-16 h-16 bg-surface-container rounded-2xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-3xl text-tertiary">library_books</span>
+                        </div>
+                        <div class="w-16 h-16 bg-surface-container rounded-2xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-3xl text-amber-500">bookmark</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Vision / Final CTA -->
+    <section id="visao" class="py-24 px-8">
+        <div class="max-w-5xl mx-auto bg-signature-gradient rounded-[3rem] p-16 text-center text-on-primary shadow-2xl relative overflow-hidden">
+            <div class="relative z-10">
+                <span class="font-bold tracking-widest text-sm uppercase mb-4 block text-on-primary-container">Próximo passo</span>
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-8 leading-tight font-headline">
+                    O MiStudies está<br/>
+                    <span class="italic font-light">virando ferramenta.</span>
+                </h2>
+                <p class="text-lg mb-12 text-on-primary-container max-w-3xl mx-auto font-body leading-relaxed">
+                    O que começou como um sistema pessoal de estudos está evoluindo para algo maior. A ideia é transformar essa lógica de organização em uma ferramenta que ajude outros estudantes a estudar com mais clareza, ritmo e método.
+                </p>
+                <button class="bg-surface-container-lowest text-primary px-12 py-5 rounded-2xl text-xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all">
+                    Entrar na lista de espera
+                </button>
+            </div>
+            <!-- Decorative element -->
+            <div class="absolute -top-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl"></div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="w-full border-t border-surface-container bg-surface-container-lowest mt-12">
+    <div class="flex flex-col md:flex-row justify-between items-center px-12 py-10 max-w-7xl mx-auto">
+        <div class="mb-6 md:mb-0 text-center md:text-left">
+            <div class="font-headline font-black text-2xl text-primary mb-1">MiStudies</div>
+            <div class="font-body text-sm text-on-surface-variant italic">por gaaabriel</div>
+            <p class="font-body text-sm text-on-surface-variant/70 mt-2">Clareza também é uma forma de aprender melhor.</p>
+        </div>
+        
+        <div class="flex gap-8 mb-6 md:mb-0">
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="escopo-PI.html">Escopo</a>
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="sistema-producao.html">Sistemas</a>
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="tpm-oee.html">TPM & OEE</a>
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="resumos.html">Resumos</a>
+        </div>
+        
+        <div class="font-body text-xs uppercase tracking-wider text-on-surface-variant text-center md:text-right">
+            © 2026 MiStudies — gaaabriel.com
+        </div>
     </div>
-  </section>
+</footer>
 
-  <!-- ── VISION ── -->
-  <section id="visao" class="ms-vision">
-    <div class="ms-vision-inner">
-      <span class="ms-vision-eyebrow">Próximo passo</span>
-      <h2 class="ms-vision-title">
-        O MiStudies está<br><em>virando ferramenta.</em>
-      </h2>
-      <p class="ms-vision-text">
-        O que começou como um sistema pessoal de estudos está evoluindo para algo maior. A ideia é transformar essa lógica de organização em uma ferramenta que ajude outros estudantes a estudar com mais clareza, ritmo e método. O conteúdo continua vivo, mas a estrutura passa a apontar para produto. A lista de espera existe para quem quiser acompanhar esse desenvolvimento de perto.
-      </p>
-      <a href="#" class="ms-btn-primary">
-        Entrar na lista de espera
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ── -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">MiStudies</span>
-        <span class="footer-tagline">por gaaabriel</span>
-        <p class="ms-footer-phrase">Clareza também é uma forma de aprender melhor.</p>
-      </div>
-      <nav class="footer-nav">
-        <a href="escopo-PI.html">Escopo</a>
-        <a href="sistema-producao.html">Sistemas</a>
-        <a href="tpm-oee.html">TPM & OEE</a>
-        <a href="resumos.html">Resumos</a>
-      </nav>
-      <p class="footer-copy">&copy; 2026 MiStudies — gaaabriel.com</p>
-    </div>
-  </footer>
-
-  <!-- ── SCRIPTS ── -->
-  <script>
-    // Mobile nav toggle
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-
-    if (navToggle && navLinks) {
-      navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navLinks.classList.toggle('open');
-      });
-    }
-
-    // Nav background on scroll
-    const nav = document.querySelector('.site-nav');
-    if (nav) {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 60) {
-          nav.classList.add('site-nav--scrolled');
-        } else {
-          nav.classList.remove('site-nav--scrolled');
-        }
-      });
-    }
-
+<script>
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
     });
-  </script>
+</script>
 
 </body>
 </html>

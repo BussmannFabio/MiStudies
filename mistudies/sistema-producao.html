@@ -4,27 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema de Produção — Material de Estudo Interativo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #0f0f0f;
-  --bg2: #161616;
-  --bg3: #1e1e1e;
-  --surface: #242424;
-  --surface2: #2d2d2d;
-  --border: #333;
-  --red: #E8210A;
-  --red-dim: rgba(232,33,10,0.15);
-  --yellow: #f5c842;
-  --yellow-dim: rgba(245,200,66,0.12);
-  --green: #2ecc71;
-  --green-dim: rgba(46,204,113,0.12);
-  --blue: #3b9eff;
-  --blue-dim: rgba(59,158,255,0.12);
-  --text: #f0f0f0;
-  --text-muted: #888;
-  --text-dim: #555;
-  --font-display: 'Syne', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-body: 'DM Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --bg: #f8f9fa; /* surface */
+  --bg2: #f3f4f5; /* surface-container-low */
+  --bg3: #e9ebeb; /* surface-container */
+  --surface: #e1e3e4; /* surface-container-high */
+  --surface2: #d9dbdc; /* surface-container-highest */
+  --border: #c1c4c5; /* outline-variant */
+  --red: #0032b5; /* mapped to primary */
+  --red-dim: rgba(0, 50, 181, 0.1);
+  --yellow: #f59e0b; /* amber for accents */
+  --yellow-dim: rgba(245, 158, 11, 0.1);
+  --green: #006a6a; /* secondary */
+  --green-dim: rgba(0, 106, 106, 0.1);
+  --blue: #0032b5; /* primary */
+  --blue-dim: rgba(0, 50, 181, 0.1);
+  --text: #191c1d; /* on-surface */
+  --text-muted: #454652; /* on-surface-variant */
+  --text-dim: #757684; /* outline */
+  --font-display: 'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
   --radius: 12px;
   --radius-lg: 20px;
   --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
@@ -53,15 +55,15 @@ body {
 
 /* ── NAV ── */
 nav {
-  position: fixed; top: 3px; left: 0; right: 0; z-index: 999;
-  background: rgba(15,15,15,0.92); backdrop-filter: blur(16px);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: rgba(248,249,250,0.85); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 2rem; height: 56px;
+  padding: 0 2rem; height: 64px;
 }
 .nav-logo {
-  font-family: var(--font-display); font-weight: 800; font-size: 1rem;
-  color: var(--red); letter-spacing: -0.02em;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+  color: var(--blue); letter-spacing: -0.05em; text-decoration: none;
   display: flex; align-items: center; gap: 0.5rem;
 }
 .nav-logo svg { width: 22px; height: 22px; }
@@ -546,22 +548,14 @@ footer {
 }
 </style>
 </head>
-<body>
-<script>
-// Carrega fontes de forma não-bloqueante
-var l = document.createElement('link');
-l.rel = 'stylesheet';
-l.href = 'https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap';
-document.head.appendChild(l);
-</script>
+<body class="bg-surface text-on-surface">
 
 <div id="progress-bar"></div>
 
 <nav>
-  <div class="nav-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>
-    Sist. Produção
-  </div>
+  <a href="index.html" class="nav-logo">
+    gaaabriel <span style="font-size: 0.6em; text-transform:uppercase; letter-spacing:2px; font-weight: 400; color: var(--text-dim); margin-left: 8px;">MasterClass</span>
+  </a>
   <ul class="nav-links">
     <li><a href="#timeline">Linha do Tempo</a></li>
     <li><a href="#conceito">Conceito</a></li>

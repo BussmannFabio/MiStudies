@@ -1,760 +1,229 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resumos — MiStudies</title>
-  <meta name="description" content="Acervo de resumos organizados por matéria, professor e tag. Busca e filtros para acessar rápido e revisar melhor.">
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Global DNA -->
-  <link rel="stylesheet" href="../styles/tokens.css">
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/layout.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/nav-footer.css">
-
-  <!-- MiStudies Theme -->
-  <link rel="stylesheet" href="styles/mistudies-theme.css">
-  <link rel="stylesheet" href="styles/mistudies-ui.css">
-
-  <style>
-    /* ============================================================
-       RESUMOS — Page-specific styles
-       Sidebar + content hub with filters and search.
-       ============================================================ */
-
-    /* ── PAGE HEADER ── */
-    .resumos-header {
-      background: var(--ms-primary-950);
-      padding: var(--sp-8) var(--sp-12) var(--sp-6);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .resumos-header::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(74, 107, 90, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(74, 107, 90, 0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
-
-    .resumos-header-content {
-      position: relative;
-      max-width: var(--content-max);
-      margin: 0 auto;
-    }
-
-    .resumos-eyebrow {
-      font-family: var(--font-sans);
-      font-size: var(--text-xs);
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--ms-sage-500);
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-      margin-bottom: var(--sp-3);
-    }
-
-    .resumos-eyebrow::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: var(--ms-sage-500);
-    }
-
-    .resumos-title {
-      font-family: var(--font-serif);
-      font-size: var(--text-h1);
-      font-weight: 600;
-      color: var(--ms-text-primary);
-      line-height: 0.95;
-      margin-bottom: var(--sp-2);
-    }
-
-    .resumos-title em {
-      font-style: italic;
-      color: rgba(163, 196, 176, 0.4);
-      font-weight: 300;
-    }
-
-    .resumos-sub {
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      color: var(--ms-text-muted);
-      letter-spacing: 0.04em;
-    }
-
-    /* ── SEARCH BAR ── */
-    .resumos-search {
-      background: var(--ms-primary-900);
-      border-top: 1px solid var(--ms-surface-border);
-      border-bottom: 1px solid var(--ms-surface-border);
-      padding: var(--sp-3) var(--sp-12);
-      display: flex;
-      gap: var(--sp-3);
-      align-items: center;
-    }
-
-    .resumos-search-box {
-      flex: 1;
-      position: relative;
-    }
-
-    .resumos-search-box input {
-      width: 100%;
-      padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-5);
-      background: var(--ms-surface);
-      border: 1px solid var(--ms-surface-border);
-      border-radius: var(--radius-sm);
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      color: var(--ms-text-primary);
-      outline: none;
-      transition: border-color var(--duration-fast) var(--ease-out);
-    }
-
-    .resumos-search-box input:focus {
-      border-color: var(--ms-amber-500);
-    }
-
-    .resumos-search-box input::placeholder {
-      color: var(--ms-text-muted);
-    }
-
-    .resumos-search-icon {
-      position: absolute;
-      left: var(--sp-2);
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: var(--text-sm);
-      color: var(--ms-text-muted);
-      pointer-events: none;
-    }
-
-    .resumos-result-count {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ms-text-muted);
-      white-space: nowrap;
-    }
-
-    /* ── MAIN LAYOUT (sidebar + content) ── */
-    .resumos-layout {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      min-height: calc(100vh - 200px);
-      background: var(--ms-primary-900);
-    }
-
-    /* ── SIDEBAR ── */
-    .resumos-sidebar {
-      padding: var(--sp-4) var(--sp-3);
-      border-right: 1px solid var(--ms-surface-border);
-      background: var(--ms-primary-950);
-      position: sticky;
-      top: 60px;
-      height: fit-content;
-      max-height: calc(100vh - 60px);
-      overflow-y: auto;
-    }
-
-    .resumos-sidebar-section {
-      margin-bottom: var(--sp-4);
-    }
-
-    .resumos-sidebar-label {
-      font-family: var(--font-sans);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--ms-text-muted);
-      margin-bottom: var(--sp-1);
-      padding: 0 var(--sp-1);
-      display: block;
-    }
-
-    .resumos-filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .resumos-filter-pill {
-      font-family: var(--font-sans);
-      font-size: var(--text-xs);
-      font-weight: 400;
-      padding: 7px var(--sp-2);
-      border-radius: var(--radius-sm);
-      border: none;
-      background: transparent;
-      color: var(--ms-text-secondary);
-      cursor: pointer;
-      text-align: left;
-      transition: all var(--duration-fast) var(--ease-out);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .resumos-filter-pill:hover {
-      background: var(--ms-surface);
-      color: var(--ms-text-primary);
-    }
-
-    .resumos-filter-pill.active {
-      background: rgba(230, 162, 30, 0.08);
-      color: var(--ms-amber-500);
-      font-weight: 500;
-    }
-
-    .filter-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .filter-count {
-      margin-left: auto;
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--ms-text-muted);
-      opacity: 0.6;
-    }
-
-    .resumos-filter-pill.active .filter-count {
-      color: var(--ms-amber-700);
-    }
-
-    /* Tags in sidebar */
-    .resumos-tags-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .resumos-tag-pill {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 500;
-      padding: 3px 10px;
-      border-radius: 100px;
-      border: 1px solid var(--ms-surface-border);
-      background: var(--ms-surface);
-      color: var(--ms-text-secondary);
-      cursor: pointer;
-      transition: all var(--duration-fast) var(--ease-out);
-    }
-
-    .resumos-tag-pill:hover {
-      background: var(--ms-surface-hover);
-      color: var(--ms-text-primary);
-    }
-
-    .resumos-tag-pill.active {
-      background: rgba(230, 162, 30, 0.12);
-      color: var(--ms-amber-500);
-      border-color: rgba(230, 162, 30, 0.25);
-    }
-
-    /* ── CONTENT AREA ── */
-    .resumos-content {
-      padding: var(--sp-5) var(--sp-6);
-    }
-
-    .resumos-section-label {
-      font-family: var(--font-sans);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--ms-text-muted);
-      margin-bottom: var(--sp-3);
-      display: block;
-    }
-
-    /* ── MATÉRIA CARDS (visual grid) ── */
-    .materias-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: var(--sp-2);
-      margin-bottom: var(--sp-6);
-    }
-
-    .mat-card {
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: 1px solid var(--ms-surface-border);
-      cursor: pointer;
-      transition: all var(--duration-base) var(--ease-out);
-    }
-
-    .mat-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(12, 17, 23, 0.3);
-    }
-
-    .mat-card.selected {
-      outline: 2px solid var(--ms-amber-500);
-      outline-offset: 2px;
-    }
-
-    .mc-head {
-      padding: var(--sp-3);
-    }
-
-    .mc-icon {
-      font-size: 1.4rem;
-      margin-bottom: var(--sp-1);
-      display: block;
-    }
-
-    .mc-name {
-      font-family: var(--font-serif);
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--ms-text-primary);
-      line-height: 1.2;
-    }
-
-    .mc-info {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      color: var(--ms-text-muted);
-      margin-top: 4px;
-      letter-spacing: 0.06em;
-    }
-
-    .mc-foot {
-      background: rgba(0, 0, 0, 0.25);
-      padding: var(--sp-1) var(--sp-3);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .mc-count {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--ms-text-muted);
-    }
-
-    .mc-arrow {
-      font-size: 0.75rem;
-      color: var(--ms-text-muted);
-      transition: color var(--duration-fast);
-    }
-
-    .mat-card:hover .mc-arrow {
-      color: var(--ms-amber-500);
-    }
-
-    /* ── DIVIDER ── */
-    .resumos-divider {
-      height: 1px;
-      background: var(--ms-surface-border);
-      margin-bottom: var(--sp-4);
-    }
-
-    /* ── LIST HEADER ── */
-    .resumos-list-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--sp-2);
-    }
-
-    .active-filters {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .active-tag {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 500;
-      padding: 3px 10px;
-      border-radius: 100px;
-      background: rgba(107, 143, 122, 0.15);
-      color: var(--ms-sage-300);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      letter-spacing: 0.04em;
-    }
-
-    .active-tag .rm {
-      cursor: pointer;
-      opacity: 0.6;
-      font-size: 0.7rem;
-      transition: opacity var(--duration-fast);
-    }
-
-    .active-tag .rm:hover { opacity: 1; }
-
-    /* ── RESUMO ROWS ── */
-    .resumos-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .resumo-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: var(--sp-2) var(--sp-3);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--ms-surface-border);
-      background: var(--ms-surface);
-      text-decoration: none;
-      color: var(--ms-text-primary);
-      transition: all var(--duration-fast) var(--ease-out);
-    }
-
-    .resumo-row:hover {
-      border-color: var(--ms-sage-500);
-      background: var(--ms-surface-hover);
-      transform: translateX(3px);
-      box-shadow: 0 4px 12px rgba(12, 17, 23, 0.2);
-    }
-
-    .rr-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .rr-body { flex: 1; min-width: 0; }
-
-    .rr-title {
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      font-weight: 500;
-      color: var(--ms-text-primary);
-    }
-
-    .rr-meta {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      margin-top: 4px;
-      flex-wrap: wrap;
-    }
-
-    .rr-tag {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 100px;
-      background: rgba(107, 143, 122, 0.1);
-      color: var(--ms-sage-300);
-      border: 1px solid rgba(107, 143, 122, 0.12);
-    }
-
-    .rr-tipo {
-      display: inline-block;
-      font-family: var(--font-sans);
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 2px 8px;
-      border-radius: 100px;
-      background: rgba(230, 162, 30, 0.12);
-      color: var(--ms-amber-500);
-      border: 1px solid rgba(230, 162, 30, 0.2);
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-
-    .rr-prof {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      color: var(--ms-text-muted);
-    }
-
-    .rr-date {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      color: var(--ms-text-muted);
-      margin-left: auto;
-      flex-shrink: 0;
-    }
-
-    .rr-arrow {
-      font-size: 0.8rem;
-      color: var(--ms-amber-500);
-      opacity: 0;
-      transition: opacity var(--duration-fast);
-      flex-shrink: 0;
-    }
-
-    .resumo-row:hover .rr-arrow { opacity: 1; }
-
-    /* ── SIDEBAR OVERLAY (hidden on desktop) ── */
-    .sidebar-overlay {
-      display: none;
-    }
-
-    /* ── EMPTY STATE ── */
-    .empty-state {
-      text-align: center;
-      padding: var(--sp-8) var(--sp-4);
-      color: var(--ms-text-muted);
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      letter-spacing: 0.06em;
-      display: none;
-    }
-
-    .empty-state.show { display: block; }
-
-    /* ── MOBILE SIDEBAR TOGGLE ── */
-    .sidebar-toggle {
-      display: none;
-      position: fixed;
-      bottom: var(--sp-3);
-      right: var(--sp-3);
-      z-index: 90;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--ms-amber-500);
-      color: var(--ms-primary-950);
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-      transition: transform var(--duration-fast) var(--ease-out);
-    }
-
-    .sidebar-toggle:hover {
-      transform: scale(1.05);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .resumos-header {
-        padding: var(--sp-6) var(--sp-3) var(--sp-4);
-      }
-
-      .resumos-search {
-        padding: var(--sp-2) var(--sp-3);
-        flex-wrap: wrap;
-      }
-
-      .resumos-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .resumos-sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100vh;
-        z-index: 200;
-        transform: translateX(-100%);
-        transition: transform var(--duration-base) var(--ease-out);
-        border-right: 1px solid var(--ms-surface-border);
-        padding-top: var(--sp-8);
-      }
-
-      .resumos-sidebar.open {
-        transform: translateX(0);
-      }
-
-      .sidebar-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(12, 17, 23, 0.6);
-        z-index: 199;
-      }
-
-      .sidebar-overlay.show {
-        display: block;
-      }
-
-      .sidebar-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .resumos-content {
-        padding: var(--sp-3);
-      }
-
-      .materias-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  </style>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Resumos — MiStudies</title>
+    <meta name="description" content="Acervo de resumos organizados por matéria, professor e tag. Busca e filtros para acessar rápido e revisar melhor.">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                "colors": {
+                        "primary": "#0032b5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0344ec",
+                        "on-primary-container": "#c8d0ff",
+                        "secondary": "#006a6a",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#90efef",
+                        "on-secondary-container": "#006e6e",
+                        "tertiary": "#2b3b8d",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#4453a7",
+                        "on-tertiary-container": "#c9cfff",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "surface-variant": "#e1e3e4",
+                        "on-surface-variant": "#454652",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline": "#757684",
+                        "amber-500": "#f59e0b",
+                        "amber-100": "#fef3c7"
+                },
+                "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                }
+              },
+            },
+          }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .bg-signature-gradient { background: linear-gradient(135deg, #0032b5 0%, #0344ec 100%); }
+    </style>
 </head>
-<body class="mistudies-page">
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-white min-h-screen flex flex-col">
 
-  <!-- ── NAV ── -->
-  <nav class="site-nav">
-    <a href="../index.html" class="nav-logo">gaaabriel</a>
-    <ul class="nav-links">
-      <li><a href="../gnexz/index.html">Gnexz</a></li>
-      <li><a href="../nossoape/">Nosso Apê</a></li>
-      <li><a href="index.html" class="active">MiStudies</a></li>
-      <li><a href="../gabriel/index.html">Pessoal</a></li>
-    </ul>
-    <button class="nav-toggle" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 glass-nav bg-surface/70 border-b border-surface-container-high">
+    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+        <a href="index.html" class="text-2xl font-black text-primary tracking-tighter font-headline">gaaabriel</a>
+        
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-primary border-b-2 border-primary pb-1 font-body font-bold transition-colors" href="resumos.html">Acervos</a>
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="index.html">MiStudies</a>
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="dashboard.html">Área do Professor</a>
+        </div>
 
-  <!-- ── PAGE HEADER ── -->
-  <header class="resumos-header">
-    <div class="resumos-header-content">
-      <span class="resumos-eyebrow">Acervo pessoal</span>
-      <h1 class="resumos-title">Resu<em>mos</em></h1>
-      <p class="resumos-sub">Organizado por matéria, tipo, professor e tag</p>
+        <div class="flex items-center gap-4">
+            <button class="md:hidden text-on-surface-variant nav-toggle">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
     </div>
-  </header>
+</nav>
 
-  <!-- ── SEARCH ── -->
-  <div class="resumos-search">
-    <div class="resumos-search-box">
-      <span class="resumos-search-icon">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </span>
-      <input type="text" id="searchInput" placeholder="Buscar por título, matéria, tipo, professor ou tag...">
+<!-- Page Header -->
+<header class="pt-24 pb-8 px-8 bg-surface-container-lowest border-b border-surface-container-high relative overflow-hidden">
+    <div class="max-w-7xl mx-auto relative z-10">
+        <span class="text-secondary font-bold tracking-widest text-xs uppercase mb-3 flex items-center gap-2">
+            <span class="w-4 h-px bg-secondary"></span> 
+            Acervo pessoal
+        </span>
+        <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-2 font-headline">
+            Resu<span class="text-primary italic font-light">mos</span>
+        </h1>
+        <p class="text-sm text-on-surface-variant font-body">Organizado por matéria, tipo, professor e tag</p>
     </div>
-    <span class="resumos-result-count" id="resultCount">0 conteúdos</span>
-  </div>
+    <div class="absolute -top-32 -right-32 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+</header>
 
-  <!-- ── MAIN LAYOUT ── -->
-  <div class="resumos-layout">
+<!-- Search Area -->
+<div class="bg-surface-container px-8 py-4 border-b border-surface-container-high">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row gap-4 items-center">
+        <div class="relative flex-1 w-full">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+            <input type="text" id="searchInput" placeholder="Buscar por título, matéria, tipo, professor ou tag..." class="w-full bg-surface-container-lowest border border-surface-container-high rounded-xl py-3 pl-12 pr-4 font-body text-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm">
+        </div>
+        <div class="text-xs font-bold uppercase tracking-wider text-on-surface-variant whitespace-nowrap" id="resultCount">
+            0 conteúdos
+        </div>
+    </div>
+</div>
 
-    <!-- SIDEBAR -->
-    <aside class="resumos-sidebar" id="sidebar">
-      <div class="resumos-sidebar-section">
-        <span class="resumos-sidebar-label">Matéria</span>
-        <div class="resumos-filter-group" id="filterMateria"></div>
-      </div>
+<div class="flex-1 max-w-7xl mx-auto w-full px-8 py-8 grid grid-cols-1 md:grid-cols-12 gap-8 relative">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="md:col-span-3 bg-surface-container-lowest/50 border-r border-surface-container-high pr-6 md:h-[calc(100vh-280px)] md:sticky top-24 overflow-y-auto hidden md:block z-40">
+        
+        <!-- Matéria -->
+        <div class="mb-8">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block">Matéria</span>
+            <div id="filterMateria" class="flex flex-col gap-1"></div>
+        </div>
+        
+        <!-- Tipo -->
+        <div class="mb-8">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block">Tipo</span>
+            <div id="filterTipo" class="flex flex-col gap-1"></div>
+        </div>
 
-      <div class="resumos-sidebar-section">
-        <span class="resumos-sidebar-label">Tipo</span>
-        <div class="resumos-filter-group" id="filterTipo"></div>
-      </div>
+        <!-- Professor -->
+        <div class="mb-8">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block">Professor</span>
+            <div id="filterProf" class="flex flex-col gap-1"></div>
+        </div>
 
-      <div class="resumos-sidebar-section">
-        <span class="resumos-sidebar-label">Professor</span>
-        <div class="resumos-filter-group" id="filterProf"></div>
-      </div>
-
-      <div class="resumos-sidebar-section">
-        <span class="resumos-sidebar-label">Tags</span>
-        <div class="resumos-tags-wrap" id="filterTag"></div>
-      </div>
+        <!-- Tags -->
+        <div class="mb-8">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block">Tags</span>
+            <div id="filterTag" class="flex flex-wrap gap-2"></div>
+        </div>
     </aside>
 
-    <!-- OVERLAY (mobile) -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Overlay Desktop -> Mobile -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-on-surface/50 z-30 hidden md:hidden glass-nav"></div>
 
-    <!-- CONTENT -->
-    <main class="resumos-content">
-      <span class="resumos-section-label">Por matéria</span>
-      <div class="materias-grid" id="materiasGrid"></div>
+    <!-- Main Hub -->
+    <main class="md:col-span-9 pb-16">
+        
+        <!-- Materias Grid Overview -->
+        <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-4 block">Por matéria</span>
+        <div id="materiasGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10"></div>
 
-      <div class="resumos-divider"></div>
+        <div class="w-full h-px bg-surface-container-high mb-8"></div>
 
-      <div class="resumos-list-header">
-        <span class="resumos-section-label" style="margin:0;">Todos os conteúdos</span>
-        <div class="active-filters" id="activeFilters"></div>
-      </div>
+        <!-- List Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline">Todos os conteúdos</span>
+            <div id="activeFilters" class="flex flex-wrap gap-2"></div>
+        </div>
 
-      <div class="resumos-list" id="resumosList"></div>
-      <div class="empty-state" id="emptyState">Nenhum conteúdo encontrado</div>
+        <!-- List Content -->
+        <div id="resumosList" class="flex flex-col gap-3"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 px-4 bg-surface-container-lowest border border-surface-container-high rounded-2xl border-dashed">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
+            <p class="text-sm font-body text-on-surface-variant">Nenhum conteúdo encontrado para os filtros atuais.</p>
+        </div>
+
     </main>
-  </div>
+</div>
 
-  <!-- SIDEBAR TOGGLE (mobile) -->
-  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Filtros">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-  </button>
+<!-- Mobile Filters FAB -->
+<button id="sidebarToggle" class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center z-50 hover:bg-primary-container hover:scale-105 active:scale-95 transition-all">
+    <span class="material-symbols-outlined">filter_list</span>
+</button>
 
-  <!-- ── FOOTER ── -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">MiStudies</span>
-        <span class="footer-tagline">por gaaabriel</span>
-      </div>
-      <nav class="footer-nav">
-        <a href="index.html">Hub</a>
-        <a href="escopo-PI.html">Escopo</a>
-        <a href="sistema-producao.html">Sistemas</a>
-        <a href="tpm-oee.html">TPM & OEE</a>
-      </nav>
-      <p class="footer-copy">&copy; 2026 MiStudies — gaaabriel.com</p>
+<!-- Footer -->
+<footer class="w-full border-t border-surface-container bg-surface-container-lowest mt-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center px-12 py-10 max-w-7xl mx-auto">
+        <div class="mb-6 md:mb-0 text-center md:text-left">
+            <div class="font-headline font-black text-2xl text-primary mb-1">MiStudies</div>
+            <div class="font-body text-sm text-on-surface-variant italic">por gaaabriel</div>
+            <p class="font-body text-sm text-on-surface-variant/70 mt-2">Clareza também é uma forma de aprender melhor.</p>
+        </div>
+        
+        <div class="flex gap-8 mb-6 md:mb-0">
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="escopo-PI.html">Escopo</a>
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="sistema-producao.html">Sistemas</a>
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="tpm-oee.html">TPM & OEE</a>
+            <a class="font-body text-sm uppercase tracking-wider text-primary transition-colors font-bold" href="resumos.html">Resumos</a>
+        </div>
+        
+        <div class="font-body text-xs uppercase tracking-wider text-on-surface-variant text-center md:text-right">
+            © 2026 MiStudies — gaaabriel.com
+        </div>
     </div>
-  </footer>
+</footer>
 
-  <!-- ── SCRIPTS ── -->
-  <script>
+<script>
     /* ────────────────────────────────────────────
-       DADOS — edite aqui para adicionar resumos
+       DADOS
     ──────────────────────────────────────────── */
     const MATERIAS = [
-      { id: 'engprod',     nome: 'Eng. Produção',          icon: '⚙️', cor: '#4A6B5A', prof: '' },
-      { id: 'marketing',   nome: 'Marketing',              icon: '📣', cor: '#2D3F52', prof: 'Prof. Ana' },
-      { id: 'financas',    nome: 'Finanças',                icon: '💹', cor: '#1E2A38', prof: 'Prof. Carlos' },
-      { id: 'estatistica', nome: 'Estatística',             icon: '📊', cor: '#4A6B5A', prof: 'Prof. Ana' },
-      { id: 'rh',          nome: 'Gestão de Pessoas',       icon: '👥', cor: '#2D3F52', prof: 'Prof. Marta' },
-      { id: 'direito',     nome: 'Direito Empresarial',     icon: '⚖️', cor: '#1E2A38', prof: 'Prof. João' },
-      { id: 'logistica',   nome: 'Logística',               icon: '🚚', cor: '#4A6B5A', prof: 'Prof. Roberto' },
+      { id: 'engprod',     nome: 'Eng. Produção',          icon: '⚙️', cor: '#0032b5', prof: '' },
+      { id: 'marketing',   nome: 'Marketing',              icon: '📣', cor: '#006a6a', prof: 'Prof. Ana' },
+      { id: 'financas',    nome: 'Finanças',               icon: '💹', cor: '#2b3b8d', prof: 'Prof. Carlos' },
+      { id: 'estatistica', nome: 'Estatística',            icon: '📊', cor: '#f59e0b', prof: 'Prof. Ana' },
+      { id: 'rh',          nome: 'Gestão de Pessoas',      icon: '👥', cor: '#0032b5', prof: 'Prof. Marta' },
+      { id: 'direito',     nome: 'Direito Empresarial',    icon: '⚖️', cor: '#006a6a', prof: 'Prof. João' },
+      { id: 'logistica',   nome: 'Logística',              icon: '🚚', cor: '#2b3b8d', prof: 'Prof. Roberto' },
     ];
 
     /* Tipos de conteúdo */
     const TIPOS = ['Resumo', 'MasterClass', 'Apresentação', 'Material Técnico', 'Hub'];
 
     const RESUMOS = [
-      /* ── Eng. Produção (páginas completas) ── */
       { id: 100, titulo: 'Escopo da Engenharia de Produção',         materia: 'engprod', tags: ['operações','processos','gestão'],       prof: '—',             data: 'Mar 2026', tipo: 'MasterClass',      arquivo: 'escopo-PI.html' },
       { id: 101, titulo: 'Sistemas de Produção',                     materia: 'engprod', tags: ['layout','fluxos','produção'],           prof: '—',             data: 'Mar 2026', tipo: 'Material Técnico', arquivo: 'sistema-producao.html' },
       { id: 102, titulo: 'TPM & OEE',                                materia: 'engprod', tags: ['TPM','OEE','eficiência'],               prof: '—',             data: 'Mar 2026', tipo: 'Apresentação',     arquivo: 'tpm-oee.html' },
-      /* ── Marketing ── */
       { id: 1,  titulo: 'Fundamentos do Marketing Mix (4Ps)',        materia: 'marketing',   tags: ['4Ps','estratégia','produto'],    prof: 'Prof. Ana',     data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
       { id: 2,  titulo: 'Segmentação e Posicionamento de Mercado',   materia: 'marketing',   tags: ['segmentação','STP'],             prof: 'Prof. Ana',     data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
       { id: 3,  titulo: 'Branding e Gestão de Marca',                materia: 'marketing',   tags: ['branding','marca'],              prof: 'Prof. Ana',     data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
-      /* ── Finanças ── */
       { id: 4,  titulo: 'Análise de Demonstrações Financeiras',      materia: 'financas',    tags: ['DRE','balanço','contábil'],      prof: 'Prof. Carlos',  data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
       { id: 5,  titulo: 'Fluxo de Caixa e Capital de Giro',          materia: 'financas',    tags: ['fluxo de caixa','liquidez'],     prof: 'Prof. Carlos',  data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
-      /* ── Estatística ── */
       { id: 6,  titulo: 'Distribuição Normal e Desvio Padrão',       materia: 'estatistica', tags: ['distribuição','desvio'],         prof: 'Prof. Ana',     data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
       { id: 7,  titulo: 'Regressão Linear Simples',                  materia: 'estatistica', tags: ['regressão','correlação'],        prof: 'Prof. Ana',     data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
-      /* ── Gestão de Pessoas ── */
       { id: 8,  titulo: 'Recrutamento e Seleção de Pessoas',         materia: 'rh',          tags: ['recrutamento','seleção'],        prof: 'Prof. Marta',   data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
       { id: 9,  titulo: 'Avaliação de Desempenho e Feedback',        materia: 'rh',          tags: ['desempenho','feedback'],         prof: 'Prof. Marta',   data: 'Jan 2026', tipo: 'Resumo', arquivo: '#' },
-      /* ── Direito ── */
       { id: 10, titulo: 'Tipos de Sociedade Empresarial',            materia: 'direito',     tags: ['LTDA','SA','jurídico'],          prof: 'Prof. João',    data: 'Jan 2026', tipo: 'Resumo', arquivo: '#' },
-      /* ── Logística ── */
       { id: 11, titulo: 'Gestão de Estoque e Armazenagem',           materia: 'logistica',   tags: ['estoque','FIFO','LIFO'],         prof: 'Prof. Roberto', data: 'Mar 2026', tipo: 'Resumo', arquivo: '#' },
       { id: 12, titulo: 'Planejamento da Cadeia de Suprimentos',     materia: 'logistica',   tags: ['supply chain','cadeia'],         prof: 'Prof. Roberto', data: 'Fev 2026', tipo: 'Resumo', arquivo: '#' },
     ];
@@ -770,26 +239,50 @@
     const $ = id => document.getElementById(id);
     const getMateria = id => MATERIAS.find(m => m.id === id);
 
+    const getPillClasses = (isActive) => {
+        if(isActive) {
+            return `w-full text-left font-body text-sm py-2 px-3 rounded-lg bg-surface-container text-primary font-bold flex justify-between items-center transition-colors group`;
+        }
+        return `w-full text-left font-body text-sm py-2 px-3 rounded-lg hover:bg-surface-container-highest text-on-surface-variant flex justify-between items-center transition-colors group`;
+    };
+
+    const getTagClasses = (isActive) => {
+        if(isActive) {
+            return `font-body text-[10px] font-bold px-3 py-1.5 rounded-full border border-primary text-primary bg-primary/5 transition-colors`;
+        }
+        return `font-body text-[10px] font-medium px-3 py-1.5 rounded-full border border-surface-container-high bg-surface-container-lowest text-on-surface-variant hover:border-outline hover:text-on-surface transition-colors`;
+    };
+
     /* ─ Build sidebar matérias ─ */
     function buildSidebarMaterias() {
       const wrap = $('filterMateria');
       wrap.innerHTML = '';
 
       const allBtn = document.createElement('button');
-      allBtn.className = 'resumos-filter-pill active';
+      allBtn.className = getPillClasses(filterMateria === 'all');
       allBtn.dataset.filter = 'materia';
       allBtn.dataset.value = 'all';
-      allBtn.innerHTML = `<span class="filter-dot" style="background:var(--ms-sage-500);"></span>Todas<span class="filter-count">${RESUMOS.length}</span>`;
+      allBtn.innerHTML = `Todas <span class="text-[10px] bg-surface-container-highest group-hover:bg-surface-container-low px-2 py-0.5 rounded-full">${RESUMOS.length}</span>`;
       wrap.appendChild(allBtn);
 
       MATERIAS.forEach(m => {
         const count = RESUMOS.filter(r => r.materia === m.id).length;
         if (!count) return;
         const btn = document.createElement('button');
-        btn.className = 'resumos-filter-pill';
+        btn.className = getPillClasses(filterMateria === m.id);
         btn.dataset.filter = 'materia';
         btn.dataset.value = m.id;
-        btn.innerHTML = `<span class="filter-dot" style="background:${m.cor};"></span>${m.nome}<span class="filter-count">${count}</span>`;
+        
+        let dotStyle = filterMateria === m.id ? 'bg-primary' : `bg-[${m.cor}]`;
+        if (filterMateria !== m.id) dotStyle = `style="background-color: ${m.cor}"`; else dotStyle = '';
+        
+        btn.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full ${filterMateria === m.id ? 'bg-primary' : ''}" ${dotStyle}></span>
+                ${m.nome}
+            </div>
+            <span class="text-[10px] bg-surface-container-highest group-hover:bg-surface-container-low px-2 py-0.5 rounded-full">${count}</span>
+        `;
         wrap.appendChild(btn);
       });
     }
@@ -800,20 +293,20 @@
       wrap.innerHTML = '';
 
       const allBtn = document.createElement('button');
-      allBtn.className = 'resumos-filter-pill active';
+      allBtn.className = getPillClasses(filterTipo === 'all');
       allBtn.dataset.filter = 'tipo';
       allBtn.dataset.value = 'all';
-      allBtn.innerHTML = `<span class="filter-dot" style="background:var(--ms-amber-500);"></span>Todos<span class="filter-count">${RESUMOS.length}</span>`;
+      allBtn.innerHTML = `Todos <span class="text-[10px] bg-surface-container-highest group-hover:bg-surface-container-low px-2 py-0.5 rounded-full">${RESUMOS.length}</span>`;
       wrap.appendChild(allBtn);
 
       TIPOS.forEach(tipo => {
         const count = RESUMOS.filter(r => r.tipo === tipo).length;
         if (!count) return;
         const btn = document.createElement('button');
-        btn.className = 'resumos-filter-pill';
+        btn.className = getPillClasses(filterTipo === tipo);
         btn.dataset.filter = 'tipo';
         btn.dataset.value = tipo;
-        btn.innerHTML = `<span class="filter-dot" style="background:var(--ms-amber-700);"></span>${tipo}<span class="filter-count">${count}</span>`;
+        btn.innerHTML = `${tipo} <span class="text-[10px] bg-surface-container-highest group-hover:bg-surface-container-low px-2 py-0.5 rounded-full">${count}</span>`;
         wrap.appendChild(btn);
       });
     }
@@ -824,19 +317,20 @@
       wrap.innerHTML = '';
 
       const allBtn = document.createElement('button');
-      allBtn.className = 'resumos-filter-pill active';
+      allBtn.className = getPillClasses(filterProf === 'all');
       allBtn.dataset.filter = 'prof';
       allBtn.dataset.value = 'all';
-      allBtn.innerHTML = `<span class="filter-dot" style="background:var(--ms-text-muted);"></span>Todos`;
+      allBtn.innerHTML = `Todos`;
       wrap.appendChild(allBtn);
 
       const profs = [...new Set(RESUMOS.map(r => r.prof))].sort();
       profs.forEach(p => {
+        if(p === '—' || !p) return;
         const btn = document.createElement('button');
-        btn.className = 'resumos-filter-pill';
+        btn.className = getPillClasses(filterProf === p);
         btn.dataset.filter = 'prof';
         btn.dataset.value = p;
-        btn.innerHTML = `<span class="filter-dot" style="background:var(--ms-text-muted);"></span>${p}`;
+        btn.innerHTML = `${p}`;
         wrap.appendChild(btn);
       });
     }
@@ -848,7 +342,7 @@
       const allTags = [...new Set(RESUMOS.flatMap(r => r.tags))].sort();
       allTags.forEach(tag => {
         const btn = document.createElement('button');
-        btn.className = 'resumos-tag-pill';
+        btn.className = getTagClasses(filterTags.has(tag));
         btn.dataset.filter = 'tag';
         btn.dataset.value = tag;
         btn.textContent = tag;
@@ -863,51 +357,41 @@
       MATERIAS.forEach(m => {
         const count = RESUMOS.filter(r => r.materia === m.id).length;
         if (!count) return;
+        
+        const isSelected = filterMateria === m.id;
+        const baseClasses = `rounded-2xl border p-5 cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[140px]`;
+        const stateClasses = isSelected 
+            ? `border-primary bg-primary/5` 
+            : `border-surface-container-high bg-surface-container-lowest hover:border-primary/30`;
+
         const card = document.createElement('div');
-        card.className = 'mat-card' + (filterMateria === m.id ? ' selected' : '');
+        card.className = `${baseClasses} ${stateClasses}`;
         card.innerHTML = `
-          <div class="mc-head" style="background:${m.cor};">
-            <span class="mc-icon">${m.icon}</span>
-            <div class="mc-name">${m.nome}</div>
-            ${m.prof ? `<div class="mc-info">${m.prof}</div>` : ''}
+          <div>
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-2xl">${m.icon}</span>
+              <h3 class="font-headline font-bold text-on-surface ${isSelected ? 'text-primary' : ''}">${m.nome}</h3>
+            </div>
+            ${m.prof && m.prof !== '—' ? `<p class="font-body text-xs text-on-surface-variant">${m.prof}</p>` : ''}
           </div>
-          <div class="mc-foot">
-            <span class="mc-count">${count} conteúdo${count > 1 ? 's' : ''}</span>
-            <span class="mc-arrow">→</span>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">${count} conteúdo${count > 1 ? 's' : ''}</span>
+            <span class="material-symbols-outlined text-outline text-sm transition-colors ${isSelected ? 'text-primary' : 'group-hover:text-primary'}">arrow_forward</span>
           </div>`;
+          
         card.addEventListener('click', () => {
           filterMateria = filterMateria === m.id ? 'all' : m.id;
           filterProf = 'all';
           filterTags.clear();
-          syncSidebarMateria();
-          syncSidebarProf();
-          syncSidebarTags();
+          // We need to re-render everything
+          buildSidebarMaterias();
+          buildSidebarTipos();
+          buildSidebarProfs();
+          buildSidebarTags();
           buildMateriaCards();
           render();
         });
         grid.appendChild(card);
-      });
-    }
-
-    /* ─ Sync sidebar estados ─ */
-    function syncSidebarMateria() {
-      document.querySelectorAll('[data-filter="materia"]').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.value === filterMateria);
-      });
-    }
-    function syncSidebarProf() {
-      document.querySelectorAll('[data-filter="prof"]').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.value === filterProf);
-      });
-    }
-    function syncSidebarTipo() {
-      document.querySelectorAll('[data-filter="tipo"]').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.value === filterTipo);
-      });
-    }
-    function syncSidebarTags() {
-      document.querySelectorAll('[data-filter="tag"]').forEach(btn => {
-        btn.classList.toggle('active', filterTags.has(btn.dataset.value));
       });
     }
 
@@ -931,27 +415,44 @@
       const items = filtered();
 
       list.innerHTML = '';
-      empty.classList.toggle('show', items.length === 0);
+      if(items.length === 0) {
+        empty.classList.remove('hidden');
+        empty.classList.add('block');
+      } else {
+        empty.classList.add('hidden');
+        empty.classList.remove('block');
+      }
       $('resultCount').textContent = `${items.length} conteúdo${items.length !== 1 ? 's' : ''}`;
 
       items.forEach(r => {
         const m = getMateria(r.materia);
         const row = document.createElement('a');
-        row.className = 'resumo-row';
         row.href = r.arquivo;
+        row.className = `group flex items-center justify-between gap-4 p-4 rounded-2xl border border-surface-container-high bg-surface-container-lowest hover:border-secondary hover:bg-surface-container-low hover:shadow-md transition-all duration-300 hover:translate-x-1`;
+        
         const tipoBadge = r.tipo && r.tipo !== 'Resumo'
-          ? `<span class="rr-tipo">${r.tipo}</span>` : '';
+          ? `<span class="bg-secondary/10 text-secondary border border-secondary/20 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">${r.tipo}</span>` : '';
+          
         row.innerHTML = `
-          <span class="rr-dot" style="background:${m ? m.cor : 'var(--ms-sage-500)'};"></span>
-          <div class="rr-body">
-            <div class="rr-title">${tipoBadge}${r.titulo}</div>
-            <div class="rr-meta">
-              ${r.tags.map(t => `<span class="rr-tag">${t}</span>`).join('')}
-              ${r.prof && r.prof !== '—' ? `<span class="rr-prof">· ${r.prof}</span>` : ''}
+          <div class="flex items-center gap-4 flex-1 min-w-0">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: ${m ? m.cor + '20' : '#e1e3e4'}; color: ${m ? m.cor : '#454652'}">
+                <span class="material-symbols-outlined text-xl">description</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-2 mb-1">
+                ${tipoBadge}
+                <h4 class="font-headline font-bold text-on-surface truncate pr-2 group-hover:text-secondary transition-colors">${r.titulo}</h4>
+              </div>
+              <div class="flex items-center gap-2 flex-wrap">
+                ${r.tags.map(t => `<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-[10px] font-medium">${t}</span>`).join('')}
+                ${r.prof && r.prof !== '—' ? `<span class="text-outline text-[10px] flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-outline"></span> ${r.prof}</span>` : ''}
+              </div>
             </div>
           </div>
-          <span class="rr-date">${r.data}</span>
-          <span class="rr-arrow">→</span>`;
+          <div class="flex items-center gap-4 flex-shrink-0">
+            <span class="text-xs font-body text-outline hidden sm:block">${r.data}</span>
+            <span class="material-symbols-outlined text-outline group-hover:text-secondary group-hover:translate-x-1 transition-all">arrow_forward</span>
+          </div>`;
         list.appendChild(row);
       });
 
@@ -965,24 +466,29 @@
 
       const add = (label, onRemove) => {
         const pill = document.createElement('span');
-        pill.className = 'active-tag';
-        pill.innerHTML = `${label} <span class="rm">&times;</span>`;
-        pill.querySelector('.rm').addEventListener('click', onRemove);
+        pill.className = `flex items-center gap-1 font-body text-[10px] font-bold bg-primary/10 text-primary px-3 py-1.5 rounded-full cursor-pointer hover:bg-primary/20 transition-colors`;
+        pill.innerHTML = `${label} <span class="material-symbols-outlined text-sm hover:text-primary-container">close</span>`;
+        pill.addEventListener('click', onRemove);
         wrap.appendChild(pill);
       };
 
       if (filterMateria !== 'all') {
         const m = getMateria(filterMateria);
-        add(m ? m.nome : filterMateria, () => { filterMateria = 'all'; syncSidebarMateria(); buildMateriaCards(); render(); });
+        add(m ? m.nome : filterMateria, () => { 
+            filterMateria = 'all'; 
+            buildSidebarMaterias(); 
+            buildMateriaCards(); 
+            render(); 
+        });
       }
       if (filterTipo !== 'all') {
-        add(filterTipo, () => { filterTipo = 'all'; syncSidebarTipo(); render(); });
+        add(filterTipo, () => { filterTipo = 'all'; buildSidebarTipos(); render(); });
       }
       if (filterProf !== 'all') {
-        add(filterProf, () => { filterProf = 'all'; syncSidebarProf(); render(); });
+        add(filterProf, () => { filterProf = 'all'; buildSidebarProfs(); render(); });
       }
       filterTags.forEach(tag => {
-        add(tag, () => { filterTags.delete(tag); syncSidebarTags(); render(); });
+        add(tag, () => { filterTags.delete(tag); buildSidebarTags(); render(); });
       });
       if (searchQuery) {
         add(`"${searchQuery}"`, () => { $('searchInput').value = ''; searchQuery = ''; render(); });
@@ -997,19 +503,22 @@
 
       if (filter === 'materia') {
         filterMateria = value;
-        syncSidebarMateria();
-        buildMateriaCards();
       } else if (filter === 'tipo') {
         filterTipo = value;
-        syncSidebarTipo();
       } else if (filter === 'prof') {
         filterProf = value;
-        syncSidebarProf();
       } else if (filter === 'tag') {
         if (filterTags.has(value)) filterTags.delete(value);
         else filterTags.add(value);
-        syncSidebarTags();
       }
+      
+      // Rebuild sidebars to sync UI
+      buildSidebarMaterias();
+      buildSidebarTipos();
+      buildSidebarProfs();
+      buildSidebarTags();
+      buildMateriaCards();
+      
       render();
     });
 
@@ -1025,15 +534,22 @@
 
     if (sidebarToggle) {
       sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        sidebarOverlay.classList.toggle('show');
+        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('absolute');
+        sidebar.classList.toggle('bg-surface-container-lowest');
+        sidebarOverlay.classList.toggle('hidden');
+        
+        if(!sidebar.classList.contains('hidden')) {
+            sidebar.classList.add('inset-0', 'p-6', 'z-50');
+        }
       });
     }
 
     if (sidebarOverlay) {
       sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        sidebarOverlay.classList.remove('show');
+        sidebar.classList.add('hidden');
+        sidebar.classList.remove('absolute', 'inset-0', 'p-6', 'z-50', 'bg-surface-container-lowest');
+        sidebarOverlay.classList.add('hidden');
       });
     }
 
@@ -1042,16 +558,7 @@
     const navLinks = document.querySelector('.nav-links');
     if (navToggle && navLinks) {
       navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navLinks.classList.toggle('open');
-      });
-    }
-
-    /* ─ Nav scroll ─ */
-    const nav = document.querySelector('.site-nav');
-    if (nav) {
-      window.addEventListener('scroll', () => {
-        nav.classList.toggle('site-nav--scrolled', window.scrollY > 60);
+        // Implement mobile nav menu reveal
       });
     }
 
