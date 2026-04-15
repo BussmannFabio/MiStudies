@@ -85,20 +85,18 @@
 </head>
 <body class="bg-surface text-on-surface selection:bg-primary-fixed-dim">
 <!-- TopAppBar -->
-<nav class="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md shadow-sm dark:shadow-none">
+<nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-sm glass-nav">
 <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-<div class="text-2xl font-black text-[#0032b5] dark:text-[#0344ec] tracking-tighter font-['Manrope']">MiStudies</div>
+<a href="index.html" class="text-2xl font-black text-primary tracking-tighter font-headline">MiStudies</a>
 <div class="hidden md:flex items-center gap-8">
-<a class="text-[#0032b5] dark:text-[#0344ec] border-b-2 border-[#0032b5] pb-1 font-['Manrope'] font-bold tracking-tight transition-all duration-300 ease-in-out hover:opacity-80 cursor-pointer active:scale-95" href="index.html">Home</a>
-<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-[#0032b5] font-['Manrope'] font-bold tracking-tight transition-all duration-300 ease-in-out hover:opacity-80 cursor-pointer active:scale-95" href="pages/resumos.html">Acervo</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-body font-bold transition-colors" href="index.html">Home</a>
+<a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="pages/acervo.html">Acervo</a>
+<a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="pages/planos-precos.html">Planos</a>
+<a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="pages/dashboard.html">Dashboard</a>
 </div>
-<div class="flex items-center gap-4">
-<a href="pages/dashboard.html">
-<button class="bg-signature-gradient text-on-primary px-6 py-2.5 rounded-lg font-semibold tracking-tight transition-all duration-300 ease-in-out hover:opacity-90 active:scale-95">
-                    Dashboard
-                </button>
-</a>
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer text-2xl" data-icon="account_circle">account_circle</span>
+<div class="flex items-center gap-3">
+<a href="pages/login.html" class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors px-4 py-2">Entrar</a>
+<a href="pages/cadastro.html" class="bg-signature-gradient text-on-primary px-6 py-2.5 rounded-lg font-semibold transition-all hover:opacity-90 active:scale-95">Criar conta</a>
 </div>
 </div>
 </nav>
@@ -197,9 +195,10 @@
 <h3 class="text-3xl font-bold mb-4">Acervo Digital</h3>
 <p class="opacity-80">Sua memória intelectual organizada em um só lugar. Sem pastas perdidas.</p>
 </div>
-<a class="inline-flex items-center gap-2 font-bold group-hover:gap-4 transition-all" href="pages/resumos.html">
+<a class="inline-flex items-center gap-2 font-bold group-hover:gap-4 transition-all" href="pages/acervo.html">
                         Explorar <span class="material-symbols-outlined">arrow_forward</span>
 </a>
+
 </div>
 <!-- Small Feature 2 -->
 <div class="md:col-span-4 bg-surface-container-high p-12 rounded-[2rem] flex flex-col gap-6">

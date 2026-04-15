@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Acervo — MiStudies</title>
+    <meta name="description" content="Acervo de aulas, resumos e masterclasses organizados por área, matéria, formato e professor. Busca e filtros para estudar com clareza.">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0032b5", "on-primary": "#ffffff",
+              "primary-container": "#0344ec",
+              "secondary": "#006a6a", "on-secondary": "#ffffff",
+              "tertiary": "#2b3b8d",
+              "surface": "#f8f9fa", "on-surface": "#191c1d",
+              "on-surface-variant": "#454652",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f3f4f5",
+              "surface-container": "#edeeef",
+              "surface-container-high": "#e7e8e9",
+              "surface-container-highest": "#e1e3e4",
+              "outline": "#757684",
+            },
+            fontFamily: {
+              "headline": ["Manrope","system-ui","sans-serif"],
+              "body":     ["Inter","-apple-system","sans-serif"],
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .badge { display:inline-flex;align-items:center;font-size:.6875rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:4px; }
+        .badge-formato  { background:rgba(0,50,181,.08); color:#0032b5; }
+        .badge-masterclass { background:rgba(43,59,141,.1); color:#2b3b8d; }
+        .badge-slide    { background:rgba(0,106,106,.08); color:#006a6a; }
+        .badge-aula     { background:rgba(245,158,11,.1); color:#92400e; }
+        .badge-resumo   { background:rgba(0,0,0,.06); color:#454652; }
+        .badge-tier-ess { background:rgba(96,165,250,.1); color:#1d4ed8; }
+        .badge-tier-pro { background:rgba(3,68,236,.1); color:#0032b5; }
+        .badge-tier-fs  { background:rgba(43,59,141,.1); color:#2b3b8d; }
+        .badge-privado  { background:rgba(245,158,11,.1); color:#92400e; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 glass-nav bg-surface/70 border-b border-surface-container-high">
+    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+        <a href="../index.html" class="text-2xl font-black text-primary tracking-tighter font-headline">MiStudies</a>
+
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-primary border-b-2 border-primary pb-1 font-body font-medium transition-colors" href="acervo.html">Acervo</a>
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="planos-precos.html">Planos</a>
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="dashboard.html">Dashboard</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <a href="login.html" class="hidden md:inline-block font-body font-semibold text-sm text-primary hover:text-primary/80 transition-colors">Entrar</a>
+            <a href="cadastro.html" class="hidden md:inline-block font-body font-semibold text-sm bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Criar conta</a>
+            <button class="md:hidden text-on-surface-variant" id="mobileMenuBtn">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<header class="pt-24 pb-8 px-8 bg-surface-container-lowest border-b border-surface-container-high relative overflow-hidden">
+    <div class="max-w-7xl mx-auto relative z-10">
+        <span class="text-secondary font-bold tracking-widest text-xs uppercase mb-3 flex items-center gap-2 font-body">
+            <span class="w-4 h-px bg-secondary"></span>
+            Biblioteca de conteúdos
+        </span>
+        <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-2 font-headline">
+            Acer<span class="text-primary italic font-light">vo</span>
+        </h1>
+        <p class="text-sm text-on-surface-variant font-body">Organizado por área, matéria, formato e professor</p>
+    </div>
+    <div class="absolute -top-32 -right-32 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+</header>
+
+<!-- Search -->
+<div class="bg-surface-container px-8 py-4 border-b border-surface-container-high">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row gap-4 items-center">
+        <div class="relative flex-1 w-full">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+            <input type="text" id="searchInput" placeholder="Buscar por título, matéria, área, formato, professor ou tag…"
+                class="w-full bg-surface-container-lowest border border-surface-container-high rounded-xl py-3 pl-12 pr-4 font-body text-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm">
+        </div>
+        <div class="text-xs font-bold uppercase tracking-wider text-on-surface-variant whitespace-nowrap font-body" id="resultCount">0 conteúdos</div>
+    </div>
+</div>
+
+<!-- Main layout -->
+<div class="flex-1 max-w-7xl mx-auto w-full px-8 py-8 grid grid-cols-1 md:grid-cols-12 gap-8 relative">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="md:col-span-3 pr-6 md:h-[calc(100vh-280px)] md:sticky top-24 overflow-y-auto hidden md:block">
+
+        <!-- Área -->
+        <div class="mb-6">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block font-body">Grande Área</span>
+            <div id="filterArea" class="flex flex-col gap-1"></div>
+        </div>
+
+        <!-- Matéria -->
+        <div class="mb-6">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block font-body">Matéria</span>
+            <div id="filterMateria" class="flex flex-col gap-1"></div>
+        </div>
+
+        <!-- Formato -->
+        <div class="mb-6">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block font-body">Formato</span>
+            <div id="filterFormato" class="flex flex-col gap-1"></div>
+        </div>
+
+        <!-- Tier -->
+        <div class="mb-6">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block font-body">Tier</span>
+            <div id="filterTier" class="flex flex-col gap-1"></div>
+        </div>
+
+        <!-- Professor -->
+        <div class="mb-6">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block font-body">Professor</span>
+            <div id="filterProf" class="flex flex-col gap-1"></div>
+        </div>
+
+        <!-- Tags -->
+        <div class="mb-6">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-3 block font-body">Tags</span>
+            <div id="filterTag" class="flex flex-wrap gap-2"></div>
+        </div>
+    </aside>
+
+    <!-- Mobile overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-on-surface/50 z-30 hidden md:hidden glass-nav"></div>
+
+    <!-- Main content -->
+    <main class="md:col-span-9 pb-16">
+
+        <!-- Área cards overview -->
+        <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline mb-4 block font-body">Por área</span>
+        <div id="areasGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10"></div>
+
+        <div class="w-full h-px bg-surface-container-high mb-8"></div>
+
+        <!-- List header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-outline font-body">Todos os conteúdos</span>
+            <div id="activeFilters" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Content list -->
+        <div id="conteudosList" class="flex flex-col gap-3"></div>
+
+        <!-- Empty state -->
+        <div id="emptyState" class="hidden text-center py-16 px-4 bg-surface-container-lowest border border-surface-container-high rounded-2xl border-dashed">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
+            <p class="text-sm font-body text-on-surface-variant">Nenhum conteúdo encontrado para os filtros atuais.</p>
+        </div>
+
+    </main>
+</div>
+
+<!-- Mobile Filters FAB -->
+<button id="sidebarToggle" class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center z-50 hover:opacity-90 active:scale-95 transition-all">
+    <span class="material-symbols-outlined">filter_list</span>
+</button>
+
+<!-- Footer -->
+<footer class="w-full border-t border-surface-container bg-surface-container-lowest mt-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center px-12 py-10 max-w-7xl mx-auto">
+        <div class="mb-6 md:mb-0 text-center md:text-left">
+            <div class="font-headline font-black text-2xl text-primary mb-1">MiStudies</div>
+            <div class="font-body text-sm text-on-surface-variant italic">Seu estudo, bem resolvido.</div>
+        </div>
+        <div class="flex gap-8 mb-6 md:mb-0">
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="acervo.html">Acervo</a>
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="planos-precos.html">Planos</a>
+            <a class="font-body text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors font-bold" href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="font-body text-xs uppercase tracking-wider text-on-surface-variant text-center md:text-right">
+            © 2026 MiStudies
+        </div>
+    </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DADOS
+═══════════════════════════════════════════════ */
+const AREAS = [
+  { id: 'engprod',       nome: 'Eng. de Produção',  icon: '⚙️', cor: '#0032b5', desc: 'Gestão de produção, operações, logística e sistemas industriais.' },
+  { id: 'administracao', nome: 'Administração',      icon: '📊', cor: '#006a6a', desc: 'Marketing, finanças, RH, direito empresarial e estratégia.' },
+];
+
+const MATERIAS = [
+  { id: 'gestao-producao', area: 'engprod',       nome: 'Gestão da Produção', icon: '🏭', cor: '#0032b5' },
+  { id: 'logistica',       area: 'engprod',       nome: 'Logística',          icon: '🚚', cor: '#2b3b8d' },
+  { id: 'marketing',       area: 'administracao', nome: 'Marketing',          icon: '📣', cor: '#006a6a' },
+  { id: 'financas',        area: 'administracao', nome: 'Finanças',           icon: '💹', cor: '#2b3b8d' },
+  { id: 'estatistica',     area: 'administracao', nome: 'Estatística',        icon: '📐', cor: '#f59e0b' },
+  { id: 'rh',              area: 'administracao', nome: 'Gestão de Pessoas',  icon: '👥', cor: '#0032b5' },
+  { id: 'direito',         area: 'administracao', nome: 'Direito Empresarial',icon: '⚖️', cor: '#006a6a' },
+];
+
+const FORMATOS = ['Resumo', 'Aula', 'Slide', 'Masterclass'];
+const TIERS    = ['Essencial', 'Pro', 'Full Studio'];
+
+const CONTEUDOS = [
+  {
+    id: 100, slug: 'escopo-engenharia-producao',
+    titulo: 'Escopo da Engenharia de Produção',
+    descricao: 'Mapa completo das grandes áreas da Engenharia de Produção: operações, processos e sistemas.',
+    area: 'engprod', materia: 'gestao-producao',
+    tags: ['operações','processos','gestão'], prof: '—', prof_slug: null,
+    data: '2026-03-01', formato: 'Masterclass', tier: 'Pro', privacidade: 'publico',
+    arquivo: 'acervo/escopo-engenharia-producao.html'
+  },
+  {
+    id: 101, slug: 'sistemas-de-producao',
+    titulo: 'Sistemas de Produção',
+    descricao: 'Tipos de layout fabril, fluxos de produção e critérios de escolha entre sistemas.',
+    area: 'engprod', materia: 'gestao-producao',
+    tags: ['layout','fluxos','produção'], prof: '—', prof_slug: null,
+    data: '2026-03-01', formato: 'Aula', tier: 'Essencial', privacidade: 'publico',
+    arquivo: 'acervo/sistemas-de-producao.html'
+  },
+  {
+    id: 102, slug: 'tpm-e-oee',
+    titulo: 'TPM & OEE',
+    descricao: 'Total Productive Maintenance e Overall Equipment Effectiveness — fundamentos, pilares e cálculo.',
+    area: 'engprod', materia: 'gestao-producao',
+    tags: ['TPM','OEE','eficiência','manutenção'], prof: '—', prof_slug: null,
+    data: '2026-03-01', formato: 'Slide', tier: 'Essencial', privacidade: 'publico',
+    arquivo: 'acervo/tpm-e-oee.html'
+  },
+  {
+    id: 1, slug: 'marketing-mix-4ps',
+    titulo: 'Fundamentos do Marketing Mix (4Ps)',
+    descricao: 'Produto, Preço, Praça e Promoção — o modelo clássico aplicado a casos reais.',
+    area: 'administracao', materia: 'marketing',
+    tags: ['4Ps','estratégia','produto','precificação'], prof: 'Prof. Ana', prof_slug: 'prof-ana',
+    data: '2026-03-10', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 2, slug: 'segmentacao-e-posicionamento',
+    titulo: 'Segmentação e Posicionamento de Mercado',
+    descricao: 'Critérios de segmentação, STP framework e construção de posicionamento competitivo.',
+    area: 'administracao', materia: 'marketing',
+    tags: ['segmentação','STP','posicionamento'], prof: 'Prof. Ana', prof_slug: 'prof-ana',
+    data: '2026-03-10', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 3, slug: 'branding-gestao-de-marca',
+    titulo: 'Branding e Gestão de Marca',
+    descricao: 'Brand equity, identidade de marca, arquitetura de portfólio e estratégia de rebranding.',
+    area: 'administracao', materia: 'marketing',
+    tags: ['branding','marca','identidade'], prof: 'Prof. Ana', prof_slug: 'prof-ana',
+    data: '2026-02-20', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 4, slug: 'analise-demonstracoes-financeiras',
+    titulo: 'Análise de Demonstrações Financeiras',
+    descricao: 'Leitura e interpretação de DRE, balanço patrimonial e fluxo de caixa.',
+    area: 'administracao', materia: 'financas',
+    tags: ['DRE','balanço','contábil','análise'], prof: 'Prof. Carlos', prof_slug: 'prof-carlos',
+    data: '2026-03-05', formato: 'Resumo', tier: 'Pro', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 5, slug: 'fluxo-de-caixa-e-capital-de-giro',
+    titulo: 'Fluxo de Caixa e Capital de Giro',
+    descricao: 'Gestão do ciclo financeiro, projeção de caixa e métricas de liquidez operacional.',
+    area: 'administracao', materia: 'financas',
+    tags: ['fluxo de caixa','liquidez','capital de giro'], prof: 'Prof. Carlos', prof_slug: 'prof-carlos',
+    data: '2026-02-15', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 6, slug: 'distribuicao-normal-e-desvio-padrao',
+    titulo: 'Distribuição Normal e Desvio Padrão',
+    descricao: 'Propriedades da curva normal, z-score, tabela de distribuição e aplicações práticas.',
+    area: 'administracao', materia: 'estatistica',
+    tags: ['distribuição','desvio padrão','probabilidade'], prof: 'Prof. Ana', prof_slug: 'prof-ana',
+    data: '2026-03-08', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 7, slug: 'regressao-linear-simples',
+    titulo: 'Regressão Linear Simples',
+    descricao: 'Modelo de regressão, coeficientes, R², interpretação de resultados e validação.',
+    area: 'administracao', materia: 'estatistica',
+    tags: ['regressão','correlação','modelo'], prof: 'Prof. Ana', prof_slug: 'prof-ana',
+    data: '2026-02-18', formato: 'Aula', tier: 'Pro', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 8, slug: 'recrutamento-e-selecao',
+    titulo: 'Recrutamento e Seleção de Pessoas',
+    descricao: 'Fontes de recrutamento, técnicas de seleção, dinâmicas e avaliação de candidatos.',
+    area: 'administracao', materia: 'rh',
+    tags: ['recrutamento','seleção','RH'], prof: 'Prof. Marta', prof_slug: 'prof-marta',
+    data: '2026-02-10', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 9, slug: 'avaliacao-de-desempenho-e-feedback',
+    titulo: 'Avaliação de Desempenho e Feedback',
+    descricao: 'Métodos de avaliação, 360°, feedback estruturado e gestão por competências.',
+    area: 'administracao', materia: 'rh',
+    tags: ['desempenho','feedback','competências'], prof: 'Prof. Marta', prof_slug: 'prof-marta',
+    data: '2026-01-25', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 10, slug: 'tipos-de-sociedade-empresarial',
+    titulo: 'Tipos de Sociedade Empresarial',
+    descricao: 'LTDA, S.A., MEI, EIRELI — estrutura jurídica, responsabilidades e tributação.',
+    area: 'administracao', materia: 'direito',
+    tags: ['LTDA','SA','jurídico','tributação'], prof: 'Prof. João', prof_slug: 'prof-joao',
+    data: '2026-01-20', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 11, slug: 'gestao-de-estoque-e-armazenagem',
+    titulo: 'Gestão de Estoque e Armazenagem',
+    descricao: 'Curva ABC, FIFO, LIFO, ponto de pedido e gestão de inventário com indicadores.',
+    area: 'engprod', materia: 'logistica',
+    tags: ['estoque','FIFO','LIFO','ABC'], prof: 'Prof. Roberto', prof_slug: 'prof-roberto',
+    data: '2026-03-12', formato: 'Aula', tier: 'Pro', privacidade: 'publico',
+    arquivo: '#'
+  },
+  {
+    id: 12, slug: 'planejamento-cadeia-de-suprimentos',
+    titulo: 'Planejamento da Cadeia de Suprimentos',
+    descricao: 'Supply chain end-to-end: fornecedores, produção, distribuição e gestão de riscos.',
+    area: 'engprod', materia: 'logistica',
+    tags: ['supply chain','cadeia','fornecedores'], prof: 'Prof. Roberto', prof_slug: 'prof-roberto',
+    data: '2026-02-25', formato: 'Resumo', tier: 'Essencial', privacidade: 'publico',
+    arquivo: '#'
+  },
+];
+
+/* ═══════════════════════════════════════════════
+   ESTADO
+═══════════════════════════════════════════════ */
+let filterArea    = 'all';
+let filterMateria = 'all';
+let filterFormato = 'all';
+let filterTier    = 'all';
+let filterProf    = 'all';
+let filterTags    = new Set();
+let searchQuery   = '';
+
+/* ═══════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════ */
+const $  = id => document.getElementById(id);
+const getMateria = id => MATERIAS.find(m => m.id === id);
+const getArea    = id => AREAS.find(a => a.id === id);
+const fmtData    = iso => { const [y,m,d] = iso.split('-'); const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']; return `${meses[+m-1]} ${y}`; };
+
+const pillClass = active =>
+    active
+    ? 'w-full text-left font-body text-sm py-2 px-3 rounded-lg bg-surface-container text-primary font-bold flex justify-between items-center transition-colors'
+    : 'w-full text-left font-body text-sm py-2 px-3 rounded-lg hover:bg-surface-container-highest text-on-surface-variant flex justify-between items-center transition-colors';
+
+const tagClass = active =>
+    active
+    ? 'font-body text-[10px] font-bold px-3 py-1.5 rounded-full border border-primary text-primary bg-primary/5 transition-colors cursor-pointer'
+    : 'font-body text-[10px] font-medium px-3 py-1.5 rounded-full border border-surface-container-high bg-surface-container-lowest text-on-surface-variant hover:border-outline hover:text-on-surface transition-colors cursor-pointer';
+
+const badgeFormato = fmt => {
+  const map = { Resumo:'badge-resumo', Aula:'badge-aula', Slide:'badge-slide', Masterclass:'badge-masterclass' };
+  return `<span class="badge ${map[fmt]||'badge-resumo'}">${fmt}</span>`;
+};
+const badgeTier = tier => {
+  const map = { Essencial:'badge-tier-ess', Pro:'badge-tier-pro', 'Full Studio':'badge-tier-fs' };
+  return `<span class="badge ${map[tier]||'badge-tier-ess'}">${tier}</span>`;
+};
+
+/* ═══════════════════════════════════════════════
+   BUILD SIDEBAR
+═══════════════════════════════════════════════ */
+function buildBtn(wrap, label, filterKey, value, isActive, count) {
+  const btn = document.createElement('button');
+  btn.className = pillClass(isActive);
+  btn.dataset.filter = filterKey;
+  btn.dataset.value  = value;
+  const countBadge = count != null
+    ? `<span class="text-[10px] bg-surface-container-highest px-2 py-0.5 rounded-full">${count}</span>` : '';
+  btn.innerHTML = `<span>${label}</span>${countBadge}`;
+  wrap.appendChild(btn);
+}
+
+function buildFilterArea() {
+  const wrap = $('filterArea'); wrap.innerHTML = '';
+  buildBtn(wrap, 'Todas', 'area', 'all', filterArea === 'all', CONTEUDOS.length);
+  AREAS.forEach(a => {
+    const count = CONTEUDOS.filter(c => c.area === a.id).length;
+    if (!count) return;
+    buildBtn(wrap, `${a.icon} ${a.nome}`, 'area', a.id, filterArea === a.id, count);
+  });
+}
+
+function buildFilterMateria() {
+  const wrap = $('filterMateria'); wrap.innerHTML = '';
+  const visible = filterArea === 'all' ? MATERIAS : MATERIAS.filter(m => m.area === filterArea);
+  buildBtn(wrap, 'Todas', 'materia', 'all', filterMateria === 'all', null);
+  visible.forEach(m => {
+    const count = CONTEUDOS.filter(c => c.materia === m.id && (filterArea === 'all' || c.area === filterArea)).length;
+    if (!count) return;
+    buildBtn(wrap, `${m.icon} ${m.nome}`, 'materia', m.id, filterMateria === m.id, count);
+  });
+}
+
+function buildFilterFormato() {
+  const wrap = $('filterFormato'); wrap.innerHTML = '';
+  buildBtn(wrap, 'Todos', 'formato', 'all', filterFormato === 'all', null);
+  FORMATOS.forEach(fmt => {
+    const count = CONTEUDOS.filter(c => c.formato === fmt).length;
+    if (!count) return;
+    buildBtn(wrap, fmt, 'formato', fmt, filterFormato === fmt, count);
+  });
+}
+
+function buildFilterTier() {
+  const wrap = $('filterTier'); wrap.innerHTML = '';
+  buildBtn(wrap, 'Todos', 'tier', 'all', filterTier === 'all', null);
+  TIERS.forEach(t => {
+    const count = CONTEUDOS.filter(c => c.tier === t).length;
+    if (!count) return;
+    buildBtn(wrap, t, 'tier', t, filterTier === t, count);
+  });
+}
+
+function buildFilterProf() {
+  const wrap = $('filterProf'); wrap.innerHTML = '';
+  buildBtn(wrap, 'Todos', 'prof', 'all', filterProf === 'all', null);
+  [...new Set(CONTEUDOS.map(c => c.prof))].sort().forEach(p => {
+    if (p === '—' || !p) return;
+    buildBtn(wrap, p, 'prof', p, filterProf === p, null);
+  });
+}
+
+function buildFilterTags() {
+  const wrap = $('filterTag'); wrap.innerHTML = '';
+  [...new Set(CONTEUDOS.flatMap(c => c.tags))].sort().forEach(tag => {
+    const btn = document.createElement('button');
+    btn.className = tagClass(filterTags.has(tag));
+    btn.dataset.filter = 'tag';
+    btn.dataset.value  = tag;
+    btn.textContent    = tag;
+    wrap.appendChild(btn);
+  });
+}
+
+function rebuildAll() {
+  buildFilterArea();
+  buildFilterMateria();
+  buildFilterFormato();
+  buildFilterTier();
+  buildFilterProf();
+  buildFilterTags();
+  buildAreasGrid();
+}
+
+/* ═══════════════════════════════════════════════
+   AREAS GRID
+═══════════════════════════════════════════════ */
+function buildAreasGrid() {
+  const grid = $('areasGrid'); grid.innerHTML = '';
+  AREAS.forEach(a => {
+    const count = CONTEUDOS.filter(c => c.area === a.id).length;
+    if (!count) return;
+    const isSelected = filterArea === a.id;
+    const card = document.createElement('div');
+    card.className = `rounded-2xl border p-5 cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[120px]
+      ${isSelected ? 'border-primary bg-primary/5' : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/30'}`;
+    card.innerHTML = `
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="text-2xl">${a.icon}</span>
+          <h3 class="font-headline font-bold text-on-surface ${isSelected?'text-primary':''}">${a.nome}</h3>
+        </div>
+        <p class="font-body text-xs text-on-surface-variant">${a.desc}</p>
+      </div>
+      <div class="flex justify-between items-center mt-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-body">${count} conteúdo${count>1?'s':''}</span>
+        <span class="material-symbols-outlined text-outline text-sm ${isSelected?'text-primary':''}">arrow_forward</span>
+      </div>`;
+    card.addEventListener('click', () => {
+      filterArea    = filterArea === a.id ? 'all' : a.id;
+      filterMateria = 'all';
+      filterTags.clear();
+      rebuildAll();
+      render();
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   FILTER + RENDER
+═══════════════════════════════════════════════ */
+function filtered() {
+  return CONTEUDOS.filter(c => {
+    const byArea    = filterArea    === 'all' || c.area    === filterArea;
+    const byMateria = filterMateria === 'all' || c.materia === filterMateria;
+    const byFormato = filterFormato === 'all' || c.formato === filterFormato;
+    const byTier    = filterTier    === 'all' || c.tier    === filterTier;
+    const byProf    = filterProf    === 'all' || c.prof    === filterProf;
+    const byTags    = filterTags.size === 0   || [...filterTags].every(t => c.tags.includes(t));
+    const bySearch  = !searchQuery  ||
+      [c.titulo, c.descricao, c.area, c.materia, c.formato, c.tier, c.prof, ...c.tags]
+        .join(' ').toLowerCase().includes(searchQuery.toLowerCase());
+    return byArea && byMateria && byFormato && byTier && byProf && byTags && bySearch;
+  });
+}
+
+function render() {
+  const list  = $('conteudosList');
+  const empty = $('emptyState');
+  const items = filtered();
+
+  list.innerHTML = '';
+  empty.classList.toggle('hidden', items.length > 0);
+
+  $('resultCount').textContent = `${items.length} conteúdo${items.length !== 1 ? 's' : ''}`;
+
+  items.forEach(c => {
+    const mat     = getMateria(c.materia);
+    const href    = c.arquivo !== '#' ? c.arquivo : '#';
+    const isAvail = c.arquivo !== '#';
+
+    const row = document.createElement('a');
+    row.href  = href;
+    row.className = `group flex items-start gap-4 p-4 rounded-2xl border border-surface-container-high bg-surface-container-lowest
+      hover:border-secondary hover:bg-surface-container-low hover:shadow-md transition-all duration-300
+      ${!isAvail ? 'opacity-70 cursor-not-allowed' : 'hover:translate-x-1'}`;
+
+    const profHtml = c.prof && c.prof !== '—'
+      ? `<a href="professor/${c.prof_slug}.html" class="text-outline text-[10px] flex items-center gap-1 hover:text-primary transition-colors" onclick="event.stopPropagation()">
+           <span class="w-1 h-1 rounded-full bg-outline"></span>${c.prof}
+         </a>`
+      : '';
+
+    row.innerHTML = `
+      <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+           style="background:${mat?mat.cor+'20':'#e1e3e4'};color:${mat?mat.cor:'#454652'}">
+        <span class="font-headline font-bold text-sm">${mat?mat.icon:'📄'}</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-2 mb-1">
+          ${badgeFormato(c.formato)}
+          ${badgeTier(c.tier)}
+          ${!isAvail ? '<span class="badge badge-privado">Em breve</span>' : ''}
+          <h4 class="font-headline font-bold text-on-surface truncate group-hover:text-secondary transition-colors">${c.titulo}</h4>
+        </div>
+        <p class="font-body text-xs text-on-surface-variant mb-2 line-clamp-1">${c.descricao}</p>
+        <div class="flex items-center gap-2 flex-wrap">
+          ${c.tags.map(t=>`<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-[10px] font-medium font-body">${t}</span>`).join('')}
+          ${profHtml}
+        </div>
+      </div>
+      <div class="flex items-center gap-3 flex-shrink-0 mt-1">
+        <span class="text-xs font-body text-outline hidden sm:block">${fmtData(c.data)}</span>
+        <span class="material-symbols-outlined text-outline group-hover:text-secondary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>`;
+
+    list.appendChild(row);
+  });
+
+  renderActiveFilters();
+}
+
+/* ═══════════════════════════════════════════════
+   ACTIVE FILTER PILLS
+═══════════════════════════════════════════════ */
+function renderActiveFilters() {
+  const wrap = $('activeFilters');
+  wrap.innerHTML = '';
+
+  const add = (label, onRemove) => {
+    const pill = document.createElement('span');
+    pill.className = 'flex items-center gap-1 font-body text-[10px] font-bold bg-primary/10 text-primary px-3 py-1.5 rounded-full cursor-pointer hover:bg-primary/20 transition-colors';
+    pill.innerHTML = `${label} <span class="material-symbols-outlined text-sm">close</span>`;
+    pill.addEventListener('click', onRemove);
+    wrap.appendChild(pill);
+  };
+
+  if (filterArea    !== 'all') add(getArea(filterArea)?.nome    || filterArea,    () => { filterArea='all'; filterMateria='all'; rebuildAll(); render(); });
+  if (filterMateria !== 'all') add(getMateria(filterMateria)?.nome || filterMateria, () => { filterMateria='all'; rebuildAll(); render(); });
+  if (filterFormato !== 'all') add(filterFormato, () => { filterFormato='all'; buildFilterFormato(); render(); });
+  if (filterTier    !== 'all') add(filterTier,    () => { filterTier='all';    buildFilterTier();    render(); });
+  if (filterProf    !== 'all') add(filterProf,    () => { filterProf='all';    buildFilterProf();    render(); });
+  filterTags.forEach(tag => add(tag, () => { filterTags.delete(tag); buildFilterTags(); render(); }));
+  if (searchQuery)             add(`"${searchQuery}"`, () => { $('searchInput').value=''; searchQuery=''; render(); });
+}
+
+/* ═══════════════════════════════════════════════
+   EVENTS
+═══════════════════════════════════════════════ */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-filter]');
+  if (!btn) return;
+  const { filter, value } = btn.dataset;
+
+  if      (filter === 'area')    { filterArea    = value; filterMateria = 'all'; }
+  else if (filter === 'materia') { filterMateria = value; }
+  else if (filter === 'formato') { filterFormato = value; }
+  else if (filter === 'tier')    { filterTier    = value; }
+  else if (filter === 'prof')    { filterProf    = value; }
+  else if (filter === 'tag')     { filterTags.has(value) ? filterTags.delete(value) : filterTags.add(value); }
+
+  rebuildAll();
+  render();
+});
+
+$('searchInput').addEventListener('input', e => { searchQuery = e.target.value; render(); });
+
+/* ─ Mobile sidebar ─ */
+$('sidebarToggle').addEventListener('click', () => {
+  const s = $('sidebar'), o = $('sidebarOverlay');
+  s.classList.toggle('hidden');
+  s.classList.toggle('fixed');
+  s.classList.toggle('top-0');
+  s.classList.toggle('left-0');
+  s.classList.toggle('w-80');
+  s.classList.toggle('h-full');
+  s.classList.toggle('bg-surface');
+  s.classList.toggle('z-40');
+  s.classList.toggle('p-8');
+  s.classList.toggle('overflow-y-auto');
+  o.classList.toggle('hidden');
+});
+$('sidebarOverlay').addEventListener('click', () => {
+  $('sidebar').classList.add('hidden');
+  $('sidebarOverlay').classList.add('hidden');
+});
+
+/* ─ Init ─ */
+rebuildAll();
+render();
+</script>
+</body>
+</html>
