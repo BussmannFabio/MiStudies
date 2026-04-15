@@ -5,16 +5,16 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>MiStudies — Dashboard do Professor</title>
     <meta name="description" content="Área de gestão e upload de materiais do MiStudies.">
-    
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    
+
     <script id="tailwind-config">
-          tailwind.config = {
+        tailwind.config = {
             darkMode: "class",
             theme: {
-              extend: {
-                "colors": {
+                extend: {
+                    "colors": {
                         "primary": "#0032b5",
                         "on-primary": "#ffffff",
                         "primary-container": "#0344ec",
@@ -39,15 +39,15 @@
                         "outline": "#757684",
                         "amber-500": "#f59e0b",
                         "amber-100": "#fef3c7"
-                },
-                "fontFamily": {
+                    },
+                    "fontFamily": {
                         "headline": ["Manrope", "sans-serif"],
                         "body": ["Inter", "sans-serif"],
                         "label": ["Inter", "sans-serif"]
-                }
-              },
+                    }
+                },
             },
-          }
+        }
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -55,6 +55,31 @@
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .bg-signature-gradient { background: linear-gradient(135deg, #0032b5 0%, #0344ec 100%); }
+
+        /* Tab system */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        .tab-btn { position: relative; }
+        .tab-btn.active { color: #0032b5; font-weight: 700; }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0; right: 0;
+            height: 2px;
+            background: #0032b5;
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* Status badges */
+        .badge-publicado { background:#dcfce7; color:#166534; }
+        .badge-rascunho  { background:#fef9c3; color:#854d0e; }
+        .badge-arquivado { background:#f1f5f9; color:#475569; }
+
+        /* Tier badges */
+        .tier-essencial { background:#e0f2fe; color:#0369a1; }
+        .tier-pro       { background:#ede9fe; color:#6d28d9; }
+        .tier-studio    { background:#fef3c7; color:#b45309; }
     </style>
 </head>
 <body class="bg-surface text-on-surface selection:bg-primary-container selection:text-white">
@@ -63,7 +88,6 @@
 <nav class="fixed top-0 w-full z-50 glass-nav bg-surface/70 border-b border-surface-container-high">
     <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
         <a href="../index.html" class="text-2xl font-black text-primary tracking-tighter font-headline">MiStudies</a>
-        
         <div class="hidden md:flex items-center gap-8">
             <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="acervo.html">Acervo</a>
             <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="planos-precos.html">Planos</a>
@@ -76,152 +100,446 @@
     </div>
 </nav>
 
-<main class="pt-32 pb-24 px-8 max-w-7xl mx-auto">
-    <!-- Header Dashboard -->
-    <div class="mb-12 flex flex-col md:flex-row md:justify-between md:items-end gap-6 border-b border-surface-container-highest pb-8">
+<main class="pt-20 pb-24 max-w-7xl mx-auto px-8">
+
+    <!-- Page Header -->
+    <div class="pt-10 pb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-            <span class="text-secondary font-bold tracking-widest text-sm uppercase mb-2 block">Administração Gestão de Conteúdo</span>
-            <h1 class="text-4xl font-extrabold tracking-tight text-on-surface font-headline">Dashboard do Professor</h1>
-            <p class="text-on-surface-variant mt-2 max-w-2xl">Gerencie, cadastre e faça upload de novos conteúdos, apostilas, resumos e apresentações para os alunos no MiStudies.</p>
+            <span class="text-secondary font-bold tracking-widest text-xs uppercase mb-1 block">Área do Professor</span>
+            <h1 class="text-3xl font-extrabold tracking-tight text-on-surface font-headline">Dashboard</h1>
         </div>
-        <div class="flex gap-4">
-            <button class="bg-surface-container-highest hover:bg-surface-container-high transition-colors text-on-surface font-bold py-3 px-6 rounded-xl flex items-center gap-2">
-                <span class="material-symbols-outlined">library_books</span>
-                Meus Arquivos
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm">G</div>
+            <div>
+                <div class="text-sm font-bold text-on-surface leading-none">Gabriel F.</div>
+                <div class="text-xs text-on-surface-variant mt-0.5">Plano Branded</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="border-b border-surface-container-highest mb-8">
+        <div class="flex gap-0">
+            <button onclick="switchTab('visao-geral')" id="tab-visao-geral"
+                class="tab-btn active px-6 py-3 text-sm font-medium text-on-surface-variant transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">dashboard</span>
+                Visão Geral
+            </button>
+            <button onclick="switchTab('minhas-aulas')" id="tab-minhas-aulas"
+                class="tab-btn px-6 py-3 text-sm font-medium text-on-surface-variant transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">library_books</span>
+                Minhas Aulas
+            </button>
+            <button onclick="switchTab('nova-aula')" id="tab-nova-aula"
+                class="tab-btn px-6 py-3 text-sm font-medium text-on-surface-variant transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                Nova Aula
             </button>
         </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-8">
-        <!-- Main Panel: Upload Form -->
-        <div class="lg:col-span-2 space-y-8">
-            <div class="bg-surface-container-lowest rounded-3xl p-8 border border-surface-container shadow-sm">
-                <h2 class="text-2xl font-bold font-headline mb-6">Novo Material</h2>
-                
-                <form class="space-y-6">
-                    <!-- Base Info -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- ═══ TAB 1: VISÃO GERAL ═══ -->
+    <div id="panel-visao-geral" class="tab-panel active">
+
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-6">
+                <div class="text-3xl font-black font-headline text-on-surface mb-1">3</div>
+                <div class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Aulas publicadas</div>
+            </div>
+            <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-6">
+                <div class="text-3xl font-black font-headline text-primary mb-1">1.2k</div>
+                <div class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Visualizações</div>
+            </div>
+            <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-6">
+                <div class="text-3xl font-black font-headline text-secondary mb-1">47</div>
+                <div class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Alunos únicos</div>
+            </div>
+            <div class="bg-signature-gradient rounded-2xl p-6 text-on-primary">
+                <div class="text-3xl font-black font-headline mb-1">R$0</div>
+                <div class="text-xs font-bold uppercase tracking-wider opacity-80">Receita estimada</div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-6">
+
+            <!-- Atividade recente -->
+            <div class="lg:col-span-2 bg-surface-container-lowest border border-surface-container rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="font-bold font-headline text-lg">Atividade recente</h2>
+                    <button onclick="switchTab('minhas-aulas')" class="text-xs text-primary font-bold hover:underline">Ver todas</button>
+                </div>
+                <div class="space-y-3">
+                    <!-- item -->
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer">
+                        <div class="w-9 h-9 rounded-lg bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">slideshow</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-sm font-bold text-on-surface truncate">TPM e OEE — Apresentação</div>
+                            <div class="text-xs text-on-surface-variant">Publicado · Eng. Produção · Full Studio</div>
+                        </div>
+                        <span class="text-xs text-on-surface-variant whitespace-nowrap">hoje</span>
+                    </div>
+                    <!-- item -->
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer">
+                        <div class="w-9 h-9 rounded-lg bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">description</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-sm font-bold text-on-surface truncate">Escopo da Produção — Resumo</div>
+                            <div class="text-xs text-on-surface-variant">Publicado · Eng. Produção · Pro</div>
+                        </div>
+                        <span class="text-xs text-on-surface-variant whitespace-nowrap">ontem</span>
+                    </div>
+                    <!-- item -->
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer">
+                        <div class="w-9 h-9 rounded-lg bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">article</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-sm font-bold text-on-surface truncate">Sistemas de Produção — Aula</div>
+                            <div class="text-xs text-on-surface-variant">Publicado · Eng. Produção · Essencial</div>
+                        </div>
+                        <span class="text-xs text-on-surface-variant whitespace-nowrap">10 abr</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Próximos passos -->
+            <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-6">
+                <h2 class="font-bold font-headline text-lg mb-5">Próximos passos</h2>
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3 p-3 rounded-xl bg-amber-100 border border-amber-200">
+                        <span class="material-symbols-outlined text-amber-500 text-[20px] mt-0.5">warning</span>
                         <div>
-                            <label class="block text-sm font-bold text-on-surface mb-2">Título do Material</label>
-                            <input type="text" placeholder="Ex: Gestão da Produção - Aula 01" class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                            <div class="text-sm font-bold text-on-surface">Perfil incompleto</div>
+                            <div class="text-xs text-on-surface-variant mt-0.5">Adicione bio e foto para aparecer no acervo público.</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low border border-surface-container">
+                        <span class="material-symbols-outlined text-primary text-[20px] mt-0.5">add_circle</span>
+                        <div>
+                            <div class="text-sm font-bold text-on-surface">Publique sua 2ª aula</div>
+                            <div class="text-xs text-on-surface-variant mt-0.5">Professores com 3+ aulas recebem 20% mais visibilidade.</div>
+                            <button onclick="switchTab('nova-aula')" class="text-xs text-primary font-bold mt-2 hover:underline">Criar agora</button>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low border border-surface-container">
+                        <span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">share</span>
+                        <div>
+                            <div class="text-sm font-bold text-on-surface">Compartilhe seu hub</div>
+                            <div class="text-xs text-on-surface-variant mt-0.5">Seu link público: mistudies.com/professor/gabriel</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ TAB 2: MINHAS AULAS ═══ -->
+    <div id="panel-minhas-aulas" class="tab-panel">
+
+        <!-- Toolbar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div class="relative flex-1 max-w-sm">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+                <input type="text" id="aulas-search" oninput="filterAulas()" placeholder="Buscar aulas..."
+                    class="w-full bg-surface-container-low border border-surface-container-high rounded-xl pl-9 pr-4 py-2.5 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+            </div>
+            <div class="flex items-center gap-3">
+                <select id="aulas-filter-status" onchange="filterAulas()"
+                    class="bg-surface-container-low border border-surface-container-high rounded-xl px-3 py-2.5 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors">
+                    <option value="">Todos os status</option>
+                    <option value="publicado">Publicado</option>
+                    <option value="rascunho">Rascunho</option>
+                    <option value="arquivado">Arquivado</option>
+                </select>
+                <button onclick="switchTab('nova-aula')"
+                    class="bg-signature-gradient text-on-primary px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 hover:opacity-90 transition-opacity">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                    Nova aula
+                </button>
+            </div>
+        </div>
+
+        <!-- Aulas list -->
+        <div id="aulas-list" class="space-y-3">
+            <!-- JS renderiza aqui -->
+        </div>
+        <div id="aulas-empty" class="hidden text-center py-16 text-on-surface-variant">
+            <span class="material-symbols-outlined text-5xl mb-4 block">library_books</span>
+            <p class="font-bold">Nenhuma aula encontrada.</p>
+        </div>
+    </div>
+
+    <!-- ═══ TAB 3: NOVA AULA ═══ -->
+    <div id="panel-nova-aula" class="tab-panel">
+        <div class="max-w-3xl">
+            <h2 class="text-2xl font-bold font-headline mb-1">Nova aula</h2>
+            <p class="text-on-surface-variant text-sm mb-8">Preencha os metadados e faça o upload do conteúdo. Após publicar, a aula aparece automaticamente no acervo.</p>
+
+            <form class="space-y-6" onsubmit="return false">
+
+                <!-- Títulos e descrição -->
+                <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-6 space-y-5">
+                    <h3 class="font-bold font-headline text-base">Identidade</h3>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Título da aula *</label>
+                        <input type="text" placeholder="Ex: Gestão de Estoques — Análise ABC"
+                            class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Slug (URL) *</label>
+                        <div class="flex items-center gap-2 bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3">
+                            <span class="text-sm text-on-surface-variant whitespace-nowrap">/acervo/</span>
+                            <input type="text" placeholder="gestao-estoques-analise-abc"
+                                class="flex-1 bg-transparent text-sm text-on-surface focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Descrição curta *</label>
+                        <textarea rows="3" placeholder="2–3 linhas sobre o que o aluno vai aprender."
+                            class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Taxonomia -->
+                <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-6 space-y-5">
+                    <h3 class="font-bold font-headline text-base">Taxonomia</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-sm font-bold text-on-surface mb-2">Grande Área *</label>
+                            <select id="form-area" onchange="cascadeMateria()"
+                                class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors">
+                                <option value="">Selecione...</option>
+                                <option value="engprod">Engenharia de Produção</option>
+                                <option value="administracao">Administração</option>
+                                <option value="direito">Direito</option>
+                                <option value="ti">T.I. e Tecnologia</option>
+                            </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-on-surface mb-2">Categoria</label>
-                            <select class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
-                                <option>Resumo Estruturado</option>
-                                <option>Apresentação / Slide (OEE)</option>
-                                <option>Lista de Exercícios</option>
-                                <option>Documentação do Projeto</option>
+                            <label class="block text-sm font-bold text-on-surface mb-2">Matéria *</label>
+                            <select id="form-materia"
+                                class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors">
+                                <option value="">Selecione a área primeiro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-on-surface mb-2">Formato *</label>
+                            <select class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors">
+                                <option>Resumo</option>
+                                <option>Aula</option>
+                                <option>Slide</option>
+                                <option>Masterclass</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-on-surface mb-2">Tier *</label>
+                            <select class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors">
+                                <option>Essencial — R$40/aula</option>
+                                <option>Pro — R$75/aula</option>
+                                <option>Full Studio — R$100/aula</option>
                             </select>
                         </div>
                     </div>
-
-                    <!-- Description -->
                     <div>
-                        <label class="block text-sm font-bold text-on-surface mb-2">Descrição Curta</label>
-                        <textarea rows="3" placeholder="Insira uma breve descrição sobre o que os estudantes vão encontrar neste arquivo." class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"></textarea>
-                    </div>
-
-                    <!-- Drag and Drop Zone -->
-                    <div class="relative border-2 border-dashed border-primary/40 rounded-2xl p-12 text-center bg-primary-container/5 hover:bg-primary-container/10 transition-colors cursor-pointer group">
-                        <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                        <span class="material-symbols-outlined text-5xl text-primary mb-4 group-hover:-translate-y-1 transition-transform">cloud_upload</span>
-                        <h3 class="text-lg font-bold text-primary mb-2 font-headline">Arraste seu arquivo ou clique aqui</h3>
-                        <p class="text-sm text-on-surface-variant">Suporta PDFs, HTML (Apresentações), ZIPs e DOCX. Máx 50MB.</p>
-                    </div>
-
-                    <!-- Tags -->
-                    <div>
-                        <label class="block text-sm font-bold text-on-surface mb-2">Tags do Assunto</label>
-                        <input type="text" placeholder="Engenharia, Produção, Lean (Separe por vírgulas)" class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="pt-4 flex justify-end gap-4">
-                        <button type="button" class="px-6 py-3 rounded-xl font-bold text-on-surface-variant hover:bg-surface-container-high transition-colors">Cancelar</button>
-                        <button type="button" class="bg-signature-gradient text-on-primary px-8 py-3 rounded-xl font-bold shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">backup</span>
-                            Publicar Conteúdo
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Lateral Panel -->
-        <div class="space-y-8">
-            <!-- Estatísticas -->
-            <div class="bg-primary text-on-primary rounded-3xl p-8 bg-signature-gradient shadow-md">
-                <h3 class="text-lg font-bold font-headline mb-6 opacity-90">Métricas Gerais</h3>
-                <div class="space-y-6">
-                    <div>
-                        <div class="text-4xl font-black font-headline mb-1">14</div>
-                        <div class="text-sm opacity-80 uppercase tracking-wider font-bold">Materiais Ativos</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-black font-headline mb-1">2.3k</div>
-                        <div class="text-sm opacity-80 uppercase tracking-wider font-bold">Visualizações (Mês)</div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Tags (separadas por vírgula)</label>
+                        <input type="text" placeholder="lean, estoques, logística, curva ABC"
+                            class="w-full bg-surface-container-low border border-surface-container-high rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
                     </div>
                 </div>
-            </div>
 
-            <!-- Últimos Uploads -->
-            <div class="bg-surface-container-lowest border border-surface-container shadow-sm p-8 rounded-3xl">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="font-bold font-headline text-lg">Enviados Recentemente</h3>
-                    <button class="text-primary hover:bg-primary-container/20 p-2 rounded-full transition-colors flex items-center justify-center">
-                        <span class="material-symbols-outlined text-sm">more_horiz</span>
+                <!-- Acesso e arquivo -->
+                <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-6 space-y-5">
+                    <h3 class="font-bold font-headline text-base">Arquivo e acesso</h3>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Privacidade</label>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <label class="flex items-center gap-3 flex-1 p-4 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer">
+                                <input type="radio" name="privacidade" value="publico" checked class="accent-primary">
+                                <div>
+                                    <div class="text-sm font-bold text-on-surface">Público</div>
+                                    <div class="text-xs text-on-surface-variant">Visível no acervo para todos</div>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 flex-1 p-4 rounded-xl border border-surface-container-high cursor-pointer hover:border-primary/40 transition-colors">
+                                <input type="radio" name="privacidade" value="assinantes" class="accent-primary">
+                                <div>
+                                    <div class="text-sm font-bold text-on-surface">Assinantes</div>
+                                    <div class="text-xs text-on-surface-variant">Apenas alunos com plano ativo</div>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 flex-1 p-4 rounded-xl border border-surface-container-high cursor-pointer hover:border-primary/40 transition-colors">
+                                <input type="radio" name="privacidade" value="privado" class="accent-primary">
+                                <div>
+                                    <div class="text-sm font-bold text-on-surface">Privado</div>
+                                    <div class="text-xs text-on-surface-variant">Somente você</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Upload do arquivo HTML</label>
+                        <div class="relative border-2 border-dashed border-primary/30 rounded-2xl p-10 text-center bg-primary/3 hover:bg-primary/5 transition-colors cursor-pointer group">
+                            <input type="file" accept=".html,.htm,.zip" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"/>
+                            <span class="material-symbols-outlined text-4xl text-primary/60 mb-3 group-hover:scale-110 transition-transform block">cloud_upload</span>
+                            <p class="text-sm font-bold text-primary">Arraste ou clique para selecionar</p>
+                            <p class="text-xs text-on-surface-variant mt-1">HTML, ZIP · Máx. 50 MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="switchTab('minhas-aulas')"
+                        class="px-6 py-3 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="button"
+                        class="px-6 py-3 rounded-xl font-bold text-sm border border-surface-container-high text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">draft</span>
+                        Salvar rascunho
+                    </button>
+                    <button type="submit"
+                        class="bg-signature-gradient text-on-primary px-8 py-3 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">publish</span>
+                        Publicar aula
                     </button>
                 </div>
-                
-                <div class="space-y-4">
-                    <!-- Item -->
-                    <div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-xl border border-surface-container hover:border-primary/30 transition-colors cursor-pointer">
-                        <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface flex-shrink-0">
-                            <span class="material-symbols-outlined text-xl">description</span>
-                        </div>
-                        <div class="flex-1 overflow-hidden">
-                            <h4 class="font-bold text-sm truncate">TPM e OEE - Aula Completa</h4>
-                            <p class="text-xs text-on-surface-variant truncate">Enviado hoje, 14:30</p>
-                        </div>
-                        <button class="text-neutral-500 hover:text-primary transition-colors">
-                            <span class="material-symbols-outlined text-sm">edit</span>
-                        </button>
-                    </div>
-
-                    <!-- Item -->
-                    <div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-xl border border-surface-container hover:border-primary/30 transition-colors cursor-pointer">
-                        <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface flex-shrink-0">
-                            <span class="material-symbols-outlined text-xl">picture_as_pdf</span>
-                        </div>
-                        <div class="flex-1 overflow-hidden">
-                            <h4 class="font-bold text-sm truncate">Escopo PI - Engenharia</h4>
-                            <p class="text-xs text-on-surface-variant truncate">Enviado ontem</p>
-                        </div>
-                        <button class="text-neutral-500 hover:text-primary transition-colors">
-                            <span class="material-symbols-outlined text-sm">edit</span>
-                        </button>
-                    </div>
-
-                    <!-- Item -->
-                    <div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-xl border border-surface-container hover:border-primary/30 transition-colors cursor-pointer">
-                        <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-primary flex-shrink-0">
-                            <span class="material-symbols-outlined text-xl">slideshow</span>
-                        </div>
-                        <div class="flex-1 overflow-hidden">
-                            <h4 class="font-bold text-sm truncate">OEE - Apresentação Dinâmica</h4>
-                            <p class="text-xs text-on-surface-variant truncate">Enviado dia 10</p>
-                        </div>
-                        <button class="text-neutral-500 hover:text-primary transition-colors">
-                            <span class="material-symbols-outlined text-sm">edit</span>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
+            </form>
         </div>
     </div>
+
 </main>
+
+<script>
+// ── Tab switching ──────────────────────────────────────────────
+function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+}
+
+// ── Aulas data (espelho do acervo.html para MVP) ───────────────
+const AULAS = [
+    {
+        slug: 'tpm-e-oee',
+        titulo: 'TPM e OEE — Excelência Operacional',
+        descricao: 'Apresentação interativa com cálculos de OEE, análise das 6 grandes perdas e pilares do TPM.',
+        area: 'Engenharia de Produção',
+        materia: 'Manutenção Industrial',
+        formato: 'Slide',
+        tier: 'Full Studio',
+        privacidade: 'publico',
+        status: 'publicado',
+        data: '2026-04-15',
+        views: 482,
+        arquivo: 'acervo/tpm-e-oee.html'
+    },
+    {
+        slug: 'escopo-engenharia-producao',
+        titulo: 'Escopo da Produção — Visão Geral',
+        descricao: 'Revisão completa do campo da Engenharia de Produção com taxonomia de Bloom e referenciais acadêmicos.',
+        area: 'Engenharia de Produção',
+        materia: 'Fundamentos da Eng. de Produção',
+        formato: 'Masterclass',
+        tier: 'Pro',
+        privacidade: 'publico',
+        status: 'publicado',
+        data: '2026-04-14',
+        views: 391,
+        arquivo: 'acervo/escopo-engenharia-producao.html'
+    },
+    {
+        slug: 'sistemas-de-producao',
+        titulo: 'Sistemas de Produção — Classificações e Modelos',
+        descricao: 'Material técnico sobre layouts, fluxos, 4Vs e espectro de processos produtivos.',
+        area: 'Engenharia de Produção',
+        materia: 'Planejamento e Controle da Produção',
+        formato: 'Aula',
+        tier: 'Essencial',
+        privacidade: 'publico',
+        status: 'publicado',
+        data: '2026-04-10',
+        views: 318,
+        arquivo: 'acervo/sistemas-de-producao.html'
+    }
+];
+
+const TIER_CLASS = { 'Essencial': 'tier-essencial', 'Pro': 'tier-pro', 'Full Studio': 'tier-studio' };
+const STATUS_CLASS = { 'publicado': 'badge-publicado', 'rascunho': 'badge-rascunho', 'arquivado': 'badge-arquivado' };
+
+function renderAulas(list) {
+    const container = document.getElementById('aulas-list');
+    const empty = document.getElementById('aulas-empty');
+    if (!list.length) { container.innerHTML = ''; empty.classList.remove('hidden'); return; }
+    empty.classList.add('hidden');
+    container.innerHTML = list.map(a => `
+        <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-primary/30 transition-colors">
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${TIER_CLASS[a.tier]}">${a.tier}</span>
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${STATUS_CLASS[a.status]}">${a.status}</span>
+                    <span class="text-[11px] text-on-surface-variant">${a.formato}</span>
+                </div>
+                <h3 class="font-bold text-on-surface truncate">${a.titulo}</h3>
+                <p class="text-xs text-on-surface-variant mt-0.5">${a.materia} · ${a.views} views · ${formatDate(a.data)}</p>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <a href="${a.arquivo}" target="_blank"
+                    class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">open_in_new</span> Ver
+                </a>
+                <button class="p-2 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                </button>
+                <button class="p-2 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function formatDate(iso) {
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+}
+
+function filterAulas() {
+    const q = document.getElementById('aulas-search').value.toLowerCase();
+    const status = document.getElementById('aulas-filter-status').value;
+    const filtered = AULAS.filter(a => {
+        const matchQ = !q || a.titulo.toLowerCase().includes(q) || a.materia.toLowerCase().includes(q);
+        const matchS = !status || a.status === status;
+        return matchQ && matchS;
+    });
+    renderAulas(filtered);
+}
+
+// ── Cascading materia select ───────────────────────────────────
+const MATERIAS_BY_AREA = {
+    engprod: ['Fundamentos da Eng. de Produção', 'Planejamento e Controle da Produção', 'Gestão de Qualidade', 'Logística e Cadeia de Suprimentos', 'Manutenção Industrial', 'Ergonomia e Segurança do Trabalho'],
+    administracao: ['Administração Geral', 'Gestão Financeira', 'Marketing', 'Recursos Humanos', 'Gestão de Projetos'],
+    direito: ['Direito Civil', 'Direito Trabalhista', 'Direito Empresarial', 'Direito Constitucional'],
+    ti: ['Programação', 'Banco de Dados', 'Redes e Infraestrutura', 'Segurança da Informação']
+};
+
+function cascadeMateria() {
+    const area = document.getElementById('form-area').value;
+    const sel = document.getElementById('form-materia');
+    if (!area) { sel.innerHTML = '<option value="">Selecione a área primeiro</option>'; return; }
+    sel.innerHTML = '<option value="">Selecione...</option>' +
+        (MATERIAS_BY_AREA[area] || []).map(m => `<option>${m}</option>`).join('');
+}
+
+// ── Init ──────────────────────────────────────────────────────
+renderAulas(AULAS);
+</script>
 
 </body>
 </html>

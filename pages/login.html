@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Entrar — MiStudies</title>
+    <meta name="description" content="Acesse sua conta no MiStudies.">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#0032b5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0344ec",
+                        "secondary": "#006a6a",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#454652",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline": "#757684",
+                        "error": "#ba1a1a"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .bg-signature-gradient { background: linear-gradient(135deg, #0032b5 0%, #0344ec 100%); }
+        .input-field {
+            width: 100%;
+            background: #f3f4f5;
+            border: 1px solid #e7e8e9;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #191c1d;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: #0032b5;
+            box-shadow: 0 0 0 3px rgba(0,50,181,0.1);
+        }
+    </style>
+</head>
+<body class="bg-surface min-h-screen flex flex-col">
+
+<!-- Minimal nav -->
+<nav class="w-full px-8 py-5 flex justify-between items-center">
+    <a href="../index.html" class="text-xl font-black text-primary tracking-tighter font-headline">MiStudies</a>
+    <span class="text-sm text-on-surface-variant">Não tem conta?
+        <a href="cadastro.html" class="text-primary font-bold hover:underline">Criar conta</a>
+    </span>
+</nav>
+
+<!-- Content -->
+<div class="flex flex-1 items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+
+        <!-- Card -->
+        <div class="bg-surface-container-lowest border border-surface-container rounded-3xl p-8 shadow-sm">
+
+            <div class="mb-8">
+                <h1 class="text-2xl font-extrabold font-headline text-on-surface mb-1">Entrar</h1>
+                <p class="text-sm text-on-surface-variant">Bem-vindo de volta.</p>
+            </div>
+
+            <form class="space-y-5" onsubmit="handleLogin(event)">
+
+                <div>
+                    <label class="block text-sm font-bold text-on-surface mb-2">E-mail</label>
+                    <input type="email" id="login-email" placeholder="seu@email.com"
+                        class="input-field" autocomplete="email" required>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-bold text-on-surface">Senha</label>
+                        <a href="#" class="text-xs text-primary hover:underline">Esqueci minha senha</a>
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="login-senha" placeholder="••••••••"
+                            class="input-field pr-12" autocomplete="current-password" required>
+                        <button type="button" onclick="toggleSenha('login-senha', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="login-error" class="hidden text-sm text-error bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">error</span>
+                    <span id="login-error-msg">E-mail ou senha incorretos.</span>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-signature-gradient text-on-primary py-3.5 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all">
+                    Entrar
+                </button>
+
+            </form>
+
+            <div class="my-6 flex items-center gap-3">
+                <div class="flex-1 h-px bg-surface-container-highest"></div>
+                <span class="text-xs text-on-surface-variant">ou continue com</span>
+                <div class="flex-1 h-px bg-surface-container-highest"></div>
+            </div>
+
+            <!-- Social placeholder -->
+            <button disabled
+                class="w-full flex items-center justify-center gap-3 border border-surface-container-high rounded-xl py-3 text-sm font-bold text-on-surface-variant bg-surface-container-low cursor-not-allowed opacity-60">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                Entrar com Google <span class="text-xs font-normal">(em breve)</span>
+            </button>
+
+        </div>
+
+        <p class="text-center text-xs text-on-surface-variant mt-6">
+            Não tem conta?
+            <a href="cadastro.html" class="text-primary font-bold hover:underline">Criar conta gratuita</a>
+        </p>
+
+    </div>
+</div>
+
+<script>
+function toggleSenha(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+    } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+    }
+}
+
+function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const senha = document.getElementById('login-senha').value;
+    const errBox = document.getElementById('login-error');
+
+    // MVP: simula validação — redireciona para dashboard
+    if (email && senha.length >= 6) {
+        errBox.classList.add('hidden');
+        window.location.href = 'dashboard.html';
+    } else {
+        errBox.classList.remove('hidden');
+        document.getElementById('login-error-msg').textContent = 'Senha deve ter pelo menos 6 caracteres.';
+    }
+}
+</script>
+
+</body>
+</html>

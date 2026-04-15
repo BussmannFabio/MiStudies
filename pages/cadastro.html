@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Criar conta — MiStudies</title>
+    <meta name="description" content="Crie sua conta no MiStudies como professor ou aluno.">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#0032b5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0344ec",
+                        "secondary": "#006a6a",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#454652",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline": "#757684",
+                        "error": "#ba1a1a"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .bg-signature-gradient { background: linear-gradient(135deg, #0032b5 0%, #0344ec 100%); }
+        .input-field {
+            width: 100%;
+            background: #f3f4f5;
+            border: 1px solid #e7e8e9;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #191c1d;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: #0032b5;
+            box-shadow: 0 0 0 3px rgba(0,50,181,0.1);
+        }
+
+        /* Tipo card */
+        .tipo-card { cursor: pointer; border: 2px solid #e7e8e9; border-radius: 1rem; padding: 1.25rem; transition: all 0.15s; }
+        .tipo-card:hover { border-color: #0032b5; background: rgba(0,50,181,0.03); }
+        .tipo-card.selected { border-color: #0032b5; background: rgba(0,50,181,0.06); }
+        .tipo-card input[type="radio"] { display: none; }
+
+        /* Step indicator */
+        .step-dot { width: 8px; height: 8px; border-radius: 9999px; background: #e1e3e4; transition: background 0.2s; }
+        .step-dot.active { background: #0032b5; }
+        .step-dot.done { background: #006a6a; }
+    </style>
+</head>
+<body class="bg-surface min-h-screen flex flex-col">
+
+<!-- Minimal nav -->
+<nav class="w-full px-8 py-5 flex justify-between items-center">
+    <a href="../index.html" class="text-xl font-black text-primary tracking-tighter font-headline">MiStudies</a>
+    <span class="text-sm text-on-surface-variant">Já tem conta?
+        <a href="login.html" class="text-primary font-bold hover:underline">Entrar</a>
+    </span>
+</nav>
+
+<!-- Content -->
+<div class="flex flex-1 items-center justify-center px-4 py-12">
+    <div class="w-full max-w-lg">
+
+        <!-- Step indicator -->
+        <div class="flex items-center justify-center gap-2 mb-8">
+            <div class="step-dot active" id="dot-1"></div>
+            <div class="step-dot" id="dot-2"></div>
+            <div class="step-dot" id="dot-3"></div>
+        </div>
+
+        <!-- STEP 1: Tipo de conta -->
+        <div id="step-1" class="bg-surface-container-lowest border border-surface-container rounded-3xl p-8 shadow-sm">
+            <div class="mb-6">
+                <h1 class="text-2xl font-extrabold font-headline text-on-surface mb-1">Criar conta</h1>
+                <p class="text-sm text-on-surface-variant">Qual é o seu perfil no MiStudies?</p>
+            </div>
+
+            <div class="space-y-3 mb-8">
+                <label class="tipo-card flex items-start gap-4 selected" id="card-professor" onclick="selectTipo('professor')">
+                    <input type="radio" name="tipo" value="professor" checked>
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span class="material-symbols-outlined text-primary text-[20px]">school</span>
+                    </div>
+                    <div>
+                        <div class="font-bold text-on-surface">Professor / Educador</div>
+                        <div class="text-xs text-on-surface-variant mt-0.5">Crie e publique aulas, gerencie seu acervo e alcance alunos no MiStudies.</div>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-[11px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold">Dashboard</span>
+                            <span class="text-[11px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold">Upload de aulas</span>
+                            <span class="text-[11px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold">Perfil público</span>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="tipo-card flex items-start gap-4" id="card-aluno" onclick="selectTipo('aluno')">
+                    <input type="radio" name="tipo" value="aluno">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span class="material-symbols-outlined text-secondary text-[20px]">menu_book</span>
+                    </div>
+                    <div>
+                        <div class="font-bold text-on-surface">Aluno / Estudante</div>
+                        <div class="text-xs text-on-surface-variant mt-0.5">Acesse o acervo de aulas, salve favoritos e acompanhe seu progresso.</div>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-[11px] px-2 py-0.5 bg-secondary/10 text-secondary rounded-full font-bold">Acervo gratuito</span>
+                            <span class="text-[11px] px-2 py-0.5 bg-secondary/10 text-secondary rounded-full font-bold">Favoritos</span>
+                            <span class="text-[11px] px-2 py-0.5 bg-secondary/10 text-secondary rounded-full font-bold">R$14,90/mês Premium</span>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <button onclick="goStep(2)"
+                class="w-full bg-signature-gradient text-on-primary py-3.5 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all">
+                Continuar
+            </button>
+        </div>
+
+        <!-- STEP 2: Dados básicos -->
+        <div id="step-2" class="hidden bg-surface-container-lowest border border-surface-container rounded-3xl p-8 shadow-sm">
+            <div class="mb-6">
+                <button onclick="goStep(1)" class="text-sm text-on-surface-variant hover:text-primary mb-4 flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span> Voltar
+                </button>
+                <h2 class="text-2xl font-extrabold font-headline text-on-surface mb-1">Seus dados</h2>
+                <p class="text-sm text-on-surface-variant" id="step2-subtitle">Informe seus dados para criar a conta de professor.</p>
+            </div>
+
+            <form class="space-y-4" onsubmit="goStep(3); return false;">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Nome *</label>
+                        <input type="text" id="cad-nome" placeholder="Gabriel" class="input-field" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Sobrenome *</label>
+                        <input type="text" id="cad-sobrenome" placeholder="Ferreira" class="input-field" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-on-surface mb-2">E-mail *</label>
+                    <input type="email" id="cad-email" placeholder="seu@email.com" class="input-field" autocomplete="email" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-on-surface mb-2">Senha *</label>
+                    <div class="relative">
+                        <input type="password" id="cad-senha" placeholder="Mínimo 8 caracteres" class="input-field pr-12" required minlength="8">
+                        <button type="button" onclick="toggleSenha('cad-senha', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Extra fields for professor -->
+                <div id="campos-professor" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Área de atuação *</label>
+                        <select class="input-field">
+                            <option value="">Selecione...</option>
+                            <option>Engenharia de Produção</option>
+                            <option>Administração</option>
+                            <option>Direito</option>
+                            <option>T.I. e Tecnologia</option>
+                            <option>Exatas e Matemática</option>
+                            <option>Humanas e Sociais</option>
+                            <option>Outra</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Instituição (opcional)</label>
+                        <input type="text" placeholder="Universidade, escola ou empresa" class="input-field">
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-signature-gradient text-on-primary py-3.5 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all mt-2">
+                    Continuar
+                </button>
+            </form>
+        </div>
+
+        <!-- STEP 3: Confirmação -->
+        <div id="step-3" class="hidden bg-surface-container-lowest border border-surface-container rounded-3xl p-8 shadow-sm text-center">
+            <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                <span class="material-symbols-outlined text-secondary text-4xl">check_circle</span>
+            </div>
+            <h2 class="text-2xl font-extrabold font-headline text-on-surface mb-2">Conta criada!</h2>
+            <p class="text-sm text-on-surface-variant mb-2">Bem-vindo ao MiStudies, <strong id="confirm-nome">professor</strong>.</p>
+            <p class="text-sm text-on-surface-variant mb-8" id="confirm-msg">Sua conta de professor está pronta. Agora você pode publicar suas primeiras aulas.</p>
+
+            <div class="flex flex-col gap-3">
+                <a href="dashboard.html"
+                    class="w-full bg-signature-gradient text-on-primary py-3.5 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all block text-center">
+                    Ir para o Dashboard
+                </a>
+                <a href="acervo.html"
+                    class="w-full border border-surface-container-high text-on-surface py-3.5 rounded-xl font-bold text-sm hover:bg-surface-container-low transition-colors block text-center">
+                    Explorar o Acervo
+                </a>
+            </div>
+        </div>
+
+        <p class="text-center text-xs text-on-surface-variant mt-6">
+            Ao criar conta você concorda com os
+            <a href="#" class="text-primary hover:underline">Termos de Uso</a> e
+            <a href="#" class="text-primary hover:underline">Política de Privacidade</a>.
+        </p>
+
+    </div>
+</div>
+
+<script>
+let tipoSelecionado = 'professor';
+
+function selectTipo(tipo) {
+    tipoSelecionado = tipo;
+    document.getElementById('card-professor').classList.toggle('selected', tipo === 'professor');
+    document.getElementById('card-aluno').classList.toggle('selected', tipo === 'aluno');
+}
+
+function goStep(n) {
+    [1, 2, 3].forEach(i => {
+        document.getElementById('step-' + i).classList.add('hidden');
+        const dot = document.getElementById('dot-' + i);
+        dot.classList.remove('active', 'done');
+        if (i < n) dot.classList.add('done');
+        if (i === n) dot.classList.add('active');
+    });
+    document.getElementById('step-' + n).classList.remove('hidden');
+
+    if (n === 2) {
+        const isPro = tipoSelecionado === 'professor';
+        document.getElementById('step2-subtitle').textContent =
+            isPro ? 'Informe seus dados para criar a conta de professor.'
+                  : 'Informe seus dados para criar a conta de aluno.';
+        document.getElementById('campos-professor').style.display = isPro ? '' : 'none';
+    }
+
+    if (n === 3) {
+        const nome = document.getElementById('cad-nome').value || tipoSelecionado;
+        document.getElementById('confirm-nome').textContent = nome;
+        document.getElementById('confirm-msg').textContent = tipoSelecionado === 'professor'
+            ? 'Sua conta de professor está pronta. Agora você pode publicar suas primeiras aulas.'
+            : 'Sua conta de aluno está pronta. Explore o acervo e comece a estudar.';
+    }
+}
+
+function toggleSenha(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+    } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+    }
+}
+</script>
+
+</body>
+</html>

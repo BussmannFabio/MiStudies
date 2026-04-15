@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Prof. Gabriel Ferreira — MiStudies</title>
+    <meta name="description" content="Perfil público de Gabriel Ferreira no MiStudies. Aulas de Engenharia de Produção.">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#0032b5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0344ec",
+                        "on-primary-container": "#c8d0ff",
+                        "secondary": "#006a6a",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#90efef",
+                        "on-secondary-container": "#006e6e",
+                        "tertiary": "#2b3b8d",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#454652",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline": "#757684"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .bg-signature-gradient { background: linear-gradient(135deg, #0032b5 0%, #0344ec 100%); }
+        .tier-essencial { background:#e0f2fe; color:#0369a1; }
+        .tier-pro       { background:#ede9fe; color:#6d28d9; }
+        .tier-studio    { background:#fef3c7; color:#b45309; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+
+<!-- Nav -->
+<nav class="fixed top-0 w-full z-50 glass-nav bg-surface/70 border-b border-surface-container-high">
+    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+        <a href="../../index.html" class="text-2xl font-black text-primary tracking-tighter font-headline">MiStudies</a>
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="../acervo.html">Acervo</a>
+            <a class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors" href="../planos-precos.html">Planos</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="../login.html" class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors px-4 py-2">Entrar</a>
+            <a href="../cadastro.html" class="bg-signature-gradient text-on-primary px-5 py-2 rounded-lg font-semibold text-sm transition-all hover:opacity-90">Criar conta</a>
+        </div>
+    </div>
+</nav>
+
+<main class="pt-20">
+
+    <!-- Hero do professor -->
+    <section class="bg-surface-container-low border-b border-surface-container py-12 px-8">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-8">
+
+            <!-- Avatar -->
+            <div class="relative flex-shrink-0">
+                <div class="w-24 h-24 rounded-3xl bg-signature-gradient flex items-center justify-center text-on-primary text-4xl font-black font-headline shadow-lg">
+                    G
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary rounded-full border-2 border-surface-container-low flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-secondary text-[12px]">verified</span>
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-secondary bg-secondary/10 px-3 py-1 rounded-full">Professor</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">Eng. de Produção</span>
+                </div>
+                <h1 class="text-3xl font-extrabold font-headline text-on-surface">Gabriel Ferreira</h1>
+                <p class="text-on-surface-variant mt-1 text-sm max-w-xl">
+                    Especialista em Engenharia de Produção. Produz materiais didáticos estruturados com foco em clareza conceitual, taxonomia de Bloom e aplicação prática.
+                </p>
+                <div class="flex flex-wrap gap-6 mt-4 text-sm">
+                    <div class="flex items-center gap-1.5 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[16px]">library_books</span>
+                        <strong class="text-on-surface">3</strong> aulas publicadas
+                    </div>
+                    <div class="flex items-center gap-1.5 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                        <strong class="text-on-surface">1.2k</strong> visualizações
+                    </div>
+                    <div class="flex items-center gap-1.5 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[16px]">group</span>
+                        <strong class="text-on-surface">47</strong> alunos
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <a href="../cadastro.html"
+                class="flex-shrink-0 bg-signature-gradient text-on-primary px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all">
+                Seguir professor
+            </a>
+        </div>
+    </section>
+
+    <!-- Aulas do professor -->
+    <section class="py-12 px-8">
+        <div class="max-w-4xl mx-auto">
+
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-extrabold font-headline text-on-surface">Aulas publicadas</h2>
+                <a href="../acervo.html?prof=gabriel" class="text-sm text-primary font-bold hover:underline flex items-center gap-1">
+                    Ver no acervo <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+                </a>
+            </div>
+
+            <div class="space-y-4" id="prof-aulas">
+                <!-- Renderizado via JS -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section class="py-12 px-8 bg-surface-container-low border-t border-surface-container">
+        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
+            <div>
+                <h2 class="text-xl font-extrabold font-headline mb-4">Sobre</h2>
+                <p class="text-on-surface-variant leading-relaxed text-sm">
+                    Gabriel produz conteúdos de Engenharia de Produção com foco em quem aprende melhor
+                    com estrutura e método. Cada material parte de um problema real, organiza os conceitos
+                    em hierarquia lógica e termina com exercícios de fixação.
+                </p>
+                <p class="text-on-surface-variant leading-relaxed text-sm mt-3">
+                    Seus materiais são usados em cursos de graduação e pós-graduação em engenharia, com
+                    referências acadêmicas e aplicação prática integrada.
+                </p>
+            </div>
+            <div>
+                <h2 class="text-xl font-extrabold font-headline mb-4">Áreas de ensino</h2>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-bold text-on-surface">Planejamento e Controle da Produção</span>
+                    <span class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-bold text-on-surface">Manutenção Industrial</span>
+                    <span class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-bold text-on-surface">Sistemas de Produção</span>
+                    <span class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-bold text-on-surface">Gestão de Qualidade</span>
+                    <span class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-bold text-on-surface">Logística</span>
+                </div>
+
+                <h2 class="text-xl font-extrabold font-headline mt-8 mb-4">Plano ativo</h2>
+                <div class="bg-surface-container-lowest border border-surface-container rounded-2xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="material-symbols-outlined text-primary text-[20px]">workspace_premium</span>
+                        <span class="font-bold text-on-surface">Branded — R$500 onboarding</span>
+                    </div>
+                    <p class="text-xs text-on-surface-variant">Aulas com identidade visual personalizada, página pública e hub próprio no MiStudies.</p>
+                    <a href="../planos-precos.html" class="text-xs text-primary font-bold mt-3 block hover:underline">Conheça os planos →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-surface-container py-8 px-8">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant">
+        <span class="font-bold text-on-surface font-headline">MiStudies</span>
+        <span>© 2026 MiStudies — Seu estudo, bem resolvido.</span>
+    </div>
+</footer>
+
+<script>
+const AULAS = [
+    {
+        slug: '../acervo/tpm-e-oee.html',
+        titulo: 'TPM e OEE — Excelência Operacional',
+        descricao: 'Apresentação interativa com cálculos de OEE, análise das 6 grandes perdas e pilares do TPM.',
+        materia: 'Manutenção Industrial',
+        formato: 'Slide',
+        tier: 'Full Studio',
+        data: '2026-04-15',
+        views: 482
+    },
+    {
+        slug: '../acervo/escopo-engenharia-producao.html',
+        titulo: 'Escopo da Produção — Visão Geral',
+        descricao: 'Revisão completa do campo com taxonomia de Bloom e referenciais acadêmicos.',
+        materia: 'Fundamentos da Eng. de Produção',
+        formato: 'Masterclass',
+        tier: 'Pro',
+        data: '2026-04-14',
+        views: 391
+    },
+    {
+        slug: '../acervo/sistemas-de-producao.html',
+        titulo: 'Sistemas de Produção — Classificações e Modelos',
+        descricao: 'Layouts, fluxos, 4Vs e espectro de processos produtivos com exercícios.',
+        materia: 'Planejamento e Controle da Produção',
+        formato: 'Aula',
+        tier: 'Essencial',
+        data: '2026-04-10',
+        views: 318
+    }
+];
+
+const TIER_CLASS = { 'Essencial': 'tier-essencial', 'Pro': 'tier-pro', 'Full Studio': 'tier-studio' };
+
+function formatDate(iso) {
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+}
+
+document.getElementById('prof-aulas').innerHTML = AULAS.map(a => `
+    <a href="${a.slug}" class="flex items-start gap-5 bg-surface-container-lowest border border-surface-container rounded-2xl p-5 hover:border-primary/30 hover:shadow-sm transition-all group">
+        <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="material-symbols-outlined text-on-surface-variant text-[18px]">article</span>
+        </div>
+        <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap gap-2 mb-1.5">
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${TIER_CLASS[a.tier]}">${a.tier}</span>
+                <span class="text-[11px] text-on-surface-variant">${a.formato}</span>
+            </div>
+            <h3 class="font-bold text-on-surface group-hover:text-primary transition-colors">${a.titulo}</h3>
+            <p class="text-xs text-on-surface-variant mt-1 line-clamp-2">${a.descricao}</p>
+            <div class="flex gap-4 mt-2 text-xs text-on-surface-variant">
+                <span>${a.materia}</span>
+                <span>${a.views} views</span>
+                <span>${formatDate(a.data)}</span>
+            </div>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[18px] mt-1 transition-colors flex-shrink-0">arrow_forward</span>
+    </a>
+`).join('');
+</script>
+
+</body>
+</html>
