@@ -6,6 +6,7 @@
 <title>Simulador de Rentabilidade — MiStudies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -322,6 +323,142 @@ table.proj .td-muted  { color: var(--muted); }
 .footer { background: var(--bg-mid); border-top: 1px solid var(--border); padding: 16px 32px; font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .footer a { color: var(--amber); text-decoration: none; }
 
+/* ── ★ MRR HIGHLIGHT CARD ── */
+.mrr-card {
+  background: linear-gradient(135deg, #0E1A2B 0%, #1A2840 100%);
+  border: 1px solid rgba(167,139,250,.25);
+  border-radius: var(--radius); padding: 20px;
+  margin-bottom: 28px; position: relative; overflow: hidden;
+}
+.mrr-card::before {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 180px; height: 180px; border-radius: 50%;
+  background: var(--purple); opacity: .06;
+}
+.mrr-card-title {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--purple); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.mrr-streams { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.mrr-stream {
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07);
+  border-radius: 8px; padding: 14px;
+}
+.mrr-stream-title { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.4); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.mrr-stream-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12.5px; color: rgba(255,255,255,.6);
+  padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.mrr-stream-row:last-child { border-bottom: none; }
+.mrr-stream-val { font-family: var(--font-mono); font-weight: 600; }
+.mrr-totals {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+  padding-top: 14px; border-top: 1px solid rgba(255,255,255,.07);
+}
+.mrr-kpi { text-align: center; }
+.mrr-kpi-val { font-family: var(--font-mono); font-size: 1.15rem; font-weight: 600; }
+.mrr-kpi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 2px; }
+.mrr-bar-wrap { margin-top: 12px; }
+.mrr-bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+.mrr-stacked-bar { height: 10px; border-radius: 5px; background: rgba(255,255,255,.05); overflow: hidden; display: flex; }
+.mrr-seg { height: 100%; transition: width .5s cubic-bezier(.16,1,.3,1); }
+.mrr-seg-hubs   { background: var(--green); }
+.mrr-seg-alunos { background: var(--blue); }
+.mrr-seg-onb    { background: var(--amber); }
+.mrr-seg-aulas  { background: var(--purple); }
+.mrr-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.mrr-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+.mrr-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── ★ CHART CARD ── */
+.chart-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 28px;
+}
+.chart-card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.chart-card-title { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.chart-type-btns { display: flex; gap: 6px; }
+.chart-type-btn {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  color: var(--muted); font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: all var(--t);
+}
+.chart-type-btn.active { background: var(--amber-lt); border-color: rgba(230,162,30,.3); color: var(--amber); }
+.chart-canvas-wrap { position: relative; height: 260px; }
+
+/* ── ★ SALVAR SIMULAÇÃO ── */
+.save-bar {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 28px;
+}
+.save-bar-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.save-bar-title { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.save-bar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.save-btn {
+  background: var(--amber-lt); border: 1px solid rgba(230,162,30,.35);
+  color: var(--amber); font-family: var(--font-sans); font-size: 12px; font-weight: 700;
+  padding: 7px 14px; border-radius: 7px; cursor: pointer; transition: all var(--t);
+}
+.save-btn:hover { background: rgba(230,162,30,.2); }
+.export-btn {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  color: var(--muted); font-family: var(--font-sans); font-size: 12px; font-weight: 600;
+  padding: 7px 14px; border-radius: 7px; cursor: pointer; transition: all var(--t);
+}
+.export-btn:hover { background: rgba(255,255,255,.08); color: var(--text); }
+.saved-sims { display: flex; flex-wrap: wrap; gap: 8px; }
+.saved-chip {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 12px; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  transition: border-color var(--t), background var(--t);
+}
+.saved-chip:hover { border-color: rgba(230,162,30,.4); background: var(--amber-lt); }
+.saved-chip-name { font-size: 12.5px; font-weight: 700; color: var(--text); }
+.saved-chip-meta { font-size: 11px; color: var(--muted); }
+.saved-chip-del { color: var(--red); font-size: 14px; line-height: 1; background: none; border: none; cursor: pointer; opacity: .6; }
+.saved-chip-del:hover { opacity: 1; }
+.saved-empty { font-size: 12.5px; color: var(--muted); font-style: italic; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,.65); align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px; width: 100%; max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+.modal h3 { font-family: var(--font-serif); font-size: 1.25rem; color: var(--text); margin-bottom: 6px; }
+.modal p  { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.modal-input {
+  width: 100%; background: var(--bg-dark); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-sans); font-size: 14px;
+  padding: 10px 12px; border-radius: 7px; outline: none; margin-bottom: 16px;
+  transition: border-color var(--t);
+}
+.modal-input:focus { border-color: var(--amber); }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.modal-cancel {
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  color: var(--muted); font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  padding: 8px 16px; border-radius: 7px; cursor: pointer;
+}
+.modal-save {
+  background: var(--amber); border: none; color: #0C1117;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+  padding: 8px 20px; border-radius: 7px; cursor: pointer;
+  transition: opacity var(--t);
+}
+.modal-save:hover { opacity: .85; }
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
@@ -592,6 +729,52 @@ table.proj .td-muted  { color: var(--muted); }
       </div>
     </div>
 
+    <!-- ★ RECEITA RECORRENTE -->
+    <div class="mrr-card">
+      <div class="mrr-card-title">🔄 Receita Recorrente — Motor de Escala</div>
+      <div class="mrr-streams">
+        <div class="mrr-stream">
+          <div class="mrr-stream-title">🌐 Hub do Professor</div>
+          <div class="mrr-stream-row"><span>Hub Starter</span><span class="mrr-stream-val" style="color:var(--green)" id="mrr-hub-st">R$ 0</span></div>
+          <div class="mrr-stream-row"><span>Hub Pro</span><span class="mrr-stream-val" style="color:var(--green)" id="mrr-hub-pro">R$ 0</span></div>
+          <div class="mrr-stream-row"><span>Hub Institucional</span><span class="mrr-stream-val" style="color:var(--green)" id="mrr-hub-inst">R$ 0</span></div>
+          <div class="mrr-stream-row" style="border-top:1px solid rgba(255,255,255,.08);margin-top:4px;padding-top:6px;font-weight:700">
+            <span style="color:var(--text)">Subtotal hubs</span>
+            <span class="mrr-stream-val" style="color:var(--green)" id="mrr-sub-hubs">R$ 0</span>
+          </div>
+        </div>
+        <div class="mrr-stream">
+          <div class="mrr-stream-title">👩‍🎓 Assinatura de Alunos</div>
+          <div class="mrr-stream-row"><span>Estudante Mensal</span><span class="mrr-stream-val" style="color:var(--blue)" id="mrr-al-men">R$ 0</span></div>
+          <div class="mrr-stream-row"><span>Estudante Anual</span><span class="mrr-stream-val" style="color:var(--blue)" id="mrr-al-anu">R$ 0</span></div>
+          <div class="mrr-stream-row" style="border-top:1px solid rgba(255,255,255,.08);margin-top:4px;padding-top:6px;font-weight:700">
+            <span style="color:var(--text)">Subtotal alunos</span>
+            <span class="mrr-stream-val" style="color:var(--blue)" id="mrr-sub-alunos">R$ 0</span>
+          </div>
+        </div>
+      </div>
+      <div class="mrr-totals">
+        <div class="mrr-kpi"><div class="mrr-kpi-val" style="color:var(--green)" id="mrr-total">R$ 0</div><div class="mrr-kpi-label">MRR Total</div></div>
+        <div class="mrr-kpi"><div class="mrr-kpi-val" style="color:var(--purple)" id="mrr-pct-val">0%</div><div class="mrr-kpi-label">% da Receita</div></div>
+        <div class="mrr-kpi"><div class="mrr-kpi-val" style="color:var(--amber)" id="mrr-arr">R$ 0</div><div class="mrr-kpi-label">ARR estimado</div></div>
+      </div>
+      <div class="mrr-bar-wrap">
+        <div class="mrr-bar-labels"><span>Composição da receita total</span><span id="mrr-bar-legend">—</span></div>
+        <div class="mrr-stacked-bar">
+          <div class="mrr-seg mrr-seg-onb"   id="seg-onb"    style="width:0%"></div>
+          <div class="mrr-seg mrr-seg-aulas"  id="seg-aulas"  style="width:0%"></div>
+          <div class="mrr-seg mrr-seg-hubs"   id="seg-hubs"   style="width:0%"></div>
+          <div class="mrr-seg mrr-seg-alunos" id="seg-alunos" style="width:0%"></div>
+        </div>
+        <div class="mrr-legend">
+          <div class="mrr-legend-item"><div class="mrr-legend-dot" style="background:var(--amber)"></div>Onboarding</div>
+          <div class="mrr-legend-item"><div class="mrr-legend-dot" style="background:var(--purple)"></div>Aulas</div>
+          <div class="mrr-legend-item"><div class="mrr-legend-dot" style="background:var(--green)"></div>Hubs MRR</div>
+          <div class="mrr-legend-item"><div class="mrr-legend-dot" style="background:var(--blue)"></div>Alunos MRR</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Capacidade -->
     <div class="cap-card">
       <div class="cap-title">⏱️ Análise de Capacidade da Equipe</div>
@@ -641,6 +824,34 @@ table.proj .td-muted  { color: var(--muted); }
       </div>
     </div>
 
+    <!-- ★ GRÁFICO DE PROJEÇÃO -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title">📊 Projeção Visual — 6 Meses</div>
+        <div class="chart-type-btns">
+          <button class="chart-type-btn active" id="ct-bar"  onclick="setChartType('bar',this)">Barras</button>
+          <button class="chart-type-btn"        id="ct-line" onclick="setChartType('line',this)">Linhas</button>
+          <button class="chart-type-btn"        id="ct-stack" onclick="setChartType('stack',this)">Empilhado</button>
+          <button class="chart-type-btn"        id="ct-split" onclick="setChartType('split',this)">Pontual vs Rec.</button>
+        </div>
+      </div>
+      <div class="chart-canvas-wrap"><canvas id="proj-chart"></canvas></div>
+    </div>
+
+    <!-- ★ SALVAR SIMULAÇÃO -->
+    <div class="save-bar">
+      <div class="save-bar-top">
+        <div class="save-bar-title">💾 Simulações Salvas</div>
+        <div class="save-bar-actions">
+          <button class="export-btn" onclick="exportCSV()">⬇ Exportar CSV</button>
+          <button class="save-btn"   onclick="openSaveModal()">+ Salvar esta simulação</button>
+        </div>
+      </div>
+      <div class="saved-sims" id="saved-sims">
+        <span class="saved-empty">Nenhuma simulação salva ainda. Ajuste os valores e clique em "Salvar".</span>
+      </div>
+    </div>
+
     <!-- Break-Even -->
     <div class="breakeven-card">
       <div class="be-title">⚖️ Break-Even — Apenas para cobrir os custos fixos</div>
@@ -685,6 +896,19 @@ table.proj .td-muted  { color: var(--muted); }
   </main>
 </div>
 
+<!-- Modal salvar -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>Salvar Simulação</h3>
+    <p>Dê um nome para identificar este cenário. Será salvo no navegador.</p>
+    <input type="text" class="modal-input" id="sim-name-input" placeholder="Ex: Cenário Realista Mês 1" maxlength="50">
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="modal-save"   onclick="saveSimulation()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <footer class="footer">
   <span>MiStudies Simulator · Os valores são estimativas para planejamento.</span>
   <span><a href="../index.html">← Voltar ao Hub</a></span>
@@ -692,7 +916,10 @@ table.proj .td-muted  { color: var(--muted); }
 
 <script>
 // ── STATE ──
-let projMode = 'conservador';
+let projMode   = 'conservador';
+let chartInst  = null;
+let chartType  = 'bar';
+let lastChartData = null;
 
 function g(id) { return parseFloat(document.getElementById(id).value) || 0; }
 function fmtBRL(v) { return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
@@ -818,7 +1045,40 @@ function calc() {
   const mix_avg = 0.4 * preco_ess + 0.4 * preco_pro + 0.2 * preco_pre;
   document.getElementById('meta-mix').textContent = mix_avg > 0 ? Math.ceil(meta_bruto / mix_avg) : '—';
 
-  // Projeção
+  // ── MRR CARD ──
+  const hub_st_v   = g('hub_st_qty')   * g('hub_st_price');
+  const hub_pro_v  = g('hub_pro_qty')  * g('hub_pro_price');
+  const hub_inst_v = g('hub_inst_qty') * g('hub_inst_price');
+  const al_men_v   = g('al_men_qty')   * g('al_men_price');
+  const al_anu_v   = g('al_anu_qty')   * g('al_anu_price');
+  const mrr_hubs   = hub_st_v + hub_pro_v + hub_inst_v;
+  const mrr_alunos = al_men_v + al_anu_v;
+  const mrr_total  = mrr_hubs + mrr_alunos;
+  const mrr_pct2   = bruto > 0 ? (mrr_total / bruto * 100) : 0;
+
+  document.getElementById('mrr-hub-st').textContent    = fmtBRL(hub_st_v);
+  document.getElementById('mrr-hub-pro').textContent   = fmtBRL(hub_pro_v);
+  document.getElementById('mrr-hub-inst').textContent  = fmtBRL(hub_inst_v);
+  document.getElementById('mrr-sub-hubs').textContent  = fmtBRL(mrr_hubs);
+  document.getElementById('mrr-al-men').textContent    = fmtBRL(al_men_v);
+  document.getElementById('mrr-al-anu').textContent    = fmtBRL(al_anu_v);
+  document.getElementById('mrr-sub-alunos').textContent= fmtBRL(mrr_alunos);
+  document.getElementById('mrr-total').textContent     = fmtBRL(mrr_total);
+  document.getElementById('mrr-pct-val').textContent   = mrr_pct2.toFixed(1) + '%';
+  document.getElementById('mrr-arr').textContent       = fmtBRL(mrr_total * 12);
+
+  // Stacked bar de composição
+  const segs = bruto > 0
+    ? { onb: onb/bruto*100, aulas: aulas/bruto*100, hubs: mrr_hubs/bruto*100, alunos: mrr_alunos/bruto*100 }
+    : { onb:0, aulas:0, hubs:0, alunos:0 };
+  document.getElementById('seg-onb').style.width    = segs.onb    + '%';
+  document.getElementById('seg-aulas').style.width  = segs.aulas  + '%';
+  document.getElementById('seg-hubs').style.width   = segs.hubs   + '%';
+  document.getElementById('seg-alunos').style.width = segs.alunos + '%';
+  document.getElementById('mrr-bar-legend').textContent =
+    bruto > 0 ? `${segs.hubs.toFixed(0)}% hubs + ${segs.alunos.toFixed(0)}% alunos = ${mrr_pct2.toFixed(0)}% recorrente` : '—';
+
+  // Projeção + gráfico
   renderProjection(bruto, custos, socios, mrr, onb, aulas);
 }
 
@@ -863,6 +1123,244 @@ function renderProjection(bruto_base, custos_base, socios, mrr, onb, aulas) {
   });
 
   document.getElementById('proj-tbody').innerHTML = tbody;
+
+  // Alimentar gráfico com os mesmos dados
+  const chartLabels = months;
+  const chartLiq    = mults.map((m, i) => {
+    const b = (onb * m * 0.8) + (aulas * m) + (mrr > 0 ? mrr * Math.min(m*1.3,8) : 0) + (mrr > 0 ? mrr*0.4*Math.max(0,m-0.5) : 0);
+    const c_gw = b * (g('c_gateway_pct')/100);
+    const c_fixed = Math.max(custos_base - bruto_base*(g('c_gateway_pct')/100), 0);
+    return Math.round(b - c_fixed - c_gw);
+  });
+  const chartOnb  = mults.map(m => Math.round(onb  * m * 0.8));
+  const chartAul  = mults.map(m => Math.round(aulas * m));
+  const chartHub  = mults.map(m => Math.round(mrr > 0 ? mrr * Math.min(m*1.3,8) : 0));
+  const chartAl   = mults.map(m => Math.round(mrr > 0 ? mrr*0.4*Math.max(0,m-0.5) : 0));
+  const chartBrut = mults.map((_,i) => chartOnb[i] + chartAul[i] + chartHub[i] + chartAl[i]);
+  lastChartData = { labels: chartLabels, liq: chartLiq, onb: chartOnb, aul: chartAul, hub: chartHub, al: chartAl, brut: chartBrut };
+  renderChart();
+}
+
+// ── CHART ──
+function buildDatasets(type) {
+  if (!lastChartData) return [];
+  const d = lastChartData;
+  if (type === 'stack') {
+    return [
+      { label:'Onboarding',    data: d.onb, backgroundColor:'rgba(230,162,30,.75)', borderRadius:4, stack:'s' },
+      { label:'Aulas',         data: d.aul, backgroundColor:'rgba(167,139,250,.75)',borderRadius:4, stack:'s' },
+      { label:'Hubs MRR',      data: d.hub, backgroundColor:'rgba(52,211,153,.75)', borderRadius:4, stack:'s' },
+      { label:'Alunos MRR',    data: d.al,  backgroundColor:'rgba(96,165,250,.75)', borderRadius:4, stack:'s' },
+    ];
+  }
+  if (type === 'split') {
+    const pontual    = d.onb.map((v, i) => v + d.aul[i]);
+    const recorrente = d.hub.map((v, i) => v + d.al[i]);
+    return [
+      {
+        label:'Pontual (Onboarding + Aulas)', data: pontual,
+        backgroundColor:'rgba(230,162,30,.7)', borderRadius:4,
+      },
+      {
+        label:'Recorrente (Hubs + Alunos MRR)', data: recorrente,
+        backgroundColor:'rgba(52,211,153,.7)', borderRadius:4,
+      },
+      {
+        label:'Receita Líquida', data: d.liq, type:'line',
+        borderColor:'rgba(96,165,250,.85)', backgroundColor:'rgba(96,165,250,.08)',
+        borderWidth:2.5, fill:true, tension:.4,
+        pointBackgroundColor:'#60A5FA', pointRadius:4,
+      },
+      {
+        label:'Meta R$3.600', data: Array(d.labels.length).fill(3600), type:'line',
+        borderColor:'rgba(230,162,30,.4)', borderDash:[6,4], borderWidth:1.5,
+        pointRadius:0, fill:false,
+      },
+    ];
+  }
+  return [
+    {
+      label: 'Receita Bruta', data: d.brut, type:'bar',
+      backgroundColor: 'rgba(230,162,30,.2)', borderColor:'rgba(230,162,30,.5)',
+      borderWidth:1.5, borderRadius:4,
+    },
+    {
+      label: 'Receita Líquida', data: d.liq, type: type === 'line' ? 'line' : 'bar',
+      backgroundColor: d.liq.map(v => v >= 3600 ? 'rgba(52,211,153,.75)' : v >= 0 ? 'rgba(52,211,153,.4)' : 'rgba(248,113,113,.5)'),
+      borderColor:'rgba(52,211,153,.8)', borderWidth:2, borderRadius:4,
+      fill: type === 'line', tension:.4,
+      pointBackgroundColor:'#34D399', pointRadius: type === 'line' ? 4 : 0,
+    },
+    {
+      label:'Meta R$3.600', data: Array(d.labels.length).fill(3600), type:'line',
+      borderColor:'rgba(230,162,30,.4)', borderDash:[6,4], borderWidth:1.5,
+      pointRadius:0, fill:false,
+    },
+  ];
+}
+
+function renderChart() {
+  if (!lastChartData) return;
+  const ctx = document.getElementById('proj-chart').getContext('2d');
+  const stacked = chartType === 'stack';
+
+  if (chartInst) {
+    chartInst.data.labels   = lastChartData.labels;
+    chartInst.data.datasets = buildDatasets(chartType);
+    chartInst.options.scales.y.stacked = stacked;
+    chartInst.options.scales.x.stacked = stacked;
+    chartInst.update('active');
+    return;
+  }
+
+  chartInst = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: lastChartData.labels, datasets: buildDatasets(chartType) },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: { labels: { color:'#6B7D8C', font:{ family:'Montserrat', size:11 } } },
+        tooltip: {
+          backgroundColor:'#1E2A38', borderColor:'rgba(255,255,255,.1)', borderWidth:1,
+          titleColor:'#E8E4DE', bodyColor:'#9BA8B4',
+          callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmtBRL(ctx.raw) }
+        }
+      },
+      scales: {
+        x: { stacked, grid:{ color:'rgba(255,255,255,.04)' }, ticks:{ color:'#6B7D8C', font:{ family:'Montserrat', size:11 } } },
+        y: {
+          stacked,
+          grid:{ color:'rgba(255,255,255,.06)' },
+          ticks:{ color:'#6B7D8C', font:{ family:'Montserrat', size:11 }, callback: v => fmtBRL(v) },
+        }
+      }
+    }
+  });
+}
+
+function setChartType(type, btn) {
+  chartType = type;
+  document.querySelectorAll('.chart-type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (chartInst) { chartInst.destroy(); chartInst = null; }
+  renderChart();
+}
+
+// ── SALVAR SIMULAÇÃO ──
+function openSaveModal() {
+  document.getElementById('sim-name-input').value = '';
+  document.getElementById('modal-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('sim-name-input').focus(), 50);
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+  document.getElementById('sim-name-input').addEventListener('keydown', e => { if (e.key==='Enter') saveSimulation(); });
+});
+
+function getState() {
+  const ids = [
+    'ob_basico_qty','ob_basico_price','ob_branded_qty','ob_branded_price','ob_inst_qty','ob_inst_price',
+    'au_ess_qty','au_ess_price','au_pro_qty','au_pro_price','au_pre_qty','au_pre_price',
+    'hub_st_qty','hub_st_price','hub_pro_qty','hub_pro_price','hub_inst_qty','hub_inst_price',
+    'al_men_qty','al_men_price','al_anu_qty','al_anu_price',
+    'c_ia','c_host','c_dom','c_tools','c_mkt','c_gateway_pct','c_outros',
+    'cap_socios','cap_horas','cap_semanas','cap_h_ess','cap_h_pro','cap_h_pre',
+  ];
+  const state = {};
+  ids.forEach(id => { const el = document.getElementById(id); if (el) state[id] = el.value; });
+  state._projMode = projMode;
+  return state;
+}
+
+function setState(state) {
+  Object.entries(state).forEach(([id, val]) => {
+    if (id === '_projMode') return;
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+  if (state._projMode) {
+    projMode = state._projMode;
+    document.querySelectorAll('.proj-mode-btn').forEach(b => b.classList.remove('active'));
+    const btnId = 'btn-' + state._projMode.slice(0,4);
+    const btn = document.getElementById(btnId);
+    if (btn) btn.classList.add('active');
+  }
+  calc();
+}
+
+function saveSimulation() {
+  const name = document.getElementById('sim-name-input').value.trim();
+  if (!name) { document.getElementById('sim-name-input').style.borderColor='var(--red)'; return; }
+  document.getElementById('sim-name-input').style.borderColor='';
+
+  const onb   = g('ob_basico_qty')*g('ob_basico_price') + g('ob_branded_qty')*g('ob_branded_price') + g('ob_inst_qty')*g('ob_inst_price');
+  const aulas = g('au_ess_qty')*g('au_ess_price') + g('au_pro_qty')*g('au_pro_price') + g('au_pre_qty')*g('au_pre_price');
+  const hubs  = g('hub_st_qty')*g('hub_st_price') + g('hub_pro_qty')*g('hub_pro_price') + g('hub_inst_qty')*g('hub_inst_price');
+  const al    = g('al_men_qty')*g('al_men_price') + g('al_anu_qty')*g('al_anu_price');
+  const bruto = onb + aulas + hubs + al;
+  const custos= g('c_ia')+g('c_host')+g('c_dom')+g('c_tools')+g('c_mkt')+g('c_outros') + bruto*(g('c_gateway_pct')/100);
+
+  const sim = {
+    name,
+    date: new Date().toLocaleDateString('pt-BR'),
+    liquido: Math.round(bruto - custos),
+    mrr: Math.round(hubs + al),
+    state: getState(),
+  };
+  const saved = JSON.parse(localStorage.getItem('ms-sims') || '[]');
+  saved.unshift(sim);
+  localStorage.setItem('ms-sims', JSON.stringify(saved));
+  closeModal();
+  renderSaved();
+}
+
+function loadSimulation(idx) {
+  const saved = JSON.parse(localStorage.getItem('ms-sims') || '[]');
+  if (!saved[idx]) return;
+  setState(saved[idx].state);
+}
+
+function deleteSim(idx) {
+  const saved = JSON.parse(localStorage.getItem('ms-sims') || '[]');
+  saved.splice(idx, 1);
+  localStorage.setItem('ms-sims', JSON.stringify(saved));
+  renderSaved();
+}
+
+function renderSaved() {
+  const saved = JSON.parse(localStorage.getItem('ms-sims') || '[]');
+  const el = document.getElementById('saved-sims');
+  if (!saved.length) {
+    el.innerHTML = '<span class="saved-empty">Nenhuma simulação salva ainda. Ajuste os valores e clique em "Salvar".</span>';
+    return;
+  }
+  el.innerHTML = saved.map((s, i) => `
+    <div class="saved-chip" onclick="loadSimulation(${i})">
+      <div>
+        <div class="saved-chip-name">${s.name}</div>
+        <div class="saved-chip-meta">${s.date} · Líq: ${fmtBRL(s.liquido)} · MRR: ${fmtBRL(s.mrr)}</div>
+      </div>
+      <button class="saved-chip-del" onclick="event.stopPropagation();deleteSim(${i})" title="Excluir">✕</button>
+    </div>
+  `).join('');
+}
+
+// ── EXPORT CSV ──
+function exportCSV() {
+  if (!lastChartData) return;
+  const d = lastChartData;
+  const header = 'Mês,Onboarding,Aulas,Hub MRR,Alunos MRR,Bruto,Líquido';
+  const rows = d.labels.map((_,i) =>
+    [d.labels[i], d.onb[i], d.aul[i], d.hub[i], d.al[i], d.brut[i], d.liq[i]].join(',')
+  );
+  const csv = [header,...rows].join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'mistudies-projecao-'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+  URL.revokeObjectURL(url);
 }
 
 function setProjMode(mode) {
@@ -900,6 +1398,7 @@ function resetDefaults() {
 
 // ── INIT ──
 calc();
+renderSaved();
 </script>
 </body>
 </html>
