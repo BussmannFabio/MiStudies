@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 – Communicating | Teacher's Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --cream: #faf8f3;
+    --accent: #e85d26;
+    --gold: #f4a726;
+    --teal: #2a7f7f;
+    --teal-light: #e8f5f5;
+    --red-light: #fdf0eb;
+    --gold-light: #fef8ea;
+    --border: #e0ddd4;
+    --muted: #6b6860;
+    --green: #3a7d44;
+    --green-light: #edf7ef;
+    --purple: #6b4fa0;
+    --purple-light: #f2eefb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--ink);
+    color: white;
+    padding: 3rem 4rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.15;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.1;
+  }
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .header h1 span { color: var(--accent); }
+  .header-sub {
+    color: #b0b0b0;
+    font-size: 14px;
+    max-width: 500px;
+  }
+  .objectives-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+  .obj-badge {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .obj-badge::before { content: '✓ '; color: var(--gold); }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 960px; margin: 0 auto; padding: 3rem 2rem; }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    margin-top: 3rem;
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .section-title-wrap { flex: 1; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .section-divider {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  /* ── TEACHER TIP ── */
+  .teacher-tip {
+    background: var(--gold-light);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.4rem;
+    margin: 1rem 0;
+    font-size: 14px;
+  }
+  .teacher-tip strong {
+    color: #a06a00;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* ── GRAMMAR TIP ── */
+  .grammar-tip {
+    background: var(--teal-light);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.4rem;
+    margin: 1rem 0;
+    font-size: 14px;
+  }
+  .grammar-tip strong {
+    color: var(--teal);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* ── ACTIVITY CARD ── */
+  .activity {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+  }
+  .activity-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--ink);
+    color: white;
+  }
+  .activity-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 30px;
+  }
+  .activity-name { font-size: 14px; font-weight: 600; }
+  .activity-body { padding: 1.5rem; }
+
+  /* ── QUESTIONS LIST ── */
+  .q-list { list-style: none; counter-reset: qcount; }
+  .q-list li {
+    counter-increment: qcount;
+    display: flex;
+    gap: 0.8rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-list li:last-child { border-bottom: none; }
+  .q-list li::before {
+    content: counter(qcount);
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── ADJECTIVES GRID ── */
+  .adj-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+  .adj-card {
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    border: 2px solid transparent;
+  }
+  .adj-positive { background: var(--green-light); color: var(--green); border-color: #b3ddb9; }
+  .adj-negative { background: var(--red-light); color: #b02020; border-color: #f5c0b0; }
+  .adj-neutral  { background: var(--gold-light);  color: #9a6300; border-color: #f0d08a; }
+
+  /* ── GRAMMAR TABLE ── */
+  .gram-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 1rem 0;
+  }
+  .gram-table th {
+    background: var(--ink);
+    color: white;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .gram-table th:first-child { border-radius: 8px 0 0 0; }
+  .gram-table th:last-child  { border-radius: 0 8px 0 0; }
+  .gram-table td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .gram-table tr:nth-child(even) td { background: #fafaf8; }
+  .gram-table .blank {
+    background: #fffde7;
+    border-bottom: 2px solid var(--gold);
+    color: var(--muted);
+    font-style: italic;
+    font-size: 12px;
+  }
+  .gram-table .filled { color: var(--teal); font-weight: 600; }
+
+  /* ── READING / SMALL TALK ── */
+  .article-box {
+    background: white;
+    border: 2px solid var(--ink);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 1.2rem 0;
+    position: relative;
+  }
+  .article-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    color: var(--accent);
+  }
+  .article-box p { margin-bottom: 1rem; font-size: 14.5px; }
+  .blank-inline {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold);
+    min-width: 140px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 13px;
+    margin: 0 4px;
+    padding: 0 4px;
+  }
+  .answer-key {
+    color: var(--teal);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .topic-warning {
+    background: var(--red-light);
+    border: 1px solid #f5c0b0;
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem;
+    font-size: 14px;
+    margin: 0.8rem 0;
+  }
+  .topic-warning strong { color: #b02020; }
+
+  /* ── QUESTIONS BOX ── */
+  .q-bank {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .q-chip {
+    background: var(--purple-light);
+    border: 1px solid #d0bef5;
+    border-radius: 8px;
+    padding: 0.55rem 0.9rem;
+    font-size: 13.5px;
+    color: var(--purple);
+    font-weight: 500;
+  }
+
+  /* ── HOMEWORK ── */
+  .hw-section {
+    background: var(--ink);
+    color: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-top: 3rem;
+  }
+  .hw-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .hw-part { margin-bottom: 2rem; }
+  .hw-part-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+  .hw-item {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 0.6rem 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+  .hw-item .hw-num { color: var(--gold); font-weight: 700; margin-right: 0.5rem; }
+  .hw-answer { color: var(--teal); font-weight: 600; font-style: italic; font-size: 13px; display: block; margin-top: 2px; }
+  .hw-error { color: #ff7b6b; text-decoration: line-through; }
+  .hw-correct { color: #7de8a0; font-weight: 600; }
+
+  /* ── GETTING STARTED ── */
+  .gs-flex {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .gs-image-placeholder {
+    background: linear-gradient(135deg, #e8e0d0, #d5ccc0);
+    border-radius: 14px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 1rem;
+    border: 2px dashed var(--border);
+  }
+
+  /* ── CHOICE CHIPS ── */
+  .choice-group { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 0.5rem 0; }
+  .choice { 
+    background: var(--cream); border: 2px solid var(--border);
+    border-radius: 8px; padding: 0.4rem 0.9rem; font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ── WRITING LINES ── */
+  .write-lines { margin: 0.5rem 0; }
+  .write-line {
+    border-bottom: 1.5px solid var(--border);
+    height: 32px;
+    margin-bottom: 4px;
+  }
+
+  /* ── INFO STRIP ── */
+  .info-strip {
+    background: var(--teal);
+    color: white;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-size: 14px;
+    margin: 1rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  .info-strip .icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+
+  /* ── PAGE FOOTER ── */
+  .page-footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  /* ── SPEAKING GRID ── */
+  .speaking-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+    margin: 1rem 0;
+  }
+  .speaking-topic {
+    background: var(--ink);
+    color: white;
+    border-radius: 10px;
+    padding: 0.8rem;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .speaking-topic .topic-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+
+  @media (max-width: 680px) {
+    .header { padding: 2rem; }
+    .header h1 { font-size: 2rem; }
+    .page { padding: 1.5rem 1rem; }
+    .adj-grid { grid-template-columns: 1fr 1fr; }
+    .q-bank { grid-template-columns: 1fr; }
+    .gs-flex { grid-template-columns: 1fr; }
+    .speaking-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-tag">Teacher's Edition · English Course</div>
+  <h1>Unit 1<br><span>Communicating</span></h1>
+  <p class="header-sub">A complete lesson guide with activities, grammar reference, answer keys and teaching tips.</p>
+  <div class="objectives-bar">
+    <span class="obj-badge">Ask & answer personal questions</span>
+    <span class="obj-badge">Talk about communication</span>
+    <span class="obj-badge">Greet & end conversations</span>
+    <span class="obj-badge">Write a personal email</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ══════════════════════════════════
+       GETTING STARTED
+  ══════════════════════════════════ -->
+  <div class="section-label">
+    <div class="section-num">★</div>
+    <div class="section-title-wrap">
+      <div class="section-subtitle">Warm-up</div>
+      <div class="section-title">Getting Started</div>
+    </div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="teacher-tip">
+    <strong>💡 Teacher Tip</strong>
+    Use this warm-up to activate prior knowledge. Give students 2–3 minutes to discuss in pairs before opening to the whole class.
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">a</span>
+      <span class="activity-name">Look at the picture and answer the questions</span>
+    </div>
+    <div class="activity-body">
+      <div class="gs-flex">
+        <div>
+          <p style="font-size:13.5px; color:var(--muted); margin-bottom:1rem;">Show students the image of the two women laughing together. Ask them to look carefully before answering.</p>
+          <p style="font-weight:600; margin-bottom:0.6rem;">1. What do you think the women's relationship is?</p>
+          <div class="choice-group">
+            <span class="choice">( ) Friends</span>
+            <span class="choice">( ) Sisters</span>
+            <span class="choice">( ) Coworkers</span>
+          </div>
+          <div class="teacher-tip" style="margin-top:0.8rem;">
+            <strong>Discussion prompt</strong>
+            Accept any answer with justification. Ask: "What body language tells you that?"
+          </div>
+          <p style="font-weight:600; margin-top:1rem; margin-bottom:0.4rem;">2. What do you think they're laughing about?</p>
+          <div class="write-lines"><div class="write-line"></div><div class="write-line"></div></div>
+        </div>
+        <div class="gs-image-placeholder">
+          📸 Image: Two women sitting on steps, laughing together<br><br><span style="font-size:11px;">(insert image here)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">b</span>
+      <span class="activity-name">Answer the questions — Personal reflection</span>
+    </div>
+    <div class="activity-body">
+      <div class="teacher-tip">
+        <strong>📌 Vocabulary to introduce first</strong>
+        Introduce the word <strong>"silly"</strong> before students answer. Write it on the board with a quick example: <em>"A silly question is funny and not serious."</em>
+      </div>
+      <ul class="q-list">
+        <li>Who do you like to spend your free time with? What do you talk about?</li>
+        <li>Who makes you laugh the most? Why?</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CLASS 1
+  ══════════════════════════════════ -->
+  <div class="section-label">
+    <div class="section-num">1</div>
+    <div class="section-title-wrap">
+      <div class="section-subtitle">Class 1 · Speaking & Listening</div>
+      <div class="section-title">Do you play any sports?</div>
+    </div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Lesson Focus</div>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap; font-size:14px;">
+      <div><strong>Grammar:</strong> Question forms</div>
+      <div><strong>Vocabulary:</strong> Common adjectives</div>
+      <div><strong>Skill:</strong> Learn to ask and answer personal questions</div>
+    </div>
+  </div>
+
+  <div class="info-strip">
+    <span class="icon">🔑</span>
+    <div>Useful phrase to teach: <strong>"(something) is not my thing."</strong> — used to say you don't enjoy something. Example: <em>"Horror movies are not my thing."</em></div>
+  </div>
+
+  <!-- SPEAKING & LISTENING -->
+  <div class="section-label" style="margin-top:2rem;">
+    <div class="section-num" style="font-size:1.4rem; color:var(--teal);">1.</div>
+    <div class="section-title-wrap">
+      <div class="section-title" style="font-size:1.1rem;">Speaking & Listening</div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">a</span>
+      <span class="activity-name">Look at pictures 1–3 and answer the questions</span>
+    </div>
+    <div class="activity-body">
+      <div class="teacher-tip">
+        <strong>💡 Teacher Tip</strong>
+        Pictures show three pairs of people at a party. Use this to elicit vocabulary about social situations. Ask students to describe what they see <em>before</em> listening.
+      </div>
+      <ul class="q-list">
+        <li>What event are the people at?</li>
+        <li>Do you think each pair is meeting for the first time? Why / Why not?</li>
+      </ul>
+      <div style="margin-top:1rem; background:var(--purple-light); border-radius:10px; padding:0.9rem 1.2rem; font-size:13.5px;">
+        🔗 <strong>Interactive activity:</strong> <a href="https://wordwall.net/resource/98315732" target="_blank" style="color:var(--purple);">wordwall.net/resource/98315732</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">b</span>
+      <span class="activity-name">Listen to conversations 1–3. What do the people talk about?</span>
+    </div>
+    <div class="activity-body">
+      <p style="font-size:13.5px; color:var(--muted); margin-bottom:1rem;">Write the numbers of the conversations next to each topic.</p>
+      <div class="teacher-tip">
+        <strong>📌 Language Note</strong>
+        Point out the difference: <strong>"They talk about…"</strong> vs. <strong>"They have a conversation about…"</strong> — both are correct, but the second is more formal.
+      </div>
+      <table class="gram-table">
+        <thead><tr><th>Topic</th><th>Conversation #(s)</th></tr></thead>
+        <tbody>
+          <tr><td>The party</td><td class="answer-key">1, 2, 3</td></tr>
+          <tr><td>People they know</td><td class="blank">___</td></tr>
+          <tr><td>Money</td><td class="blank">___</td></tr>
+          <tr><td>Where they live</td><td class="blank">___</td></tr>
+          <tr><td>Work</td><td class="blank">___</td></tr>
+          <tr><td>Their interests</td><td class="blank">___</td></tr>
+          <tr><td>Education</td><td class="blank">___</td></tr>
+        </tbody>
+      </table>
+      <div class="grammar-tip">
+        <strong>🧠 Extra Discussion</strong>
+        Introduce the contrast: <strong>introverted</strong> vs. <strong>extroverted</strong>. Ask: "Are you more introverted or extroverted at parties?" This links naturally to the listening context.
+      </div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">c</span>
+      <span class="activity-name">Listen again — Who is NOT enjoying their conversation? Why?</span>
+    </div>
+    <div class="activity-body">
+      <div class="teacher-tip">
+        <strong>💡 Spoiler tip</strong>
+        In one of the conversations, a speaker gives away the ending of a movie. Use this as a fun discussion point: <em>"Has someone ever spoiled a movie for you?"</em>
+      </div>
+      <div class="write-lines">
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOCABULARY -->
+  <div class="section-label" style="margin-top:2.5rem;">
+    <div class="section-num" style="font-size:1.4rem; color:var(--teal);">2.</div>
+    <div class="section-title-wrap">
+      <div class="section-title" style="font-size:1.1rem;">Vocabulary: Common Adjectives</div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">a</span>
+      <span class="activity-name">Complete the sentences with the adjectives from the listening</span>
+    </div>
+    <div class="activity-body">
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.2rem;">
+        <span style="background:var(--ink);color:white;padding:0.35rem 0.9rem;border-radius:6px;font-family:'DM Mono',monospace;font-size:13px;">all right</span>
+        <span style="background:var(--ink);color:white;padding:0.35rem 0.9rem;border-radius:6px;font-family:'DM Mono',monospace;font-size:13px;">awful</span>
+        <span style="background:var(--ink);color:white;padding:0.35rem 0.9rem;border-radius:6px;font-family:'DM Mono',monospace;font-size:13px;">strange</span>
+        <span style="background:var(--ink);color:white;padding:0.35rem 0.9rem;border-radius:6px;font-family:'DM Mono',monospace;font-size:13px;">delicious</span>
+        <span style="background:var(--ink);color:white;padding:0.35rem 0.9rem;border-radius:6px;font-family:'DM Mono',monospace;font-size:13px;">perfect</span>
+        <span style="background:var(--ink);color:white;padding:0.35rem 0.9rem;border-radius:6px;font-family:'DM Mono',monospace;font-size:13px;">boring</span>
+      </div>
+      <table class="gram-table">
+        <thead><tr><th>#</th><th>Sentence</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>It's a(n) _____ day for a birthday party.</td><td class="answer-key">perfect</td></tr>
+          <tr><td>2</td><td>The pizza is _____.</td><td class="answer-key">delicious</td></tr>
+          <tr><td>3</td><td>It's _____, but the music is a little _____.</td><td class="answer-key">all right / boring</td></tr>
+          <tr><td>4</td><td>It's a(n) _____ movie.</td><td class="answer-key">awful</td></tr>
+          <tr><td>5</td><td>It's a really _____ story.</td><td class="answer-key">strange</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">b</span>
+      <span class="activity-name">Classify the adjectives: Positive, Negative, or Neutral?</span>
+    </div>
+    <div class="activity-body">
+      <div class="adj-grid">
+        <div class="adj-card adj-positive">✅ perfect</div>
+        <div class="adj-card adj-positive">✅ delicious</div>
+        <div class="adj-card adj-positive">✅ wonderful</div>
+        <div class="adj-card adj-positive">✅ amazing</div>
+        <div class="adj-card adj-positive">✅ beautiful</div>
+        <div class="adj-card adj-negative">❌ awful</div>
+        <div class="adj-card adj-negative">❌ horrible</div>
+        <div class="adj-card adj-negative">❌ boring</div>
+        <div class="adj-card adj-negative">❌ ugly</div>
+        <div class="adj-card adj-negative">❌ rude</div>
+        <div class="adj-card adj-neutral">≈ all right</div>
+        <div class="adj-card adj-neutral">≈ strange</div>
+      </div>
+      <div class="grammar-tip">
+        <strong>💬 Also from the pictures (activity c/d)</strong>
+        Other adjectives appear in the comic-style picture: <em>silly, serious, boring, rude, delicious, amazing, awful, horrible, wonderful, perfect, strange, all right, beautiful, ugly.</em> Use the pictures to reinforce meaning visually.
+      </div>
+    </div>
+  </div>
+
+  <!-- READING -->
+  <div class="section-label" style="margin-top:2.5rem;">
+    <div class="section-num" style="font-size:1.4rem; color:var(--teal);">3.</div>
+    <div class="section-title-wrap">
+      <div class="section-title" style="font-size:1.1rem;">Reading: Small Talk</div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">a</span>
+      <span class="activity-name">Discuss before reading</span>
+    </div>
+    <div class="activity-body">
+      <ul class="q-list">
+        <li>Where do you usually meet new people?</li>
+        <li>Do you usually start conversations or wait for others to speak?</li>
+        <li>What's the first question you usually ask someone?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">b</span>
+      <span class="activity-name">Read the first paragraph of "Small Talk" — Who is it for?</span>
+    </div>
+    <div class="activity-body">
+      <div class="teacher-tip">
+        <strong>📌 Prediction Task</strong>
+        Before students read, ask: "What is 'small talk'? Do you think it's easy or difficult?" This activates schema and makes reading more purposeful.
+      </div>
+      <div class="article-box">
+        <h3>SMALL TALK</h3>
+        <p>Do you have problems when you meet people for the first time? Is it difficult to think of what to talk about?</p>
+        <p>Don't worry. You don't need to talk about yourself; ask the right questions and you can make the other person talk.</p>
+        <p style="color:var(--muted); font-size:13.5px;"><em>→ This article is for: people who find it difficult to start or keep conversations, especially with strangers.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">c</span>
+      <span class="activity-name">Fill in blanks 1–8 with the questions from the box</span>
+    </div>
+    <div class="activity-body">
+      <div class="q-bank">
+        <span class="q-chip">How do you know Ana?</span>
+        <span class="q-chip">How much do you earn?</span>
+        <span class="q-chip">Do you live near here?</span>
+        <span class="q-chip">How much rent do you pay?</span>
+        <span class="q-chip">What do you do?</span>
+        <span class="q-chip">How's the food?</span>
+        <span class="q-chip">Do you play any sports?</span>
+        <span class="q-chip">Where did you buy them?</span>
+      </div>
+
+      <div class="article-box" style="margin-top:1rem;">
+        <p><strong>When you start a conversation with a new person, ask about the situation:</strong></p>
+        <p>What do you think of the party?<br>
+        1. <span class="blank-inline answer-key">How do you know Ana?</span><br>
+        2. <span class="blank-inline answer-key">How's the food?</span></p>
+
+        <p style="margin-top:1rem;"><strong>Say something positive and follow it with a question:</strong></p>
+        <p>This music's great. Do you know what it is?<br>
+        I really like your shoes. 3. <span class="blank-inline answer-key">Where did you buy them?</span></p>
+
+        <p style="margin-top:1rem;"><strong>Ask personal questions about interests and hobbies:</strong></p>
+        <p>Did you see the movie? How did you like it?<br>
+        4. <span class="blank-inline answer-key">Do you play any sports?</span> Which ones? What was the last song you listened to?</p>
+
+        <p style="margin-top:1rem;"><strong>When more relaxed, ask about relationships and home life:</strong></p>
+        <p>Where did you grow up? Are you married? Do you have any children?<br>
+        5. <span class="blank-inline answer-key">Do you live near here?</span></p>
+
+        <p style="margin-top:1rem;"><strong>You can ask about work and school anytime:</strong></p>
+        <p>6. <span class="blank-inline answer-key">What do you do?</span> or Where do you study?</p>
+        <p style="font-size:13px; color:var(--muted);">⚠️ Be careful – sometimes people don't want to talk about work at a party!</p>
+
+        <div class="topic-warning" style="margin-top:1rem;">
+          <strong>🚫 Topics to AVOID:</strong><br>
+          <strong>Money:</strong> 7. <span class="answer-key">How much do you earn?</span> or 8. <span class="answer-key">How much rent do you pay?</span> — people usually think talking about money is rude.<br>
+          <strong>Politics & Religion</strong> — you don't want to start an argument!<br>
+          <strong>Age</strong> — never guess anyone's age!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAMMAR -->
+  <div class="section-label" style="margin-top:2.5rem;">
+    <div class="section-num" style="font-size:1.4rem; color:var(--teal);">4.</div>
+    <div class="section-title-wrap">
+      <div class="section-title" style="font-size:1.1rem;">Grammar: Question Forms</div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">a</span>
+      <span class="activity-name">Complete the grammar charts</span>
+    </div>
+    <div class="activity-body">
+
+      <p style="font-size:13px; color:var(--muted); margin-bottom:0.5rem;">Sort these questions into the correct chart:</p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.2rem;">
+        <span style="font-size:13px; background:#f0f0f0; border-radius:6px; padding:3px 10px;">Where did you meet?</span>
+        <span style="font-size:13px; background:#f0f0f0; border-radius:6px; padding:3px 10px;">Are you married?</span>
+        <span style="font-size:13px; background:#f0f0f0; border-radius:6px; padding:3px 10px;">Who do you know at this party?</span>
+        <span style="font-size:13px; background:#f0f0f0; border-radius:6px; padding:3px 10px;">Why were you late?</span>
+        <span style="font-size:13px; background:#f0f0f0; border-radius:6px; padding:3px 10px;">Do you like the music?</span>
+        <span style="font-size:13px; background:#f0f0f0; border-radius:6px; padding:3px 10px;">Is she your sister?</span>
+      </div>
+
+      <p style="font-weight:700; font-size:13px; margin-bottom:0.5rem;">Questions with the verb <em>be</em></p>
+      <table class="gram-table">
+        <thead><tr><th>Question word</th><th>Verb be</th><th>Subject</th><th>Adjective, noun, etc.</th></tr></thead>
+        <tbody>
+          <tr><td class="filled">Why</td><td class="filled">were</td><td class="filled">you</td><td>late?</td></tr>
+          <tr><td class="blank">—</td><td class="filled">Are</td><td class="filled">you</td><td>married?</td></tr>
+          <tr><td class="blank">—</td><td class="filled">Is</td><td class="filled">she</td><td>your sister?</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-weight:700; font-size:13px; margin-top:1.2rem; margin-bottom:0.5rem;">Questions with other main verbs</p>
+      <table class="gram-table">
+        <thead><tr><th>Question word</th><th>Auxiliary verb</th><th>Subject</th><th>Main verb</th><th>Complement</th></tr></thead>
+        <tbody>
+          <tr><td class="filled">Where</td><td class="filled">did</td><td class="filled">you</td><td>meet?</td><td class="blank">—</td></tr>
+          <tr><td class="filled">Who</td><td class="filled">do</td><td class="filled">you</td><td>know</td><td>at this party?</td></tr>
+          <tr><td class="blank">—</td><td class="filled">Do</td><td class="filled">you</td><td>like</td><td>the music?</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grammar-tip" style="margin-top:1rem;">
+        <strong>📐 Rules Summary</strong>
+        1. With <em>be</em>: the verb comes <strong>before</strong> the subject.<br>
+        2. With other verbs: an <strong>auxiliary verb</strong> (do/does/did/can) goes before the subject.<br>
+        3. With <em>do/did</em>: the main verb stays in the <strong>base form</strong>.<br>
+        <em>Does she <strong>live</strong> here?</em> ✅ &nbsp; <em>Does she <del>lives</del> here?</em> ❌
+      </div>
+
+      <div class="card" style="margin-top:1rem; background:var(--gold-light); border-color:#f0d08a;">
+        <div class="card-title" style="color:#9a6300;">💬 Tip: be like / How + be</div>
+        <div style="font-size:14px;">
+          When asking for a <strong>description or opinion</strong>, use:<br><br>
+          <strong>be like</strong> → <em>What <strong>was</strong> the film <strong>like</strong>? — It was all right.</em><br>
+          <strong>How + be</strong> → <em>How <strong>was</strong> your vacation? — Fantastic!</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">b</span>
+      <span class="activity-name">Answer the grammar reflection questions</span>
+    </div>
+    <div class="activity-body">
+      <ul class="q-list">
+        <li>In questions with the verb <em>be</em>, which word comes first: <em>be</em> or the subject? <span class="answer-key">→ <em>be</em> comes first</span></li>
+        <li>In questions with other main verbs, what kind of word goes before the subject? <span class="answer-key">→ An auxiliary verb (do, does, did, can…)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SPEAKING -->
+  <div class="section-label" style="margin-top:2.5rem;">
+    <div class="section-num" style="font-size:1.4rem; color:var(--teal);">5.</div>
+    <div class="section-title-wrap">
+      <div class="section-title" style="font-size:1.1rem;">Speaking</div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header">
+      <span class="activity-letter">a</span>
+      <span class="activity-name">Write 6 questions to ask a partner — Choose topics below</span>
+    </div>
+    <div class="activity-body">
+      <div class="teacher-tip">
+        <strong>💡 Teacher Tip</strong>
+        Students write questions first individually (3 min), then interview a partner (5 min). Encourage follow-up questions to make it feel like a real conversation, not an interview.
+      </div>
+      <div class="speaking-grid">
+        <div class="speaking-topic"><span class="topic-icon">🏠</span>Home</div>
+        <div class="speaking-topic"><span class="topic-icon">❤️</span>Relationships</div>
+        <div class="speaking-topic"><span class="topic-icon">📚</span>Education</div>
+        <div class="speaking-topic"><span class="topic-icon">💼</span>Work</div>
+        <div class="speaking-topic"><span class="topic-icon">⚽</span>Interests</div>
+        <div class="speaking-topic"><span class="topic-icon">👥</span>People you know</div>
+        <div class="speaking-topic"><span class="topic-icon">📅</span>The weekend</div>
+        <div class="speaking-topic"><span class="topic-icon">✈️</span>Travel</div>
+      </div>
+      <p style="margin-top:1rem; font-size:13.5px; color:var(--muted);">Write your questions here:</p>
+      <div class="write-lines">
+        <div class="write-line"></div><div class="write-line"></div>
+        <div class="write-line"></div><div class="write-line"></div>
+        <div class="write-line"></div><div class="write-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOMEWORK -->
+  <div class="hw-section">
+    <h2>📝 Homework</h2>
+
+    <div class="hw-part">
+      <div class="hw-part-label">Part A — Add the missing word to make correct questions</div>
+      <div class="hw-item"><span class="hw-num">1.</span> What kind of books you usually read? <em>(do)</em> <span class="hw-answer">What kind of books <strong>do</strong> you usually read? ✅ (example)</span></div>
+      <div class="hw-item"><span class="hw-num">2.</span> You watch the Olympics on TV? <em>(did)</em> <span class="hw-answer">Did you watch the Olympics on TV?</span></div>
+      <div class="hw-item"><span class="hw-num">3.</span> What the food like in India? <em>(was)</em> <span class="hw-answer">What was the food like in India?</span></div>
+      <div class="hw-item"><span class="hw-num">4.</span> You go to the gym? <em>(do)</em> <span class="hw-answer">Do you go to the gym?</span></div>
+      <div class="hw-item"><span class="hw-num">5.</span> How much she earn? <em>(does)</em> <span class="hw-answer">How much does she earn?</span></div>
+      <div class="hw-item"><span class="hw-num">6.</span> It cold today? <em>(is)</em> <span class="hw-answer">Is it cold today?</span></div>
+      <div class="hw-item"><span class="hw-num">7.</span> Where they go on vacation? <em>(did)</em> <span class="hw-answer">Where did they go on vacation?</span></div>
+      <div class="hw-item"><span class="hw-num">8.</span> I late? <em>(am)</em> <span class="hw-answer">Am I late?</span></div>
+    </div>
+
+    <div class="hw-part">
+      <div class="hw-part-label">Part B — Underline the main verb in each question</div>
+      <div class="hw-item"><span class="hw-num">1.</span> Where do you <span class="hw-correct">live</span>?</div>
+      <div class="hw-item"><span class="hw-num">2.</span> How <span class="hw-correct">are</span> you today?</div>
+      <div class="hw-item"><span class="hw-num">3.</span> Did you <span class="hw-correct">see</span> the soccer game yesterday?</div>
+      <div class="hw-item"><span class="hw-num">4.</span> Who do you <span class="hw-correct">know</span> at this party?</div>
+      <div class="hw-item"><span class="hw-num">5.</span> What did you <span class="hw-correct">do</span> last weekend?</div>
+      <div class="hw-item"><span class="hw-num">6.</span> What kind of food do you <span class="hw-correct">like</span>?</div>
+      <div class="hw-item"><span class="hw-num">7.</span> What's the food <span class="hw-correct">like</span>?</div>
+      <div class="hw-item"><span class="hw-num">8.</span> <span class="hw-correct">Can</span> I sit here?</div>
+    </div>
+
+    <div class="hw-part">
+      <div class="hw-part-label">Part C — Correct the mistake in each question</div>
+      <div class="hw-item"><span class="hw-num">1.</span> <span class="hw-error">Why do want you to go home?</span> <span class="hw-answer">Why <strong>do you want</strong> to go home?</span></div>
+      <div class="hw-item"><span class="hw-num">2.</span> <span class="hw-error">What did you meet at the party?</span> <span class="hw-answer"><strong>Who</strong> did you meet at the party?</span></div>
+      <div class="hw-item"><span class="hw-num">3.</span> <span class="hw-error">How much your car was?</span> <span class="hw-answer">How much <strong>was your car?</strong></span></div>
+      <div class="hw-item"><span class="hw-num">4.</span> <span class="hw-error">Which did you see movie?</span> <span class="hw-answer">Which movie <strong>did you see?</strong></span></div>
+      <div class="hw-item"><span class="hw-num">5.</span> <span class="hw-error">Who key is this?</span> <span class="hw-answer"><strong>Whose</strong> key is this?</span></div>
+      <div class="hw-item"><span class="hw-num">6.</span> <span class="hw-error">How many people you did invite?</span> <span class="hw-answer">How many people <strong>did you invite?</strong></span></div>
+      <div class="hw-item"><span class="hw-num">7.</span> <span class="hw-error">Was the movie like?</span> <span class="hw-answer"><strong>What was</strong> the movie like?</span></div>
+      <div class="hw-item"><span class="hw-num">8.</span> <span class="hw-error">What kind music do you like?</span> <span class="hw-answer">What kind <strong>of</strong> music do you like?</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer">
+  Unit 1 – Communicating · Teacher's Edition · All content based on original lesson material
+</div>
+
+</body>
+</html>
