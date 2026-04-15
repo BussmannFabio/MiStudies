@@ -32,14 +32,17 @@
   --radius:    10px;
   --t:         200ms cubic-bezier(.16,1,.3,1);
 }
-html { scroll-behavior: smooth; }
+html { height: 100%; }
 body {
   font-family: var(--font-sans);
   background: var(--bg-dark);
   color: var(--text);
   font-size: 14px;
   line-height: 1.6;
-  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* ── HEADER ── */
@@ -78,7 +81,8 @@ body {
 }
 
 /* ── LAYOUT ── */
-.app { display: grid; grid-template-columns: 380px 1fr; min-height: calc(100vh - 140px); }
+.header { flex-shrink: 0; }
+.app { display: grid; grid-template-columns: 380px 1fr; flex: 1; min-height: 0; overflow: hidden; }
 
 /* ── PANEL LEFT — INPUTS ── */
 .panel-left {
@@ -86,8 +90,7 @@ body {
   border-right: 1px solid var(--border);
   padding: 24px 20px;
   overflow-y: auto;
-  max-height: calc(100vh - 140px);
-  position: sticky; top: 0;
+  height: 100%;
 }
 
 .panel-section { margin-bottom: 24px; }
@@ -185,7 +188,7 @@ body {
 .reset-btn:hover { background: rgba(255,255,255,.08); color: var(--text); }
 
 /* ── PANEL RIGHT — RESULTS ── */
-.panel-right { padding: 24px 28px; overflow-y: auto; }
+.panel-right { padding: 24px 28px; overflow-y: auto; height: 100%; }
 
 /* ── RESULT CARDS ── */
 .result-grid {
@@ -466,7 +469,9 @@ table.proj .td-muted  { color: var(--muted); }
 
 @media (max-width: 900px) {
   .app { grid-template-columns: 1fr; }
-  .panel-left { max-height: none; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+  .panel-left { height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .app { overflow: visible; flex: none; }
+  body { overflow: auto; }
   .result-grid { grid-template-columns: 1fr 1fr; }
   .breakdown-grid { grid-template-columns: 1fr; }
   .be-scenarios { grid-template-columns: 1fr; }
