@@ -397,17 +397,17 @@ table.proj .td-muted  { color: var(--muted); }
       <div class="input-group">
         <div class="label"><span class="tier-badge-sm tb-ess">Essencial</span><small>~2.5h/aula</small></div>
         <input type="number" class="number-input" id="au_ess_qty" value="3" min="0" max="50" onchange="calc()">
-        <input type="text" class="price-input" id="au_ess_price" value="120" onchange="calc()">
+        <input type="text" class="price-input" id="au_ess_price" value="40" onchange="calc()">
       </div>
       <div class="input-group">
         <div class="label"><span class="tier-badge-sm tb-pro">Pro</span><small>~4.7h/aula</small></div>
         <input type="number" class="number-input" id="au_pro_qty" value="1" min="0" max="30" onchange="calc()">
-        <input type="text" class="price-input" id="au_pro_price" value="250" onchange="calc()">
+        <input type="text" class="price-input" id="au_pro_price" value="75" onchange="calc()">
       </div>
       <div class="input-group">
-        <div class="label"><span class="tier-badge-sm tb-pre">Premium</span><small>~8h/aula</small></div>
+        <div class="label"><span class="tier-badge-sm tb-pre">Full Studio</span><small>~8h/aula</small></div>
         <input type="number" class="number-input" id="au_pre_qty" value="0" min="0" max="20" onchange="calc()">
-        <input type="text" class="price-input" id="au_pre_price" value="450" onchange="calc()">
+        <input type="text" class="price-input" id="au_pre_price" value="100" onchange="calc()">
       </div>
     </div>
 
@@ -513,7 +513,7 @@ table.proj .td-muted  { color: var(--muted); }
         <input type="number" class="cap-input" id="cap_h_pro" value="4.7" min="0.5" max="15" step="0.5" onchange="calc()">
       </div>
       <div class="cap-row">
-        <div class="cap-label">Horas/aula Premium</div>
+        <div class="cap-label">Horas/aula Full Studio</div>
         <input type="number" class="cap-input" id="cap_h_pre" value="8" min="1" max="20" step="0.5" onchange="calc()">
       </div>
     </div>
@@ -656,7 +656,7 @@ table.proj .td-muted  { color: var(--muted); }
           <div class="be-scenario-sub">aulas/mês</div>
         </div>
         <div class="be-scenario">
-          <div class="be-scenario-label">Só com Premium</div>
+          <div class="be-scenario-label">Só com Full Studio</div>
           <div class="be-scenario-val" style="color:var(--amber)" id="be-pre">—</div>
           <div class="be-scenario-sub">aulas/mês</div>
         </div>
@@ -877,9 +877,9 @@ const defaults = {
   ob_basico_qty: 1, ob_basico_price: 200,
   ob_branded_qty: 0, ob_branded_price: 500,
   ob_inst_qty: 0, ob_inst_price: 1000,
-  au_ess_qty: 3, au_ess_price: 120,
-  au_pro_qty: 1, au_pro_price: 250,
-  au_pre_qty: 0, au_pre_price: 450,
+  au_ess_qty: 3, au_ess_price: 40,
+  au_pro_qty: 1, au_pro_price: 75,
+  au_pre_qty: 0, au_pre_price: 100,
   hub_st_qty: 0, hub_st_price: 49,
   hub_pro_qty: 0, hub_pro_price: 99,
   hub_inst_qty: 0, hub_inst_price: 249,

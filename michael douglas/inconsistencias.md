@@ -1,19 +1,20 @@
 # Relatório de Inconsistências — MiStudies
-> Gerado em: Abril 2026 · 24 itens identificados · 6 categorias
+> Gerado em: Abril 2026 · 24 itens identificados · Última revisão: Abril 2026
 
 ---
 
-## Legenda de Severidade
+## Legenda
 - 🔴 **Crítica** — Bloqueia execução ou cria contradição fundamental
 - 🟠 **Alta** — Impacta identidade, posicionamento ou receita
-- 🟡 **Média** — Inconsistência de execução, resolve sem decisão estratégica
-- 🟢 **Baixa** — Detalhe, cosmético ou documentação interna
+- 🟡 **Média** — Inconsistência de execução
+- 🟢 **Baixa** — Detalhe ou documentação interna
+- ✅ **Resolvido** — Decisão tomada e/ou corrigido no código
 
 ---
 
 ## 🔴 CRÍTICAS
 
-### #1 — Dois modelos de negócio simultâneos e incompatíveis
+### ✅ #1 — Dois modelos de negócio simultâneos e incompatíveis — RESOLVIDO
 **Arquivos:** `michael douglas/1. Business Model Canvas.md`, `michael douglas/2. Lean Canvas.md`, `michael douglas/4. Modelo Freemium.md` vs `michael douglas/8. Plano de Rentabilidade.md`, `michael douglas/relatorio-todos.md`
 
 O projeto tem dois produtos documentados como se fossem o mesmo:
@@ -29,11 +30,11 @@ O projeto tem dois produtos documentados como se fossem o mesmo:
 
 O `index.html` vende para professores, o `hub.html` vende para alunos, o `dashboard.html` é uma terceira coisa. Nenhuma página faz sentido completo sozinha.
 
-**Ação necessária:** Reunião de sócios para definir qual é o modelo 2026. Documentar em `DECISION_LOG.md`.
+**✅ Resolvido (Abril 2026):** Modelo híbrido B2B+B2C confirmado. Professor tem 3 etapas (Onboarding → Criação de Aulas → Hub mensal). Acervo gratuito para alunos, assinatura R$14,90 para extras. Preços: R$40/75/100 por aula. Tier "Full Studio" (era Premium).
 
 ---
 
-### #2 — Preço da assinatura de aluno com 100% de diferença entre documentos
+### ✅ #2 — Preço da assinatura de aluno — RESOLVIDO
 **Arquivos:** `michael douglas/4. Modelo Freemium.md` vs `michael douglas/8. Plano de Rentabilidade.md`
 
 - `Modelo Freemium.md` → **R$29,90/mês** (mensal), R$22,45/mês equivalente (anual)
@@ -41,11 +42,11 @@ O `index.html` vende para professores, o `hub.html` vende para alunos, o `dashbo
 
 São documentos do mesmo projeto, na mesma pasta, com preços completamente diferentes sem justificativa documentada.
 
-**Ação necessária:** Definir preço canônico e atualizar todos os documentos e o simulador `pages/plano-rentabilidade.html`.
+**✅ Resolvido:** R$14,90/mês · Anual com 20% off (~R$11,92/mês). Simulador e documentos atualizados.
 
 ---
 
-### #3 — Proposta de valor diferente em cada página pública
+### 🟠 #3 — Proposta de valor diferente em cada página pública (correção em andamento)
 **Arquivos:** `index.html`, `pages/hub.html`, `pages/dashboard.html`
 
 | Página | Mensagem exibida | Público implícito |
@@ -60,7 +61,7 @@ Visitante que entra em `index.html` e clica em "Acervo" vai parar em `hub.html` 
 
 ---
 
-### #4 — As 7 decisões dos sócios estão sem resposta documentada
+### ✅ #4 — As 7 decisões dos sócios — RESOLVIDO (D1–D4, D6–D7)
 **Arquivo:** `michael douglas/relatorio-todos.md` — Seção "Decisões Pendentes"
 
 | ID | Decisão | Status |
@@ -73,13 +74,13 @@ Visitante que entra em `index.html` e clica em "Acervo" vai parar em `hub.html` 
 | D6 | Nome do tier mais caro ("Premium" vs "Editorial" vs "Full Studio")? | ❓ Sem resposta |
 | D7 | Assinatura de alunos ativar no mês 1 ou esperar volume de conteúdo? | ❓ Sem resposta |
 
-**Ação necessária:** Reunião de sócios para responder D1–D7. Documentar as respostas no próprio `relatorio-todos.md`.
+**✅ Resolvido:** D1–D4 e D6–D7 respondidos em Abril 2026. D5 (formalização) ainda em aberto. Ver `relatorio-todos.md`.
 
 ---
 
 ## 🟠 ALTAS
 
-### #5 — Dois nomes de marca em produção: "MiStudies" e "gaaabriel"
+### ✅ #5 — Dois nomes de marca: "MiStudies" e "gaaabriel" — RESOLVIDO
 **Arquivos:** `pages/hub.html` linha 73, `index.html` linha 90, `pages/resumos.html`, `pages/dashboard.html`
 
 ```html
@@ -96,11 +97,11 @@ Visitante que entra em `index.html` e clica em "Acervo" vai parar em `hub.html` 
 
 O documento `5. Naming & Tagline.md` define **MiStudies** como marca canônica. "gaaabriel" não é mencionado em nenhum documento estratégico. Parece ser uma marca pessoal de creator que coexiste com a marca do produto B2B de 3 sócios.
 
-**Ação necessária:** Definir se "gaaabriel" é um canal pessoal do Sócio 1 ou se é a marca do produto. Se for B2B com 3 sócios, o logo da nav deve ser "MiStudies" em todas as páginas.
+**✅ Resolvido:** "gaaabriel" é canal pessoal, não marca do produto. Todas as páginas usarão apenas "MiStudies".
 
 ---
 
-### #6 — Quatro paletas de cores diferentes, nenhuma é a do Brandbook
+### ✅ #6 — Quatro paletas de cores — RESOLVIDO
 **Arquivos:** `michael douglas/7. Brandbook.md`, `assets/styles/global/tokens.css`, `index.html`, `pages/demo/aula-essencial.html`, `pages/plano-rentabilidade.html`
 
 | Arquivo | Cor principal | Fundo | Accent |
@@ -113,11 +114,11 @@ O documento `5. Naming & Tagline.md` define **MiStudies** como marca canônica. 
 
 O `assets/styles/mistudies/mistudies-theme.css` existe para padronizar, mas nenhuma das páginas de conteúdo o importa.
 
-**Ação necessária:** Decidir qual paleta é a oficial (recomendado: seguir o Brandbook.md). Atualizar `tokens.css` e aplicar globalmente.
+**✅ Resolvido:** Paleta oficial = azul `#0032b5` (atual do site). Brandbook.md e tokens.css serão atualizados para refletir isso.
 
 ---
 
-### #7 — Quatro famílias tipográficas diferentes entre páginas
+### ✅ #7 — Quatro famílias tipográficas diferentes — RESOLVIDO
 **Arquivos:** `michael douglas/7. Brandbook.md`, `assets/styles/global/tokens.css`, páginas HTML
 
 | Arquivo | Display/Headline | Body | Mono |
@@ -130,11 +131,11 @@ O `assets/styles/mistudies/mistudies-theme.css` existe para padronizar, mas nenh
 
 Nenhum arquivo usa Fraunces, que é a fonte oficial definida no Brandbook.
 
-**Ação necessária:** Escolher fonte canônica (Fraunces se seguir Brandbook, ou Manrope se priorizar o que já está no site). Padronizar em `tokens.css` e remover imports extras.
+**✅ Resolvido:** Fonte oficial = **Manrope** (headlines) + **Inter** (body). Brandbook.md e tokens.css serão atualizados.
 
 ---
 
-### #8 — Tagline "The Intellectual Architect" nunca foi documentada
+### ✅ #8 — Tagline "The Intellectual Architect" — RESOLVIDO
 **Arquivo:** `index.html` — footer
 
 ```html
@@ -143,7 +144,7 @@ Nenhum arquivo usa Fraunces, que é a fonte oficial definida no Brandbook.
 
 Esta tagline não aparece em nenhum dos documentos estratégicos: não está em `5. Naming & Tagline.md`, `6. Tom de Voz.md`, `3. Product Brief.md` nem no `7. Brandbook.md`. Parece uma tagline abandonada que sobrou no código de uma versão anterior.
 
-**Ação necessária:** Remover ou substituir pela tagline oficial ("Seu estudo, bem resolvido").
+**✅ Resolvido:** Tagline oficial = "Seu estudo, bem resolvido". "The Intellectual Architect" removido do index.html.
 
 ---
 
@@ -173,7 +174,7 @@ Nenhuma página usa Lucide.
 
 ---
 
-### #11 — Termo para o cliente B2B sem padronização
+### ✅ #11 — Termo para o cliente B2B — RESOLVIDO
 **Arquivos:** `michael douglas/1. Business Model Canvas.md`, `michael douglas/3. Product Brief.md`, `index.html`, `pages/hub.html`
 
 | Arquivo | Termo usado |
@@ -186,7 +187,7 @@ Nenhuma página usa Lucide.
 
 Para um produto B2B com ICP definido, o termo precisa ser único em toda comunicação.
 
-**Ação necessária:** Adotar "professor" como termo canônico (mais específico que "educador" ou "criador"). Atualizar `index.html`.
+**✅ Resolvido:** Termo canônico = "professor". index.html e documentos atualizados.
 
 ---
 

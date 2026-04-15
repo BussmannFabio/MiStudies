@@ -101,18 +101,28 @@
 
 ---
 
-## DECISÕES PENDENTES DOS 3 SÓCIOS `[!]`
-> Essas questões precisam de resposta antes de avançar
+## DECISÕES DOS SÓCIOS — RESPONDIDAS EM ABRIL 2026 ✅
 
-| # | Decisão | Impacto | Prazo sugerido |
-|---|---|---|---|
-| D1 | **Preços por aula estão coerentes?** R$120 Essencial / R$250 Pro / R$450 Premium | Alto — define posicionamento e pitch | Semana 1 |
-| D2 | **Onboarding gratuito para pilotos?** Proposta: Setup Básico grátis para 3–5 primeiros | Alto — acelera ou retarda o portfólio | Semana 1 |
-| D3 | **Hub gratuito por quanto tempo?** Proposta: 2 meses grátis → depois mensalidade | Alto — define cashflow inicial | Semana 1 |
-| D4 | **Divisão de lucros: 33/33/33 ou proporcional?** | Alto — define comprometimento e justiça | Semana 1 |
-| D5 | **Formalizar sociedade?** MEI/ME conjunto ou cada sócio emite como freelancer no início | Médio — impacto fiscal e credibilidade | Semana 2 |
-| D6 | **Nome do tier Premium?** Opções: "Premium", "Editorial", "Full Studio", "MasterClass" | Baixo — cosmético, mas afeta o pitch | Semana 2 |
-| D7 | **Assinatura de alunos: ativar já no mês 1 ou esperar ter volume de conteúdo?** | Médio — receita vs. experiência ruim por falta de conteúdo | Semana 2 |
+| # | Decisão | Resposta |
+|---|---|---|
+| D1 | **Preços por aula** | ✅ R$40 Essencial / R$75 Pro / R$100 Full Studio |
+| D2 | **Onboarding gratuito para pilotos?** | ✅ Não — cobrança desde o início |
+| D3 | **Hub (acervo) gratuito?** | ✅ Sim — visualização gratuita para todos os usuários permanentemente |
+| D4 | **Divisão de lucros** | ✅ Igualitária — 33/33/33 |
+| D5 | **Formalizar sociedade?** | ⏳ Ainda não decidido |
+| D6 | **Nome do tier mais caro** | ✅ "Full Studio" (era "Premium") |
+| D7 | **Assinatura de alunos** | ✅ Manter possível, mas benefícios extras precisam ser definidos antes de ativar |
+
+### Modelo de Negócio Confirmado
+
+**Professor — 3 etapas de compra:**
+1. **Onboarding** — adesão ao plano (taxa única, cobrada desde o início)
+2. **Criação de Aulas** — R$40 / R$75 / R$100 por aula (Essencial / Pro / Full Studio)
+3. **Hub** — assinatura mensal: hospedagem + atualizações + X aulas incluídas/mês
+
+**Estudante:**
+- Acervo: visualização **gratuita** para todos
+- Assinatura: **R$14,90/mês** ou anual com **20% off** (~R$11,92/mês) → funcionalidades extras
 
 ---
 
@@ -134,28 +144,32 @@
 
 ```
 FEITO ATÉ AGORA:
-  [X] Base estratégica completa (10 documentos — Brandbook, Canvas, etc.)
+  [X] Base estratégica completa (11 documentos — Brandbook, Canvas, Plano, etc.)
   [X] Site com estrutura HTML (index, hub, dashboard, resumos)
   [X] Skill de resumo para alunos (gerar_resumo.md)
-  [X] 3 aulas demo por tier (Essencial / Pro / Premium)
+  [X] 3 aulas demo por tier (Essencial / Pro / Full Studio)
+  [X] Simulador de rentabilidade interativo
+  [X] Relatório de inconsistências (24 itens)
+  [X] D1–D4, D6–D7 respondidos pelos sócios
 
-PRÓXIMAS 2 SEMANAS (crítico para abrir o primeiro piloto):
-  [ ] Resolver as 7 decisões dos sócios (D1–D7)
-  [ ] Criar Skill de Análise B2B para professores
-  [ ] Criar landing page de tiers para professores
+PRÓXIMAS 2 SEMANAS:
+  [ ] Criar Skill de Análise B2B para professores (prompt system)
+  [ ] Criar landing page de tiers para professores (com preços e exemplos)
   [ ] Escolher e contatar 2–3 professores piloto
-  [ ] Definir pipeline manual de entrega
+  [ ] Definir pipeline manual de entrega (PDF → análise → produção → entrega)
+  [ ] Definir benefícios exatos da assinatura de aluno (D7)
+  [ ] Decidir formalização societária (D5)
 
 PRÓXIMOS 30 DIAS:
-  [ ] Entregar 1ª aula para professor piloto (grátis como portfólio)
   [ ] Configurar domínio + hospedagem em produção
-  [ ] Implementar gateway de pagamento
-  [ ] Lançar cobrança para novos professores
+  [ ] Implementar gateway de pagamento (Stripe / Mercado Pago)
+  [ ] Entregar 1ª aula para professor com cobrança
 
-META DO MÊS 1:
-  → R$900 bruto / R$730 líquido
-  → 2 professores com Setup Básico (R$400)
-  → 4 aulas Essencial (R$480)
+META DO MÊS 1 (preços atualizados):
+  → 2 professores onboarding Setup Básico: R$400
+  → 4 aulas Essencial: 4 × R$40 = R$160
+  → Receita bruta: ~R$560
+  → Obs: meta menor que versão anterior — ajustar mix de tiers para Pro/Full Studio
 ```
 
 ---
