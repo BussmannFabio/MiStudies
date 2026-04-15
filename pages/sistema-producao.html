@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Produção — Material de Estudo Interativo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f8f9fa; /* surface */
+  --bg2: #f3f4f5; /* surface-container-low */
+  --bg3: #e9ebeb; /* surface-container */
+  --surface: #e1e3e4; /* surface-container-high */
+  --surface2: #d9dbdc; /* surface-container-highest */
+  --border: #c1c4c5; /* outline-variant */
+  --red: #0032b5; /* mapped to primary */
+  --red-dim: rgba(0, 50, 181, 0.1);
+  --yellow: #f59e0b; /* amber for accents */
+  --yellow-dim: rgba(245, 158, 11, 0.1);
+  --green: #006a6a; /* secondary */
+  --green-dim: rgba(0, 106, 106, 0.1);
+  --blue: #0032b5; /* primary */
+  --blue-dim: rgba(0, 50, 181, 0.1);
+  --text: #191c1d; /* on-surface */
+  --text-muted: #454652; /* on-surface-variant */
+  --text-dim: #757684; /* outline */
+  --font-display: 'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--yellow));
+  width: 0%; z-index: 9999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--red);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: rgba(248,249,250,0.85); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 64px;
+}
+.nav-logo {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+  color: var(--blue); letter-spacing: -0.05em; text-decoration: none;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-logo svg { width: 22px; height: 22px; }
+.nav-links {
+  display: flex; gap: 0.25rem; list-style: none;
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  color: var(--text-muted); text-decoration: none; font-size: 0.78rem;
+  font-weight: 500; padding: 0.35rem 0.75rem; border-radius: 6px;
+  white-space: nowrap; transition: var(--transition);
+  font-family: var(--font-body);
+}
+.nav-links a:hover { color: var(--text); background: var(--surface); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 7rem 2rem 4rem;
+  position: relative; overflow: hidden;
+  text-align: center;
+}
+.hero-bg {
+  position: absolute; inset: 0; overflow: hidden; z-index: 0;
+}
+.hero-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(232,33,10,0.07) 0%, transparent 70%);
+}
+.gears-container {
+  position: absolute; inset: 0; overflow: hidden;
+}
+.gear {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid;
+  display: flex; align-items: center; justify-content: center;
+}
+.gear-tooth {
+  position: absolute; background: inherit;
+  border-color: inherit;
+}
+/* SVG gears */
+.gear-svg {
+  position: absolute; opacity: 0.07;
+}
+.gear-svg.g1 { bottom: -60px; right: -60px; width: 300px; height: 300px; animation: spin 20s linear infinite; }
+.gear-svg.g2 { bottom: 80px; right: 180px; width: 180px; height: 180px; animation: spin-rev 14s linear infinite; }
+.gear-svg.g3 { top: 60px; left: -80px; width: 250px; height: 250px; animation: spin 25s linear infinite; }
+.gear-svg.g4 { top: 200px; left: 160px; width: 130px; height: 130px; animation: spin-rev 10s linear infinite; }
+.gear-svg.g5 { top: -40px; right: 200px; width: 160px; height: 160px; animation: spin 18s linear infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin-rev { to { transform: rotate(-360deg); } }
+
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--red-dim); border: 1px solid rgba(232,33,10,0.3);
+  color: var(--red); font-size: 0.78rem; font-weight: 600;
+  padding: 0.35rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+  letter-spacing: 0.05em; text-transform: uppercase; font-family: var(--font-display);
+}
+.hero-badge span { display: inline-block; width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+h1.hero-title {
+  font-family: var(--font-display); font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 800; line-height: 1.05; letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+h1.hero-title em { font-style: normal; color: var(--red); }
+.hero-subtitle {
+  font-size: 1.1rem; color: var(--text-muted); max-width: 560px;
+  margin: 0 auto 2.5rem; font-weight: 300;
+}
+.hero-nav-grid {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem;
+}
+.hero-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.6rem 1.2rem; border-radius: 8px;
+  font-size: 0.82rem; font-weight: 500; text-decoration: none;
+  transition: var(--transition); border: 1px solid var(--border);
+  color: var(--text-muted); background: var(--surface);
+  font-family: var(--font-body);
+}
+.hero-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--text-dim); transform: translateY(-2px); }
+.hero-btn.primary { background: var(--red); color: #fff; border-color: var(--red); }
+.hero-btn.primary:hover { background: #c71a00; border-color: #c71a00; }
+
+/* ── SECTIONS ── */
+section {
+  padding: 5rem 2rem;
+  max-width: 1100px; margin: 0 auto;
+}
+section.full-width { max-width: 100%; padding: 5rem 0; }
+section.full-width .inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+.section-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+}
+h2.section-title {
+  font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+.section-desc {
+  color: var(--text-muted); font-size: 1rem; max-width: 620px;
+  margin-bottom: 3rem; font-weight: 300;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 2rem;
+}
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-left { opacity: 0; transform: translateX(-32px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-left.visible { opacity: 1; transform: none; }
+.reveal-right { opacity: 0; transform: translateX(32px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-right.visible { opacity: 1; transform: none; }
+
+/* ── TIMELINE ── */
+.timeline {
+  position: relative; padding-left: 2rem;
+}
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(to bottom, var(--red), var(--yellow), var(--green));
+}
+.tl-item {
+  position: relative; padding-left: 2rem; margin-bottom: 2.5rem;
+}
+.tl-dot {
+  position: absolute; left: -2.45rem; top: 0.35rem;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--red); border: 2px solid var(--bg);
+  box-shadow: 0 0 0 3px rgba(232,33,10,0.3);
+}
+.tl-era {
+  font-size: 0.72rem; font-weight: 700; color: var(--red);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+}
+.tl-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.35rem; }
+.tl-desc { color: var(--text-muted); font-size: 0.9rem; }
+.tl-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.tl-tag {
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 4px;
+  color: var(--text-muted);
+}
+
+/* ── CARDS ── */
+.cards-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5rem;
+  transition: var(--transition);
+}
+.card:hover { border-color: var(--text-dim); transform: translateY(-3px); }
+.card-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 1rem;
+}
+.card-icon.red { background: var(--red-dim); }
+.card-icon.yellow { background: var(--yellow-dim); }
+.card-icon.green { background: var(--green-dim); }
+.card-icon.blue { background: var(--blue-dim); }
+.card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+.card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+.card-label {
+  display: inline-block; font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.6rem;
+  border-radius: 4px; margin-bottom: 0.75rem;
+}
+.card-label.central { background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,33,10,0.3); }
+.card-label.apoio { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(245,200,66,0.3); }
+
+/* ── FLOW DIAGRAM ── */
+.flow-diagram {
+  display: flex; align-items: stretch; gap: 0;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; margin: 2rem 0;
+}
+.flow-col {
+  flex: 1; padding: 1.75rem 1.5rem;
+  border-right: 1px solid var(--border);
+}
+.flow-col:last-child { border-right: none; }
+.flow-col-title {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 1rem;
+  font-family: var(--font-display);
+}
+.flow-col.input .flow-col-title { color: var(--blue); }
+.flow-col.transform .flow-col-title { color: var(--yellow); }
+.flow-col.output .flow-col-title { color: var(--green); }
+.flow-arrow {
+  display: flex; align-items: center; padding: 0 0.5rem;
+  color: var(--text-dim); font-size: 1.5rem;
+  background: var(--bg2);
+}
+.flow-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.6rem 0.9rem; margin-bottom: 0.5rem;
+  font-size: 0.82rem; color: var(--text-muted);
+}
+.flow-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-bottom: 0.1rem; }
+.flow-item.highlight { border-color: rgba(245,200,66,0.4); background: var(--yellow-dim); }
+.flow-item.highlight strong { color: var(--yellow); }
+.flow-item.highlight-green { border-color: rgba(46,204,113,0.4); background: var(--green-dim); }
+.flow-item.highlight-green strong { color: var(--green); }
+.flow-item.highlight-blue { border-color: rgba(59,158,255,0.4); background: var(--blue-dim); }
+.flow-item.highlight-blue strong { color: var(--blue); }
+
+/* ── 4Vs ── */
+.vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+@media (max-width: 640px) { .vs-grid { grid-template-columns: 1fr; } }
+.vs-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.vs-header {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.vs-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+.vs-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+.vs-tabs { display: flex; gap: 0; padding: 0.75rem 1.5rem 0; }
+.vs-tab {
+  padding: 0.4rem 1rem; font-size: 0.78rem; font-weight: 600;
+  border-radius: 6px 6px 0 0; cursor: pointer;
+  border: 1px solid transparent; transition: var(--transition);
+  font-family: var(--font-body); color: var(--text-muted);
+  border-bottom: none; background: none;
+}
+.vs-tab.active { background: var(--surface); border-color: var(--border); color: var(--text); }
+.vs-body { padding: 1rem 1.5rem 1.5rem; background: var(--surface); }
+.vs-panel { display: none; }
+.vs-panel.active { display: block; }
+.vs-panel h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+.vs-panel ul { padding-left: 1rem; }
+.vs-panel li { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+.vs-badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem;
+  border-radius: 4px; margin-bottom: 0.75rem; text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.vs-badge.high { background: var(--green-dim); color: var(--green); }
+.vs-badge.low { background: var(--red-dim); color: var(--red); }
+.vs-example {
+  margin-top: 0.75rem; background: var(--bg2); border-radius: 6px;
+  padding: 0.6rem 0.8rem; font-size: 0.8rem; color: var(--text-muted);
+  border-left: 3px solid var(--yellow);
+}
+.vs-example strong { color: var(--yellow); }
+
+/* ── TABLES ── */
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+table {
+  width: 100%; border-collapse: collapse; font-size: 0.88rem;
+}
+thead tr { background: var(--surface); }
+th {
+  padding: 0.85rem 1rem; text-align: left; font-weight: 700;
+  font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border); color: var(--text);
+}
+td {
+  padding: 0.8rem 1rem; border-bottom: 1px solid var(--border);
+  vertical-align: top; color: var(--text-muted);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+td.col-label { color: var(--text); font-weight: 600; }
+.cell-alto { color: var(--green); font-weight: 600; }
+.cell-medio { color: var(--yellow); font-weight: 600; }
+.cell-baixo { color: var(--red); font-weight: 500; }
+
+/* ── COMPARE TABLE ── */
+.compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 640px) { .compare-wrap { grid-template-columns: 1fr; } }
+.compare-col { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.compare-col-header {
+  padding: 1rem 1.5rem; font-family: var(--font-display); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.compare-col-header.bens { background: var(--blue-dim); color: var(--blue); border-bottom: 1px solid rgba(59,158,255,0.2); }
+.compare-col-header.servicos { background: var(--green-dim); color: var(--green); border-bottom: 1px solid rgba(46,204,113,0.2); }
+.compare-item { padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border); }
+.compare-item:last-child { border-bottom: none; }
+.compare-item-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.2rem; }
+.compare-item-val { font-size: 0.88rem; color: var(--text-muted); }
+
+/* ── SPECTRUM ── */
+.spectrum-bar {
+  height: 12px; border-radius: 100px; margin: 1.5rem 0;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  position: relative;
+}
+.spectrum-labels {
+  display: flex; justify-content: space-between;
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-dim);
+  font-family: var(--font-display);
+}
+.spectrum-items {
+  display: flex; gap: 0; margin: 1rem 0;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.spectrum-item {
+  flex: 1; padding: 1rem 0.5rem; text-align: center;
+  border-right: 1px solid var(--border); transition: var(--transition);
+  cursor: default;
+}
+.spectrum-item:last-child { border-right: none; }
+.spectrum-item:hover { background: var(--surface); }
+.spectrum-item .dot {
+  width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 0.5rem;
+}
+.spectrum-item .name { font-size: 0.72rem; font-weight: 600; color: var(--text); }
+.spectrum-item .sub { font-size: 0.65rem; color: var(--text-dim); margin-top: 0.2rem; }
+
+/* ── PERFORMANCE OBJECTIVES ── */
+.perf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.perf-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.5rem; text-align: center; transition: var(--transition);
+}
+.perf-card:hover { transform: translateY(-4px); }
+.perf-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.perf-title { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.4rem; }
+.perf-desc { font-size: 0.82rem; color: var(--text-muted); }
+
+/* ── PROCESS TYPE CARDS ── */
+.process-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; }
+.process-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.5rem; transition: var(--transition); position: relative; overflow: hidden;
+}
+.process-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.process-card.continuo::before { background: var(--blue); }
+.process-card.massa::before { background: var(--red); }
+.process-card.lotes::before { background: var(--yellow); }
+.process-card.encomenda::before { background: var(--green); }
+.process-card.projeto::before { background: #a855f7; }
+.process-card.jobbing::before { background: #f97316; }
+.process-card:hover { transform: translateY(-3px); border-color: var(--text-dim); }
+.process-type-badge {
+  display: inline-block; font-size: 0.68rem; font-weight: 700;
+  padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.75rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.process-type-badge.continuo { background: rgba(59,158,255,0.15); color: var(--blue); }
+.process-type-badge.massa { background: var(--red-dim); color: var(--red); }
+.process-type-badge.lotes { background: var(--yellow-dim); color: var(--yellow); }
+.process-type-badge.encomenda { background: var(--green-dim); color: var(--green); }
+.process-type-badge.projeto { background: rgba(168,85,247,0.15); color: #a855f7; }
+.process-type-badge.jobbing { background: rgba(249,115,22,0.15); color: #f97316; }
+.process-card h3 { font-family: var(--font-display); font-weight: 700; margin-bottom: 0.5rem; font-size: 1rem; }
+.process-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+.process-examples { font-size: 0.78rem; color: var(--text-dim); }
+.process-examples strong { color: var(--text-muted); }
+
+/* ── ACCORDION ── */
+.accordion { display: flex; flex-direction: column; gap: 0.75rem; }
+.acc-item {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: var(--transition);
+}
+.acc-item.open { border-color: var(--text-dim); }
+.acc-trigger {
+  width: 100%; padding: 1.25rem 1.5rem; display: flex;
+  align-items: center; justify-content: space-between;
+  cursor: pointer; background: none; border: none; color: var(--text);
+  font-size: 0.95rem; font-weight: 600; font-family: var(--font-body);
+  text-align: left; gap: 1rem;
+}
+.acc-trigger:hover { background: rgba(255,255,255,0.02); }
+.acc-arrow {
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px;
+  background: var(--surface); display: flex; align-items: center; justify-content: center;
+  transition: transform var(--transition); font-size: 0.8rem;
+}
+.acc-item.open .acc-arrow { transform: rotate(180deg); }
+.acc-body { display: none; padding: 0 1.5rem 1.5rem; }
+.acc-item.open .acc-body { display: block; }
+.acc-body p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.6rem; line-height: 1.7; }
+.acc-body strong { color: var(--text); }
+.acc-question-badge {
+  display: inline-block; font-size: 0.68rem; font-weight: 700;
+  padding: 0.15rem 0.5rem; border-radius: 4px; margin-right: 0.5rem; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.acc-question-badge.q { background: var(--blue-dim); color: var(--blue); }
+.acc-question-badge.a { background: var(--green-dim); color: var(--green); }
+.acc-divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+.acc-label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+
+/* ── TOOLTIP ── */
+[data-tooltip] { position: relative; border-bottom: 1px dashed var(--text-dim); cursor: help; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%); background: var(--surface2);
+  color: var(--text); font-size: 0.78rem; padding: 0.5rem 0.8rem;
+  border-radius: 8px; white-space: nowrap; pointer-events: none;
+  opacity: 0; transition: opacity 0.2s; z-index: 100;
+  border: 1px solid var(--border); font-style: normal;
+  max-width: 220px; white-space: normal; text-align: center;
+  line-height: 1.4;
+}
+[data-tooltip]:hover::after { opacity: 1; }
+
+/* ── BACK TO TOP ── */
+#back-top {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 888;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); cursor: pointer; display: flex;
+  align-items: center; justify-content: center; font-size: 1rem;
+  transition: var(--transition); opacity: 0; pointer-events: none;
+}
+#back-top.visible { opacity: 1; pointer-events: auto; }
+#back-top:hover { background: var(--red); border-color: var(--red); transform: translateY(-3px); }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center; padding: 2rem; color: var(--text-dim);
+  font-size: 0.8rem; border-top: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 1rem; }
+  .nav-links { display: none; }
+  section { padding: 3.5rem 1.25rem; }
+  .flow-diagram { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); padding: 0.5rem 0; justify-content: center; border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ── SUMMARY TABLE CELL COLORS ── */
+.resumo-table td.val {
+  font-weight: 600; font-size: 0.82rem;
+}
+.val-alto { color: var(--green); }
+.val-medio { color: var(--yellow); }
+.val-baixo { color: var(--red); }
+.val-linear { color: var(--blue); }
+.val-funcional { color: #a855f7; }
+
+/* heading underline accent */
+.title-accent {
+  position: relative; display: inline-block;
+}
+.title-accent::after {
+  content: ''; position: absolute; left: 0; bottom: -4px;
+  width: 40%; height: 3px; background: var(--red); border-radius: 2px;
+}
+</style>
+</head>
+<body class="bg-surface text-on-surface">
+
+<div id="progress-bar"></div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">
+    gaaabriel <span style="font-size: 0.6em; text-transform:uppercase; letter-spacing:2px; font-weight: 400; color: var(--text-dim); margin-left: 8px;">MasterClass</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#timeline">Linha do Tempo</a></li>
+    <li><a href="#conceito">Conceito</a></li>
+    <li><a href="#funcoes">Funções</a></li>
+    <li><a href="#modelo">Modelo I-T-O</a></li>
+    <li><a href="#4vs">Os 4 Vs</a></li>
+    <li><a href="#bens-servicos">Bens & Serviços</a></li>
+    <li><a href="#espectro">Espectro</a></li>
+    <li><a href="#objetivos">Objetivos</a></li>
+    <li><a href="#padronizacao">Padronização</a></li>
+    <li><a href="#processos">Processos</a></li>
+    <li><a href="#resumo">Resumo</a></li>
+    <li><a href="#exercicios">Exercícios</a></li>
+    <li><a href="#revisao">Revisão</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero" style="max-width:100%;padding:0;">
+  <div class="hero-bg">
+    <svg class="gear-svg g1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 15l-5 10H35l-5-8.66L20.67 22l3.66 9.33L18 39H7.3L5 50l11 3.33L18 61l-8 8 7.33 7.33L26 68l8 4.67L37.33 84H50l3.33-11.33 8-4.67 8.67 8.67 7.33-7.33-8-8 2.67-7.67L84 50l-2.33-11H71l-6.33-7.67 3.66-9.33L58 16 53 24.66z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+    <svg class="gear-svg g2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 15l-5 10H35l-5-8.66L20.67 22l3.66 9.33L18 39H7.3L5 50l11 3.33L18 61l-8 8 7.33 7.33L26 68l8 4.67L37.33 84H50l3.33-11.33 8-4.67 8.67 8.67 7.33-7.33-8-8 2.67-7.67L84 50l-2.33-11H71l-6.33-7.67 3.66-9.33L58 16 53 24.66z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+    <svg class="gear-svg g3" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 15l-5 10H35l-5-8.66L20.67 22l3.66 9.33L18 39H7.3L5 50l11 3.33L18 61l-8 8 7.33 7.33L26 68l8 4.67L37.33 84H50l3.33-11.33 8-4.67 8.67 8.67 7.33-7.33-8-8 2.67-7.67L84 50l-2.33-11H71l-6.33-7.67 3.66-9.33L58 16 53 24.66z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+    <svg class="gear-svg g4" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 15l-5 10H35l-5-8.66L20.67 22l3.66 9.33L18 39H7.3L5 50l11 3.33L18 61l-8 8 7.33 7.33L26 68l8 4.67L37.33 84H50l3.33-11.33 8-4.67 8.67 8.67 7.33-7.33-8-8 2.67-7.67L84 50l-2.33-11H71l-6.33-7.67 3.66-9.33L58 16 53 24.66z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+    <svg class="gear-svg g5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 15l-5 10H35l-5-8.66L20.67 22l3.66 9.33L18 39H7.3L5 50l11 3.33L18 61l-8 8 7.33 7.33L26 68l8 4.67L37.33 84H50l3.33-11.33 8-4.67 8.67 8.67 7.33-7.33-8-8 2.67-7.67L84 50l-2.33-11H71l-6.33-7.67 3.66-9.33L58 16 53 24.66z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge"><span></span> UNISAL — Engenharia de Produção</div>
+    <h1 class="hero-title">Sistema de<br><em>Produção</em></h1>
+    <p class="hero-subtitle">Material de estudo interativo completo — da linha do tempo histórica aos tipos de processo, passando pelos modelos e frameworks essenciais.</p>
+    <div class="hero-nav-grid">
+      <a href="#timeline" class="hero-btn primary">▶ Começar</a>
+      <a href="#timeline" class="hero-btn">📅 Linha do Tempo</a>
+      <a href="#modelo" class="hero-btn">⚙️ Modelo I-T-O</a>
+      <a href="#4vs" class="hero-btn">📊 Os 4 Vs</a>
+      <a href="#processos" class="hero-btn">🏭 Processos</a>
+      <a href="#exercicios" class="hero-btn">✍️ Exercícios</a>
+      <a href="#revisao" class="hero-btn">🧠 Revisão</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── LINHA DO TEMPO ── -->
+<section id="timeline">
+  <div class="section-label">História</div>
+  <h2 class="section-title title-accent">Linha do Tempo</h2>
+  <p class="section-desc">A evolução dos sistemas produtivos desde a Revolução Industrial até a era digital, com os marcos que moldaram a gestão da produção moderna.</p>
+
+  <div class="timeline">
+
+    <div class="tl-item reveal" style="transition-delay:0.05s">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-era">1776</div>
+      <div class="tl-title">Motor a Vapor — James Watt</div>
+      <div class="tl-desc">Invenção que impulsionou a Revolução Industrial, mecanizando processos antes feitos manualmente.</div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.1s">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-era">1793 – 1798</div>
+      <div class="tl-title">Eli Whitney — Peças Intercambiáveis</div>
+      <div class="tl-desc">Descaroçadora de algodão (1793) e mosquete "Charleville" (1798). Whitney foi pioneiro no uso de peças padronizadas e intercambiáveis, base da produção em massa.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">Peças intercambiáveis</span>
+        <span class="tl-tag">Mecanização</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.15s">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-era">1803</div>
+      <div class="tl-title">The American System of Manufacturing</div>
+      <div class="tl-desc">Conjunto de métodos de fabricação que evoluíram no século XIX nos EUA, com ênfase no uso de peças intercambiáveis e mecanização da produção.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">Padronização</span>
+        <span class="tl-tag">Mecanização</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.2s">
+      <div class="tl-dot" style="background:var(--yellow)"></div>
+      <div class="tl-era">1854 – 1885</div>
+      <div class="tl-title">Máquina de Costura Singer & Revólver Colt</div>
+      <div class="tl-desc">Singer (1854) revolucionou a produção têxtil. Samuel Colt (1885) aplicou produção em série a armas de fogo, consolidando a manufatura em massa.</div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.25s">
+      <div class="tl-dot" style="background:var(--red)"></div>
+      <div class="tl-era">1907</div>
+      <div class="tl-title">Ford — Modelo T & Linha de Montagem</div>
+      <div class="tl-desc">Henry Ford introduz a linha de montagem em série, reduzindo drasticamente o custo e o tempo de produção de automóveis. Nasce a produção em massa moderna.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">Mass Production</span>
+        <span class="tl-tag">Linha de montagem</span>
+        <span class="tl-tag">Seller's Market</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.3s">
+      <div class="tl-dot" style="background:var(--yellow)"></div>
+      <div class="tl-era">1926</div>
+      <div class="tl-title">Lilian Gilbreth & Elton Mayo — Dimensão Social</div>
+      <div class="tl-desc">Início dos estudos sobre o componente social do trabalho, precursores da Escola de Relações Humanas e do conceito de motivação no ambiente produtivo.</div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.35s">
+      <div class="tl-dot" style="background:var(--red)"></div>
+      <div class="tl-era">1945 — Pós-Guerra</div>
+      <div class="tl-title">Impulso da Produção em Massa</div>
+      <div class="tl-desc">EUA com parque industrial intacto se beneficiam da demanda reprimida pela guerra. Seller's Market: demanda supera oferta, impulso à produção em massa.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">Seller's Market</span>
+        <span class="tl-tag">Mass Production</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.4s">
+      <div class="tl-dot" style="background:var(--green)"></div>
+      <div class="tl-era">Anos 1960</div>
+      <div class="tl-title">JIT, Qualidade e Computadores</div>
+      <div class="tl-desc">O <span data-tooltip="Just-in-Time: sistema de produção puxada, sem estoques, produzindo apenas o necessário, quando necessário.">JIT</span> da Toyota (Taiichi Ohno) se espalha pelo mundo. Deming lidera o movimento pela Qualidade no Japão. Surge o <span data-tooltip="Material Requirements Planning: sistema computacional para planejamento de necessidades de materiais.">MRP</span> na IBM.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">JIT</span>
+        <span class="tl-tag">Toyota</span>
+        <span class="tl-tag">Qualidade Total</span>
+        <span class="tl-tag">MRP</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.45s">
+      <div class="tl-dot" style="background:var(--yellow)"></div>
+      <div class="tl-era">Anos 1970</div>
+      <div class="tl-title">Crise do Petróleo & Estratégia de Operações</div>
+      <div class="tl-desc">Primeira crise do petróleo (1973) impõe reavaliação da eficiência produtiva. Surgem: Estratégia de Operações, Gestão de Serviços, <span data-tooltip="Manufacturing Resource Planning: evolução do MRP, incluindo planejamento de capacidade e recursos financeiros.">MRPII</span>, Celularização e desenvolvimento da Automação.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">MRPII</span>
+        <span class="tl-tag">Automação</span>
+        <span class="tl-tag">Celularização</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.5s">
+      <div class="tl-dot" style="background:var(--red)"></div>
+      <div class="tl-era">Anos 1980 – 1990</div>
+      <div class="tl-title">Qualidade Total, ERPs e Lean</div>
+      <div class="tl-desc">Década da Qualidade Total. Visão por processos (re-engenharia). ERPs, Gestão de redes de suprimentos, <span data-tooltip="Lean Manufacturing: filosofia de eliminar desperdícios para criar valor ao cliente com o mínimo de recursos.">Lean Production</span> e organizações virtuais com simulações.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">Qualidade Total</span>
+        <span class="tl-tag">ERP</span>
+        <span class="tl-tag">Lean</span>
+        <span class="tl-tag">Re-engenharia</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.55s">
+      <div class="tl-dot" style="background:var(--green)"></div>
+      <div class="tl-era">Anos 2000+</div>
+      <div class="tl-title">Nova Economia & Transição Digital</div>
+      <div class="tl-desc">Nova economia digital, Internet, globalização e digitalização dos processos produtivos marcam uma transição fundamental nos sistemas de produção.</div>
+      <div class="tl-tags">
+        <span class="tl-tag">Digital</span>
+        <span class="tl-tag">Globalização</span>
+        <span class="tl-tag">Industry 4.0</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CONCEITO ── -->
+<section id="conceito">
+  <div class="section-label">Definição</div>
+  <h2 class="section-title title-accent">O que é Sistema de Produção?</h2>
+  <p class="section-desc">Conjunto integrado de elementos que transforma recursos em valor para o cliente.</p>
+
+  <div class="cards-grid">
+    <div class="card reveal" style="border-color: rgba(232,33,10,0.3);">
+      <div class="card-icon red">⚙️</div>
+      <h3>Definição Central</h3>
+      <p>O sistema de produção é um <strong style="color:var(--text)">conjunto de elementos, pessoas, máquinas e processos</strong> responsáveis por produzir um produto ou serviço. Esses elementos se interligam para alcançarem o objetivo final, que é produzir.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.1s; border-color: rgba(59,158,255,0.3);">
+      <div class="card-icon blue">🔗</div>
+      <h3>Atividades Inter-relacionadas</h3>
+      <p>É o <strong style="color:var(--text)">conjunto de atividades e operações inter-relacionadas</strong> envolvidas na produção de bens (indústrias) ou serviços. Cada elemento afeta e é afetado pelos demais.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.2s; border-color: rgba(46,204,113,0.3);">
+      <div class="card-icon green">🎯</div>
+      <h3>Objetivo Final</h3>
+      <p>Transformar <strong style="color:var(--text)">inputs</strong> (recursos, materiais, informações) em <strong style="color:var(--text)">outputs</strong> (bens e serviços) que agreguem <strong style="color:var(--text)">valor ao cliente</strong>, com eficiência e qualidade.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.3s; border-color: rgba(245,200,66,0.3);">
+      <div class="card-icon yellow">📋</div>
+      <h3>Classificação</h3>
+      <p>Os sistemas são classificados por: <strong style="color:var(--text)">natureza do produto</strong> (bem ou serviço), <strong style="color:var(--text)">grau de padronização</strong> e <strong style="color:var(--text)">tipo de processo</strong> de transformação envolvido.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── FUNÇÕES ── -->
+<section id="funcoes">
+  <div class="section-label">Organização</div>
+  <h2 class="section-title title-accent">Funções do Sistema</h2>
+  <p class="section-desc">As funções se dividem em centrais (criam e entregam valor) e de apoio (suportam a função produção).</p>
+
+  <h3 style="font-family:var(--font-display);font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;">Funções Centrais</h3>
+  <div class="cards-grid" style="margin-bottom:2.5rem;">
+    <div class="card reveal">
+      <span class="card-label central">Central</span>
+      <div class="card-icon red">📣</div>
+      <h3>Função Marketing</h3>
+      <p>Responsável por <strong style="color:var(--text)">comunicar os produtos ou serviços</strong> de uma empresa ao mercado. Identifica necessidades dos clientes e cria demanda.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.1s;">
+      <span class="card-label central">Central</span>
+      <div class="card-icon red">🔬</div>
+      <h3>Função Desenvolvimento</h3>
+      <p>Responsável por <strong style="color:var(--text)">criar novos produtos ou serviços ou modificá-los</strong>. Define especificações técnicas e atende requisitos dos clientes.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.2s;">
+      <span class="card-label central">Central</span>
+      <div class="card-icon red">🏭</div>
+      <h3>Função Produção</h3>
+      <p>Responsável por <strong style="color:var(--text)">satisfazer às solicitações do consumidor</strong> por meio da produção e entrega de bens e serviços. Core do sistema.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-display);font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--yellow);margin-bottom:1rem;">Funções de Apoio à Produção</h3>
+  <div class="cards-grid">
+    <div class="card reveal" style="transition-delay:0.05s;">
+      <span class="card-label apoio">Apoio</span>
+      <div class="card-icon yellow">📐</div>
+      <h3>Engenharia de Produto</h3>
+      <p>Lista de materiais e desenhos técnicos. Define <em style="color:var(--text)">o que</em> será produzido e com quais componentes.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.1s;">
+      <span class="card-label apoio">Apoio</span>
+      <div class="card-icon yellow">🔧</div>
+      <h3>Engenharia de Processo</h3>
+      <p>Roteiros de fabricação e <span data-tooltip="Lead Time: tempo total desde o início até a entrega de um produto ou serviço.">lead times</span>. Define <em style="color:var(--text)">como</em> o produto será fabricado.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.15s;">
+      <span class="card-label apoio">Apoio</span>
+      <div class="card-icon yellow">🛠️</div>
+      <h3>Manutenção</h3>
+      <p>Plano de manutenção preventiva e operação dos equipamentos. Garante disponibilidade produtiva.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.2s;">
+      <span class="card-label apoio">Apoio</span>
+      <div class="card-icon yellow">💰</div>
+      <h3>Finanças</h3>
+      <p>Plano de investimentos e fluxo de caixa. Apoia nos processos decisórios econômicos e administra recursos financeiros.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:0.25s;">
+      <span class="card-label apoio">Apoio</span>
+      <div class="card-icon yellow">👥</div>
+      <h3>Recursos Humanos</h3>
+      <p>Aquisição de mão de obra e programas de treinamento. Recruta e desenvolve os funcionários da organização.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── MODELO I-T-O ── -->
+<section id="modelo">
+  <div class="section-label">Framework</div>
+  <h2 class="section-title title-accent">Modelo Input → Transformação → Output</h2>
+  <p class="section-desc">Todo sistema de produção pode ser descrito como um processo de transformação de entradas em saídas, utilizando recursos transformados e transformadores.</p>
+
+  <div class="flow-diagram reveal">
+    <div class="flow-col input">
+      <div class="flow-col-title">📥 Input (Entradas)</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Recursos Transformados</div>
+      <div class="flow-item highlight-blue"><strong>Materiais</strong>Matérias-primas e componentes (animal, vegetal, mineral)</div>
+      <div class="flow-item highlight-blue"><strong>Informações</strong>Dados a serem processados e distribuídos</div>
+      <div class="flow-item highlight-blue"><strong>Consumidores</strong>Clientes que participam do processo (serviços)</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-top:1rem;margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Recursos de Transformação</div>
+      <div class="flow-item"><strong>Instalações</strong>Prédios, equipamentos, terreno, tecnologia</div>
+      <div class="flow-item"><strong>Funcionários</strong>Operam, mantêm, planejam e administram</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-top:1rem;margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Demandas & Previsões</div>
+      <div class="flow-item"><strong>Previsões de Vendas</strong>Média Móvel · Média Ponderada · Exponencial · Sazonalidade</div>
+    </div>
+
+    <div style="display:flex;align-items:center;padding:0 0.75rem;background:var(--bg2);">
+      <span style="color:var(--text-dim);font-size:1.5rem;">→</span>
+    </div>
+
+    <div class="flow-col transform">
+      <div class="flow-col-title">⚙️ Transformação</div>
+      <div class="flow-item highlight"><strong><span data-tooltip="Manufacturing Resource Planning: planejamento integrado de recursos de manufatura.">MRP</span> / MRPII</strong>Planejamento de necessidades de materiais e recursos</div>
+      <div class="flow-item highlight"><strong>Planej. Estratégico</strong>Plano de longo prazo para a produção</div>
+      <div class="flow-item highlight"><strong>Planej. Mestre</strong>Programa Mestre de Produção — médio prazo</div>
+      <div class="flow-item highlight"><strong>Programação</strong>Ordens de compra, fabricação e montagem</div>
+      <div class="flow-item highlight"><strong>Controle</strong>Monitoramento e ajuste do processo</div>
+      <div class="flow-item" style="margin-top:0.75rem;border-color:rgba(232,33,10,0.4);background:var(--red-dim);">
+        <strong style="color:var(--red)"><span data-tooltip="Kaizen: filosofia japonesa de melhoria contínua, pequenas melhorias diárias em todos os processos.">KAIZEN</span> — Melhoria Contínua</strong>
+        Realimenta o sistema buscando eliminar desperdícios
+      </div>
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-top:1rem;margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Capacidade de Produção</div>
+      <div class="flow-item"><strong>Instalada</strong>Capacidade máxima teórica</div>
+      <div class="flow-item"><strong>Disponível</strong>Após descontar manutenções programadas</div>
+      <div class="flow-item"><strong>Efetiva</strong>Considerando eficiência real</div>
+      <div class="flow-item"><strong>Real</strong>Produção efetivamente realizada</div>
+    </div>
+
+    <div style="display:flex;align-items:center;padding:0 0.75rem;background:var(--bg2);">
+      <span style="color:var(--text-dim);font-size:1.5rem;">→</span>
+    </div>
+
+    <div class="flow-col output">
+      <div class="flow-col-title">📤 Output (Saídas)</div>
+      <div class="flow-item highlight-green"><strong>Produtos (Bens)</strong>Tangíveis, estocáveis, transportáveis</div>
+      <div class="flow-item highlight-green"><strong>Serviços</strong>Intangíveis, produzidos e consumidos simultaneamente</div>
+      <div style="margin-top:1rem;padding:1rem;background:var(--green-dim);border:1px solid rgba(46,204,113,0.3);border-radius:8px;text-align:center;">
+        <div style="font-size:1.3rem;margin-bottom:0.4rem;">💎</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--green)">Agregar Valor ao Cliente</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;">Objetivo final de todo sistema de produção</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── OS 4 VS ── -->
+<section id="4vs">
+  <div class="section-label">Dimensões de Output</div>
+  <h2 class="section-title title-accent">Os 4 Vs do Output</h2>
+  <p class="section-desc">As operações se diferenciam em quatro dimensões-chave que determinam custos, flexibilidade e a experiência do cliente.</p>
+
+  <div class="vs-grid">
+
+    <!-- Volume -->
+    <div class="vs-card reveal">
+      <div class="vs-header">
+        <div class="vs-icon" style="background:var(--red-dim); font-size:1.3rem;">📦</div>
+        <div>
+          <div class="vs-title">Volume</div>
+          <div style="font-size:0.8rem;color:var(--text-muted)">Quantidade produzida</div>
+        </div>
+      </div>
+      <div class="vs-tabs">
+        <button class="vs-tab active" onclick="switchTab(this,'vol-alto','vol')">Alto Volume</button>
+        <button class="vs-tab" onclick="switchTab(this,'vol-baixo','vol')">Baixo Volume</button>
+      </div>
+      <div class="vs-body">
+        <div class="vs-panel active" id="vol-alto">
+          <span class="vs-badge high">▲ Alto</span>
+          <ul>
+            <li>Alto grau de repetição das tarefas</li>
+            <li>Especialização e sistematização do trabalho</li>
+            <li>Baixo custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> McDonald's, Burger King, Subway — milhões de refeições padronizadas.</div>
+        </div>
+        <div class="vs-panel" id="vol-baixo">
+          <span class="vs-badge low">▼ Baixo</span>
+          <ul>
+            <li>Baixo grau de repetição</li>
+            <li>Cada funcionário participa mais do trabalho</li>
+            <li>Menor sistematização</li>
+            <li>Alto custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> Restaurante gourmet local — cada prato exige atenção individualizada.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variedade -->
+    <div class="vs-card reveal" style="transition-delay:0.1s">
+      <div class="vs-header">
+        <div class="vs-icon" style="background:var(--yellow-dim); font-size:1.3rem;">🎨</div>
+        <div>
+          <div class="vs-title">Variedade</div>
+          <div style="font-size:0.8rem;color:var(--text-muted)">Diversidade de produtos/serviços</div>
+        </div>
+      </div>
+      <div class="vs-tabs">
+        <button class="vs-tab active" onclick="switchTab(this,'var-alta','var')">Alta Variedade</button>
+        <button class="vs-tab" onclick="switchTab(this,'var-baixa','var')">Baixa Variedade</button>
+      </div>
+      <div class="vs-body">
+        <div class="vs-panel active" id="var-alta">
+          <span class="vs-badge high">▲ Alta</span>
+          <ul>
+            <li>Flexível</li>
+            <li>Melhor atende às necessidades dos consumidores</li>
+            <li>Alto custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> Bolsas artesanais / Consultoria — produção personalizada, sem série.</div>
+        </div>
+        <div class="vs-panel" id="var-baixa">
+          <span class="vs-badge low">▼ Baixa</span>
+          <ul>
+            <li>Pouca flexibilidade (operação bem definida)</li>
+            <li>Operações rotineiras e padronizadas</li>
+            <li>Baixo custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> Fábrica de bolsas em série — produtos idênticos, custo menor.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variação da Demanda -->
+    <div class="vs-card reveal" style="transition-delay:0.2s">
+      <div class="vs-header">
+        <div class="vs-icon" style="background:var(--green-dim); font-size:1.3rem;">📈</div>
+        <div>
+          <div class="vs-title">Variação da Demanda</div>
+          <div style="font-size:0.8rem;color:var(--text-muted)">Flutuação na procura</div>
+        </div>
+      </div>
+      <div class="vs-tabs">
+        <button class="vs-tab active" onclick="switchTab(this,'dem-alta','dem')">Alta Variação</button>
+        <button class="vs-tab" onclick="switchTab(this,'dem-baixa','dem')">Baixa Variação</button>
+      </div>
+      <div class="vs-body">
+        <div class="vs-panel active" id="dem-alta">
+          <span class="vs-badge high" style="background:var(--yellow-dim);color:var(--yellow);">⚡ Alta</span>
+          <ul>
+            <li>A operação deve mudar sua capacidade para atender mudanças</li>
+            <li>Flexível, antecipa-se, ajusta-se à demanda</li>
+            <li>Alto custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> Fabricantes de ovos de Páscoa — pico em abril, queda nos demais meses.</div>
+        </div>
+        <div class="vs-panel" id="dem-baixa">
+          <span class="vs-badge low">▼ Baixa</span>
+          <ul>
+            <li>Estável</li>
+            <li>Operações rotineiras e previsíveis</li>
+            <li>Alta utilização dos recursos</li>
+            <li>Baixo custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> Distribuidora de água — demanda constante ao longo do ano.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visibilidade -->
+    <div class="vs-card reveal" style="transition-delay:0.3s">
+      <div class="vs-header">
+        <div class="vs-icon" style="background:var(--blue-dim); font-size:1.3rem;">👁️</div>
+        <div>
+          <div class="vs-title">Visibilidade</div>
+          <div style="font-size:0.8rem;color:var(--text-muted)">Contato com o consumidor</div>
+        </div>
+      </div>
+      <div class="vs-tabs">
+        <button class="vs-tab active" onclick="switchTab(this,'vis-alta','vis')">Alta Visibilidade</button>
+        <button class="vs-tab" onclick="switchTab(this,'vis-baixa','vis')">Baixa Visibilidade</button>
+      </div>
+      <div class="vs-body">
+        <div class="vs-panel active" id="vis-alta">
+          <span class="vs-badge high" style="background:var(--blue-dim);color:var(--blue);">👤 Alta</span>
+          <ul>
+            <li>Exige funcionários com habilidade interpessoal</li>
+            <li>Satisfação definida pela percepção do consumidor</li>
+            <li>Tolerância a espera limitada</li>
+            <li>Alta variedade recebida (consumidor pede o que quer)</li>
+            <li>Alto custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> Restaurante com cozinha aberta — cliente vê e interage com o processo.</div>
+        </div>
+        <div class="vs-panel" id="vis-baixa">
+          <span class="vs-badge low">▼ Baixa</span>
+          <ul>
+            <li>Funcionários com pouca habilidade de contato</li>
+            <li>Permite padronização nas operações</li>
+            <li>Maior tolerância ao tempo de espera</li>
+            <li>Centralização das operações em um local</li>
+            <li>Baixo custo unitário</li>
+          </ul>
+          <div class="vs-example"><strong>Ex.:</strong> Delivery sem cozinha aberta — cliente não vê a produção.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── BENS & SERVIÇOS ── -->
+<section id="bens-servicos">
+  <div class="section-label">Natureza do Produto</div>
+  <h2 class="section-title title-accent">Bens vs. Serviços</h2>
+  <p class="section-desc">Os outputs diferem em seis características fundamentais que impactam diretamente a gestão das operações.</p>
+
+  <div class="compare-wrap reveal">
+    <div class="compare-col">
+      <div class="compare-col-header bens">📦 Bens (Produtos Físicos)</div>
+      <div class="compare-item">
+        <div class="compare-item-label">Tangibilidade</div>
+        <div class="compare-item-val" style="color:var(--blue)">✓ Geralmente tangíveis — podem ser tocados</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Estocabilidade</div>
+        <div class="compare-item-val" style="color:var(--green)">✓ Estocáveis (pelo menos parcialmente)</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Transportabilidade</div>
+        <div class="compare-item-val" style="color:var(--green)">✓ Transportáveis</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Simultaneidade</div>
+        <div class="compare-item-val">Geralmente produzidos <strong style="color:var(--text)">antes</strong> do recebimento pelo consumidor</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Contato com Consumidor</div>
+        <div class="compare-item-val" style="color:var(--green)">✓ Baixo nível de contato</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Qualidade</div>
+        <div class="compare-item-val">A qualidade da operação é julgada <strong style="color:var(--text)">com base nos próprios bens</strong></div>
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-col-header servicos">🤝 Serviços</div>
+      <div class="compare-item">
+        <div class="compare-item-label">Tangibilidade</div>
+        <div class="compare-item-val" style="color:var(--yellow)">✗ Geralmente intangíveis — não podem ser tocados</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Estocabilidade</div>
+        <div class="compare-item-val" style="color:var(--red)">✗ Não estocáveis — se não consumidos, perdem-se</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Transportabilidade</div>
+        <div class="compare-item-val" style="color:var(--red)">✗ Intransportáveis — entregues no local</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Simultaneidade</div>
+        <div class="compare-item-val">Com frequência, produzidos <strong style="color:var(--text)">simultaneamente</strong> ao seu consumo</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Contato com Consumidor</div>
+        <div class="compare-item-val" style="color:var(--yellow)">⚡ Nível mais alto de contato com o cliente</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">Qualidade</div>
+        <div class="compare-item-val">O cliente julga <strong style="color:var(--text)">resultado E aspectos do processo</strong> (pois participa)</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-top:1.5rem;" class="reveal">
+    <div style="font-size:0.8rem;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;">💡 Nota Importante</div>
+    <p style="font-size:0.9rem;color:var(--text-muted);">Existem casos em que serviços são agregados ao fornecimento de bens como <strong style="color:var(--text)">estratégia de diferenciação</strong>, principalmente quando o produto é similar ao da concorrência. Um restaurante, por exemplo, produz simultaneamente um bem (o alimento) e um serviço (a experiência do atendimento).</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ESPECTRO ── -->
+<section id="espectro">
+  <div class="section-label">Continuum</div>
+  <h2 class="section-title title-accent">Espectro Bens → Serviços</h2>
+  <p class="section-desc">Na prática, a maioria dos negócios oferece uma combinação de bens e serviços. A proporção varia conforme o tipo de negócio.</p>
+
+  <div class="reveal">
+    <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);font-family:var(--font-display);margin-bottom:0.5rem;">
+      <span style="color:var(--blue)">◀ Bens Puros</span>
+      <span style="color:var(--green)">Serviços Puros ▶</span>
+    </div>
+    <div style="height:10px;border-radius:100px;background:linear-gradient(90deg, var(--blue), #5b8fff, var(--green));margin-bottom:1.5rem;"></div>
+
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+      <div style="padding:1rem 0.5rem;text-align:center;border-right:1px solid var(--border);">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--blue);margin:0 auto 0.5rem;"></div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text);">Produção de Petróleo</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;">Bem puro</div>
+      </div>
+      <div style="padding:1rem 0.5rem;text-align:center;border-right:1px solid var(--border);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4b8cff;margin:0 auto 0.5rem;"></div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text);">Fundição de Alumínio</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;">Predomin. bem</div>
+      </div>
+      <div style="padding:1rem 0.5rem;text-align:center;border-right:1px solid var(--border);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#3fa8e0;margin:0 auto 0.5rem;"></div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text);">Fab. Máquinas Especiais</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;">Mix</div>
+      </div>
+      <div style="padding:1rem 0.5rem;text-align:center;border-right:1px solid var(--border);background:rgba(255,255,255,0.02);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#40c4b0;margin:0 auto 0.5rem;"></div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text);">Restaurante</div>
+        <div style="font-size:0.6rem;color:var(--yellow);margin-top:0.2rem;">50/50</div>
+      </div>
+      <div style="padding:1rem 0.5rem;text-align:center;border-right:1px solid var(--border);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#3dcc9e;margin:0 auto 0.5rem;"></div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text);">Serviços de TI</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;">Predomin. serviço</div>
+      </div>
+      <div style="padding:1rem 0.5rem;text-align:center;border-right:1px solid var(--border);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#36cc80;margin:0 auto 0.5rem;"></div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text);">Consultoria Gerencial</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;">Quase serviço</div>
+      </div>
+      <div style="padding:1rem 0.5rem;text-align:center;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--green);margin:0 auto 0.5rem;"></div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text);">Clínica Psicoterapêutica</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;">Serviço puro</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.5rem;">
+      <div style="background:rgba(59,158,255,0.07);border:1px solid rgba(59,158,255,0.2);border-radius:var(--radius);padding:1.25rem;">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;">📦 Bens Puros</div>
+        <div style="font-size:0.83rem;color:var(--text-muted);">✓ Tangíveis &nbsp; ✓ Estocáveis &nbsp; ✓ Produção precede consumo<br>✓ Baixo contato com consumidor &nbsp; ✓ Transportáveis &nbsp; ✓ Qualidade evidente</div>
+      </div>
+      <div style="background:rgba(46,204,113,0.07);border:1px solid rgba(46,204,113,0.2);border-radius:var(--radius);padding:1.25rem;">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;">🤝 Serviços Puros</div>
+        <div style="font-size:0.83rem;color:var(--text-muted);">✗ Intangíveis &nbsp; ✗ Não estocáveis &nbsp; ✗ Produção e consumo simultâneos<br>⚡ Alto contato &nbsp; ✗ Intransportáveis &nbsp; ✗ Qualidade difícil de julgar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── OBJETIVOS ── -->
+<section id="objetivos">
+  <div class="section-label">Desempenho</div>
+  <h2 class="section-title title-accent">Objetivos de Desempenho</h2>
+  <p class="section-desc">Os processos devem ser projetados em função dos objetivos competitivos da organização. Há cinco dimensões de desempenho essenciais.</p>
+
+  <div class="perf-grid">
+    <div class="perf-card reveal" style="border-top: 3px solid var(--green);">
+      <div class="perf-icon">🏆</div>
+      <div class="perf-title" style="color:var(--green)">Qualidade</div>
+      <div class="perf-desc">Produzir com desempenho de qualidade <strong style="color:var(--text)">melhor que a concorrência</strong></div>
+    </div>
+    <div class="perf-card reveal" style="transition-delay:0.1s;border-top: 3px solid var(--yellow);">
+      <div class="perf-icon">💰</div>
+      <div class="perf-title" style="color:var(--yellow)">Custo</div>
+      <div class="perf-desc">Produzir a um custo <strong style="color:var(--text)">mais baixo que a concorrência</strong></div>
+    </div>
+    <div class="perf-card reveal" style="transition-delay:0.2s;border-top: 3px solid var(--blue);">
+      <div class="perf-icon">⚡</div>
+      <div class="perf-title" style="color:var(--blue)">Velocidade</div>
+      <div class="perf-desc">Produzir <strong style="color:var(--text)">mais rápido que a concorrência</strong></div>
+    </div>
+    <div class="perf-card reveal" style="transition-delay:0.3s;border-top: 3px solid #a855f7;">
+      <div class="perf-icon">🎯</div>
+      <div class="perf-title" style="color:#a855f7">Confiabilidade</div>
+      <div class="perf-desc">Ser mais <strong style="color:var(--text)">confiável nos prazos de entrega</strong> que a concorrência</div>
+    </div>
+    <div class="perf-card reveal" style="transition-delay:0.4s;border-top: 3px solid #f97316;">
+      <div class="perf-icon">🔄</div>
+      <div class="perf-title" style="color:#f97316">Flexibilidade</div>
+      <div class="perf-desc">Ser capaz de <strong style="color:var(--text)">reagir de forma rápida a eventos repentinos e inesperados</strong></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PADRONIZAÇÃO ── -->
+<section id="padronizacao">
+  <div class="section-label">Classificação</div>
+  <h2 class="section-title title-accent">Grau de Padronização</h2>
+  <p class="section-desc">Os produtos podem ser padronizados (alta uniformidade) ou sob medida (desenvolvidos para um cliente específico).</p>
+
+  <div class="table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%">Dimensão</th>
+          <th style="color:var(--blue)">📦 Produtos Padronizados</th>
+          <th style="color:var(--green)">✂️ Produtos Sob Medida</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">Definição do Produto</td>
+          <td>Produtos definidos previamente — clientes esperam encontrá-los à sua disposição no mercado</td>
+          <td>Espera-se a manifestação dos clientes para definir os produtos</td>
+        </tr>
+        <tr>
+          <td class="col-label">Estoque</td>
+          <td class="cell-alto">Frequentemente produzidos para estoque</td>
+          <td class="cell-baixo">Não são produzidos para estoque</td>
+        </tr>
+        <tr>
+          <td class="col-label">Escala</td>
+          <td class="cell-alto">Produzidos em grande escala</td>
+          <td class="cell-baixo">Os lotes normalmente são unitários</td>
+        </tr>
+        <tr>
+          <td class="col-label">Padronização dos Métodos</td>
+          <td class="cell-alto">Alta</td>
+          <td class="cell-baixo">Baixa</td>
+        </tr>
+        <tr>
+          <td class="col-label">Automação</td>
+          <td class="cell-alto">Mais aplicável</td>
+          <td class="cell-baixo">Menos aplicável</td>
+        </tr>
+        <tr>
+          <td class="col-label">Ociosidade</td>
+          <td class="cell-alto">Baixa</td>
+          <td class="cell-baixo">Alta</td>
+        </tr>
+        <tr>
+          <td class="col-label">Exemplos</td>
+          <td style="color:var(--text-muted);">Eletrodomésticos, roupas, combustíveis, automóveis, alimentos industrializados, fastfoods</td>
+          <td style="color:var(--text-muted);">Máquinas-ferramenta, alta costura, construção civil, restaurantes especiais, projetos arquitetônicos, clínicas médicas, táxis</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── TIPOS DE PROCESSO ── -->
+<section id="processos">
+  <div class="section-label">Classificação por Processo</div>
+  <h2 class="section-title title-accent">Tipos de Processo Produtivo</h2>
+  <p class="section-desc">Cada tipo de processo tem características distintas de volume, variedade, flexibilidade e custo. Uma mesma empresa pode conviver com mais de um tipo.</p>
+
+  <div class="process-grid">
+    <div class="process-card continuo reveal">
+      <span class="process-type-badge continuo">Contínuo</span>
+      <h3>Processos Contínuos</h3>
+      <p>Produção de bens ou serviços que <strong style="color:var(--text)">não podem ser identificados individualmente</strong>. Fluxo ininterrupto, sem paradas entre lotes.</p>
+      <div class="process-examples"><strong>Exemplos:</strong> Refinarias de petróleo · Indústrias químicas · Fábricas de cerveja · Produção de aço · Usinas geradoras de eletricidade</div>
+    </div>
+
+    <div class="process-card massa reveal" style="transition-delay:0.1s">
+      <span class="process-type-badge massa">Em Massa</span>
+      <h3>Processos em Massa</h3>
+      <p>Produção em grande escala de produtos <strong style="color:var(--text)">discretos e altamente padronizados</strong>, fluindo de forma sincronizada a uma taxa pré-estabelecida.</p>
+      <div class="process-examples"><strong>Exemplos:</strong> Automóveis · Eletrodomésticos · Produtos têxteis · Abate de aves · Transporte aéreo · Editoração de jornais</div>
+    </div>
+
+    <div class="process-card lotes reveal" style="transition-delay:0.2s">
+      <span class="process-type-badge lotes">Em Lotes</span>
+      <h3>Processos em Lotes (Bateladas)</h3>
+      <p>Volume médio de bens ou serviços padronizados em lotes. Cada lote segue <strong style="color:var(--text)">uma série de operações programadas</strong> sequencialmente.</p>
+      <div class="process-examples"><strong>Exemplos:</strong> Produtos têxteis em pequena escala · Sapatos · Alimentos industrializados · Ferragens · Restaurantes</div>
+    </div>
+
+    <div class="process-card encomenda reveal" style="transition-delay:0.3s">
+      <span class="process-type-badge encomenda">Sob Encomenda</span>
+      <h3>Processos Sob Encomenda</h3>
+      <p>Atendimento de <strong style="color:var(--text)">necessidades específicas dos clientes</strong>, com demandas baixas, tendendo para a unidade. Alta personalização.</p>
+      <div class="process-examples"><strong>Exemplos:</strong> Móveis sob medida · Costura exclusiva · Construção civil residencial · Clínicas especializadas</div>
+    </div>
+
+    <div class="process-card projeto reveal" style="transition-delay:0.4s">
+      <span class="process-type-badge projeto">Projeto</span>
+      <h3>Processos de Projeto</h3>
+      <p>Os recursos transformadores são <strong style="color:var(--text)">dedicados exclusivamente a cada produto</strong>. Escopo bem definido, prazo e orçamento específicos.</p>
+      <div class="process-examples"><strong>Exemplos:</strong> Construção de navios · Fabricação de aviões · Grandes obras de engenharia civil</div>
+    </div>
+
+    <div class="process-card jobbing reveal" style="transition-delay:0.5s">
+      <span class="process-type-badge jobbing">Jobbing</span>
+      <h3>Processos por Tarefa (<span data-tooltip="Jobbing: sistema de produção onde máquinas e operários são compartilhados entre diferentes produtos sob encomenda.">Jobbing</span>)</h3>
+      <p>Os recursos transformadores são <strong style="color:var(--text)">compartilhados com diversos produtos</strong>. Alta flexibilidade e personalização.</p>
+      <div class="process-examples"><strong>Exemplos:</strong> Construção de máquinas especiais · Fábricas de móveis por encomenda · Ferramentarias</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── RESUMO ── -->
+<section id="resumo">
+  <div class="section-label">Visão Geral</div>
+  <h2 class="section-title title-accent">Tabela Resumo dos Processos</h2>
+  <p class="section-desc">Comparativo entre os tipos de processo segundo volume, variedade, flexibilidade, arranjo físico e outros critérios de gestão.</p>
+
+  <div class="table-wrap reveal">
+    <table class="resumo-table">
+      <thead>
+        <tr>
+          <th>Critério</th>
+          <th style="color:var(--blue)">Contínuo</th>
+          <th style="color:var(--red)">Em Massa</th>
+          <th style="color:var(--yellow)">Em Lotes</th>
+          <th style="color:var(--green)">Sob Encomenda</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">Volume de Produção</td>
+          <td class="val val-alto">Alto</td>
+          <td class="val val-alto">Alto</td>
+          <td class="val val-medio">Médio</td>
+          <td class="val val-baixo">Baixo</td>
+        </tr>
+        <tr>
+          <td class="col-label">Variedade de Produtos</td>
+          <td class="val val-baixo">Pequena</td>
+          <td class="val val-medio">Média</td>
+          <td class="val val-alto">Grande</td>
+          <td class="val val-alto">Grande</td>
+        </tr>
+        <tr>
+          <td class="col-label">Flexibilidade</td>
+          <td class="val val-baixo">Baixa</td>
+          <td class="val val-medio">Média</td>
+          <td class="val val-alto">Alta</td>
+          <td class="val val-alto">Alta</td>
+        </tr>
+        <tr>
+          <td class="col-label">Arranjo Físico</td>
+          <td class="val val-linear">Linear</td>
+          <td class="val val-linear">Linear</td>
+          <td class="val val-funcional">Funcional / Celular</td>
+          <td class="val val-funcional">Funcional</td>
+        </tr>
+        <tr>
+          <td class="col-label">Capacidade Ociosa</td>
+          <td class="val val-alto">Baixa</td>
+          <td class="val val-alto">Baixa</td>
+          <td class="val val-medio">Média</td>
+          <td class="val val-baixo">Alta</td>
+        </tr>
+        <tr>
+          <td class="col-label"><span data-tooltip="Lead Time: tempo total desde o início de um processo produtivo até a entrega ao cliente.">Lead Times</span></td>
+          <td class="val val-alto">Baixo</td>
+          <td class="val val-alto">Baixo</td>
+          <td class="val val-medio">Médio</td>
+          <td class="val val-baixo">Alto</td>
+        </tr>
+        <tr>
+          <td class="col-label">Fluxo de Informações</td>
+          <td class="val val-alto">Baixo</td>
+          <td class="val val-medio">Médio</td>
+          <td class="val val-baixo">Alto</td>
+          <td class="val val-baixo">Alto</td>
+        </tr>
+        <tr>
+          <td class="col-label">Produtos</td>
+          <td style="color:var(--text-muted)">Contínuos</td>
+          <td style="color:var(--text-muted)">Em lotes</td>
+          <td style="color:var(--text-muted)">Em lotes</td>
+          <td style="color:var(--text-muted)">Unitário</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:1rem;" class="reveal">
+    <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block;"></span><span style="color:var(--text-muted)">Alto / Bom</span></div>
+    <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;"><span style="width:10px;height:10px;border-radius:2px;background:var(--yellow);display:inline-block;"></span><span style="color:var(--text-muted)">Médio</span></div>
+    <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;"><span style="width:10px;height:10px;border-radius:2px;background:var(--red);display:inline-block;"></span><span style="color:var(--text-muted)">Baixo</span></div>
+    <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue);display:inline-block;"></span><span style="color:var(--text-muted)">Linear</span></div>
+    <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;"><span style="width:10px;height:10px;border-radius:2px;background:#a855f7;display:inline-block;"></span><span style="color:var(--text-muted)">Funcional / Celular</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── EXERCÍCIOS ── -->
+<section id="exercicios">
+  <div class="section-label">Prática</div>
+  <h2 class="section-title title-accent">Exercícios Resolvidos</h2>
+  <p class="section-desc">Clique em cada exercício para ver o enunciado e a resolução completa.</p>
+
+  <div class="accordion">
+
+    <div class="acc-item reveal">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Ex. 1</span> Salão de Cabeleireiro — Identificação de Inputs e Outputs</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-label">Enunciado</div>
+        <p>Identifique os principais <strong>inputs</strong> e <strong>outputs</strong> envolvidos no processo de transformação de um <strong>salão de cabeleireiro</strong>.</p>
+        <div class="acc-divider"></div>
+        <div class="acc-label">Resolução</div>
+        <p><span class="acc-question-badge a">Inputs</span></p>
+        <p>Os <em>recursos de transformação</em> incluem: <strong>tesoura, secador, pente, cabeleireira</strong> (funcionário), produtos químicos (tintas, condicionadores), cadeiras, espelhos e instalações do salão.</p>
+        <p><span class="acc-question-badge a">Outputs</span></p>
+        <p>O resultado final é o <strong>cliente com o cabelo cortado/tratado</strong>. Trata-se de um serviço — o output não pode ser estocado, é produzido e consumido simultaneamente, e o cliente participa diretamente do processo de transformação.</p>
+        <p><span class="acc-question-badge q">Obs.</span> O salão de cabeleireiro é um exemplo clássico de <strong>alta visibilidade</strong> (cliente presente) e <strong>serviço puro</strong>, onde a satisfação é julgada tanto pelo resultado quanto pela experiência durante o processo.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.1s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Ex. 2</span> Fábrica de Papel — Identificação de Inputs e Outputs</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-label">Enunciado</div>
+        <p>Identifique os principais <strong>inputs</strong> e <strong>outputs</strong> envolvidos no processo de transformação de uma <strong>fábrica de papel</strong>.</p>
+        <div class="acc-divider"></div>
+        <div class="acc-label">Resolução</div>
+        <p><span class="acc-question-badge a">Inputs</span></p>
+        <p>Os insumos transformados incluem: <strong>celulose, pigmentos e agentes químicos</strong>. Os recursos de transformação são: <strong>operários e máquinas</strong> especializadas no processo de fabricação de papel.</p>
+        <p><span class="acc-question-badge a">Outputs</span></p>
+        <p>O resultado é <strong>o papel</strong>. Uma fábrica pode produzir grande ou pouca quantidade de papel; pode ter variações de cores e tamanhos ou possuir um produto padrão. Diferente do salão, o papel é um <strong>bem físico</strong>: tangível, estocável e transportável.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.2s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Ex. 3</span> Fábrica de Cadeiras — Bens vs. Serviços & Classificação de Recursos</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-label">Enunciado</div>
+        <p>Na fabricação de uma cadeira de escritório, as matérias-primas são pedaços de madeira e ferro. São necessários operários, equipamentos, ferramentas e instalações. Os pedaços de madeira são cortados por uma serra controlada por um operário para ganhar a forma de assento/encosto. Os ferros são envergados por uma prensa e soldados uns aos outros para dar sustentação às peças de madeira.</p>
+        <p style="margin-top:0.5rem;"><strong>a)</strong> A fábrica de cadeiras produz predominantemente bens ou serviços?<br><strong>b)</strong> Como classificar os recursos utilizados?</p>
+        <div class="acc-divider"></div>
+        <div class="acc-label">Resolução — Questão a)</div>
+        <p>A fábrica de cadeiras produz um <strong>bem</strong>, porque seu output (as cadeiras fabricadas) pode ser <strong>tocado e transportado</strong>; o processo de transformação ocorre <strong>antes da utilização</strong> das cadeiras pelo cliente; <strong>não há interação direta</strong> entre o consumidor final e o fabricante no momento da produção.</p>
+        <div class="acc-divider"></div>
+        <div class="acc-label">Resolução — Questão b)</div>
+        <p>Para transformar madeira e ferro em cadeira, a fábrica precisa empregar:</p>
+        <p>• <strong>Recursos materiais</strong> (recursos de transformação): ferramentas (serra, prensa, solda) e equipamentos.<br>• <strong>Recursos humanos</strong> (recursos de transformação): operários que operam, mantêm e planejam a produção.</p>
+        <p>A madeira e o ferro são os <strong>recursos transformados</strong> (inputs que sofrem mudança pelo processo produtivo).</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── REVISÃO ── -->
+<section id="revisao">
+  <div class="section-label">Quiz de Revisão</div>
+  <h2 class="section-title title-accent">Revisão Rápida</h2>
+  <p class="section-desc">Teste seus conhecimentos. Clique em cada pergunta para revelar a resposta.</p>
+
+  <div class="accordion">
+
+    <div class="acc-item reveal">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q1</span> O que é um Sistema de Produção?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> É um <strong>conjunto de atividades e operações inter-relacionadas</strong> envolvidas na produção de bens ou serviços. Composto por elementos, pessoas, máquinas e processos que se interligam para alcançar o objetivo de produzir, transformando inputs em outputs que agregam valor ao cliente.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.05s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q2</span> Quais são os 4 Vs do output e por que eles importam?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> Os 4 Vs são: <strong>Volume</strong> (quantidade produzida), <strong>Variedade</strong> (diversidade de produtos), <strong>Variação da Demanda</strong> (flutuação na procura) e <strong>Visibilidade</strong> (contato do cliente com o processo). Eles importam porque determinam o custo unitário, a flexibilidade necessária e o perfil operacional de cada negócio. Em geral, alto volume e baixa variedade resultam em menor custo unitário; alta visibilidade exige mais habilidades interpessoais dos funcionários.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.1s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q3</span> Qual a diferença entre Processos Contínuos e Processos em Massa?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> Nos <strong>Processos Contínuos</strong>, os bens ou serviços <em>não podem ser identificados individualmente</em> (ex.: refinaria de petróleo, geração de eletricidade). O fluxo é ininterrupto e sem lotes discerníveis. Nos <strong>Processos em Massa</strong>, os produtos são discretos e identificáveis individualmente, mas produzidos em grande escala com alta padronização e fluxo sincronizado entre estações de trabalho (ex.: linha de montagem de automóveis). Ambos têm alto volume, baixa variedade e baixo custo unitário.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.15s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q4</span> Por que serviços não podem ser estocados?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> Porque os serviços são intangíveis e frequentemente <strong>produzidos simultaneamente ao consumo</strong>. Um assento de avião que não foi vendido para aquele voo está perdido para sempre — não é possível "guardar" o serviço para vender depois. Isso diferencia serviços de bens físicos, que podem ser fabricados com antecedência e armazenados em estoque para venda futura.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.2s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q5</span> O que são Processos de Projeto vs. Processos por Tarefa (Jobbing)?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> Ambos são subtipos de Processos Sob Encomenda, mas diferem no uso de recursos:</p>
+        <p>• <strong>Processos de Projeto:</strong> os recursos transformadores são <em>dedicados exclusivamente</em> a cada produto (ex.: construção de um navio — as instalações e equipes ficam voltadas somente àquele navio durante toda a produção).</p>
+        <p>• <strong>Processos por Tarefa (Jobbing):</strong> os recursos transformadores são <em>compartilhados entre diferentes produtos</em> (ex.: ferramentaria que produz diferentes peças especiais usando as mesmas máquinas e operários).</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.25s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q6</span> O que é JIT e qual foi seu impacto histórico?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> <strong><span data-tooltip="Just-in-Time: produzir apenas o necessário, quando necessário, na quantidade necessária.">JIT</span> (Just-in-Time)</strong> é um sistema de produção puxada desenvolvido na Toyota por Taiichi Ohno nos anos 1960. O conceito central é produzir <em>apenas o necessário, quando necessário, na quantidade necessária</em>, eliminando estoques e desperdícios. Seu impacto foi revolucionário: transformou o Japão em potência industrial, inspirou o <strong>Lean Manufacturing</strong> e se tornou base da gestão moderna de operações. Representou uma ruptura com o modelo fordista de produção em massa para estoques.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.3s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q7</span> Quais são os 5 objetivos de desempenho em operações?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> Os cinco objetivos de desempenho são:</p>
+        <p>1. <strong style="color:var(--green)">Qualidade</strong> — produzir com qualidade superior à concorrência;<br>2. <strong style="color:var(--yellow)">Custo</strong> — produzir com custo menor que a concorrência;<br>3. <strong style="color:var(--blue)">Velocidade</strong> — entregar mais rápido que a concorrência;<br>4. <strong style="color:#a855f7">Confiabilidade</strong> — ser mais pontual nos prazos de entrega;<br>5. <strong style="color:#f97316">Flexibilidade</strong> — reagir rapidamente a eventos inesperados.</p>
+        <p>Os processos devem ser projetados em função dos objetivos que a organização prioriza para competir em seu mercado.</p>
+      </div>
+    </div>
+
+    <div class="acc-item reveal" style="transition-delay:0.35s">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span><span class="acc-question-badge q">Q8</span> Como se diferenciam produtos padronizados de produtos sob medida?</span>
+        <span class="acc-arrow">▼</span>
+      </button>
+      <div class="acc-body">
+        <p><span class="acc-question-badge a">A</span> <strong>Produtos padronizados</strong> apresentam alto grau de uniformidade, são definidos previamente, produzidos para estoque em grande escala, com alta automação e baixo custo unitário (ex.: eletrodomésticos, fastfoods, roupas de prateleira).</p>
+        <p><strong>Produtos sob medida</strong> são desenvolvidos para um cliente específico, apenas após a manifestação do cliente. Produzidos em lotes unitários, com baixa padronização dos métodos, maior ociosidade dos recursos e alto custo unitário (ex.: máquinas-ferramenta especiais, alta costura, projetos arquitetônicos).</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:0.25rem;">Material de Estudo Interativo — Sistema de Produção</p>
+  <p>UNISAL — Centro Universitário Salesiano de São Paulo · Engenharia de Produção</p>
+</footer>
+
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo">↑</button>
+
+<script>
+// ── PROGRESS BAR ──
+const bar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (window.scrollY / max * 100) + '%';
+
+  const btn = document.getElementById('back-top');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── INTERSECTION OBSERVER ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+// ── ACCORDION ──
+function toggleAcc(btn) {
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+  item.classList.toggle('open', !wasOpen);
+}
+
+// ── VS TABS ──
+function switchTab(btn, panelId, group) {
+  const card = btn.closest('.vs-card');
+  card.querySelectorAll('.vs-tab').forEach(t => t.classList.remove('active'));
+  card.querySelectorAll('.vs-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ── STAGGER DELAYS for timeline items ──
+document.querySelectorAll('.tl-item').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.07) + 's';
+});
+</script>
+</body>
+</html>

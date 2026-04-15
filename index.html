@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#b8c3ff",
+                    "inverse-surface": "#2e3132",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#00105b",
+                    "tertiary": "#2b3b8d",
+                    "primary-fixed": "#dde1ff",
+                    "secondary-container": "#90efef",
+                    "tertiary-fixed": "#dee0ff",
+                    "primary": "#0032b5",
+                    "on-tertiary-fixed-variant": "#2f3f92",
+                    "outline": "#757684",
+                    "secondary-fixed-dim": "#76d6d5",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#f3f4f5",
+                    "primary-container": "#0344ec",
+                    "on-secondary-fixed": "#002020",
+                    "surface-bright": "#f8f9fa",
+                    "secondary-fixed": "#93f2f2",
+                    "on-background": "#191c1d",
+                    "on-surface-variant": "#454652",
+                    "on-primary-container": "#c8d0ff",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#edeeef",
+                    "on-secondary-fixed-variant": "#004f4f",
+                    "background": "#f8f9fa",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#f0f1f2",
+                    "on-tertiary-container": "#c9cfff",
+                    "on-error-container": "#93000a",
+                    "secondary": "#006a6a",
+                    "inverse-primary": "#b8c3ff",
+                    "error-container": "#ffdad6",
+                    "surface-container-high": "#e7e8e9",
+                    "on-primary-fixed-variant": "#0035be",
+                    "on-secondary-container": "#006e6e",
+                    "surface-dim": "#d9dadb",
+                    "on-surface": "#191c1d",
+                    "surface": "#f8f9fa",
+                    "tertiary-container": "#4453a7",
+                    "outline-variant": "#c5c5d4",
+                    "surface-tint": "#124af0",
+                    "surface-variant": "#e1e3e4",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed-dim": "#bac3ff",
+                    "on-primary-fixed": "#001356"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .bg-signature-gradient { background: linear-gradient(135deg, #0032b5 0%, #0344ec 100%); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed-dim">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-black text-[#0032b5] dark:text-[#0344ec] tracking-tighter font-['Manrope']">MiStudies</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#0032b5] dark:text-[#0344ec] border-b-2 border-[#0032b5] pb-1 font-['Manrope'] font-bold tracking-tight transition-all duration-300 ease-in-out hover:opacity-80 cursor-pointer active:scale-95" href="index.html">Home</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-[#0032b5] font-['Manrope'] font-bold tracking-tight transition-all duration-300 ease-in-out hover:opacity-80 cursor-pointer active:scale-95" href="pages/resumos.html">Acervo</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="pages/dashboard.html">
+<button class="bg-signature-gradient text-on-primary px-6 py-2.5 rounded-lg font-semibold tracking-tight transition-all duration-300 ease-in-out hover:opacity-90 active:scale-95">
+                    Dashboard
+                </button>
+</a>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer text-2xl" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative px-8 py-20 lg:py-32 max-w-7xl mx-auto overflow-hidden">
+<div class="grid lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-7 z-10">
+<h1 class="text-5xl lg:text-7xl font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.1]">
+                        Estudo <span class="text-primary italic">Bem Resolvido</span> para Educadores
+                    </h1>
+<p class="text-xl text-on-surface-variant leading-relaxed mb-10 max-w-2xl font-body">
+                        Transforme conteúdos brutos em experiências de aprendizagem estruturadas. Nossa arquitetura intelectual organiza o caos para que você foque no que realmente importa: ensinar.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-signature-gradient text-on-primary px-10 py-4 rounded-xl text-lg font-bold shadow-lg transition-all duration-300 hover:-translate-y-1">
+                            Começar agora
+                        </button>
+<button class="bg-surface-container-highest text-on-surface px-10 py-4 rounded-xl text-lg font-bold transition-all duration-300 hover:bg-surface-container-high">
+                            Ver Demonstração
+                        </button>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-square lg:aspect-auto lg:h-[600px] bg-surface-container-low p-4">
+<img alt="Modern minimalist workspace" class="w-full h-full object-cover rounded-2xl" data-alt="Modern minimalist workspace with a laptop and organized papers on a white desk with soft sunlight hitting the surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMhXjSEkpNWiFX4FchE4vV5La1zaneky5Fzqd9E9EnJ3tWvxJiJMiHWlo1rNqfG-w7lrgte6GIqYoiIW-NCpThGEgFAWIGLUwTEFxfP87bPR8oqc-Dp5N8o75immd2Y2mb_li0rQ3KrbVeS1NhsESlU_kX258UhzcdBtRk39madm-R4BovuQA4WNZwf8Mhc4Vct6YNSfidoFsJwWWre7yLlDyriqYEZjWyEqmkTfs0aFXfah-2EQklCrK4zlByrvhvkXtFOFZlyCc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Process Section: Tonal Shifting Zone -->
+<section class="bg-surface-container-low py-24 px-8">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-20">
+<span class="text-secondary font-bold tracking-widest text-sm uppercase mb-4 block">O Método</span>
+<h2 class="text-4xl font-extrabold tracking-tight text-on-surface">Arquitetura de Conteúdo</h2>
+</div>
+<div class="grid md:grid-cols-3 gap-12">
+<!-- Step 1 -->
+<div class="group">
+<div class="w-16 h-16 bg-surface-container-lowest rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl" data-icon="upload_file">upload_file</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Faça o Upload</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                            Suba seus PDFs, notas de aula ou links. Nossa tecnologia processa o material mantendo a essência pedagógica original.
+                        </p>
+</div>
+<!-- Step 2 -->
+<div class="group">
+<div class="w-16 h-16 bg-surface-container-lowest rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Reestruturação</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                            Organizamos as informações em uma hierarquia lógica, gerando resumos, tópicos-chave e exercícios personalizados.
+                        </p>
+</div>
+<!-- Step 3 -->
+<div class="group">
+<div class="w-16 h-16 bg-surface-container-lowest rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl" data-icon="inventory_2">inventory_2</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Pronto para o Acervo</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                            Seu novo material é arquivado em sua biblioteca digital, pronto para ser compartilhado ou utilizado em sala.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-32 px-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Large Feature -->
+<div class="md:col-span-8 bg-surface-container-lowest p-12 rounded-[2rem] flex flex-col justify-between min-h-[500px] relative overflow-hidden group">
+<div class="z-10">
+<h3 class="text-4xl font-extrabold mb-6">Personalização <br/>de Nível Elite</h3>
+<p class="text-on-surface-variant text-lg max-w-md">
+                            Ajuste o tom, a complexidade e o formato de saída para cada turma. Seu material se adapta ao nível dos seus alunos automaticamente.
+                        </p>
+</div>
+<div class="z-10 mt-12 flex gap-4">
+<span class="px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">Adaptativo</span>
+<span class="px-4 py-2 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-sm font-bold">Escalável</span>
+</div>
+<div class="absolute right-0 bottom-0 w-2/3 h-2/3 translate-x-20 translate-y-20 opacity-10 group-hover:scale-110 transition-transform duration-700">
+<img alt="Digital network" class="w-full h-full object-cover" data-alt="Abstract visualization of a glowing digital network of interconnected nodes and lines in deep indigo tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV0kUaeiD5csD1E3lwPbYEY2sB4f_lqPCNJ7_jgyEo2KuXDxfjOoSD6Y8UY4PsLRFU_JEokQ1hfrD9JxdxfpOgQegMgxaI1mAG9L2YYUlQgypD2J9tEi6DrMz7W9G6ETjqZAnJBx3wsKmehCs2gkO1IEaKCuSS4VEoSY6dX_X8agSFSIHcBbNoYTN3UtX7mu2IjFT95635mvVzMgzVrvCJzXSaTwkiCs_xQIljH4arbnWweUye0b3wHRwRUC6v5okQTflU-mAidDM"/>
+</div>
+</div>
+<!-- Small Feature 1 -->
+<div class="md:col-span-4 bg-primary text-on-primary p-12 rounded-[2rem] flex flex-col justify-between group">
+<div>
+<span class="material-symbols-outlined text-4xl mb-6" data-icon="folder_special">folder_special</span>
+<h3 class="text-3xl font-bold mb-4">Acervo Digital</h3>
+<p class="opacity-80">Sua memória intelectual organizada em um só lugar. Sem pastas perdidas.</p>
+</div>
+<a class="inline-flex items-center gap-2 font-bold group-hover:gap-4 transition-all" href="pages/resumos.html">
+                        Explorar <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<!-- Small Feature 2 -->
+<div class="md:col-span-4 bg-surface-container-high p-12 rounded-[2rem] flex flex-col gap-6">
+<span class="material-symbols-outlined text-secondary text-4xl" data-icon="speed">speed</span>
+<h3 class="text-2xl font-bold">Eficiência Brutal</h3>
+<p class="text-on-surface-variant">Reduza o tempo de preparação de aulas em até 70% com a automação inteligente.</p>
+</div>
+<!-- Large Feature 2 -->
+<div class="md:col-span-8 bg-surface-container-highest p-1 p-[2px] rounded-[2rem]">
+<div class="bg-surface-container-lowest h-full w-full rounded-[1.9rem] p-12 flex flex-col md:flex-row gap-12 items-center">
+<div class="flex-1">
+<h3 class="text-3xl font-extrabold mb-4">Integração Fluida</h3>
+<p class="text-on-surface-variant">Exporte para Classroom, Moodle ou PDF com um único clique. Seu ecossistema, suas regras.</p>
+</div>
+<div class="flex-1 grid grid-cols-2 gap-4">
+<div class="aspect-square bg-surface-container rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div class="aspect-square bg-surface-container rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant" data-icon="cloud_done">cloud_done</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24 px-8">
+<div class="max-w-5xl mx-auto bg-signature-gradient rounded-[3rem] p-16 text-center text-on-primary shadow-2xl relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="text-4xl md:text-5xl font-extrabold mb-8 leading-tight">Pronto para projetar <br/>seu próximo semestre?</h2>
+<p class="text-xl mb-12 opacity-90 max-w-2xl mx-auto">Junte-se a milhares de professores que já transformaram seu fluxo de trabalho com o MiStudies.</p>
+<button class="bg-surface-container-lowest text-primary px-12 py-5 rounded-2xl text-xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all">
+                        Criar Conta Gratuita
+                    </button>
+</div>
+<!-- Decorative element -->
+<div class="absolute -top-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl"></div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-8 w-full">
+<div class="font-['Manrope'] font-bold text-slate-900 dark:text-slate-100 mb-4 md:mb-0">
+                MiStudies
+            </div>
+<div class="flex gap-8 mb-4 md:mb-0">
+<a class="font-['Inter'] text-sm uppercase tracking-wider text-slate-500 dark:text-slate-500 hover:text-[#0032b5] dark:hover:text-[#0344ec] transition-colors opacity-100 hover:opacity-70" href="#">Terms</a>
+<a class="font-['Inter'] text-sm uppercase tracking-wider text-slate-500 dark:text-slate-500 hover:text-[#0032b5] dark:hover:text-[#0344ec] transition-colors opacity-100 hover:opacity-70" href="#">Privacy</a>
+<a class="font-['Inter'] text-sm uppercase tracking-wider text-slate-500 dark:text-slate-500 hover:text-[#0032b5] dark:hover:text-[#0344ec] transition-colors opacity-100 hover:opacity-70" href="#">Support</a>
+</div>
+<div class="font-['Inter'] text-sm uppercase tracking-wider text-slate-500 dark:text-slate-500 text-center md:text-right">
+                © 2024 MiStudies - The Intellectual Architect. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>

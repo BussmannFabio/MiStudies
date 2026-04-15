@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPM & OEE — Excelência Operacional</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="document.addEventListener('DOMContentLoaded',()=>renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))"></script>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --surface: #f3f4f5;
+    --surface2: #e1e3e4;
+    --border: #c1c4c5;
+    --text: #191c1d;
+    --text-muted: #757684;
+    --text-secondary: #454652;
+    --amber: #0032b5; /* primary */
+    --amber-light: #006e6e; /* secondary */
+    --amber-dim: rgba(0,50,181,0.05);
+    --blue: #0032b5;
+    --blue-dim: rgba(0,50,181,0.05);
+    --green: #006a6a;
+    --green-dim: rgba(0,106,106,0.05);
+    --red: #f59e0b; /* amber for warnings */
+    --red-dim: rgba(245,158,11,0.05);
+    --gold: #0032b5;
+    --serif: 'Manrope', Georgia, serif;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--sans); }
+
+  /* PROGRESS BAR */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--amber), var(--amber-light));
+    transition: width 0.4s ease; z-index: 100;
+    box-shadow: 0 0 8px rgba(200,135,42,0.5);
+  }
+
+  /* SLIDE COUNTER */
+  #slide-counter {
+    position: fixed; top: 18px; right: 24px;
+    font-family: var(--sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.2em; color: var(--text-muted); z-index: 100;
+    text-transform: uppercase;
+  }
+
+  /* NOTES TOGGLE */
+  #notes-btn {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text-muted); font-family: var(--sans); font-size: 10px;
+    font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 8px 16px; cursor: pointer; z-index: 100;
+    transition: all 0.2s ease;
+  }
+  #notes-btn:hover { color: var(--amber); border-color: var(--amber); }
+
+  /* NAVIGATION */
+  #nav-prev, #nav-next {
+    position: fixed; bottom: 24px;
+    background: transparent; border: none;
+    cursor: pointer; z-index: 100; padding: 8px;
+    opacity: 0.4; transition: opacity 0.2s;
+  }
+  #nav-prev:hover, #nav-next:hover { opacity: 1; }
+  #nav-prev { left: 24px; }
+  #nav-next { left: 72px; }
+  #nav-prev svg, #nav-next svg { fill: var(--text); }
+
+  /* NOTES PANEL */
+  #notes-panel {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+    z-index: 90;
+  }
+  #notes-panel.open { max-height: 220px; }
+  #notes-content {
+    padding: 20px 48px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    font-family: var(--sans);
+  }
+  #notes-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* SLIDES CONTAINER */
+  #slides-container {
+    width: 100%; height: 100%;
+    position: relative;
+  }
+
+  /* INDIVIDUAL SLIDE */
+  .slide {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(12px);
+    padding: 60px 80px 100px;
+  }
+  .slide.active {
+    opacity: 1; pointer-events: all; transform: translateY(0);
+  }
+  .slide.exiting {
+    opacity: 0; transform: translateY(-12px);
+  }
+
+  /* DECORATIVE LINE */
+  .rule {
+    width: 48px; height: 1px; background: var(--amber);
+    margin-bottom: 24px;
+  }
+  .rule.centered { margin-left: auto; margin-right: auto; }
+
+  /* SLIDE LABEL */
+  .slide-label {
+    font-family: var(--sans);
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 16px;
+  }
+
+  /* TYPOGRAPHY SYSTEM */
+  .display-title {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .display-title em {
+    font-style: italic;
+    color: var(--amber-light);
+  }
+  .slide-title {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4.5vw, 56px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .slide-title em { font-style: italic; color: var(--amber-light); }
+  .slide-subtitle {
+    font-family: var(--sans);
+    font-size: 12px; font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .body-text {
+    font-family: var(--sans);
+    font-size: 13px; font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+  .body-text strong { color: var(--text); font-weight: 600; }
+
+  /* COLUMNS */
+  .col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; width: 100%; max-width: 1100px; }
+  .col-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; width: 100%; max-width: 1100px; }
+  .col-left { display: flex; flex-direction: column; justify-content: center; }
+
+  /* CARD */
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 28px;
+  }
+  .card-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-family: var(--serif);
+    font-size: 22px; font-weight: 400;
+    color: var(--text); margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .card-body {
+    font-size: 12px; font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  /* ACCENT CARD */
+  .card-amber { border-color: rgba(0,50,181,0.3); background: var(--amber-dim); }
+  .card-blue  { border-color: rgba(0,50,181,0.3); background: var(--blue-dim); }
+  .card-green { border-color: rgba(0,106,106,0.3);  background: var(--green-dim); }
+  .card-red   { border-color: rgba(245,158,11,0.3);  background: var(--red-dim); }
+
+  /* STAT / BIG NUMBER */
+  .big-num {
+    font-family: var(--serif);
+    font-size: clamp(56px, 8vw, 96px);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .big-num.amber { color: var(--amber-light); }
+  .big-num.green { color: var(--green); }
+  .big-num.red   { color: var(--red); }
+
+  /* LIST ITEMS */
+  .dot-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .dot-list li {
+    font-size: 13px; color: var(--text-secondary);
+    display: flex; gap: 12px; align-items: flex-start;
+    line-height: 1.6;
+  }
+  .dot-list li::before {
+    content: ''; flex-shrink: 0;
+    width: 4px; height: 4px;
+    background: var(--amber); border-radius: 50%;
+    margin-top: 8px;
+  }
+  .dot-list li strong { color: var(--text); }
+
+  /* DIVIDER */
+  .vline { width: 1px; background: var(--border); }
+  .hline { height: 1px; background: var(--border); width: 100%; margin: 24px 0; }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: var(--amber-dim);
+    border: 1px solid rgba(0,50,181,0.35);
+    padding: 24px 36px;
+    display: inline-flex; align-items: center; gap: 20px;
+    flex-wrap: wrap;
+  }
+  .formula-term {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .formula-val {
+    font-family: var(--serif);
+    font-size: 28px; font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .formula-name {
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .formula-op {
+    font-family: var(--serif);
+    font-size: 32px; font-weight: 300;
+    color: var(--amber);
+  }
+
+  /* PILLAR DIAGRAM */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    width: 100%;
+    align-items: end;
+  }
+  .pillar-item {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+  }
+  .pillar-bar {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-bottom: 3px solid var(--amber);
+    display: flex; align-items: flex-end; justify-content: center;
+    padding: 10px 6px 14px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--amber);
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    min-height: 80px;
+  }
+  .pillar-num {
+    font-family: var(--serif);
+    font-size: 11px; font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  /* OEE METER */
+  .oee-gauge-wrap {
+    position: relative;
+    width: 200px; height: 120px;
+    margin: 0 auto 20px;
+  }
+
+  /* LOSS TABLE */
+  .loss-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    width: 100%;
+  }
+  .loss-header {
+    background: var(--surface2);
+    padding: 14px 18px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    text-align: center;
+  }
+  .loss-header.amber { color: var(--amber-light); }
+  .loss-header.blue  { color: var(--blue); }
+  .loss-header.green { color: var(--green); }
+  .loss-cell {
+    background: var(--bg);
+    padding: 14px 18px;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+  }
+  .loss-cell .num {
+    font-family: var(--serif);
+    font-size: 14px; font-weight: 600;
+    margin-right: 8px;
+  }
+  .loss-cell.amber-tint { color: var(--amber-light); }
+  .loss-cell.blue-tint  { color: var(--blue); }
+  .loss-cell.green-tint { color: var(--green); }
+
+  /* CALC TABLE */
+  .calc-table { width: 100%; border-collapse: collapse; }
+  .calc-table th, .calc-table td {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .calc-table th {
+    font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; font-size: 9px;
+    color: var(--text-muted);
+    background: var(--surface2);
+  }
+  .calc-table td { color: var(--text-secondary); }
+  .calc-table td strong { color: var(--text); }
+  .calc-table .highlight td { background: var(--amber-dim); }
+  .calc-table .highlight td strong { color: var(--amber-light); }
+
+  /* INSIGHT BOX */
+  .insight {
+    background: var(--surface2);
+    border-left: 3px solid var(--amber);
+    padding: 16px 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-style: italic;
+  }
+  .insight strong { color: var(--text); font-style: normal; }
+
+  /* ERROR LIST */
+  .error-chip {
+    background: var(--red-dim);
+    border: 1px solid rgba(192,58,58,0.2);
+    padding: 8px 14px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* BENEFIT COLUMNS */
+  .benefit-section { }
+  .benefit-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .benefit-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 11.5px; color: var(--text-secondary);
+    margin-bottom: 9px; line-height: 1.5;
+  }
+  .benefit-dot { width: 3px; height: 3px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+
+  /* CONCLUSION QUOTE */
+  .conclusion-quote {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--text);
+    max-width: 780px;
+    text-align: center;
+    position: relative;
+  }
+  .conclusion-quote::before {
+    content: '"';
+    font-size: 120px; font-weight: 300;
+    color: var(--amber-dim);
+    position: absolute; top: -40px; left: -30px;
+    font-family: var(--serif);
+    line-height: 1;
+  }
+
+  /* HORIZONTAL STEP FLOW */
+  .flow {
+    display: flex; gap: 0; width: 100%;
+  }
+  .flow-step {
+    flex: 1;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .flow-step::after {
+    content: '→';
+    position: absolute; right: -12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--amber); font-size: 18px;
+    z-index: 1;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-bottom: 2px solid var(--amber);
+    padding: 18px 16px;
+    text-align: center;
+    flex: 1;
+  }
+  .flow-num {
+    font-family: var(--serif);
+    font-size: 11px; color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .flow-title {
+    font-size: 11px; font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .flow-desc {
+    font-size: 10.5px; color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* BACKGROUND DECORATION */
+  .bg-grid {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .bg-glow {
+    position: fixed; top: -20%; right: -10%;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,135,42,0.04) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* SLIDE INNER - allow z-index above bg */
+  .slide-inner { position: relative; z-index: 1; width: 100%; max-width: 1100px; }
+
+  /* COVER SPECIFIC */
+  .cover-inner {
+    display: flex; flex-direction: column;
+    max-width: 800px;
+  }
+  .cover-tag {
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--amber);
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 48px;
+  }
+  .cover-tag::before {
+    content: '';
+    width: 32px; height: 1px; background: var(--amber);
+  }
+
+  /* TPM ZERO GRID */
+  .zero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+  .zero-item {
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    padding: 22px 24px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .zero-big {
+    font-family: var(--serif);
+    font-size: 40px; font-weight: 300;
+    color: var(--amber); line-height: 1;
+  }
+  .zero-label {
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text);
+  }
+  .zero-desc {
+    font-size: 11px; color: var(--text-muted); line-height: 1.5;
+  }
+
+  /* METRIC ROW */
+  .metric-row {
+    display: flex; align-items: center; gap: 0;
+    height: 56px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .metric-label {
+    padding: 0 18px;
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text); white-space: nowrap;
+    width: 160px; flex-shrink: 0;
+  }
+  .metric-bar-wrap {
+    flex: 1; height: 100%;
+    background: var(--bg);
+    position: relative;
+    display: flex; align-items: center;
+    border-left: 1px solid var(--border);
+  }
+  .metric-bar-fill {
+    height: 100%;
+    transition: width 1s ease 0.3s;
+  }
+  .metric-value {
+    position: absolute; right: 16px;
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 400;
+    color: var(--text);
+  }
+
+  /* ICEBERG */
+  .iceberg-wrap { position: relative; width: 260px; }
+
+  /* OEE WORLD CLASS TABLE */
+  .ref-table { width: 100%; }
+  .ref-row {
+    display: flex; gap: 0;
+    border: 1px solid var(--border);
+    margin-bottom: 6px;
+  }
+  .ref-row > div {
+    padding: 14px 18px;
+    font-size: 12px;
+  }
+  .ref-metric { flex: 1; font-weight: 600; color: var(--text); }
+  .ref-world  { flex: 0 0 140px; color: var(--green); font-family: var(--serif); font-size: 16px; font-weight: 600; }
+  .ref-note   { flex: 2; color: var(--text-muted); font-size: 11px; line-height: 1.5; display: flex; align-items: center; }
+
+  /* CONNECTION DIAGRAM */
+  .conn-wrap {
+    display: flex; align-items: center; justify-content: center;
+    gap: 40px;
+  }
+  .conn-box {
+    border: 1px solid;
+    padding: 24px 28px;
+    text-align: center;
+    width: 200px;
+  }
+  .conn-box-title {
+    font-family: var(--serif);
+    font-size: 22px; margin-bottom: 8px;
+  }
+  .conn-box-sub {
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .conn-arrow {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+  }
+  .conn-line { width: 80px; height: 1px; background: var(--amber); }
+  .conn-arrow-tip { color: var(--amber); font-size: 20px; }
+  .conn-action-list {
+    list-style: none;
+    font-size: 11px; color: var(--text-muted);
+    line-height: 1.8; text-align: center;
+    max-width: 180px;
+  }
+
+  /* ANIMATE IN */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .slide-inner > * {
+    animation: fadeUp 0.5s ease forwards;
+    opacity: 0;
+  }
+  .slide.active .slide-inner > *:nth-child(1) { animation-delay: 0.05s; }
+  .slide.active .slide-inner > *:nth-child(2) { animation-delay: 0.10s; }
+  .slide.active .slide-inner > *:nth-child(3) { animation-delay: 0.15s; }
+  .slide.active .slide-inner > *:nth-child(4) { animation-delay: 0.20s; }
+  .slide.active .slide-inner > *:nth-child(5) { animation-delay: 0.25s; }
+  .slide.active .slide-inner > *:nth-child(6) { animation-delay: 0.30s; }
+
+  /* SPEAKER NOTES */
+  .notes { display: none; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div id="progress-bar" style="width:0%"></div>
+<div id="slide-counter">01 / 19</div>
+
+<!-- =================== SLIDES =================== -->
+<div id="slides-container">
+
+  <!-- SLIDE 1 — CAPA -->
+  <div class="slide active" data-index="1">
+    <div class="slide-inner cover-inner">
+      <div class="cover-tag">Gestão Industrial · Excelência Operacional</div>
+      <div class="display-title">TPM <em>&</em> OEE</div>
+      <div style="height:20px"></div>
+      <div class="slide-subtitle" style="max-width:500px; font-size:14px; letter-spacing:0.02em;">
+        A Arquitetura da Eficiência Industrial: fundamentos, métricas e impactos da Manutenção Produtiva Total
+      </div>
+      <div class="hline" style="max-width:420px; margin-top:40px; margin-bottom:32px;"></div>
+      <div style="display:flex; gap:48px;">
+        <div>
+          <div style="font-size:9px; letter-spacing:0.25em; text-transform:uppercase; color:var(--amber); margin-bottom:6px;">Foco</div>
+          <div style="font-size:12px; color:var(--text-secondary);">Filosofia · Métrica · Aplicação</div>
+        </div>
+        <div>
+          <div style="font-size:9px; letter-spacing:0.25em; text-transform:uppercase; color:var(--amber); margin-bottom:6px;">Nível</div>
+          <div style="font-size:12px; color:var(--text-secondary);">Intermediário — Avançado</div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Abrir a apresentação provocando uma questão: "Como saberemos se uma máquina está realmente trabalhando para nós — ou apenas ocupando espaço no chão de fábrica?" Deixar a pergunta no ar antes de avançar. Esta apresentação percorre o problema industrial real, a filosofia do TPM, o indicador OEE e a relação entre ambos de forma integrada e progressiva.</p>
+  </div>
+
+  <!-- SLIDE 2 — O PROBLEMA REAL -->
+  <div class="slide" data-index="2">
+    <div class="slide-inner" style="max-width:1050px;">
+      <div class="slide-label">01 — Diagnóstico</div>
+      <div class="slide-title">A indústria que opera<br><em>no escuro</em></div>
+      <div style="height:32px"></div>
+      <div class="col-2" style="gap:64px; align-items:start;">
+        <div>
+          <div class="body-text" style="margin-bottom:28px;">
+            Na maioria das operações industriais, a pergunta não é <strong>"nossa máquina está ligada?"</strong> — mas sim: <strong>"quanto de valor ela está gerando de verdade?"</strong>
+          </div>
+          <ul class="dot-list">
+            <li>A máquina pode estar ligada, mas <strong>parada por setup ou ajuste</strong></li>
+            <li>Pode estar rodando, mas <strong>abaixo da velocidade ideal</strong></li>
+            <li>Pode estar produzindo, mas <strong>gerando peças defeituosas</strong></li>
+            <li>Pode falhar a qualquer momento, porque <strong>ninguém a inspecionou</strong></li>
+          </ul>
+          <div style="height:24px"></div>
+          <div class="insight">
+            <strong>Ponto central:</strong> a maior parte das perdas industriais é invisível à gestão que opera de forma reativa. Elas acontecem em silêncio, no meio do turno, e nunca aparecem no relatório.
+          </div>
+        </div>
+        <div>
+          <!-- Iceberg SVG -->
+          <div style="text-align:center;">
+            <svg width="260" height="320" viewBox="0 0 260 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Water line -->
+              <line x1="0" y1="140" x2="260" y2="140" stroke="#22222A" stroke-width="2" stroke-dasharray="6 4"/>
+              <text x="210" y="134" font-family="Montserrat,sans-serif" font-size="9" fill="#6B6870" letter-spacing="1">VISÍVEL</text>
+              <text x="198" y="156" font-family="Montserrat,sans-serif" font-size="9" fill="#6B6870" letter-spacing="1">INVISÍVEL</text>
+              <!-- Tip -->
+              <polygon points="130,20 90,140 170,140" fill="rgba(200,135,42,0.2)" stroke="rgba(200,135,42,0.6)" stroke-width="1"/>
+              <!-- Submerged -->
+              <polygon points="90,140 50,310 210,310 170,140" fill="rgba(192,58,58,0.12)" stroke="rgba(192,58,58,0.4)" stroke-width="1"/>
+              <!-- Labels visible -->
+              <text x="130" y="88" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="10" fill="#C8872A" font-weight="600">Quebras</text>
+              <text x="130" y="104" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="#A09CA6">registradas</text>
+              <!-- Labels invisible -->
+              <text x="130" y="185" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="#C03A3A">Microparadas</text>
+              <text x="130" y="210" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="#C03A3A">Velocidade reduzida</text>
+              <text x="130" y="235" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="#C03A3A">Retrabalho silencioso</text>
+              <text x="130" y="260" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="#C03A3A">Perda de startup</text>
+              <text x="130" y="285" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="#C03A3A">Ociosidade oculta</text>
+            </svg>
+            <div style="font-size:10px; color:var(--text-muted); margin-top:8px; letter-spacing:0.05em;">As maiores perdas ficam abaixo da superfície</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Apresentador deve criar tensão aqui. Perguntar à plateia: "Quantos de vocês sabem exatamente onde sua operação perde tempo hoje?" Usar o iceberg para mostrar que o problema não é falta de produção, mas falta de visibilidade das perdas. A indústria reativa espera a falha acontecer. A indústria de excelência constrói sistemas para prevenir e medir continuamente.</p>
+  </div>
+
+  <!-- SLIDE 3 — ORIGEM DO TPM -->
+  <div class="slide" data-index="3">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">02 — Contexto histórico</div>
+      <div class="slide-title">De onde veio o <em>TPM</em>?</div>
+      <div style="height:32px"></div>
+      <div class="col-2" style="gap:56px; align-items:start;">
+        <div>
+          <ul class="dot-list" style="gap:18px;">
+            <li><strong>Década de 1950:</strong> A indústria americana importa o conceito de manutenção preventiva para o Japão no pós-guerra. Base: reparar antes de quebrar.</li>
+            <li><strong>Década de 1960:</strong> Surge a <strong>Manutenção Produtiva</strong> — integração entre produção e manutenção. A eficiência do equipamento passa a ser responsabilidade compartilhada.</li>
+            <li><strong>1971 — Nippondenso (Toyota Group):</strong> A empresa implementa pela primeira vez o conceito de manutenção com participação total dos operadores. Nasce oficialmente o <strong>TPM</strong>.</li>
+            <li><strong>JIPM (Japan Institute of Plant Maintenance):</strong> Formaliza e expande o TPM para o mundo inteiro a partir dos anos 1980.</li>
+            <li><strong>Hoje:</strong> O TPM está presente nas maiores operações industriais do planeta, associado ao Lean Manufacturing e à Indústria 4.0.</li>
+          </ul>
+        </div>
+        <div>
+          <!-- Timeline visual -->
+          <div style="display:flex; flex-direction:column; gap:0;">
+            <div style="display:flex; gap:0; flex-direction:column;">
+              <div style="display:flex; align-items:stretch; gap:20px; margin-bottom:2px;" >
+                <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+                  <div style="width:10px; height:10px; border-radius:50%; background:var(--amber); flex-shrink:0; margin-top:2px;"></div>
+                  <div style="flex:1; width:1px; background:var(--border);"></div>
+                </div>
+                <div style="padding-bottom:24px;">
+                  <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--amber); margin-bottom:4px;">1950s</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">Manutenção Preventiva importada pelo Japão</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:stretch; gap:20px; margin-bottom:2px;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+                  <div style="width:10px; height:10px; border-radius:50%; background:var(--amber); flex-shrink:0; margin-top:2px;"></div>
+                  <div style="flex:1; width:1px; background:var(--border);"></div>
+                </div>
+                <div style="padding-bottom:24px;">
+                  <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--amber); margin-bottom:4px;">1960s</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">Manutenção Produtiva: produção e manutenção integradas</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:stretch; gap:20px; margin-bottom:2px;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+                  <div style="width:10px; height:10px; border-radius:50%; background:var(--amber-light); flex-shrink:0; margin-top:2px; box-shadow:0 0 8px rgba(200,135,42,0.8);"></div>
+                  <div style="flex:1; width:1px; background:var(--border);"></div>
+                </div>
+                <div style="padding-bottom:24px; background:var(--amber-dim); border:1px solid rgba(200,135,42,0.2); padding:12px 16px; margin-bottom:4px;">
+                  <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--amber-light); margin-bottom:4px;">1971 — Nippondenso</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">Nasce o TPM com participação total dos operadores</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:stretch; gap:20px; margin-bottom:2px;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+                  <div style="width:10px; height:10px; border-radius:50%; background:var(--amber); flex-shrink:0; margin-top:2px;"></div>
+                  <div style="flex:1; width:1px; background:var(--border);"></div>
+                </div>
+                <div style="padding-bottom:24px;">
+                  <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--amber); margin-bottom:4px;">1980s</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">JIPM globaliza o TPM. Adoção nas maiores indústrias do mundo</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:stretch; gap:20px;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+                  <div style="width:10px; height:10px; border-radius:50%; background:var(--amber); flex-shrink:0; margin-top:2px;"></div>
+                </div>
+                <div style="padding-bottom:24px;">
+                  <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--amber); margin-bottom:4px;">Hoje</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">TPM + Lean + Indústria 4.0: o novo padrão de excelência</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Este slide posiciona o TPM historicamente — não como uma moda ou metodologia genérica, mas como uma evolução técnica com décadas de refinamento. A Nippondenso foi a primeira empresa do grupo Toyota a conquistar o Prêmio PM do JIPM. Conectar o TPM ao Sistema Toyota de Produção dá credibilidade e contexto ao método.</p>
+  </div>
+
+  <!-- SLIDE 4 — O QUE É TPM -->
+  <div class="slide" data-index="4">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">03 — Fundamentos</div>
+      <div class="slide-title">O que é <em>TPM</em>, de verdade?</div>
+      <div style="height:32px"></div>
+      <div class="col-2" style="gap:56px; align-items:start;">
+        <div>
+          <div class="body-text" style="margin-bottom:24px;">
+            <strong>TPM — Total Productive Maintenance</strong> (Manutenção Produtiva Total) — não é um modelo de manutenção. É uma <strong>filosofia de gestão industrial</strong> voltada à eliminação de perdas, prevenção de falhas e participação de toda a organização na performance dos equipamentos.
+          </div>
+          <div class="insight" style="margin-bottom:24px;">
+            <strong>A distinção crítica:</strong> no TPM, manutenção não é responsabilidade exclusiva da equipe de manutenção. Operadores, engenharia, supervisão, gestão e liderança atuam de forma integrada para garantir estabilidade operacional.
+          </div>
+          <ul class="dot-list">
+            <li><strong>Total:</strong> envolve todos os níveis e funções da empresa</li>
+            <li><strong>Produtiva:</strong> foco em maximizar a produção, não apenas consertar</li>
+            <li><strong>Manutenção:</strong> cuidado contínuo com equipamentos, não só reparo</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.25em; text-transform:uppercase; color:var(--amber); margin-bottom:20px;">Evolução do pensamento</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="background:var(--red-dim); border:1px solid rgba(192,58,58,0.2); padding:16px 18px;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--red); margin-bottom:6px;">Modelo Reativo (antes)</div>
+              <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6;">Espera a falha → conserta → produz → espera falha novamente. Ciclo de instabilidade crônica.</div>
+            </div>
+            <div style="text-align:center; font-size:20px; color:var(--amber);">↓</div>
+            <div style="background:var(--amber-dim); border:1px solid rgba(200,135,42,0.2); padding:16px 18px;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); margin-bottom:6px;">Modelo Preventivo (transição)</div>
+              <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6;">Programa intervenções periódicas. Melhora a disponibilidade, mas ainda não envolve todos.</div>
+            </div>
+            <div style="text-align:center; font-size:20px; color:var(--amber);">↓</div>
+            <div style="background:var(--green-dim); border:1px solid rgba(46,153,89,0.2); padding:16px 18px;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--green); margin-bottom:6px;">Modelo TPM (excelência)</div>
+              <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6;">Prevenção, predição, melhoria contínua e envolvimento total. Operação estável por design.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Enfatizar que a maioria das empresas ainda está no modelo reativo ou, no melhor caso, no preventivo básico. O TPM representa uma mudança de mentalidade: em vez de "corremos para apagar incêndios", a pergunta passa a ser "como evitamos que o incêndio aconteça". Citar a integração entre operador e equipamento como o ponto mais disruptivo do TPM.</p>
+  </div>
+
+  <!-- SLIDE 5 — 8 PILARES DO TPM -->
+  <div class="slide" data-index="5">
+    <div class="slide-inner" style="max-width:1060px;">
+      <div class="slide-label">04 — Estrutura</div>
+      <div class="slide-title">Os <em>8 Pilares</em> do TPM</div>
+      <div style="height:24px"></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:24px; max-width:660px; line-height:1.7;">A estrutura do TPM, conforme definida pelo <strong style="color:var(--text);">JIPM (Japan Institute of Plant Maintenance)</strong>, é sustentada por oito pilares interdependentes, cada um voltado à eliminação de um tipo específico de perda ou risco operacional.</div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:100%;">
+        <div class="card card-amber" style="border-top:2px solid var(--amber);">
+          <div class="card-label" style="color:var(--amber);">Pilar 1</div>
+          <div class="card-title" style="font-size:15px;">Melhoria Específica</div>
+          <div style="font-size:9px; color:var(--amber); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Kobetsu Kaizen</div>
+          <div class="card-body">Grupos multifuncionais focados na eliminação sistemática de perdas crônicas e pontuais nos equipamentos.</div>
+        </div>
+        <div class="card" style="border-top:2px solid var(--amber);">
+          <div class="card-label" style="color:var(--amber);">Pilar 2</div>
+          <div class="card-title" style="font-size:15px;">Manutenção Autônoma</div>
+          <div style="font-size:9px; color:var(--amber); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Jishu Hozen</div>
+          <div class="card-body">Operadores assumem atividades básicas de inspeção, limpeza e lubrificação. Desenvolve o "senso de dono".</div>
+        </div>
+        <div class="card" style="border-top:2px solid var(--amber);">
+          <div class="card-label" style="color:var(--amber);">Pilar 3</div>
+          <div class="card-title" style="font-size:15px;">Manutenção Planejada</div>
+          <div style="font-size:9px; color:var(--amber); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Keikaku Hozen</div>
+          <div class="card-body">Programação sistemática de intervenções preventivas e preditivas antes da ocorrência de falhas.</div>
+        </div>
+        <div class="card" style="border-top:2px solid var(--amber);">
+          <div class="card-label" style="color:var(--amber);">Pilar 4</div>
+          <div class="card-title" style="font-size:15px;">Manutenção da Qualidade</div>
+          <div style="font-size:9px; color:var(--amber); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Hinshitsu Hozen</div>
+          <div class="card-body">Garante que as condições do equipamento impeçam ativamente a geração de defeitos no produto.</div>
+        </div>
+        <div class="card" style="border-top:2px solid var(--blue);">
+          <div class="card-label" style="color:var(--blue);">Pilar 5</div>
+          <div class="card-title" style="font-size:15px;">Gestão Antecipada</div>
+          <div style="font-size:9px; color:var(--blue); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Controle Inicial / MP Design</div>
+          <div class="card-body">Prevenção de problemas já no projeto, aquisição e instalação de novos equipamentos e produtos.</div>
+        </div>
+        <div class="card" style="border-top:2px solid var(--blue);">
+          <div class="card-label" style="color:var(--blue);">Pilar 6</div>
+          <div class="card-title" style="font-size:15px;">Educação e Treinamento</div>
+          <div style="font-size:9px; color:var(--blue); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Kyoiku &amp; Trainamento</div>
+          <div class="card-body">Desenvolvimento de competências técnicas e operacionais em todos os níveis hierárquicos.</div>
+        </div>
+        <div class="card" style="border-top:2px solid var(--blue);">
+          <div class="card-label" style="color:var(--blue);">Pilar 7</div>
+          <div class="card-title" style="font-size:15px;">Segurança, Saúde e Meio Ambiente</div>
+          <div style="font-size:9px; color:var(--blue); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Anzen Hozen</div>
+          <div class="card-body">Zero acidentes, zero doenças ocupacionais e zero impactos ambientais como condições inegociáveis.</div>
+        </div>
+        <div class="card" style="border-top:2px solid var(--blue);">
+          <div class="card-label" style="color:var(--blue);">Pilar 8</div>
+          <div class="card-title" style="font-size:15px;">TPM Administrativo</div>
+          <div style="font-size:9px; color:var(--blue); letter-spacing:0.1em; margin-bottom:8px; font-weight:600;">Jimusho TPM</div>
+          <div class="card-body">Extensão da filosofia TPM para áreas de suporte: reduzir perdas em processos administrativos e logísticos.</div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">A ordem oficial JIPM dos 8 pilares começa pela Melhoria Específica (Kobetsu Kaizen) — e não pela Manutenção Autônoma, como muitos materiais incorretamente apresentam. Esse detalhe importa em avaliações acadêmicas e auditorias TPM. Os pilares 1, 2, 3 e 4 são os de maior impacto direto no OEE. O Pilar 2 (Manutenção Autônoma / Jishu Hozen) continua sendo o mais transformador culturalmente, pois transfere responsabilidade de cuidado ao operador.</p>
+  </div>
+
+  <!-- SLIDE 6 — OS ZEROS DO TPM -->
+  <div class="slide" data-index="6">
+    <div class="slide-inner" style="max-width:960px;">
+      <div class="slide-label">05 — Objetivo Central</div>
+      <div class="slide-title">O TPM persegue<br>os <em>Quatro Zeros</em></div>
+      <div style="height:32px"></div>
+      <div class="col-2" style="gap:48px; align-items:start;">
+        <div>
+          <div class="zero-grid">
+            <div class="zero-item">
+              <div class="zero-big">0</div>
+              <div class="zero-label">Quebras</div>
+              <div class="zero-desc">Nenhuma falha inesperada de equipamento durante a operação.</div>
+            </div>
+            <div class="zero-item">
+              <div class="zero-big">0</div>
+              <div class="zero-label">Defeitos</div>
+              <div class="zero-desc">Produção sem geração de produtos não conformes ou retrabalho.</div>
+            </div>
+            <div class="zero-item">
+              <div class="zero-big">0</div>
+              <div class="zero-label">Acidentes</div>
+              <div class="zero-desc">Operação segura para pessoas, equipamentos e meio ambiente.</div>
+            </div>
+            <div class="zero-item">
+              <div class="zero-big">0</div>
+              <div class="zero-label">Desperdícios</div>
+              <div class="zero-desc">Eliminação de perdas de toda natureza no processo produtivo.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="body-text" style="margin-bottom:28px;">
+            Os Quatro Zeros do TPM não são metas utópicas — são <strong>direções de esforço permanente</strong>. A aproximação a eles mede a maturidade da operação.
+          </div>
+          <div class="insight" style="margin-bottom:24px;">
+            <strong>Raciocínio estratégico:</strong> uma operação que quebra muito não pode ser eficiente. Uma que produz com defeitos não pode ser competitiva. Uma que gera acidentes não pode ser sustentável. Os zeros são interdependentes.
+          </div>
+          <div style="background:var(--surface2); border:1px solid var(--border); padding:20px 24px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;">Conexão com o Lean</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
+              O TPM e o Lean Manufacturing compartilham o mesmo princípio essencial: <strong>eliminar tudo que não gera valor</strong>. No chão de fábrica, isso começa pelo equipamento.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Ótima oportunidade para humanizar o conceito: os zeros não significam que quebras nunca vão acontecer, mas que a organização tem sistemas, disciplina e cultura para que elas se tornem cada vez mais raras. Fazer a conexão com o conceito de Lean (eliminação de desperdícios) para audiências que já conhecem o tema.</p>
+  </div>
+
+  <!-- SLIDE 7 — O QUE É OEE -->
+  <div class="slide" data-index="7">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">06 — O Indicador</div>
+      <div class="slide-title">O que é <em>OEE</em>?</div>
+      <div style="height:32px"></div>
+      <div class="col-2" style="gap:64px; align-items:center;">
+        <div>
+          <div class="body-text" style="margin-bottom:24px;">
+            <strong>OEE — Overall Equipment Effectiveness</strong> (Eficiência Global dos Equipamentos) é um indicador que mede quanto do tempo de produção planejado foi de fato convertido em <strong>produção útil</strong>.
+          </div>
+          <ul class="dot-list" style="margin-bottom:28px;">
+            <li><strong>Não mede se a máquina está ligada</strong> — mede se ela está gerando valor.</li>
+            <li><strong>Transforma perdas ocultas</strong> em um número mensurável e comparável.</li>
+            <li><strong>Diagnostica</strong> onde, como e quanto a operação está perdendo.</li>
+            <li><strong>Orienta prioridades</strong> de melhoria com base em dados reais.</li>
+          </ul>
+          <div class="insight">
+            <strong>A pergunta que o OEE responde:</strong> "De todo o tempo disponível para produzir, quanto foi realmente usado para gerar produtos bons, na velocidade certa, sem paradas?"
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <!-- OEE Visual -->
+          <div style="position:relative; display:inline-block;">
+            <svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+              <!-- Outer ring - total planned time -->
+              <circle cx="140" cy="140" r="120" fill="none" stroke="#22222A" stroke-width="18"/>
+              <!-- Availability (green) -->
+              <circle cx="140" cy="140" r="120" fill="none" stroke="rgba(46,153,89,0.7)" stroke-width="18"
+                stroke-dasharray="660" stroke-dashoffset="94"
+                transform="rotate(-90 140 140)"/>
+              <!-- Performance (blue) -->
+              <circle cx="140" cy="140" r="96" fill="none" stroke="rgba(58,124,192,0.7)" stroke-width="18"
+                stroke-dasharray="603" stroke-dashoffset="86"
+                transform="rotate(-90 140 140)"/>
+              <!-- Quality (amber) -->
+              <circle cx="140" cy="140" r="72" fill="none" stroke="rgba(200,135,42,0.8)" stroke-width="18"
+                stroke-dasharray="452" stroke-dashoffset="23"
+                transform="rotate(-90 140 140)"/>
+              <!-- Center text -->
+              <text x="140" y="132" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="36" font-weight="300" fill="#EAE6DF">OEE</text>
+              <text x="140" y="158" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="11" fill="#6B6870" letter-spacing="2">Eficiência Global</text>
+            </svg>
+            <div style="display:flex; justify-content:center; gap:20px; margin-top:16px;">
+              <div style="display:flex; align-items:center; gap:6px; font-size:10px; color:var(--text-muted);">
+                <div style="width:10px; height:3px; background:rgba(46,153,89,0.7); border-radius:2px;"></div> Disponibilidade
+              </div>
+              <div style="display:flex; align-items:center; gap:6px; font-size:10px; color:var(--text-muted);">
+                <div style="width:10px; height:3px; background:rgba(58,124,192,0.7); border-radius:2px;"></div> Performance
+              </div>
+              <div style="display:flex; align-items:center; gap:6px; font-size:10px; color:var(--text-muted);">
+                <div style="width:10px; height:3px; background:rgba(200,135,42,0.8); border-radius:2px;"></div> Qualidade
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">É importante desmistificar o OEE logo de início: não é apenas um número percentual. É um diagnóstico composto por três camadas. Cada camada revela um tipo diferente de perda. A grande sacada é que uma operação pode parecer eficiente pelo volume produzido e ainda assim ter OEE baixo, porque as perdas ficam invisíveis sem o indicador.</p>
+  </div>
+
+  <!-- SLIDE 8 — FÓRMULA OEE -->
+  <div class="slide" data-index="8">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">07 — Fórmula</div>
+      <div class="slide-title">A fórmula que<br>revela tudo</div>
+      <div style="height:32px"></div>
+      <div style="margin-bottom:36px;">
+        <div class="formula-box" style="flex-direction:column; align-items:flex-start; gap:10px; padding:28px 36px;">
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber); margin-bottom:4px;">Cálculo Preferido — JIPM</div>
+          <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+            <div class="formula-term">
+              <span class="formula-val" style="color:var(--amber-light);">OEE</span>
+              <span class="formula-name">Eficiência Global</span>
+            </div>
+            <span class="formula-op">=</span>
+            <div class="formula-term">
+              <span class="formula-val" style="color:rgba(46,153,89,0.9);">A</span>
+              <span class="formula-name">Disponibilidade</span>
+            </div>
+            <span class="formula-op">×</span>
+            <div class="formula-term">
+              <span class="formula-val" style="color:rgba(58,124,192,0.9);">P</span>
+              <span class="formula-name">Performance</span>
+            </div>
+            <span class="formula-op">×</span>
+            <div class="formula-term">
+              <span class="formula-val" style="color:var(--gold);">Q</span>
+              <span class="formula-name">Qualidade</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3" style="gap:24px;">
+        <div style="background:var(--green-dim); border:1px solid rgba(46,153,89,0.25); padding:24px;">
+          <div style="color:var(--green); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px;">Disponibilidade — $A$</div>
+          <div style="background:rgba(0,0,0,0.25); padding:12px 14px; margin-bottom:12px; text-align:center; font-size:14px; color:var(--text);">
+            $A = \dfrac{\text{Tempo de Operação}}{\text{Tempo de Produção Planejado}}$
+          </div>
+          <div style="font-size:11px; color:var(--text-muted); line-height:1.6;">O equipamento estava operando quando deveria? Mede todas as perdas por parada não planejada ou programada.</div>
+        </div>
+        <div style="background:var(--blue-dim); border:1px solid rgba(58,124,192,0.25); padding:24px;">
+          <div style="color:var(--blue); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px;">Performance — $P$</div>
+          <div style="background:rgba(0,0,0,0.25); padding:12px 14px; margin-bottom:12px; text-align:center; font-size:14px; color:var(--text);">
+            $P = \dfrac{\text{Ciclo Ideal} \times \text{Qtd. Produzida}}{\text{Tempo de Operação}}$
+          </div>
+          <div style="font-size:11px; color:var(--text-muted); line-height:1.6;">O equipamento operou na velocidade ideal? Mede todas as perdas por redução de ritmo e microparadas.</div>
+        </div>
+        <div style="background:var(--amber-dim); border:1px solid rgba(200,135,42,0.25); padding:24px;">
+          <div style="color:var(--amber); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px;">Qualidade — $Q$</div>
+          <div style="background:rgba(0,0,0,0.25); padding:12px 14px; margin-bottom:12px; text-align:center; font-size:14px; color:var(--text);">
+            $Q = \dfrac{\text{Peças Boas}}{\text{Quantidade Total Produzida}}$
+          </div>
+          <div style="font-size:11px; color:var(--text-muted); line-height:1.6;">A produção gerou valor real? Mede as perdas por defeito, retrabalho, refugo e perdas de partida.</div>
+        </div>
+      </div>
+      <div style="margin-top:28px;" class="insight">
+        <strong>O efeito multiplicador:</strong> $A = 90\% \times P = 95\% \times Q = 99{,}9\%$ resulta em $OEE \approx 85{,}4\%$ — a referência de Classe Mundial. A queda em qualquer fator propaga-se para o resultado final. Por isso <em>toda perda importa</em>, independentemente do componente em que ocorre.
+      </div>
+    </div>
+    <p class="notes">Este slide é central — a fórmula precisa ser entendida, não apenas memorizada. O efeito multiplicador é o grande insight: basta um dos componentes cair um pouco para o OEE global cair significativamente. Por isso não existe "compensar" uma perda de disponibilidade com uma qualidade alta — o produto é implacável.</p>
+  </div>
+
+  <!-- SLIDE 9 — DISPONIBILIDADE -->
+  <div class="slide" data-index="9">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">08 — Pilar I</div>
+      <div class="slide-title" style="color:rgba(46,153,89,0.9);">Disponibilidade</div>
+      <div style="height:8px"></div>
+      <div style="font-family:var(--serif); font-size:16px; font-weight:300; color:var(--text-secondary); margin-bottom:32px; font-style:italic;">
+        A máquina estava onde deveria estar, quando deveria estar?
+      </div>
+      <div class="col-2" style="gap:48px; align-items:start;">
+        <div>
+          <div style="background:var(--surface2); border:1px solid var(--border); padding:20px 24px; margin-bottom:24px;">
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em;">Fórmula Oficial (JIPM)</div>
+            <div style="font-size:15px; color:var(--text); text-align:center; padding:6px 0;">
+              $A = \dfrac{\text{Tempo de Operação}}{\text{Tempo de Produção Planejado}}$
+            </div>
+          </div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:14px;">Perdas que derrubam a disponibilidade</div>
+          <ul class="dot-list">
+            <li><strong>Quebra de máquina</strong> — falha inesperada, manutenção corretiva</li>
+            <li><strong>Setup e troca de ferramenta</strong> — preparação entre produtos</li>
+            <li><strong>Ajustes não planejados</strong> — paradas para regulagem durante produção</li>
+            <li><strong>Falta de material</strong> — espera por insumos ou componentes</li>
+            <li><strong>Paradas operacionais</strong> — aguardando operador, instrução ou material</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px;">Simulação visual — impacto no tempo</div>
+          <svg width="100%" height="60" viewBox="0 0 400 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="10" width="400" height="40" fill="#22222A" rx="2"/>
+            <rect x="0" y="10" width="350" height="40" fill="rgba(46,153,89,0.3)" rx="2"/>
+            <rect x="0" y="10" width="50" height="40" fill="rgba(192,58,58,0.5)" rx="2"/>
+            <text x="20" y="35" font-family="Montserrat,sans-serif" font-size="10" fill="rgba(192,58,58,0.9)">Parada</text>
+            <text x="200" y="35" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="10" fill="rgba(46,153,89,0.9)">Tempo operando</text>
+            <text x="0" y="58" font-family="Montserrat,sans-serif" font-size="9" fill="#6B6870">0 min</text>
+            <text x="370" y="58" font-family="Montserrat,sans-serif" font-size="9" fill="#6B6870">480 min</text>
+          </svg>
+          <div style="margin-top:32px; padding:20px; background:var(--green-dim); border:1px solid rgba(46,153,89,0.2);">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--green); margin-bottom:8px;">Diagnóstico prático</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">Se a Disponibilidade está baixa, o principal problema é: <strong style="color:var(--text);">a máquina não está ficando disponível quando deveria.</strong> O foco deve ser reduzir o tempo de parada, seja por falha, setup ou espera.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Apresentar a Disponibilidade como a fundação. Sem ela, os outros pilares ficam prejudicados. Um setup de 2h em um turno de 8h já compromete drasticamente a disponibilidade. Mencionar que o SMED (troca rápida de ferramenta) é uma das ferramentas do Lean/TPM usadas especificamente para atacar esse problema.</p>
+  </div>
+
+  <!-- SLIDE 10 — PERFORMANCE -->
+  <div class="slide" data-index="10">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">08 — Pilar II</div>
+      <div class="slide-title" style="color:rgba(58,124,192,0.9);">Performance</div>
+      <div style="height:8px"></div>
+      <div style="font-family:var(--serif); font-size:16px; font-weight:300; color:var(--text-secondary); margin-bottom:32px; font-style:italic;">
+        A máquina operou no ritmo que deveria?
+      </div>
+      <div class="col-2" style="gap:48px; align-items:start;">
+        <div>
+          <div style="background:var(--surface2); border:1px solid var(--border); padding:20px 24px; margin-bottom:24px;">
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em;">Fórmula Oficial (JIPM)</div>
+            <div style="font-size:15px; color:var(--text); text-align:center; padding:6px 0;">
+              $P = \dfrac{\text{Ciclo Ideal} \times \text{Quantidade Produzida}}{\text{Tempo de Operação}}$
+            </div>
+          </div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:14px;">Perdas que derrubam a performance</div>
+          <ul class="dot-list">
+            <li><strong>Microparadas</strong> — paradas curtas (menos de 5 min) que somam muito</li>
+            <li><strong>Redução de velocidade</strong> — operação abaixo da capacidade nominal</li>
+            <li><strong>Alimentação irregular</strong> — fluxo de material instável na linha</li>
+            <li><strong>Ajustes finos frequentes</strong> — necessidade de regulagem contínua</li>
+            <li><strong>Instabilidades de processo</strong> — variabilidade que força desaceleração</li>
+          </ul>
+        </div>
+        <div>
+          <div class="insight" style="margin-bottom:24px;">
+            <strong>O engano da performance:</strong> uma máquina que roda continuamente pode parecer eficiente. Mas se ela opera a 80% da velocidade nominal, 20% de toda a produção potencial está sendo silenciosamente desperdiçada — e ninguém percebe.
+          </div>
+          <div style="background:var(--blue-dim); border:1px solid rgba(58,124,192,0.2); padding:20px 24px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:12px;">Por que microparadas são traiçoeiras</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
+              Uma parada de 2 minutos a cada 30 minutos parece insignificante. Em 8h de turno, são <strong style="color:var(--text);">32 minutos de perda</strong> — ou seja, ~7% da disponibilidade. Multiplicado por 20 dias: 10,6 horas/mês perdidas num único equipamento.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">A Performance é o pilar mais subestimado. As microparadas geralmente não são registradas formalmente, então ficam invisíveis nos relatórios. A análise com OEE começa a revelar essas perdas acumuladas. Usar o exemplo do cálculo para mostrar que pequenos desvios de velocidade têm impacto real.</p>
+  </div>
+
+  <!-- SLIDE 11 — QUALIDADE -->
+  <div class="slide" data-index="11">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">08 — Pilar III</div>
+      <div class="slide-title" style="color:var(--amber-light);">Qualidade</div>
+      <div style="height:8px"></div>
+      <div style="font-family:var(--serif); font-size:16px; font-weight:300; color:var(--text-secondary); margin-bottom:32px; font-style:italic;">
+        Do que foi produzido, quanto realmente gerou valor?
+      </div>
+      <div class="col-2" style="gap:48px; align-items:start;">
+        <div>
+          <div style="background:var(--surface2); border:1px solid var(--border); padding:20px 24px; margin-bottom:24px;">
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em;">Fórmula Oficial (JIPM)</div>
+            <div style="font-size:15px; color:var(--text); text-align:center; padding:6px 0;">
+              $Q = \dfrac{\text{Peças Boas}}{\text{Quantidade Total Produzida}}$
+            </div>
+          </div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:14px;">Perdas que derrubam a qualidade</div>
+          <ul class="dot-list">
+            <li><strong>Defeitos de processo</strong> — produtos fora do padrão durante operação estável</li>
+            <li><strong>Retrabalho</strong> — produtos que precisam ser corrigidos antes de aprovar</li>
+            <li><strong>Refugo</strong> — peças descartadas sem possibilidade de recuperação</li>
+            <li><strong>Perda de startup</strong> — defeitos produzidos no início após setup ou partida</li>
+            <li><strong>Variabilidade do material</strong> — instabilidade no insumo gerando inconformidade</li>
+          </ul>
+        </div>
+        <div>
+          <div class="insight" style="margin-bottom:24px;">
+            <strong>O custo duplo do defeito:</strong> um produto defeituoso representa não apenas um produto perdido — representa também o tempo de máquina, o material e a mão de obra consumidos para produzi-lo. É o pior tipo de perda: consome recursos e não entrega valor.
+          </div>
+          <div style="background:var(--amber-dim); border:1px solid rgba(200,135,42,0.2); padding:20px 24px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;">Qualidade ≠ Controle de qualidade</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
+              No TPM, qualidade é construída no processo — não inspecionada no final. A Manutenção da Qualidade (Pilar 6) garante que o equipamento opere dentro das condições que impedem a geração de defeitos.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">A Qualidade no OEE não é responsabilidade do departamento de qualidade — é uma consequência direta das condições do equipamento. Uma máquina mal calibrada, com desgaste de ferramental ou instabilidade de parâmetros vai gerar defeitos sistematicamente. Por isso o TPM atua nas causas raízes que a Qualidade apenas registra.</p>
+  </div>
+
+  <!-- SLIDE 12 — SEIS GRANDES PERDAS -->
+  <div class="slide" data-index="12">
+    <div class="slide-inner" style="max-width:1060px;">
+      <div class="slide-label">09 — Taxonomia das Perdas</div>
+      <div class="slide-title">As <em>Seis Grandes Perdas</em></div>
+      <div style="height:20px"></div>
+      <div class="body-text" style="margin-bottom:28px;">Framework clássico que organiza as perdas industriais por origem, conectando cada tipo de perda ao pilar do OEE que afeta.</div>
+      <div class="loss-grid">
+        <div class="loss-header amber">Disponibilidade</div>
+        <div class="loss-header blue">Performance</div>
+        <div class="loss-header green">Qualidade</div>
+
+        <div class="loss-cell">
+          <div style="color:var(--amber); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">
+            <span class="num">1</span> Quebras e Falhas
+          </div>
+          Equipamento para por defeito ou falha não planejada. Inclui desde a falha até o retorno à produção estável.
+        </div>
+        <div class="loss-cell">
+          <div style="color:var(--blue); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">
+            <span class="num">3</span> Pequenas Paradas
+          </div>
+          Interrupções curtas (&lt;5 min) e recorrentes. Individualmente invisíveis; coletivamente devastadoras para a performance.
+        </div>
+        <div class="loss-cell">
+          <div style="color:var(--green); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">
+            <span class="num">5</span> Defeitos de Processo
+          </div>
+          Produtos não conformes gerados durante a operação estável. Incluem retrabalho e refugo em linha.
+        </div>
+
+        <div class="loss-cell">
+          <div style="color:var(--amber); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">
+            <span class="num">2</span> Setups e Ajustes
+          </div>
+          Tempo gasto em troca de produto, regulagem, preparação e reinício. Quanto mais complexo o produto, maior o impacto.
+        </div>
+        <div class="loss-cell">
+          <div style="color:var(--blue); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">
+            <span class="num">4</span> Redução de Velocidade
+          </div>
+          Operação abaixo da velocidade teórica ou nominal. Frequentemente normalizada pelos operadores como "jeito de trabalhar".
+        </div>
+        <div class="loss-cell">
+          <div style="color:var(--green); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">
+            <span class="num">6</span> Perdas de Startup
+          </div>
+          Defeitos e perdas produzidos no início da produção, após setups ou partidas. Muitas vezes não contabilizados.
+        </div>
+      </div>
+      <div style="margin-top:20px;" class="insight">
+        <strong>O ponto de ouro:</strong> as Seis Grandes Perdas funcionam como ponte entre o número do OEE e a realidade concreta do chão de fábrica. O OEE diz <em>quanto</em> se perde; as Seis Perdas dizem <em>onde</em> e <em>por quê</em>.
+      </div>
+    </div>
+    <p class="notes">Este é um slide denso — mas importante. O apresentador pode percorrê-lo de forma didática, explicando cada perda e exemplificando com situações que a audiência reconhece. A chave é mostrar que as perdas 3 e 4 (microparadas e redução de velocidade) são as mais invisíveis e frequentemente as mais relevantes em operações que já têm controle básico de manutenção.</p>
+  </div>
+
+  <!-- SLIDE 13 — EXEMPLO NUMÉRICO -->
+  <div class="slide" data-index="13">
+    <div class="slide-inner" style="max-width:1060px;">
+      <div class="slide-label">10 — Cálculo Completo</div>
+      <div class="slide-title">OEE na <em>prática</em></div>
+      <div style="height:20px"></div>
+      <div class="col-2" style="gap:40px; align-items:start;">
+        <div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px;">Dados do turno</div>
+          <table class="calc-table" style="margin-bottom:24px;">
+            <thead>
+              <tr><th>Parâmetro</th><th>Valor</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Tempo planejado de produção</td><td><strong>480 min</strong></td></tr>
+              <tr><td>Paradas totais (quebra + setup)</td><td><strong>60 min</strong></td></tr>
+              <tr><td>Tempo real de operação</td><td><strong>420 min</strong></td></tr>
+              <tr><td>Ciclo de tempo ideal</td><td><strong>1 min / peça</strong></td></tr>
+              <tr><td>Total de peças produzidas</td><td><strong>400 peças</strong></td></tr>
+              <tr><td>Peças boas (conformes)</td><td><strong>380 peças</strong></td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px;">Passo a passo do cálculo</div>
+          <table class="calc-table">
+            <thead>
+              <tr><th>Componente</th><th>Cálculo</th><th>Resultado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="color:rgba(46,153,89,0.9); font-weight:600;">Disponibilidade</td><td>420 ÷ 480</td><td><strong style="color:rgba(46,153,89,0.9);">87,5%</strong></td></tr>
+              <tr><td style="color:rgba(58,124,192,0.9); font-weight:600;">Performance</td><td>(1 × 400) ÷ 420</td><td><strong style="color:rgba(58,124,192,0.9);">95,2%</strong></td></tr>
+              <tr><td style="color:var(--amber-light); font-weight:600;">Qualidade</td><td>380 ÷ 400</td><td><strong style="color:var(--amber-light);">95,0%</strong></td></tr>
+              <tr class="highlight">
+                <td><strong>OEE Final</strong></td>
+                <td>0,875 × 0,952 × 0,95</td>
+                <td><strong>79,2%</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px;">Interpretação do resultado</div>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
+            <div class="metric-row">
+              <div class="metric-label" style="color:rgba(46,153,89,0.9);">Disponibilidade</div>
+              <div class="metric-bar-wrap">
+                <div class="metric-bar-fill" style="width:87.5%; background:rgba(46,153,89,0.4);"></div>
+                <div class="metric-value">87,5%</div>
+              </div>
+            </div>
+            <div class="metric-row">
+              <div class="metric-label" style="color:rgba(58,124,192,0.9);">Performance</div>
+              <div class="metric-bar-wrap">
+                <div class="metric-bar-fill" style="width:95.2%; background:rgba(58,124,192,0.4);"></div>
+                <div class="metric-value">95,2%</div>
+              </div>
+            </div>
+            <div class="metric-row">
+              <div class="metric-label" style="color:var(--amber);">Qualidade</div>
+              <div class="metric-bar-wrap">
+                <div class="metric-bar-fill" style="width:95%; background:rgba(200,135,42,0.4);"></div>
+                <div class="metric-value">95,0%</div>
+              </div>
+            </div>
+            <div class="metric-row" style="border:1px solid rgba(200,135,42,0.4);">
+              <div class="metric-label" style="color:var(--amber-light);">OEE Final</div>
+              <div class="metric-bar-wrap">
+                <div class="metric-bar-fill" style="width:79.2%; background:linear-gradient(90deg, rgba(200,135,42,0.5), rgba(200,135,42,0.2));"></div>
+                <div class="metric-value" style="color:var(--amber-light); font-size:20px;">79,2%</div>
+              </div>
+            </div>
+          </div>
+          <div class="insight">
+            <strong>O que esse número revela:</strong> comparando com os benchmarks JIPM — Disponibilidade 87,5% <span style="color:var(--red);">↓ abaixo de 90%</span>, Performance 95,2% <span style="color:var(--green);">✓ dentro do alvo</span>, Qualidade 95,0% <span style="color:var(--red);">↓ bem abaixo de 99,9%</span>. Duas frentes de melhoria prioritárias: reduzir as paradas <em>e</em> atacar sistematicamente os defeitos de processo.
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Este slide é o mais didático da apresentação — o momento em que tudo se conecta. Percorrer o cálculo passo a passo com a audiência. Ponto crucial: com o benchmark JIPM de Qualidade em 99,9%, os 95% do exemplo revelam uma perda gravíssima nesse componente — 5% de defeitos representam 20 peças não conformes em cada 400 produzidas. Disponibilidade (87,5%) também está abaixo do alvo de 90%. Apenas a Performance (95,2%) está dentro do padrão. Sem o OEE decomposto, essas deficiências seriam invisíveis ao gestor que só olha o volume de saída.</p>
+  </div>
+
+  <!-- SLIDE 14 — NÍVEIS DE REFERÊNCIA -->
+  <div class="slide" data-index="14">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">11 — Benchmarks</div>
+      <div class="slide-title">O que é um bom <em>OEE</em>?</div>
+      <div style="height:24px"></div>
+      <div class="col-2" style="gap:56px; align-items:start;">
+        <div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px;">Referência de Classe Mundial — JIPM</div>
+          <div class="ref-table">
+            <div class="ref-row">
+              <div class="ref-metric" style="font-size:11px; color:var(--text-muted);">Componente</div>
+              <div class="ref-world" style="font-size:11px; font-family:var(--sans); color:var(--text-muted);">Meta</div>
+              <div class="ref-note" style="font-size:11px; color:var(--text-muted);">O que significa</div>
+            </div>
+            <div class="ref-row">
+              <div class="ref-metric">Disponibilidade ($A$)</div>
+              <div class="ref-world">≥ 90%</div>
+              <div class="ref-note">Máximo de 10% do tempo planejado perdido em paradas</div>
+            </div>
+            <div class="ref-row">
+              <div class="ref-metric">Performance ($P$)</div>
+              <div class="ref-world">≥ 95%</div>
+              <div class="ref-note">Operação muito próxima da velocidade nominal de projeto</div>
+            </div>
+            <div class="ref-row" style="border:1px solid rgba(46,153,89,0.35);">
+              <div class="ref-metric">Qualidade ($Q$)</div>
+              <div class="ref-world" style="color:var(--green);">≥ 99,9%</div>
+              <div class="ref-note" style="color:var(--text-secondary);">Nível sigma elevado — praticamente zero defeitos, refugo ou retrabalho</div>
+            </div>
+            <div class="ref-row" style="background:var(--amber-dim);">
+              <div class="ref-metric" style="color:var(--amber-light);">OEE Final</div>
+              <div class="ref-world" style="color:var(--amber-light);">≥ 85%</div>
+              <div class="ref-note" style="color:var(--amber);">$0{,}90 \times 0{,}95 \times 0{,}999 \approx 85{,}4\%$ — referência global</div>
+            </div>
+          </div>
+          <div style="margin-top:12px; padding:12px 16px; background:var(--surface2); border:1px solid rgba(46,153,89,0.2); font-size:11px; color:var(--text-muted); line-height:1.6;">
+            <strong style="color:var(--green);">Nota técnica:</strong> a meta de Qualidade foi revisada pelo JIPM para $\geq 99{,}9\%$ (e não 99%), alinhando-se aos princípios Six Sigma e refletindo a realidade de operações de alto desempenho com baixíssima taxa de defeitos.
+          </div>
+        </div>
+        <div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber); margin-bottom:16px;">A leitura madura</div>
+          <div class="body-text" style="margin-bottom:20px;">
+            Os benchmarks são referência, não sentença. Nem toda operação deve ser comparada ao mesmo padrão: mix de produtos, nível de automação, tipo de processo e grau de complexidade afetam radicalmente o que é um OEE "bom" para aquela realidade.
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="background:var(--red-dim); border:1px solid rgba(192,58,58,0.2); padding:14px 18px;">
+              <div style="font-size:10px; color:var(--red); font-weight:700; margin-bottom:4px;">OEE &lt; 65%</div>
+              <div style="font-size:11px; color:var(--text-muted);">Operação com perdas significativas. Ponto de partida para diagnóstico urgente.</div>
+            </div>
+            <div style="background:var(--amber-dim); border:1px solid rgba(200,135,42,0.2); padding:14px 18px;">
+              <div style="font-size:10px; color:var(--amber); font-weight:700; margin-bottom:4px;">OEE 65–85%</div>
+              <div style="font-size:11px; color:var(--text-muted);">Zona de desenvolvimento. Há perdas identificáveis com plano de melhoria contínua.</div>
+            </div>
+            <div style="background:var(--green-dim); border:1px solid rgba(46,153,89,0.2); padding:14px 18px;">
+              <div style="font-size:10px; color:var(--green); font-weight:700; margin-bottom:4px;">OEE &gt; 85%</div>
+              <div style="font-size:11px; color:var(--text-muted);">Classe mundial. Operação madura, com disciplina de dados e cultura de melhoria estabelecida.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Atenção: a meta de Qualidade de Classe Mundial é 99,9% — e não 99% como muitos materiais ainda citam. Isso reflete a evolução do JIPM em direção ao Six Sigma: 99,9% equivale a aproximadamente 1.000 defeitos por milhão de oportunidades (DPMO), enquanto o Six Sigma pleno aponta para 3,4 DPMO. A multiplicação correta: 90% × 95% × 99,9% = 85,4% — matematicamente consistente com a meta de ≥85% de OEE de Classe Mundial. Enfatizar que esse número não é arbitrário — ele deriva da própria definição dos três targets.</p>
+  </div>
+
+  <!-- SLIDE 15 — TPM MELHORA OEE -->
+  <div class="slide" data-index="15">
+    <div class="slide-inner" style="max-width:1060px;">
+      <div class="slide-label">12 — A Conexão Central</div>
+      <div class="slide-title">Como o TPM<br><em>melhora</em> o OEE</div>
+      <div style="height:24px"></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:32px; max-width:640px; line-height:1.7;">
+        O TPM age nas <strong style="color:var(--text);">causas raízes</strong> das perdas. O OEE evidencia os <strong style="color:var(--text);">efeitos</strong>. Cada ação típica do TPM impacta diretamente um ou mais pilares do OEE.
+      </div>
+      <div class="col-3" style="gap:16px;">
+        <div style="border:1px solid rgba(46,153,89,0.3); background:var(--green-dim); padding:20px;">
+          <div style="color:var(--green); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px;">↑ Disponibilidade</div>
+          <ul class="dot-list" style="gap:8px;">
+            <li style="font-size:11px;"><strong>Manutenção preventiva</strong> — evita falhas antes que ocorram</li>
+            <li style="font-size:11px;"><strong>Manutenção preditiva</strong> — monitora sinais de desgaste em tempo real</li>
+            <li style="font-size:11px;"><strong>Manutenção autônoma</strong> — operadores detectam anomalias cedo</li>
+            <li style="font-size:11px;"><strong>Redução de setup</strong> — menos tempo perdido na troca de produto</li>
+            <li style="font-size:11px;"><strong>Padronização operacional</strong> — procedimentos claros reduzem erros</li>
+          </ul>
+        </div>
+        <div style="border:1px solid rgba(58,124,192,0.3); background:var(--blue-dim); padding:20px;">
+          <div style="color:var(--blue); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px;">↑ Performance</div>
+          <ul class="dot-list" style="gap:8px;">
+            <li style="font-size:11px;"><strong>Inspeção rotineira</strong> — impede microfalhas que causam microparadas</li>
+            <li style="font-size:11px;"><strong>Lubrificação e limpeza</strong> — mantém máquina na velocidade nominal</li>
+            <li style="font-size:11px;"><strong>Análise de causa raiz</strong> — elimina instabilidades recorrentes</li>
+            <li style="font-size:11px;"><strong>Treinamento de operadores</strong> — operação correta evita sobrecarga</li>
+            <li style="font-size:11px;"><strong>Melhoria contínua (Kaizen)</strong> — otimização progressiva do processo</li>
+          </ul>
+        </div>
+        <div style="border:1px solid rgba(200,135,42,0.3); background:var(--amber-dim); padding:20px;">
+          <div style="color:var(--amber); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px;">↑ Qualidade</div>
+          <ul class="dot-list" style="gap:8px;">
+            <li style="font-size:11px;"><strong>Manutenção da qualidade</strong> — condições do equipamento que impedem defeitos</li>
+            <li style="font-size:11px;"><strong>Calibração e ajuste</strong> — parâmetros corretos desde o início</li>
+            <li style="font-size:11px;"><strong>Controle de startup</strong> — procedimentos rigorosos para partida</li>
+            <li style="font-size:11px;"><strong>Redução de variabilidade</strong> — processo estável gera produto estável</li>
+            <li style="font-size:11px;"><strong>Integração com qualidade</strong> — produção e controle atuam juntos</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:20px;" class="insight">
+        <strong>A síntese estratégica:</strong> o TPM atua nas causas; o OEE evidencia os efeitos. Uma empresa sem TPM pode medir o OEE, mas terá dificuldade em melhorá-lo de forma sustentável. Uma empresa sem OEE pode aplicar o TPM, mas não saberá se está funcionando.
+      </div>
+    </div>
+    <p class="notes">Este é o slide de conexão central — onde tudo se amarra. A mensagem-chave é que TPM e OEE não são alternativos ou paralelos: são complementares. O TPM gera as ações; o OEE mede os resultados. Sem os dois juntos, a gestão fica incompleta. Usar a síntese final como gancho para os benefícios práticos.</p>
+  </div>
+
+  <!-- SLIDE 16 — TPM 4.0 -->
+  <div class="slide" data-index="16">
+    <div class="slide-inner" style="max-width:1060px;">
+      <div class="slide-label">13 — Contexto Moderno</div>
+      <div class="slide-title">TPM <em>4.0</em><br>A nova fronteira</div>
+      <div style="height:20px"></div>
+      <div class="col-2" style="gap:56px; align-items:start;">
+        <div>
+          <div class="body-text" style="margin-bottom:24px;">
+            A quarta revolução industrial (Indústria 4.0) não substitui o TPM — ela <strong>potencializa</strong> cada um dos seus pilares por meio de tecnologias digitais que eliminam as principais limitações do modelo clássico.
+          </div>
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber); margin-bottom:16px;">O que muda com o TPM 4.0</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="background:var(--surface2); border:1px solid var(--border); border-left:3px solid var(--amber); padding:14px 18px;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); margin-bottom:6px;">IIoT — Industrial Internet of Things</div>
+              <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6;">Sensores embarcados nos equipamentos coletam dados de vibração, temperatura, pressão e ciclos <strong style="color:var(--text);">de forma contínua e automática</strong>, eliminando o erro humano da coleta manual e garantindo dados de OEE confiáveis em tempo real.</div>
+            </div>
+            <div style="background:var(--surface2); border:1px solid var(--border); border-left:3px solid var(--blue); padding:14px 18px;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue); margin-bottom:6px;">Manutenção Preditiva via IA</div>
+              <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6;">Algoritmos de Machine Learning analisam padrões nos dados de sensor para <strong style="color:var(--text);">prever falhas horas ou dias antes</strong> de ocorrerem — elevando o Pilar 3 (Manutenção Planejada) a um nível que a manutenção preventiva por calendário jamais alcançaria.</div>
+            </div>
+            <div style="background:var(--surface2); border:1px solid var(--border); border-left:3px solid var(--green); padding:14px 18px;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--green); margin-bottom:6px;">Digital Twin e Simulação</div>
+              <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6;">Réplicas digitais dos equipamentos permitem simular cenários de falha, testar estratégias de manutenção e <strong style="color:var(--text);">otimizar o OEE virtualmente</strong> antes de intervir fisicamente na linha.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="background:var(--amber-dim); border:1px solid rgba(200,135,42,0.25); padding:24px; margin-bottom:20px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber); margin-bottom:14px;">O problema que o IIoT resolve</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.75; margin-bottom:12px;">
+              No modelo tradicional, a coleta de dados para o OEE é feita <strong style="color:var(--text);">manualmente por operadores</strong>. Isso introduz dois tipos de erro:
+            </div>
+            <ul class="dot-list" style="gap:8px;">
+              <li style="font-size:11px;"><strong>Erro de omissão:</strong> microparadas e pequenas perdas não são registradas</li>
+              <li style="font-size:11px;"><strong>Erro de distorção:</strong> dados são ajustados para evitar penalizações</li>
+            </ul>
+            <div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(200,135,42,0.2); font-size:12px; color:var(--text-secondary); line-height:1.6;">
+              Com IIoT, o sistema registra <strong style="color:var(--text);">cada evento automaticamente</strong>. O OEE deixa de ser uma estimativa e passa a ser um reflexo fiel da realidade operacional.
+            </div>
+          </div>
+          <div style="background:var(--surface2); border:1px solid var(--border); padding:20px 24px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px;">TPM 4.0 — Pilares impactados</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; gap:10px; align-items:center;">
+                <div style="background:var(--amber); width:22px; height:22px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--bg);">3</div>
+                <div style="font-size:11.5px; color:var(--text-secondary);">Manutenção Planejada → elevada a preditiva por IA</div>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <div style="background:var(--amber); width:22px; height:22px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--bg);">1</div>
+                <div style="font-size:11.5px; color:var(--text-secondary);">Melhoria Específica → orientada por análise de dados em massa</div>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <div style="background:var(--amber); width:22px; height:22px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--bg);">2</div>
+                <div style="font-size:11.5px; color:var(--text-secondary);">Manutenção Autônoma → assistida por painéis digitais e alertas</div>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <div style="background:var(--blue); width:22px; height:22px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--bg);">4</div>
+                <div style="font-size:11.5px; color:var(--text-secondary);">Manutenção da Qualidade → visibilidade de processo via sensores em linha</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">O TPM 4.0 não é apenas uma buzzword — é a resposta estrutural ao principal gargalo do OEE tradicional: a qualidade dos dados. Estudos da McKinsey e do próprio JIPM mostram que empresas que integram IIoT com TPM reduzem custos de manutenção em 10–25% e aumentam o tempo de atividade dos equipamentos em 10–20%. O ponto central para a audiência: os fundamentos do TPM continuam iguais — a tecnologia apenas resolve as limitações da coleta e do diagnóstico manual.</p>
+  </div>
+  <!-- SLIDE 17 — ERROS COMUNS -->
+  <div class="slide" data-index="17">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">14 — Armadilhas</div>
+      <div class="slide-title">Erros que sabotam<br>o <em>OEE na prática</em></div>
+      <div style="height:24px"></div>
+      <div class="col-2" style="gap:48px; align-items:start;">
+        <div>
+          <div style="display:grid; grid-template-columns:1fr; gap:8px;">
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> Medir o OEE sem registrar as <strong style="color:var(--text);">causas das perdas</strong> — o número fica sem diagnóstico.</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> Focar apenas no <strong style="color:var(--text);">número final</strong> e ignorar os três componentes separadamente.</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> Usar <strong style="color:var(--text);">tempos de ciclo ideais irreais</strong> — inflam a performance artificialmente.</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> <strong style="color:var(--text);">Ignorar microparadas</strong> porque "são pequenas demais para registrar".</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> <strong style="color:var(--text);">Mascarar defeitos</strong> para não prejudicar o indicador de qualidade.</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> Usar o OEE apenas como <strong style="color:var(--text);">instrumento de cobrança</strong> — gera distorção dos dados.</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> Não transformar <strong style="color:var(--text);">dados em plano de ação</strong> — medir sem agir é desperdício.</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> Achar que OEE é responsabilidade <strong style="color:var(--text);">só da manutenção</strong>.</div>
+            <div class="error-chip"><strong style="color:var(--text);">→</strong> <strong style="color:var(--text);">Comparar linhas</strong> muito diferentes sem critério ou contexto.</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--serif); font-size:32px; font-weight:300; color:var(--amber); margin-bottom:16px; line-height:1.2; font-style:italic;">
+            "Sem rotina de análise, o OEE vira apenas um painel bonito — e inútil."
+          </div>
+          <div class="hline"></div>
+          <div class="body-text" style="margin-bottom:20px;">
+            O indicador só gera valor quando está inserido em um <strong>ciclo de gestão</strong>: coleta de dados → análise de causas → priorização → plano de ação → execução → revisão.
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="background:var(--surface2); border:1px solid var(--border); padding:14px 18px; display:flex; gap:12px; align-items:flex-start;">
+              <div style="width:6px; height:6px; background:var(--green); border-radius:50%; flex-shrink:0; margin-top:5px;"></div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">Coleta confiável de dados é a base de tudo. OEE mal coletado gera diagnóstico errado.</div>
+            </div>
+            <div style="background:var(--surface2); border:1px solid var(--border); padding:14px 18px; display:flex; gap:12px; align-items:flex-start;">
+              <div style="width:6px; height:6px; background:var(--green); border-radius:50%; flex-shrink:0; margin-top:5px;"></div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">O time operacional precisa confiar que o OEE é ferramenta de melhoria, não punição.</div>
+            </div>
+            <div style="background:var(--surface2); border:1px solid var(--border); padding:14px 18px; display:flex; gap:12px; align-items:flex-start;">
+              <div style="width:6px; height:6px; background:var(--green); border-radius:50%; flex-shrink:0; margin-top:5px;"></div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">OEE sem ação é dado. OEE com ação é gestão.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Este slide eleva o nível da apresentação — mostra maturidade analítica. O erro mais crítico é o de usar o OEE como ferramenta de cobrança: quando os operadores percebem que o indicador será usado contra eles, os dados são distorcidos e o indicador perde todo o valor. A gestão precisa construir uma cultura de segurança psicológica em torno dos dados de perda.</p>
+  </div>
+
+  <!-- SLIDE 18 — BENEFÍCIOS -->
+  <div class="slide" data-index="18">
+    <div class="slide-inner" style="max-width:1000px;">
+      <div class="slide-label">15 — Impactos Reais</div>
+      <div class="slide-title">O que uma empresa<br><em>ganha</em> de verdade</div>
+      <div style="height:28px"></div>
+      <div class="col-3" style="gap:24px;">
+        <div class="benefit-section">
+          <div class="benefit-label" style="color:var(--green);">Operacionais</div>
+          <div style="height:1px; background:rgba(46,153,89,0.3); margin-bottom:16px;"></div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--green);"></div>Maior estabilidade e previsibilidade produtiva</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--green);"></div>Redução de paradas não planejadas</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--green);"></div>Menos retrabalho e refugo</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--green);"></div>Aumento da produtividade real</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--green);"></div>Melhor uso dos ativos existentes</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--green);"></div>Redução de tempo ocioso na linha</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--green);"></div>Operadores mais engajados e capacitados</div>
+        </div>
+        <div class="benefit-section">
+          <div class="benefit-label" style="color:var(--blue);">Gerenciais</div>
+          <div style="height:1px; background:rgba(58,124,192,0.3); margin-bottom:16px;"></div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--blue);"></div>Decisões baseadas em dados, não intuição</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--blue);"></div>Priorização clara de onde agir</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--blue);"></div>Maior visibilidade das perdas para a liderança</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--blue);"></div>Melhor capacidade de planejamento</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--blue);"></div>Alinhamento entre produção, manutenção e qualidade</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--blue);"></div>Cultura de melhoria contínua sustentável</div>
+        </div>
+        <div class="benefit-section">
+          <div class="benefit-label" style="color:var(--amber);">Estratégicos</div>
+          <div style="height:1px; background:rgba(200,135,42,0.3); margin-bottom:16px;"></div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--amber);"></div>Redução estrutural de custos operacionais</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--amber);"></div>Aumento de competitividade</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--amber);"></div>Maior confiabilidade na entrega ao cliente</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--amber);"></div>Extensão da vida útil dos equipamentos</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--amber);"></div>Capacitação do time como vantagem competitiva</div>
+          <div class="benefit-item"><div class="benefit-dot" style="background:var(--amber);"></div>Maturidade operacional como diferencial</div>
+        </div>
+      </div>
+      <div style="margin-top:28px;" class="insight">
+        <strong>O benefício mais subestimado:</strong> o TPM e o OEE, quando bem implementados, mudam a cultura — operadores passam a ser parceiros da operação, não apenas executores. Isso tem impacto em qualidade, moral e retenção de talentos.
+      </div>
+    </div>
+    <p class="notes">Conectar os benefícios com a realidade do negócio: menos quebra = mais produção sem investimento. Mais qualidade = menos custo de garantia e reclamação. Maior previsibilidade = melhor atendimento ao cliente. O OEE bem aplicado frequentemente revela capacidade ociosa suficiente para crescer sem expandir o parque industrial.</p>
+  </div>
+
+  <!-- SLIDE 19 — CONCLUSÃO -->
+  <div class="slide" data-index="19">
+    <div class="slide-inner" style="max-width:900px; text-align:center; display:flex; flex-direction:column; align-items:center;">
+      <div class="slide-label" style="text-align:center;">16 — Conclusão</div>
+      <div style="height:24px"></div>
+      <div class="conclusion-quote">
+        Empresas que utilizam TPM e OEE de forma madura não apenas medem produção — elas constroem uma operação mais estável, confiável, eficiente e competitiva.
+      </div>
+      <div class="hline" style="margin:40px 0; max-width:400px;"></div>
+      <div style="display:flex; gap:64px; justify-content:center; margin-bottom:40px;">
+        <div style="text-align:center;">
+          <div style="font-family:var(--serif); font-size:18px; font-weight:400; color:var(--text); margin-bottom:6px;">TPM</div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin-bottom:10px;">Filosofia · Prática · Cultura</div>
+          <div style="font-size:11px; color:var(--text-muted); line-height:1.7; max-width:200px;">Estrutura de pensamento e ação para operar com excelência</div>
+        </div>
+        <div style="width:1px; background:var(--border);"></div>
+        <div style="text-align:center;">
+          <div style="font-family:var(--serif); font-size:18px; font-weight:400; color:var(--text); margin-bottom:6px;">OEE</div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin-bottom:10px;">Indicador · Diagnóstico · Ação</div>
+          <div style="font-size:11px; color:var(--text-muted); line-height:1.7; max-width:200px;">Tradução numérica da eficiência real do equipamento</div>
+        </div>
+        <div style="width:1px; background:var(--border);"></div>
+        <div style="text-align:center;">
+          <div style="font-family:var(--serif); font-size:18px; font-weight:400; color:var(--text); margin-bottom:6px;">Juntos</div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin-bottom:10px;">Sistêmico · Sustentável · Maduro</div>
+          <div style="font-size:11px; color:var(--text-muted); line-height:1.7; max-width:200px;">A base de uma operação verdadeiramente competitiva</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); padding:20px 32px; max-width:600px; text-align:center;">
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.8;">
+          <strong style="color:var(--text);">A lição central:</strong> mais do que calcular o OEE, é preciso entender o que ele revela — onde estão as perdas, qual a sua natureza e que ações devem ser tomadas. Medir sem agir é dado. <strong style="color:var(--amber);">Medir e melhorar é gestão.</strong>
+        </div>
+      </div>
+    </div>
+    <p class="notes">Fechar com a frase da citação de abertura respondida: agora a audiência sabe como uma empresa pode saber se sua máquina está trabalhando para ela, ou apenas ocupando espaço. Abrir para perguntas. Ótimo momento para sugerir próximos passos: "Como vocês estão medindo o OEE hoje? Onde acham que estão as maiores perdas?"</p>
+  </div>
+
+</div><!-- end slides-container -->
+
+<!-- NAVIGATION BUTTONS -->
+<button id="nav-prev" onclick="changeSlide(-1)">
+  <svg width="20" height="20" viewBox="0 0 20 20"><path d="M12 4l-6 6 6 6"/></svg>
+</button>
+<button id="nav-next" onclick="changeSlide(1)">
+  <svg width="20" height="20" viewBox="0 0 20 20"><path d="M8 4l6 6-6 6"/></svg>
+</button>
+
+<button id="notes-btn" onclick="toggleNotes()">Notas do Apresentador</button>
+
+<!-- NOTES PANEL -->
+<div id="notes-panel">
+  <div id="notes-content">
+    <div id="notes-label">Notas do Apresentador</div>
+    <div id="notes-text"></div>
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  let notesOpen = false;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function updateSlide(idx) {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'exiting');
+      if (i === idx) s.classList.add('active');
+    });
+    // Update progress
+    const pct = ((idx + 1) / total) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    // Update counter
+    const num = String(idx + 1).padStart(2, '0');
+    const tot = String(total).padStart(2, '0');
+    document.getElementById('slide-counter').textContent = num + ' / ' + tot;
+    // Update notes
+    const note = slides[idx].querySelector('.notes');
+    document.getElementById('notes-text').textContent = note ? note.textContent.trim() : '';
+  }
+
+  function changeSlide(dir) {
+    const next = Math.max(0, Math.min(total - 1, current + dir));
+    if (next === current) return;
+    current = next;
+    updateSlide(current);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault(); changeSlide(1);
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); changeSlide(-1);
+    }
+    if (e.key === 'n' || e.key === 'N') toggleNotes();
+  });
+
+  function toggleNotes() {
+    notesOpen = !notesOpen;
+    document.getElementById('notes-panel').classList.toggle('open', notesOpen);
+    document.getElementById('notes-btn').style.color = notesOpen ? 'var(--amber)' : '';
+  }
+
+  // Touch/swipe support
+  let touchX = null;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) changeSlide(dx < 0 ? 1 : -1);
+    touchX = null;
+  });
+
+  updateSlide(0);
+</script>
+</body>
+</html>
