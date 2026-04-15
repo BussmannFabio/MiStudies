@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gestão de Estoques — Tier Essencial · MiStudies</title>
+<meta name="description" content="Gestão de Estoques: Classificação ABC, LEC, Estoque de Segurança e KPIs. Material didático em HTML interativo — MiStudies." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── RESET & BASE ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:        #0C1117;
+    --ink-light:  #2D3F52;
+    --text:       #1E2A38;
+    --muted:      #5E6D7A;
+    --border:     #D8DDE2;
+    --surface:    #FFFFFF;
+    --bg:         #F6F8FA;
+    --bg-alt:     #EEF1F4;
+    --amber:      #E6A21E;
+    --amber-light:#FEF4DC;
+    --sage:       #4A6B5A;
+    --sage-light: #EAF2EC;
+    --red-light:  #FEECEC;
+    --red:        #C0392B;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans:  'Montserrat', system-ui, sans-serif;
+    --font-mono:  'JetBrains Mono', monospace;
+    --radius:     10px;
+    --shadow-sm:  0 1px 4px rgba(0,0,0,.06);
+    --shadow-md:  0 4px 16px rgba(0,0,0,.08);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── TIER BADGE (top) ── */
+  .tier-banner {
+    background: var(--ink);
+    color: #9BA8B4;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px;
+  }
+  .tier-banner span { color: var(--amber); }
+
+  /* ── HEADER ── */
+  .hero {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+    color: #E8E4DE;
+    padding: 64px 32px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: var(--amber);
+    opacity: .06;
+  }
+  .hero-inner { max-width: 820px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-meta {
+    font-size: 11px; font-weight: 600; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--amber);
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 18px;
+  }
+  .hero-meta::before { content: ''; display: block; width: 28px; height: 1px; background: var(--amber); }
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+  .hero-desc { color: #9BA8B4; max-width: 560px; font-size: 15px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .tag {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #ccc;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  /* ── INFO BAR ── */
+  .info-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+  }
+  .info-bar-inner {
+    max-width: 820px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; gap: 24px;
+  }
+  .info-item { font-size: 12.5px; color: var(--muted); }
+  .info-item strong { color: var(--text); font-weight: 600; }
+
+  /* ── MAIN LAYOUT ── */
+  .page { max-width: 820px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 52px; }
+
+  .section-head {
+    display: flex; align-items: flex-start; gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    font-family: var(--font-serif);
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: -4px;
+  }
+  .section-title-block {}
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .section-sub {
+    font-size: 11.5px; font-weight: 600;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: var(--muted); margin-top: 3px;
+  }
+
+  /* ── PROSE ── */
+  p { margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; color: var(--ink); }
+  em { font-style: italic; }
+
+  /* ── DEFINITION BOX ── */
+  .definition {
+    background: var(--bg-alt);
+    border-left: 4px solid var(--ink-light);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 14.5px;
+  }
+  .definition-label {
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ink-light); margin-bottom: 6px;
+  }
+
+  /* ── TIP / CALLOUT ── */
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 14px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .callout-icon { flex-shrink: 0; font-size: 18px; line-height: 1.5; }
+  .callout-amber { background: var(--amber-light); border: 1px solid #f0c86a; }
+  .callout-sage   { background: var(--sage-light);  border: 1px solid #a3c4b0; }
+  .callout-red    { background: var(--red-light);   border: 1px solid #f0aaaa; }
+  .callout strong { color: var(--ink); }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: var(--surface); }
+  thead th {
+    background: var(--ink);
+    color: #fff;
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: .04em;
+  }
+  thead th:first-child { border-radius: var(--radius) 0 0 0; }
+  thead th:last-child  { border-radius: 0 var(--radius) 0 0; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--bg); }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+  }
+  .badge-a { background: #FEECEC; color: var(--red); }
+  .badge-b { background: var(--amber-light); color: #8a5e00; }
+  .badge-c { background: var(--sage-light);  color: var(--sage); }
+
+  /* ── FORMULA BOX ── */
+  .formula-box {
+    background: var(--ink);
+    color: #E8E4DE;
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 24px 0;
+    font-family: var(--font-mono);
+    text-align: center;
+  }
+  .formula-label {
+    font-family: var(--font-sans);
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 12px;
+  }
+  .formula-main { font-size: 1.5rem; font-weight: 500; color: #fff; }
+  .formula-legend {
+    margin-top: 16px;
+    display: flex; flex-wrap: wrap; gap: 6px 20px;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-size: 12px; color: #9BA8B4;
+  }
+  .formula-legend span em { color: var(--amber); font-style: normal; font-weight: 600; }
+
+  /* ── EXAMPLE BLOCK ── */
+  .example {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 20px 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .example-title {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 12px;
+  }
+  .example-step { font-size: 13.5px; margin-bottom: 8px; }
+  .example-result {
+    background: var(--sage-light);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-weight: 600; font-size: 14px;
+    color: var(--sage);
+  }
+
+  /* ── GLOSSARY ── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .glossary-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .glossary-term {
+    font-weight: 700; color: var(--ink);
+    font-size: 13.5px; margin-bottom: 4px;
+  }
+  .glossary-def { font-size: 13px; color: var(--muted); }
+
+  /* ── QUICK REVIEW ── */
+  .review-list { list-style: none; }
+  .review-item {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 12px; align-items: start;
+  }
+  .review-item:last-child { border-bottom: none; }
+  .review-q {
+    font-size: 12.5px; font-weight: 700;
+    background: var(--ink); color: var(--amber);
+    padding: 3px 10px; border-radius: 4px;
+    white-space: nowrap; align-self: start; margin-top: 1px;
+  }
+  .review-a { font-size: 14px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink); color: #5E6D7A;
+    text-align: center; padding: 32px;
+    font-size: 12.5px;
+  }
+  .footer a { color: var(--amber); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .hero { padding: 48px 20px 40px; }
+    .page { padding: 32px 20px 60px; }
+    .info-bar { padding: 12px 20px; }
+    .formula-main { font-size: 1.1rem; }
+    .glossary-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Tier Banner -->
+<div class="tier-banner">Demonstração · Tier <span>Essencial</span> · MiStudies · R$120/aula</div>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">Eng. de Produção / Administração</div>
+    <h1>Gestão de Estoques<br>Conceitos Fundamentais</h1>
+    <p class="hero-desc">Classificação ABC, Lote Econômico de Compra, Estoque de Segurança e principais KPIs para controle eficiente de inventário.</p>
+    <div class="hero-tags">
+      <span class="tag">Classificação ABC</span>
+      <span class="tag">LEC / EOQ</span>
+      <span class="tag">Estoque de Segurança</span>
+      <span class="tag">KPIs</span>
+      <span class="tag">Glossário</span>
+    </div>
+  </div>
+</header>
+
+<!-- Info Bar -->
+<div class="info-bar">
+  <div class="info-bar-inner">
+    <div class="info-item">Professor: <strong>Prof. Dr. Carlos Mendes</strong></div>
+    <div class="info-item">Disciplina: <strong>Logística e Supply Chain</strong></div>
+    <div class="info-item">Período: <strong>3º Semestre · 2026.1</strong></div>
+    <div class="info-item">Atualizado: <strong>Abril 2026</strong></div>
+  </div>
+</div>
+
+<!-- Content -->
+<main class="page">
+
+  <!-- 1. INTRODUÇÃO -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">1</div>
+      <div class="section-title-block">
+        <div class="section-title">O que é Gestão de Estoques?</div>
+        <div class="section-sub">Fundamentos e Importância</div>
+      </div>
+    </div>
+
+    <p>A <strong>Gestão de Estoques</strong> é o conjunto de processos e técnicas utilizados para controlar a quantidade, localização e movimentação de materiais dentro de uma organização. Seu objetivo central é garantir que os produtos certos estejam disponíveis no momento certo, na quantidade adequada e ao menor custo possível.</p>
+
+    <div class="definition">
+      <div class="definition-label">Definição</div>
+      Estoque é todo e qualquer recurso produtivo que fica armazenado em algum momento ao longo da cadeia produtiva — matérias-primas, materiais em processo (WIP) ou produtos acabados.
+    </div>
+
+    <p>Uma gestão ineficiente de estoques gera dois tipos de problemas opostos: o <strong>excesso de estoque</strong> (capital parado, custos de armazenagem, obsolescência) e a <strong>ruptura de estoque</strong> (perda de vendas, paralisação da produção, insatisfação do cliente).</p>
+
+    <div class="callout callout-amber">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Regra de ouro:</strong> O custo total do estoque é a soma do custo de manter estoque + custo de pedir. O ponto ótimo minimiza essa soma — e é exatamente o que o LEC calcula.</div>
+    </div>
+  </section>
+
+  <!-- 2. ABC -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">2</div>
+      <div class="section-title-block">
+        <div class="section-title">Classificação ABC</div>
+        <div class="section-sub">Princípio de Pareto aplicado a estoques</div>
+      </div>
+    </div>
+
+    <p>A Classificação ABC é uma ferramenta de priorização baseada no <strong>Princípio de Pareto</strong> (80/20). Ela organiza os itens de estoque em três categorias de acordo com sua representatividade no valor total do inventário.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Classe</th>
+            <th>% dos Itens</th>
+            <th>% do Valor Total</th>
+            <th>Controle</th>
+            <th>Revisão</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-a">A</span></td>
+            <td>~20%</td>
+            <td>~80%</td>
+            <td>Rigoroso / contínuo</td>
+            <td>Semanal ou diária</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-b">B</span></td>
+            <td>~30%</td>
+            <td>~15%</td>
+            <td>Moderado</td>
+            <td>Quinzenal</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-c">C</span></td>
+            <td>~50%</td>
+            <td>~5%</td>
+            <td>Simplificado</td>
+            <td>Mensal</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-sage">
+      <span class="callout-icon">💡</span>
+      <div><strong>Como classificar:</strong> Multiplique quantidade × custo unitário de cada item, some o total, ordene do maior para o menor e calcule o percentual acumulado. Os primeiros 80% do valor = Classe A.</div>
+    </div>
+
+    <div class="callout callout-red">
+      <span class="callout-icon">❌</span>
+      <div><strong>Erro comum em prova:</strong> Confundir "% de itens" com "% de valor". Na Curva ABC, itens A são <em>poucos</em> em quantidade, mas <em>muito importantes</em> em valor.</div>
+    </div>
+  </section>
+
+  <!-- 3. LEC -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">3</div>
+      <div class="section-title-block">
+        <div class="section-title">Lote Econômico de Compra (LEC)</div>
+        <div class="section-sub">EOQ — Economic Order Quantity</div>
+      </div>
+    </div>
+
+    <p>O <strong>Lote Econômico de Compra (LEC)</strong> determina a quantidade ideal a ser pedida em cada reposição de estoque, minimizando a soma dos custos de pedido e dos custos de manutenção.</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Fórmula do LEC / EOQ</div>
+      <div class="formula-main">LEC = √ ( 2 × D × Cp / Ce )</div>
+      <div class="formula-legend">
+        <span><em>D</em> = Demanda anual (unidades)</span>
+        <span><em>Cp</em> = Custo por pedido (R$)</span>
+        <span><em>Ce</em> = Custo de estoque anual (R$/un./ano)</span>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-title">Exemplo resolvido</div>
+      <p class="example-step"><strong>Dados:</strong> Demanda anual D = 1.200 unidades · Custo por pedido Cp = R$ 50 · Custo de estoque Ce = R$ 2,40/un./ano</p>
+      <p class="example-step"><strong>Passo 1:</strong> 2 × 1.200 × 50 = 120.000</p>
+      <p class="example-step"><strong>Passo 2:</strong> 120.000 ÷ 2,40 = 50.000</p>
+      <p class="example-step"><strong>Passo 3:</strong> √50.000 ≈ 223,6 → <strong>LEC ≈ 224 unidades</strong></p>
+      <div class="example-result">✓ Resultado: Pedir 224 unidades a cada reposição → ~5,4 pedidos/ano</div>
+    </div>
+
+    <p>Após calcular o LEC, é possível determinar o <strong>Ponto de Reposição (PR)</strong> — o nível de estoque em que um novo pedido deve ser feito, levando em conta o lead time do fornecedor.</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Ponto de Reposição</div>
+      <div class="formula-main">PR = d × LT</div>
+      <div class="formula-legend">
+        <span><em>d</em> = Demanda diária média</span>
+        <span><em>LT</em> = Lead time em dias</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ESTOQUE DE SEGURANÇA -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">4</div>
+      <div class="section-title-block">
+        <div class="section-title">Estoque de Segurança</div>
+        <div class="section-sub">Buffer contra incertezas de demanda e lead time</div>
+      </div>
+    </div>
+
+    <p>O <strong>Estoque de Segurança (ES)</strong> é uma reserva adicional mantida para proteger contra variações imprevisíveis na demanda ou no prazo de entrega do fornecedor. Ele eleva o nível de serviço ao custo de mais capital imobilizado.</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Estoque de Segurança</div>
+      <div class="formula-main">ES = Z × σ<sub style="font-size:.8em">d</sub> × √LT</div>
+      <div class="formula-legend">
+        <span><em>Z</em> = Fator de segurança (nível de serviço)</span>
+        <span><em>σd</em> = Desvio-padrão da demanda diária</span>
+        <span><em>LT</em> = Lead time em dias</span>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Nível de Serviço</th><th>Fator Z</th><th>Risco de Ruptura</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>90%</td><td>1,28</td><td>10%</td></tr>
+          <tr><td>95%</td><td>1,65</td><td>5%</td></tr>
+          <tr><td>98%</td><td>2,05</td><td>2%</td></tr>
+          <tr><td>99%</td><td>2,33</td><td>1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-amber">
+      <span class="callout-icon">🎯</span>
+      <div><strong>Regra prática:</strong> Itens A da curva ABC geralmente operam com 98–99% de nível de serviço. Itens C podem trabalhar com 90–95%, pois o custo da ruptura é menor.</div>
+    </div>
+  </section>
+
+  <!-- 5. KPIs -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">5</div>
+      <div class="section-title-block">
+        <div class="section-title">KPIs de Estoque</div>
+        <div class="section-sub">Indicadores-Chave de Desempenho</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>KPI</th><th>Fórmula</th><th>O que mede</th><th>Referência</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Giro de Estoque</strong></td>
+            <td style="font-family:var(--font-mono);font-size:12px">CMV ÷ Estoque Médio</td>
+            <td>Quantas vezes o estoque se renova no período</td>
+            <td>Quanto maior, melhor</td>
+          </tr>
+          <tr>
+            <td><strong>Cobertura</strong></td>
+            <td style="font-family:var(--font-mono);font-size:12px">Est. Atual ÷ Dem. Diária</td>
+            <td>Por quantos dias o estoque atual suporta a operação</td>
+            <td>Depende do setor</td>
+          </tr>
+          <tr>
+            <td><strong>Acurácia</strong></td>
+            <td style="font-family:var(--font-mono);font-size:12px">Itens OK ÷ Total × 100</td>
+            <td>% de registros de inventário corretos vs. físico</td>
+            <td>Meta: &gt; 98%</td>
+          </tr>
+          <tr>
+            <td><strong>Fill Rate</strong></td>
+            <td style="font-family:var(--font-mono);font-size:12px">Pedidos atend. ÷ Total</td>
+            <td>% de pedidos atendidos sem ruptura</td>
+            <td>Meta: &gt; 95%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. GLOSSÁRIO -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">6</div>
+      <div class="section-title-block">
+        <div class="section-title">Glossário de Termos</div>
+        <div class="section-sub">Terminologia técnica essencial</div>
+      </div>
+    </div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">LEC / EOQ</div>
+        <div class="glossary-def">Lote Econômico de Compra — quantidade ótima de pedido que minimiza custos totais de estoque.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Lead Time</div>
+        <div class="glossary-def">Tempo entre o momento do pedido e o recebimento do material do fornecedor.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Ponto de Reposição (PR)</div>
+        <div class="glossary-def">Nível de estoque que aciona um novo pedido ao fornecedor.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">WIP (Work in Process)</div>
+        <div class="glossary-def">Estoque em processo — materiais que estão sendo transformados, ainda não finalizados.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Ruptura de Estoque</div>
+        <div class="glossary-def">Situação em que a demanda supera a disponibilidade do item em estoque (stockout).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">CMV</div>
+        <div class="glossary-def">Custo das Mercadorias Vendidas — usado no cálculo do giro de estoque.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Nível de Serviço</div>
+        <div class="glossary-def">Probabilidade de atender à demanda sem rupturas durante o lead time.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Curva ABC</div>
+        <div class="glossary-def">Classificação de itens por valor acumulado baseada no Princípio de Pareto.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. REVISÃO RÁPIDA -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">7</div>
+      <div class="section-title-block">
+        <div class="section-title">Revisão Rápida</div>
+        <div class="section-sub">Pontos mais cobrados em prova</div>
+      </div>
+    </div>
+    <ul class="review-list">
+      <li class="review-item">
+        <span class="review-q">Q1</span>
+        <span class="review-a">Na Classificação ABC, a Classe A corresponde a ~20% dos itens mas representa ~80% do valor total do inventário — é a mais crítica para controle.</span>
+      </li>
+      <li class="review-item">
+        <span class="review-q">Q2</span>
+        <span class="review-a">O LEC minimiza a soma do <em>custo de pedido</em> (que cai com lotes maiores) e do <em>custo de manutenção</em> (que sobe com lotes maiores). O ponto de equilíbrio entre eles é o LEC.</span>
+      </li>
+      <li class="review-item">
+        <span class="review-q">Q3</span>
+        <span class="review-a">Aumentar o nível de serviço (ex: de 95% para 99%) exige um estoque de segurança maior e, portanto, mais capital imobilizado.</span>
+      </li>
+      <li class="review-item">
+        <span class="review-q">Q4</span>
+        <span class="review-a">O Giro de Estoque elevado indica que a empresa renova rapidamente seus estoques — positivo para liquidez, mas requer gestão cuidadosa do ponto de reposição.</span>
+      </li>
+      <li class="review-item">
+        <span class="review-q">Q5</span>
+        <span class="review-a">O Ponto de Reposição considera o lead time: PR = demanda diária × lead time. Em ambientes com variabilidade, adiciona-se o Estoque de Segurança ao PR.</span>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Produzido por <a href="../../index.html">MiStudies</a> · Tier Essencial · Conteúdo educacional premium
+</footer>
+
+</body>
+</html>

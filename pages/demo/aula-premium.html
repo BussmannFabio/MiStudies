@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gestão de Estoques — Tier Premium · MiStudies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    /* Professor brand identity — Full Studio */
+    --brand-bg:       #1B1035;
+    --brand-mid:      #2A1B50;
+    --brand-accent:   #7C3AED;
+    --brand-accent2:  #A78BFA;
+    --brand-gold:     #F59E0B;
+    --brand-gold-lt:  #FEF3C7;
+
+    --ink:        #0C1117;
+    --text:       #1E2A38;
+    --muted:      #5E6D7A;
+    --border:     #D8DDE2;
+    --surface:    #FFFFFF;
+    --bg:         #F6F8FA;
+    --sage-light: #EAF2EC;
+    --red-light:  #FEECEC;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans:  'Montserrat', system-ui, sans-serif;
+    --font-mono:  'JetBrains Mono', monospace;
+    --radius:     10px;
+    --shadow-sm:  0 1px 4px rgba(0,0,0,.06);
+    --shadow-md:  0 6px 24px rgba(0,0,0,.1);
+    --t:          220ms cubic-bezier(.16,1,.3,1);
+  }
+
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.75; }
+
+  /* ── PROGRESS BAR ── */
+  #reading-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0;
+    background: linear-gradient(90deg, var(--brand-accent), var(--brand-gold));
+    z-index: 9999; transition: width .1s linear;
+  }
+
+  /* ── TIER BANNER ── */
+  .tier-banner {
+    background: linear-gradient(90deg, var(--brand-bg), var(--brand-mid));
+    color: rgba(255,255,255,.5);
+    font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    text-align: center; padding: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+  .tier-badge {
+    background: linear-gradient(135deg, var(--brand-accent), var(--brand-gold));
+    color: #fff; padding: 3px 12px; border-radius: 20px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+  }
+
+  /* ── HERO — Full Professor Branding ── */
+  .hero {
+    background: linear-gradient(145deg, var(--brand-bg) 0%, var(--brand-mid) 60%, #3D1A6E 100%);
+    color: #E8E4DE; padding: 80px 32px 64px; position: relative; overflow: hidden;
+  }
+  .hero-orb { position: absolute; border-radius: 50%; }
+  .hero-orb-1 { width: 500px; height: 500px; top: -150px; right: -100px; background: var(--brand-accent); opacity: .08; }
+  .hero-orb-2 { width: 260px; height: 260px; bottom: -80px; left: 5%; background: var(--brand-gold); opacity: .07; }
+  .hero-orb-3 { width: 140px; height: 140px; top: 60px; left: 55%; background: #fff; opacity: .03; }
+  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+
+  /* Professor badge */
+  .prof-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 40px; padding: 8px 16px 8px 8px;
+    margin-bottom: 28px;
+  }
+  .prof-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-accent), var(--brand-gold));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; color: #fff;
+  }
+  .prof-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.85); }
+  .prof-disc { font-size: 11px; color: rgba(255,255,255,.45); }
+
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    font-weight: 700; line-height: 1.05; margin-bottom: 16px; color: #fff;
+  }
+  .hero h1 em { color: var(--brand-accent2); font-style: normal; }
+  .hero-desc { color: rgba(255,255,255,.6); max-width: 560px; font-size: 15px; margin-bottom: 32px; }
+
+  .hero-metrics {
+    display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px;
+  }
+  .metric {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 8px; padding: 10px 18px; text-align: center; min-width: 100px;
+  }
+  .metric-val { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--brand-gold); }
+  .metric-label { font-size: 10.5px; color: rgba(255,255,255,.4); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+
+  /* ── LAYOUT WITH SIDEBAR ── */
+  .layout-wrap { display: grid; grid-template-columns: 220px 1fr; max-width: 1100px; margin: 0 auto; gap: 0; }
+
+  /* ── STICKY SIDEBAR TOC ── */
+  .sidebar {
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    padding: 32px 20px;
+    background: var(--brand-bg); color: rgba(255,255,255,.5);
+    border-right: 1px solid rgba(255,255,255,.06);
+  }
+  .sidebar-title {
+    font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.25); margin-bottom: 16px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .toc-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 6px;
+    font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,.45);
+    cursor: pointer; text-decoration: none;
+    transition: background var(--t), color var(--t);
+    margin-bottom: 2px;
+  }
+  .toc-link:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.8); }
+  .toc-link.toc-active { background: rgba(124,58,237,.2); color: var(--brand-accent2); font-weight: 700; }
+  .toc-num { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.2); width: 14px; flex-shrink: 0; }
+  .toc-link.toc-active .toc-num { color: var(--brand-accent2); opacity: .6; }
+
+  .sidebar-divider { height: 1px; background: rgba(255,255,255,.06); margin: 16px 0; }
+  .sidebar-tag { font-size: 10.5px; color: rgba(255,255,255,.25); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 8px; }
+  .sidebar-mode-btn {
+    width: 100%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    color: rgba(255,255,255,.6); font-family: var(--font-sans);
+    font-size: 12px; font-weight: 600; padding: 8px 12px;
+    border-radius: 6px; cursor: pointer; margin-bottom: 8px;
+    transition: background var(--t); text-align: left;
+  }
+  .sidebar-mode-btn:hover { background: rgba(255,255,255,.1); color: #fff; }
+  .sidebar-mode-btn.active-mode { background: rgba(124,58,237,.3); border-color: var(--brand-accent); color: var(--brand-accent2); }
+
+  /* ── MAIN CONTENT ── */
+  .page { padding: 48px 40px 80px; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 56px; scroll-margin-top: 24px; }
+  .section-head {
+    display: flex; align-items: flex-start; gap: 16px;
+    margin-bottom: 24px; padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    font-family: var(--font-serif); font-size: 2.6rem; font-weight: 700;
+    color: var(--brand-accent); line-height: 1; flex-shrink: 0; margin-top: -4px;
+  }
+  .section-title { font-family: var(--font-serif); font-size: 1.65rem; font-weight: 700; color: var(--ink); }
+  .section-sub { font-size: 11.5px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+
+  p { margin-bottom: 14px; } p:last-child { margin-bottom: 0; } strong { font-weight: 700; color: var(--ink); }
+
+  /* ── TOOLTIP ── */
+  .tooltip-wrap { position: relative; display: inline; }
+  .tooltip-trigger { border-bottom: 2px dotted var(--brand-accent); cursor: help; color: var(--brand-bg); font-weight: 600; }
+  .tooltip-box {
+    display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    background: var(--brand-bg); color: #E8E4DE;
+    font-size: 12.5px; line-height: 1.5; padding: 10px 14px; border-radius: 8px;
+    width: 220px; z-index: 100; box-shadow: var(--shadow-md);
+    border: 1px solid rgba(124,58,237,.3);
+  }
+  .tooltip-box::after {
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 6px solid transparent; border-top-color: var(--brand-bg);
+  }
+  .tooltip-wrap:hover .tooltip-box { display: block; }
+
+  /* ── ACCORDION ── */
+  .accordion { margin: 16px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .accordion-item { border-bottom: 1px solid var(--border); }
+  .accordion-item:last-child { border-bottom: none; }
+  .accordion-btn {
+    width: 100%; background: var(--surface); border: none; padding: 16px 20px;
+    font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--text);
+    cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+    transition: background var(--t); text-align: left;
+  }
+  .accordion-btn:hover { background: var(--bg); }
+  .accordion-btn.open { background: rgba(124,58,237,.06); color: var(--brand-bg); }
+  .accordion-arrow {
+    width: 20px; height: 20px; border-radius: 50%; background: var(--border);
+    display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+    transition: transform var(--t), background var(--t);
+  }
+  .accordion-btn.open .accordion-arrow { transform: rotate(180deg); background: var(--brand-accent); color: #fff; }
+  .accordion-body {
+    display: none; padding: 16px 20px 20px; background: var(--surface);
+    font-size: 14px; line-height: 1.7; border-top: 1px solid var(--border);
+  }
+  .accordion-body.open { display: block; }
+
+  /* ── DEFINITION ── */
+  .definition {
+    background: rgba(124,58,237,.04); border-left: 4px solid var(--brand-accent);
+    border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin: 20px 0; font-size: 14.5px;
+  }
+  .definition-label { font-size: 10.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--brand-accent); margin-bottom: 6px; }
+
+  /* ── CALLOUT ── */
+  .callout { border-radius: var(--radius); padding: 16px 20px; margin: 20px 0; font-size: 14px; display: flex; gap: 12px; align-items: flex-start; }
+  .callout-icon { flex-shrink: 0; font-size: 18px; line-height: 1.5; }
+  .callout-amber { background: var(--brand-gold-lt); border: 1px solid #f0c86a; }
+  .callout-sage   { background: var(--sage-light); border: 1px solid #a3c4b0; }
+  .callout-red    { background: var(--red-light); border: 1px solid #f0aaaa; }
+  .callout-brand  { background: rgba(124,58,237,.06); border: 1px solid rgba(124,58,237,.2); }
+  .callout strong { color: var(--ink); }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: var(--surface); }
+  thead th { background: var(--brand-bg); color: #fff; padding: 11px 14px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: .04em; }
+  thead th:first-child { border-radius: var(--radius) 0 0 0; }
+  thead th:last-child  { border-radius: 0 var(--radius) 0 0; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background var(--t); }
+  tbody tr:hover td { background: rgba(124,58,237,.04); }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .badge-a { background: #FEECEC; color: #C0392B; }
+  .badge-b { background: var(--brand-gold-lt); color: #8a5e00; }
+  .badge-c { background: var(--sage-light); color: #4A6B5A; }
+
+  /* ── FORMULA BOX ── */
+  .formula-box {
+    background: linear-gradient(135deg, var(--brand-bg), var(--brand-mid));
+    color: #E8E4DE; border-radius: var(--radius); padding: 24px 28px; margin: 24px 0;
+    font-family: var(--font-mono); text-align: center;
+    border: 1px solid rgba(124,58,237,.3);
+  }
+  .formula-label { font-family: var(--font-sans); font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--brand-accent2); margin-bottom: 12px; }
+  .formula-main { font-size: 1.5rem; font-weight: 500; color: #fff; }
+  .formula-legend { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px 20px; justify-content: center; font-family: var(--font-sans); font-size: 12px; color: rgba(255,255,255,.4); }
+  .formula-legend span em { color: var(--brand-accent2); font-style: normal; font-weight: 600; }
+
+  /* ── EXAMPLE ── */
+  .example { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; box-shadow: var(--shadow-sm); }
+  .example-title { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #4A6B5A; margin-bottom: 12px; }
+  .example-step { font-size: 13.5px; margin-bottom: 8px; }
+  .hl { background: var(--brand-gold-lt); padding: 1px 5px; border-radius: 4px; font-weight: 600; color: #7a5000; }
+  .example-result { background: rgba(124,58,237,.07); border-radius: 6px; padding: 10px 14px; margin-top: 12px; font-weight: 600; font-size: 14px; color: var(--brand-bg); }
+
+  /* ── FLASHCARDS ── */
+  .flashcard-section { margin-bottom: 52px; }
+  .fc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .fc-counter { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .fc-nav { display: flex; gap: 8px; }
+  .fc-nav-btn {
+    background: var(--brand-bg); color: #fff; border: none;
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 14px;
+    transition: opacity var(--t);
+  }
+  .fc-nav-btn:disabled { opacity: .3; cursor: default; }
+  .flashcard-wrap { perspective: 1000px; margin: 0 auto; }
+  .flashcard {
+    position: relative; width: 100%; min-height: 180px;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.16,1,.3,1);
+    cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .fc-face {
+    position: absolute; top: 0; left: 0; width: 100%; min-height: 180px;
+    border-radius: 14px; padding: 28px 32px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .fc-front {
+    background: linear-gradient(135deg, var(--brand-bg), var(--brand-mid));
+    border: 1px solid rgba(124,58,237,.3); color: #fff;
+  }
+  .fc-back {
+    background: var(--surface); border: 2px solid var(--brand-accent);
+    transform: rotateY(180deg); color: var(--text);
+  }
+  .fc-label { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .4; margin-bottom: 12px; }
+  .fc-front .fc-label { color: var(--brand-accent2); }
+  .fc-back  .fc-label { color: var(--brand-accent); }
+  .fc-question { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; text-align: center; color: #fff; }
+  .fc-answer { font-size: 14px; line-height: 1.65; text-align: center; color: var(--text); }
+  .fc-hint { font-size: 11.5px; color: rgba(255,255,255,.35); margin-top: 14px; font-style: italic; }
+  .fc-progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 14px; overflow: hidden; }
+  .fc-progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand-accent), var(--brand-gold)); border-radius: 2px; transition: width .3s; }
+
+  /* ── QUIZ ── */
+  .quiz-section { margin-bottom: 52px; }
+  .quiz-intro {
+    background: linear-gradient(135deg, var(--brand-bg), var(--brand-mid));
+    border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; color: #fff;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+  }
+  .quiz-intro h3 { font-family: var(--font-serif); font-size: 1.4rem; color: #fff; }
+  .quiz-intro p { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 4px; }
+  .quiz-start-btn {
+    background: linear-gradient(135deg, var(--brand-accent), var(--brand-gold));
+    color: #fff; border: none; padding: 12px 24px;
+    border-radius: 8px; font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+    cursor: pointer; white-space: nowrap; transition: opacity var(--t);
+  }
+  .quiz-start-btn:hover { opacity: .85; }
+
+  .quiz-question { display: none; margin-bottom: 20px; }
+  .quiz-question.active { display: block; }
+  .quiz-q-label { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--brand-accent); margin-bottom: 8px; }
+  .quiz-q-text { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 16px; }
+  .quiz-options { display: grid; gap: 8px; }
+  .quiz-opt {
+    background: var(--surface); border: 2px solid var(--border);
+    border-radius: 8px; padding: 12px 16px; cursor: pointer;
+    font-size: 14px; font-family: var(--font-sans);
+    transition: border-color var(--t), background var(--t);
+    text-align: left; width: 100%;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--brand-accent); background: rgba(124,58,237,.04); }
+  .quiz-opt.correct { border-color: #16a34a; background: #f0fdf4; color: #15803d; font-weight: 700; }
+  .quiz-opt.wrong   { border-color: #dc2626; background: #fef2f2; color: #b91c1c; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-explain { display: none; margin-top: 12px; padding: 14px 16px; border-radius: 8px; font-size: 13.5px; }
+  .quiz-explain.show { display: block; }
+  .quiz-explain.explain-correct { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
+  .quiz-explain.explain-wrong   { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
+  .quiz-next-btn {
+    display: none; margin-top: 14px;
+    background: var(--brand-bg); color: #fff; border: none;
+    padding: 10px 20px; border-radius: 8px; cursor: pointer;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  }
+  .quiz-next-btn.show { display: block; }
+
+  .quiz-result {
+    display: none; text-align: center; padding: 40px 32px;
+    background: linear-gradient(135deg, var(--brand-bg), var(--brand-mid));
+    border-radius: var(--radius); color: #fff;
+  }
+  .quiz-result.show { display: block; }
+  .quiz-score { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 700; color: var(--brand-gold); }
+  .quiz-score-label { font-size: 14px; color: rgba(255,255,255,.5); margin-bottom: 20px; }
+  .quiz-msg { font-size: 15px; color: rgba(255,255,255,.8); margin-bottom: 20px; }
+  .quiz-reset-btn {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    color: #fff; padding: 10px 24px; border-radius: 8px; cursor: pointer;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  }
+
+  /* ── GLOSSARY ── */
+  .glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 16px; }
+  .glossary-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 16px; box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--t), border-color var(--t);
+  }
+  .glossary-item:hover { box-shadow: var(--shadow-md); border-color: var(--brand-accent); }
+  .glossary-term { font-weight: 700; color: var(--ink); font-size: 13.5px; margin-bottom: 4px; }
+  .glossary-def { font-size: 13px; color: var(--muted); }
+
+  /* ── REVIEW ── */
+  .review-list { list-style: none; }
+  .review-item { border-bottom: 1px solid var(--border); padding: 14px 0; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+  .review-item:last-child { border-bottom: none; }
+  .review-q { font-size: 12.5px; font-weight: 700; background: var(--brand-bg); color: var(--brand-accent2); padding: 3px 10px; border-radius: 4px; white-space: nowrap; align-self: start; margin-top: 1px; }
+  .review-a { font-size: 14px; }
+
+  /* ── PRESENTATION MODE ── */
+  body.presentation-mode .sidebar { display: none; }
+  body.presentation-mode .layout-wrap { grid-template-columns: 1fr; }
+  body.presentation-mode .section { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 32px; }
+  body.presentation-mode .hero { padding: 100px 60px; }
+  body.presentation-mode .hero h1 { font-size: 4.5rem; }
+  body.presentation-mode .page { max-width: 900px; margin: 0 auto; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--brand-bg); color: rgba(255,255,255,.3); text-align: center; padding: 36px;
+    font-size: 12.5px; border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .footer a { color: var(--brand-accent2); text-decoration: none; }
+  .footer-prof { color: rgba(255,255,255,.5); font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+
+  @media (max-width: 768px) {
+    .layout-wrap { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .hero { padding: 56px 20px 48px; }
+    .page { padding: 32px 20px 60px; }
+    .formula-main { font-size: 1.1rem; }
+    .glossary-grid { grid-template-columns: 1fr; }
+    .fc-face { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<!-- Tier Banner -->
+<div class="tier-banner">
+  <span class="tier-badge">🏆 PREMIUM</span>
+  Full Studio · MiStudies · R$450/aula · Identidade completa + Quiz + Flashcards + Apresentação
+</div>
+
+<!-- Hero — Full Professor Branding -->
+<header class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-inner">
+    <div class="prof-badge">
+      <div class="prof-avatar">CM</div>
+      <div>
+        <div class="prof-name">Prof. Dr. Carlos Mendes</div>
+        <div class="prof-disc">Logística e Supply Chain · UNISAL</div>
+      </div>
+    </div>
+    <h1>Gestão de <em>Estoques</em><br>Conceitos Fundamentais</h1>
+    <p class="hero-desc">Classificação ABC, Lote Econômico de Compra, Estoque de Segurança e KPIs — com quiz interativo, flashcards e modo apresentação.</p>
+    <div class="hero-metrics">
+      <div class="metric"><div class="metric-val">7</div><div class="metric-label">Módulos</div></div>
+      <div class="metric"><div class="metric-val">5</div><div class="metric-label">Fórmulas</div></div>
+      <div class="metric"><div class="metric-val">6</div><div class="metric-label">Flashcards</div></div>
+      <div class="metric"><div class="metric-val">5</div><div class="metric-label">Quiz</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- Layout: Sidebar + Content -->
+<div class="layout-wrap">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Conteúdo</div>
+    <a class="toc-link toc-active" href="#intro" onclick="setToc(this)"><span class="toc-num">1</span>Introdução</a>
+    <a class="toc-link" href="#abc" onclick="setToc(this)"><span class="toc-num">2</span>Curva ABC</a>
+    <a class="toc-link" href="#lec" onclick="setToc(this)"><span class="toc-num">3</span>LEC / EOQ</a>
+    <a class="toc-link" href="#es" onclick="setToc(this)"><span class="toc-num">4</span>Est. Segurança</a>
+    <a class="toc-link" href="#kpis" onclick="setToc(this)"><span class="toc-num">5</span>KPIs</a>
+    <a class="toc-link" href="#flashcards" onclick="setToc(this)"><span class="toc-num">6</span>Flashcards</a>
+    <a class="toc-link" href="#quiz" onclick="setToc(this)"><span class="toc-num">7</span>Quiz</a>
+    <a class="toc-link" href="#glossario" onclick="setToc(this)"><span class="toc-num">8</span>Glossário</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-tag">Modo</div>
+    <button class="sidebar-mode-btn active-mode" onclick="setMode('study')">📖 Estudo</button>
+    <button class="sidebar-mode-btn" onclick="setMode('presentation')">🎬 Apresentação</button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-tag">Info</div>
+    <div style="font-size:11.5px;color:rgba(255,255,255,.3);line-height:1.8">
+      3º Semestre<br>2026.1<br>Atualizado: Abr 2026
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="page">
+
+    <!-- 1. INTRODUÇÃO -->
+    <section class="section" id="intro">
+      <div class="section-head">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">O que é Gestão de Estoques?</div>
+          <div class="section-sub">Fundamentos e Importância</div>
+        </div>
+      </div>
+
+      <p>A <span class="tooltip-wrap"><span class="tooltip-trigger">Gestão de Estoques</span><span class="tooltip-box">Conjunto de processos para controlar quantidade, localização e movimentação de materiais, equilibrando disponibilidade e custo.</span></span> é o conjunto de processos e técnicas utilizados para controlar a quantidade, localização e movimentação de materiais dentro de uma organização.</p>
+
+      <div class="definition">
+        <div class="definition-label">Definição Formal</div>
+        Estoque é todo e qualquer recurso produtivo armazenado em algum momento da cadeia — matérias-primas, <span class="tooltip-wrap"><span class="tooltip-trigger">WIP</span><span class="tooltip-box">Work In Process: materiais em transformação, entre a matéria-prima e o produto acabado.</span></span> ou produtos acabados.
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">📦 Excesso de Estoque — custos ocultos <span class="accordion-arrow">▼</span></button>
+          <div class="accordion-body">Capital parado, armazenagem, obsolescência. O custo de manutenção cresce linearmente com o nível de estoque: <strong>Cm = Q/2 × i × p</strong>.</div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">⚠️ Ruptura de Estoque — impacto na receita <span class="accordion-arrow">▼</span></button>
+          <div class="accordion-body">Perda de vendas, paralisação da produção e erosão de confiança. Frequentemente subestimado por não aparecer diretamente no P&L.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-brand">
+        <span class="callout-icon">🎯</span>
+        <div><strong>Perspectiva do Prof. Mendes:</strong> "Estoque é o sintoma, não a causa — problemas de previsão de demanda e variabilidade de lead time são as raízes a atacar."</div>
+      </div>
+    </section>
+
+    <!-- 2. ABC -->
+    <section class="section" id="abc">
+      <div class="section-head">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">Classificação ABC</div>
+          <div class="section-sub">Princípio de Pareto</div>
+        </div>
+      </div>
+
+      <p>Organiza itens por representatividade no valor total do inventário, priorizando esforços de controle com base no <span class="tooltip-wrap"><span class="tooltip-trigger">Princípio de Pareto</span><span class="tooltip-box">80% do valor vem de 20% dos itens — regra empírica validada por Vilfredo Pareto no século XIX.</span></span>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Classe</th><th>% Itens</th><th>% Valor</th><th>Controle</th><th>Nível Serviço</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-a">A</span></td><td>~20%</td><td>~80%</td><td>Rigoroso / diário</td><td>98–99%</td></tr>
+            <tr><td><span class="badge badge-b">B</span></td><td>~30%</td><td>~15%</td><td>Moderado / quinzenal</td><td>95–97%</td></tr>
+            <tr><td><span class="badge badge-c">C</span></td><td>~50%</td><td>~5%</td><td>Simplificado / mensal</td><td>90–95%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-amber">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Prova — erro clássico:</strong> Confundir "% de itens" com "% de valor". Classe A: <em>poucos itens, alto valor</em>.</div>
+      </div>
+    </section>
+
+    <!-- 3. LEC -->
+    <section class="section" id="lec">
+      <div class="section-head">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Lote Econômico de Compra</div>
+          <div class="section-sub">EOQ — Economic Order Quantity</div>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-label">Fórmula do LEC / EOQ</div>
+        <div class="formula-main">LEC = √ ( 2 × D × Cp / Ce )</div>
+        <div class="formula-legend">
+          <span><em>D</em> = Demanda anual</span>
+          <span><em>Cp</em> = Custo por pedido</span>
+          <span><em>Ce</em> = Custo de estoque anual</span>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="example-title">Exemplo resolvido</div>
+        <p class="example-step"><strong>D</strong> = 1.200 un. · <strong>Cp</strong> = R$50 · <strong>Ce</strong> = R$2,40/un./ano</p>
+        <p class="example-step">2 × 1.200 × 50 = <span class="hl">120.000</span> → ÷ 2,40 = <span class="hl">50.000</span> → √ = <span class="hl">224 un.</span></p>
+        <div class="example-result">✓ LEC = 224 unidades/pedido · ~5,4 pedidos/ano</div>
+      </div>
+
+      <div class="formula-box" style="margin-top:20px">
+        <div class="formula-label">Ponto de Reposição com Estoque de Segurança</div>
+        <div class="formula-main">PR = d × LT + ES</div>
+        <div class="formula-legend"><span><em>d</em> = demanda diária</span><span><em>LT</em> = lead time (dias)</span><span><em>ES</em> = estoque de segurança</span></div>
+      </div>
+    </section>
+
+    <!-- 4. ESTOQUE DE SEGURANÇA -->
+    <section class="section" id="es">
+      <div class="section-head">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">Estoque de Segurança</div>
+          <div class="section-sub">Buffer contra incertezas</div>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-label">Estoque de Segurança</div>
+        <div class="formula-main">ES = Z × σ<sub style="font-size:.8em">d</sub> × √LT</div>
+        <div class="formula-legend">
+          <span><em>Z</em> = Fator do nível de serviço</span>
+          <span><em>σd</em> = Desvio-padrão demanda diária</span>
+          <span><em>LT</em> = Lead time</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nível Serviço</th><th>Z</th><th>Risco Ruptura</th><th>Uso recomendado</th></tr></thead>
+          <tbody>
+            <tr><td>90%</td><td>1,28</td><td>10%</td><td>Itens C — baixo custo de ruptura</td></tr>
+            <tr><td>95%</td><td>1,65</td><td>5%</td><td>Itens B — equilíbrio custo/serviço</td></tr>
+            <tr><td>98%</td><td>2,05</td><td>2%</td><td>Itens A — alta criticidade</td></tr>
+            <tr><td>99%</td><td>2,33</td><td>1%</td><td>Itens A — componentes únicos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. KPIs -->
+    <section class="section" id="kpis">
+      <div class="section-head">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">KPIs de Estoque</div>
+          <div class="section-sub">Indicadores-Chave</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>KPI</th><th>Fórmula</th><th>O que mede</th><th>Meta</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Giro</strong></td><td style="font-family:var(--font-mono);font-size:12px">CMV ÷ Est. Médio</td><td>Renovação do estoque</td><td>Quanto maior, melhor</td></tr>
+            <tr><td><strong>Cobertura</strong></td><td style="font-family:var(--font-mono);font-size:12px">Est. ÷ Dem. Diária</td><td>Dias de estoque</td><td>Depende do setor</td></tr>
+            <tr><td><strong>Acurácia</strong></td><td style="font-family:var(--font-mono);font-size:12px">OK ÷ Total × 100</td><td>Precisão do inventário</td><td>&gt; 98%</td></tr>
+            <tr><td><strong>Fill Rate</strong></td><td style="font-family:var(--font-mono);font-size:12px">Atend. ÷ Pedidos</td><td>% sem ruptura</td><td>&gt; 95%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. FLASHCARDS -->
+    <section class="section flashcard-section" id="flashcards">
+      <div class="section-head">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Flashcards</div>
+          <div class="section-sub">Clique no card para revelar a resposta</div>
+        </div>
+      </div>
+
+      <div class="fc-header">
+        <div class="fc-counter">Card <span id="fc-current">1</span> de <span id="fc-total">6</span></div>
+        <div class="fc-nav">
+          <button class="fc-nav-btn" id="fc-prev" onclick="fcNav(-1)" disabled>←</button>
+          <button class="fc-nav-btn" id="fc-next" onclick="fcNav(1)">→</button>
+        </div>
+      </div>
+
+      <div class="flashcard-wrap">
+        <div class="flashcard" id="flashcard" onclick="flipCard()">
+          <div class="fc-face fc-front">
+            <div class="fc-label">Clique para revelar a resposta</div>
+            <div class="fc-question" id="fc-q">O que é a Classificação ABC?</div>
+            <div class="fc-hint">Toque para virar o card ↻</div>
+          </div>
+          <div class="fc-face fc-back">
+            <div class="fc-label">Resposta</div>
+            <div class="fc-answer" id="fc-a">Ferramenta de priorização baseada no Princípio de Pareto. Classe A: ~20% dos itens, ~80% do valor — controle rigoroso. B: moderado. C: simplificado.</div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-progress-bar" style="margin-top:16px">
+        <div class="fc-progress-fill" id="fc-progress" style="width:16.6%"></div>
+      </div>
+    </section>
+
+    <!-- 7. QUIZ -->
+    <section class="section quiz-section" id="quiz">
+      <div class="section-head">
+        <div class="section-num">7</div>
+        <div>
+          <div class="section-title">Quiz de Conhecimento</div>
+          <div class="section-sub">Teste o que você aprendeu</div>
+        </div>
+      </div>
+
+      <div class="quiz-intro">
+        <div>
+          <h3>🧠 Quiz — Gestão de Estoques</h3>
+          <p>5 questões · Sem tempo limite · Feedback imediato</p>
+        </div>
+        <button class="quiz-start-btn" id="quiz-start-btn" onclick="startQuiz()">Começar Quiz →</button>
+      </div>
+
+      <div id="quiz-body">
+        <!-- Q1 -->
+        <div class="quiz-question" id="qz-1">
+          <div class="quiz-q-label">Questão 1 de 5</div>
+          <div class="quiz-q-text">Na Classificação ABC, os itens da Classe A representam aproximadamente:</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(1, this, false)">A) 50% dos itens e 80% do valor</button>
+            <button class="quiz-opt" onclick="answerQ(1, this, true)">B) 20% dos itens e 80% do valor</button>
+            <button class="quiz-opt" onclick="answerQ(1, this, false)">C) 20% dos itens e 20% do valor</button>
+            <button class="quiz-opt" onclick="answerQ(1, this, false)">D) 80% dos itens e 80% do valor</button>
+          </div>
+          <div class="quiz-explain" id="qz-1-explain"></div>
+          <button class="quiz-next-btn" id="qz-1-next" onclick="nextQ(1)">Próxima →</button>
+        </div>
+        <!-- Q2 -->
+        <div class="quiz-question" id="qz-2">
+          <div class="quiz-q-label">Questão 2 de 5</div>
+          <div class="quiz-q-text">No modelo LEC, o que acontece com o custo de pedido quando o lote aumenta?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(2, this, false)">A) Aumenta, pois há mais pedidos</button>
+            <button class="quiz-opt" onclick="answerQ(2, this, true)">B) Cai, pois há menos pedidos por período</button>
+            <button class="quiz-opt" onclick="answerQ(2, this, false)">C) Permanece constante</button>
+            <button class="quiz-opt" onclick="answerQ(2, this, false)">D) Cai junto com o custo de manutenção</button>
+          </div>
+          <div class="quiz-explain" id="qz-2-explain"></div>
+          <button class="quiz-next-btn" id="qz-2-next" onclick="nextQ(2)">Próxima →</button>
+        </div>
+        <!-- Q3 -->
+        <div class="quiz-question" id="qz-3">
+          <div class="quiz-q-label">Questão 3 de 5</div>
+          <div class="quiz-q-text">Qual fator Z corresponde a um nível de serviço de 95%?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(3, this, false)">A) 1,28</button>
+            <button class="quiz-opt" onclick="answerQ(3, this, true)">B) 1,65</button>
+            <button class="quiz-opt" onclick="answerQ(3, this, false)">C) 2,05</button>
+            <button class="quiz-opt" onclick="answerQ(3, this, false)">D) 2,33</button>
+          </div>
+          <div class="quiz-explain" id="qz-3-explain"></div>
+          <button class="quiz-next-btn" id="qz-3-next" onclick="nextQ(3)">Próxima →</button>
+        </div>
+        <!-- Q4 -->
+        <div class="quiz-question" id="qz-4">
+          <div class="quiz-q-label">Questão 4 de 5</div>
+          <div class="quiz-q-text">Um giro de estoque alto sempre indica uma gestão ótima. Essa afirmação é:</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(4, this, false)">A) Verdadeira — alto giro = eficiência máxima</button>
+            <button class="quiz-opt" onclick="answerQ(4, this, true)">B) Falsa — alto giro isolado pode indicar risco de ruptura</button>
+            <button class="quiz-opt" onclick="answerQ(4, this, false)">C) Verdadeira — quanto maior, menor o custo</button>
+            <button class="quiz-opt" onclick="answerQ(4, this, false)">D) Falsa — giro alto não tem relação com estoques</button>
+          </div>
+          <div class="quiz-explain" id="qz-4-explain"></div>
+          <button class="quiz-next-btn" id="qz-4-next" onclick="nextQ(4)">Próxima →</button>
+        </div>
+        <!-- Q5 -->
+        <div class="quiz-question" id="qz-5">
+          <div class="quiz-q-label">Questão 5 de 5</div>
+          <div class="quiz-q-text">Com D = 1.200 un./ano, Cp = R$50 e Ce = R$2,40/un./ano, qual é o LEC?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(5, this, false)">A) 100 unidades</button>
+            <button class="quiz-opt" onclick="answerQ(5, this, false)">B) 316 unidades</button>
+            <button class="quiz-opt" onclick="answerQ(5, this, true)">C) 224 unidades</button>
+            <button class="quiz-opt" onclick="answerQ(5, this, false)">D) 500 unidades</button>
+          </div>
+          <div class="quiz-explain" id="qz-5-explain"></div>
+          <button class="quiz-next-btn" id="qz-5-next" onclick="nextQ(5)">Ver Resultado →</button>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="quiz-result" id="quiz-result">
+        <div class="quiz-score" id="quiz-score-val">0/5</div>
+        <div class="quiz-score-label">acertos</div>
+        <div class="quiz-msg" id="quiz-msg"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz()">↺ Refazer Quiz</button>
+      </div>
+    </section>
+
+    <!-- 8. GLOSSÁRIO -->
+    <section class="section" id="glossario">
+      <div class="section-head">
+        <div class="section-num">8</div>
+        <div>
+          <div class="section-title">Glossário de Termos</div>
+          <div class="section-sub">Terminologia técnica essencial</div>
+        </div>
+      </div>
+      <div class="glossary-grid">
+        <div class="glossary-item"><div class="glossary-term">LEC / EOQ</div><div class="glossary-def">Lote Econômico de Compra — quantidade ótima que minimiza custos totais.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Lead Time</div><div class="glossary-def">Tempo entre o pedido e o recebimento do material.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Ponto de Reposição</div><div class="glossary-def">Nível de estoque que aciona um novo pedido.</div></div>
+        <div class="glossary-item"><div class="glossary-term">WIP</div><div class="glossary-def">Work In Process — materiais em transformação na produção.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Ruptura / Stockout</div><div class="glossary-def">Demanda supera disponibilidade — item em falta.</div></div>
+        <div class="glossary-item"><div class="glossary-term">CMV</div><div class="glossary-def">Custo das Mercadorias Vendidas — base para cálculo do giro.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Nível de Serviço</div><div class="glossary-def">Probabilidade de atender à demanda sem rupturas no lead time.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Curva ABC</div><div class="glossary-def">Classificação por valor acumulado baseada no Princípio de Pareto.</div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-prof">Prof. Dr. Carlos Mendes · Logística e Supply Chain · UNISAL · 2026.1</div>
+  Produzido por <a href="../../index.html">MiStudies</a> · Tier 🏆 Premium · Full Studio
+</footer>
+
+<script>
+  // ── READING PROGRESS ──
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    document.getElementById('reading-progress').style.width = pct + '%';
+  });
+
+  // ── ACCORDION ──
+  function toggleAccordion(btn) {
+    const body = btn.nextElementSibling;
+    btn.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+
+  // ── SIDEBAR TOC ──
+  function setToc(link) {
+    event.preventDefault();
+    document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('toc-active'));
+    link.classList.add('toc-active');
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── PRESENTATION MODE ──
+  function setMode(mode) {
+    document.querySelectorAll('.sidebar-mode-btn').forEach(b => b.classList.remove('active-mode'));
+    event.target.classList.add('active-mode');
+    if (mode === 'presentation') {
+      document.body.classList.add('presentation-mode');
+    } else {
+      document.body.classList.remove('presentation-mode');
+    }
+  }
+
+  // ── TOC SCROLL HIGHLIGHT ──
+  const tocSections = ['intro','abc','lec','es','kpis','flashcards','quiz','glossario'];
+  window.addEventListener('scroll', () => {
+    let current = tocSections[0];
+    tocSections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 80) current = id;
+    });
+    document.querySelectorAll('.toc-link').forEach(link => {
+      link.classList.toggle('toc-active', link.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // ── FLASHCARDS ──
+  const cards = [
+    { q: 'O que é a Classificação ABC?', a: 'Ferramenta de priorização por Pareto. Classe A: ~20% dos itens, ~80% do valor — controle rigoroso. B: moderado. C: simplificado.' },
+    { q: 'Para que serve o LEC (EOQ)?', a: 'Calcula a quantidade ótima de reposição que minimiza a soma dos custos de pedido e de manutenção de estoque.' },
+    { q: 'Qual a fórmula do LEC?', a: 'LEC = √(2 × D × Cp / Ce), onde D = demanda anual, Cp = custo por pedido, Ce = custo de estoque por unidade por ano.' },
+    { q: 'O que é o Estoque de Segurança?', a: 'Reserva adicional (ES = Z × σd × √LT) para absorver variações de demanda e lead time sem causar ruptura.' },
+    { q: 'O que significa um Fill Rate de 95%?', a: '95% dos pedidos foram atendidos sem ruptura de estoque. Meta típica de mercado: ≥ 95%.' },
+    { q: 'Como calcular o Ponto de Reposição com ES?', a: 'PR = d × LT + ES. Demanda diária × lead time + estoque de segurança. Dispara um novo pedido ao atingir esse nível.' },
+  ];
+  let fcIdx = 0;
+  function renderCard() {
+    const card = cards[fcIdx];
+    document.getElementById('fc-q').textContent = card.q;
+    document.getElementById('fc-a').textContent = card.a;
+    document.getElementById('fc-current').textContent = fcIdx + 1;
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('fc-prev').disabled = fcIdx === 0;
+    document.getElementById('fc-next').disabled = fcIdx === cards.length - 1;
+    document.getElementById('fc-progress').style.width = ((fcIdx + 1) / cards.length * 100) + '%';
+  }
+  function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+  function fcNav(dir) { fcIdx = Math.max(0, Math.min(cards.length - 1, fcIdx + dir)); renderCard(); }
+  document.getElementById('fc-total').textContent = cards.length;
+  renderCard();
+
+  // ── QUIZ ──
+  const quizExplains = {
+    1: { correct: '✓ Correto! Classe A: ~20% dos itens, mas ~80% do valor. Esse é o núcleo do Princípio de Pareto aplicado a estoques.', wrong: '✗ Errado. Classe A = ~20% dos itens e ~80% do valor. Itens A são poucos mas críticos.' },
+    2: { correct: '✓ Correto! Lotes maiores → menos pedidos → custo de pedido total menor. O custo de manutenção, porém, sobe — o LEC equilibra esses dois.', wrong: '✗ Errado. Lotes maiores reduzem a frequência de pedidos, portanto o custo de pedido cai. Mas o custo de manutenção sobe.' },
+    3: { correct: '✓ Correto! Z = 1,65 para 95% de nível de serviço. Esse valor vem da tabela da distribuição normal padrão.', wrong: '✗ Errado. Para 95%: Z = 1,65. Para 90%: Z = 1,28. Para 98%: Z = 2,05. Para 99%: Z = 2,33.' },
+    4: { correct: '✓ Correto! Alto giro isolado pode indicar estoque insuficiente com risco de ruptura. O ideal é alto giro + alto fill rate.', wrong: '✗ Errado. Alto giro isolado pode indicar risco de stockout. O ideal é combinar alto giro com alto fill rate.' },
+    5: { correct: '✓ Correto! LEC = √(2 × 1.200 × 50 / 2,40) = √50.000 ≈ 224 unidades.', wrong: '✗ Errado. LEC = √(2 × 1.200 × 50 / 2,40) = √50.000 ≈ 224 unidades. Revise a fórmula na seção 3.' },
+  };
+  let quizScore = 0;
+  let quizActive = false;
+  function startQuiz() {
+    document.getElementById('quiz-start-btn').disabled = true;
+    document.getElementById('quiz-start-btn').textContent = 'Em andamento...';
+    document.getElementById('qz-1').classList.add('active');
+    quizActive = true;
+  }
+  function answerQ(num, btn, correct) {
+    const opts = btn.closest('.quiz-options').querySelectorAll('.quiz-opt');
+    opts.forEach(o => o.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    if (correct) quizScore++;
+    const exp = document.getElementById('qz-' + num + '-explain');
+    exp.textContent = correct ? quizExplains[num].correct : quizExplains[num].wrong;
+    exp.className = 'quiz-explain show ' + (correct ? 'explain-correct' : 'explain-wrong');
+    document.getElementById('qz-' + num + '-next').classList.add('show');
+  }
+  function nextQ(num) {
+    document.getElementById('qz-' + num).classList.remove('active');
+    if (num < 5) {
+      document.getElementById('qz-' + (num + 1)).classList.add('active');
+    } else {
+      document.getElementById('quiz-body').style.display = 'none';
+      showResult();
+    }
+  }
+  function showResult() {
+    const res = document.getElementById('quiz-result');
+    res.classList.add('show');
+    document.getElementById('quiz-score-val').textContent = quizScore + '/5';
+    const msgs = ['Continue estudando — revise as seções marcadas!', 'Bom começo! Revise os conceitos de LEC e Estoque de Segurança.', 'Muito bem! Você domina a maior parte do conteúdo.', 'Excelente! Apenas pequenos ajustes ainda necessários.', 'Perfeito! Você domina completamente o tema! 🏆'];
+    document.getElementById('quiz-msg').textContent = msgs[quizScore] || msgs[4];
+  }
+  function resetQuiz() {
+    quizScore = 0;
+    document.querySelectorAll('.quiz-question').forEach(q => { q.classList.remove('active'); });
+    document.querySelectorAll('.quiz-opt').forEach(o => { o.disabled = false; o.className = 'quiz-opt'; });
+    document.querySelectorAll('.quiz-explain').forEach(e => { e.className = 'quiz-explain'; });
+    document.querySelectorAll('.quiz-next-btn').forEach(b => { b.className = 'quiz-next-btn'; });
+    document.getElementById('quiz-result').classList.remove('show');
+    document.getElementById('quiz-body').style.display = '';
+    document.getElementById('quiz-start-btn').disabled = false;
+    document.getElementById('quiz-start-btn').textContent = 'Começar Quiz →';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simulador de Rentabilidade — MiStudies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-dark:   #0C1117;
+  --bg-mid:    #131B24;
+  --bg-card:   #1E2A38;
+  --border:    rgba(255,255,255,.09);
+  --text:      #E8E4DE;
+  --muted:     #6B7D8C;
+  --amber:     #E6A21E;
+  --amber-lt:  rgba(230,162,30,.12);
+  --green:     #34D399;
+  --green-lt:  rgba(52,211,153,.1);
+  --red:       #F87171;
+  --red-lt:    rgba(248,113,113,.1);
+  --blue:      #60A5FA;
+  --blue-lt:   rgba(96,165,250,.1);
+  --purple:    #A78BFA;
+  --purple-lt: rgba(167,139,250,.1);
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Montserrat', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', monospace;
+  --radius:    10px;
+  --t:         200ms cubic-bezier(.16,1,.3,1);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-dark);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  background: linear-gradient(135deg, var(--bg-dark) 0%, #1A2840 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 32px 32px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.header::before {
+  content: ''; position: absolute;
+  top: -100px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 300px; border-radius: 50%;
+  background: var(--amber); opacity: .04;
+}
+.header-eyebrow {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--amber);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.header-eyebrow::before, .header-eyebrow::after {
+  content: ''; display: block; width: 28px; height: 1px; background: var(--amber); opacity: .5;
+}
+.header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: #fff;
+  margin-bottom: 10px;
+}
+.header-sub { color: var(--muted); font-size: 13.5px; max-width: 480px; margin: 0 auto 20px; }
+.header-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.hb {
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  color: var(--muted); font-size: 11.5px; padding: 4px 12px; border-radius: 20px;
+}
+
+/* ── LAYOUT ── */
+.app { display: grid; grid-template-columns: 380px 1fr; min-height: calc(100vh - 140px); }
+
+/* ── PANEL LEFT — INPUTS ── */
+.panel-left {
+  background: var(--bg-mid);
+  border-right: 1px solid var(--border);
+  padding: 24px 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 140px);
+  position: sticky; top: 0;
+}
+
+.panel-section { margin-bottom: 24px; }
+.panel-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.panel-section-title span { font-size: 14px; }
+
+/* ── INPUT ROWS ── */
+.input-row {
+  display: grid; grid-template-columns: 1fr auto auto;
+  align-items: center; gap: 8px;
+  margin-bottom: 12px;
+}
+.input-label { font-size: 12.5px; color: rgba(255,255,255,.65); line-height: 1.3; }
+.input-label small { display: block; font-size: 10.5px; color: var(--muted); margin-top: 1px; }
+
+.number-input {
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-mono); font-size: 13px;
+  padding: 6px 8px; border-radius: 6px; width: 64px; text-align: center;
+  outline: none; transition: border-color var(--t);
+}
+.number-input:focus { border-color: var(--amber); }
+
+.price-input {
+  background: transparent; border: none; border-bottom: 1px dashed rgba(255,255,255,.2);
+  color: var(--amber); font-family: var(--font-mono); font-size: 12px;
+  padding: 4px 6px; width: 72px; text-align: right; outline: none;
+  transition: border-color var(--t);
+}
+.price-input:focus { border-bottom-color: var(--amber); }
+
+/* Toggle group (qty + price) */
+.input-group {
+  display: grid; grid-template-columns: 1fr 60px 76px;
+  align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.input-group .label { font-size: 12px; color: rgba(255,255,255,.65); }
+.input-group .label small { font-size: 10.5px; color: var(--muted); }
+.col-header { font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-align: center; }
+
+.tier-badge-sm {
+  display: inline-block; padding: 1px 7px; border-radius: 10px;
+  font-size: 10px; font-weight: 700; margin-right: 4px;
+}
+.tb-ess { background: rgba(96,165,250,.15); color: var(--blue); }
+.tb-pro { background: rgba(167,139,250,.15); color: var(--purple); }
+.tb-pre { background: rgba(230,162,30,.15); color: var(--amber); }
+.tb-st  { background: rgba(52,211,153,.15); color: var(--green); }
+
+/* ── COST SECTION ── */
+.cost-row {
+  display: grid; grid-template-columns: 1fr 90px;
+  align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.cost-label { font-size: 12px; color: rgba(255,255,255,.65); }
+.cost-input {
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--red); font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 8px; border-radius: 6px; text-align: right; width: 100%; outline: none;
+  transition: border-color var(--t);
+}
+.cost-input:focus { border-color: var(--red); }
+.cost-pct {
+  background: transparent; border: none; border-bottom: 1px dashed rgba(248,113,113,.3);
+  color: var(--red); font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 6px; width: 100%; text-align: right; outline: none;
+}
+
+/* ── CAPACITY ── */
+.cap-row {
+  display: grid; grid-template-columns: 1fr 70px;
+  align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.cap-label { font-size: 12px; color: rgba(255,255,255,.65); }
+.cap-input {
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--blue); font-family: var(--font-mono); font-size: 13px;
+  padding: 6px 8px; border-radius: 6px; text-align: center; outline: none;
+  transition: border-color var(--t);
+}
+.cap-input:focus { border-color: var(--blue); }
+
+/* ── RESET BUTTON ── */
+.reset-btn {
+  width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  color: var(--muted); font-family: var(--font-sans); font-size: 12px; font-weight: 600;
+  padding: 9px; border-radius: 8px; cursor: pointer; margin-top: 8px;
+  transition: background var(--t), color var(--t);
+}
+.reset-btn:hover { background: rgba(255,255,255,.08); color: var(--text); }
+
+/* ── PANEL RIGHT — RESULTS ── */
+.panel-right { padding: 24px 28px; overflow-y: auto; }
+
+/* ── RESULT CARDS ── */
+.result-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px;
+}
+.result-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px;
+  transition: border-color var(--t);
+}
+.result-card.good  { border-color: rgba(52,211,153,.3); }
+.result-card.warn  { border-color: rgba(230,162,30,.3); }
+.result-card.bad   { border-color: rgba(248,113,113,.3); }
+.rc-label { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.rc-value { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 500; }
+.rc-value.green  { color: var(--green); }
+.rc-value.amber  { color: var(--amber); }
+.rc-value.red    { color: var(--red); }
+.rc-value.blue   { color: var(--blue); }
+.rc-sub { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+
+/* ── BREAKDOWN ── */
+.breakdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.breakdown-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+}
+.bc-title {
+  font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+}
+.bc-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 13px;
+}
+.bc-row:last-child { border-bottom: none; }
+.bc-label { color: rgba(255,255,255,.6); }
+.bc-value { font-family: var(--font-mono); font-weight: 600; }
+.bc-total {
+  display: flex; justify-content: space-between;
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.12);
+  font-weight: 700;
+}
+.bc-total .bc-value { font-size: 1rem; }
+
+/* ── CAPACITY BAR ── */
+.cap-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 28px;
+}
+.cap-title {
+  font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+.cap-bar-wrap { margin-bottom: 12px; }
+.cap-bar-label {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: rgba(255,255,255,.55); margin-bottom: 6px;
+}
+.cap-bar-label strong { color: var(--text); }
+.cap-bar-track { height: 10px; background: rgba(255,255,255,.06); border-radius: 5px; overflow: hidden; }
+.cap-bar-fill { height: 100%; border-radius: 5px; transition: width .4s cubic-bezier(.16,1,.3,1); }
+.fill-green  { background: var(--green); }
+.fill-amber  { background: var(--amber); }
+.fill-red    { background: var(--red); }
+.cap-summary {
+  display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px;
+  font-size: 12.5px; color: var(--muted);
+}
+.cap-summary strong { color: var(--text); }
+
+/* ── PROJECTION TABLE ── */
+.proj-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 28px;
+}
+.proj-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.proj-title { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.proj-controls { display: flex; gap: 8px; }
+.proj-mode-btn {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  color: var(--muted); font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+  padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all var(--t);
+}
+.proj-mode-btn.active { background: var(--amber-lt); border-color: rgba(230,162,30,.3); color: var(--amber); }
+.proj-table-wrap { overflow-x: auto; }
+table.proj { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.proj thead th {
+  background: rgba(255,255,255,.04); color: var(--muted);
+  padding: 10px 14px; text-align: right; font-weight: 600; font-size: 11px; letter-spacing: .04em;
+}
+table.proj thead th:first-child { text-align: left; }
+table.proj tbody td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,.04); text-align: right; font-family: var(--font-mono); }
+table.proj tbody td:first-child { text-align: left; font-family: var(--font-sans); color: rgba(255,255,255,.7); font-weight: 600; }
+table.proj tbody tr:last-child td { border-bottom: none; }
+table.proj tbody tr.highlight td { background: rgba(230,162,30,.05); }
+table.proj tbody tr.current-month td { background: rgba(96,165,250,.07); }
+table.proj .td-green  { color: var(--green); }
+table.proj .td-amber  { color: var(--amber); }
+table.proj .td-red    { color: var(--red); }
+table.proj .td-blue   { color: var(--blue); }
+table.proj .td-muted  { color: var(--muted); }
+
+/* ── BREAK-EVEN ── */
+.breakeven-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 28px;
+}
+.be-title { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.be-scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.be-scenario {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; text-align: center;
+}
+.be-scenario-label { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.be-scenario-val { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 600; }
+.be-scenario-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* ── ALERT ── */
+.alert {
+  border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;
+  font-size: 13px; display: flex; align-items: flex-start; gap: 10px;
+  display: none;
+}
+.alert.show { display: flex; }
+.alert-warn { background: var(--amber-lt); border: 1px solid rgba(230,162,30,.3); }
+.alert-good { background: var(--green-lt); border: 1px solid rgba(52,211,153,.3); }
+.alert-bad  { background: var(--red-lt);   border: 1px solid rgba(248,113,113,.3); }
+.alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── FOOTER ── */
+.footer { background: var(--bg-mid); border-top: 1px solid var(--border); padding: 16px 32px; font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.footer a { color: var(--amber); text-decoration: none; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: 3px; }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .panel-left { max-height: none; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+  .result-grid { grid-template-columns: 1fr 1fr; }
+  .breakdown-grid { grid-template-columns: 1fr; }
+  .be-scenarios { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .result-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-eyebrow">MiStudies · Ferramenta de Planejamento</div>
+  <h1>Simulador de Rentabilidade</h1>
+  <p class="header-sub">Ajuste as variáveis e veja em tempo real o impacto na receita, capacidade e projeção de 6 meses.</p>
+  <div class="header-badges">
+    <span class="hb">3 Sócios</span>
+    <span class="hb">Professores B2B</span>
+    <span class="hb">Assinatura de Alunos</span>
+    <span class="hb">Cenários de Escala</span>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- ═══════════════════════════════
+       PAINEL ESQUERDO — VARIÁVEIS
+       ═══════════════════════════════ -->
+  <aside class="panel-left">
+
+    <!-- ONBOARDING -->
+    <div class="panel-section">
+      <div class="panel-section-title"><span>🎓</span> Onboarding de Professores</div>
+      <div class="input-group">
+        <div class="label" style="font-size:10px;color:var(--muted)">Tipo</div>
+        <div class="col-header">Qtd/mês</div>
+        <div class="col-header">Preço (R$)</div>
+      </div>
+      <div class="input-group">
+        <div class="label">Setup Básico<small>Página + bio + link</small></div>
+        <input type="number" class="number-input" id="ob_basico_qty" value="1" min="0" max="20" onchange="calc()">
+        <input type="text" class="price-input" id="ob_basico_price" value="200" onchange="calc()">
+      </div>
+      <div class="input-group">
+        <div class="label">Setup Branded<small>Paleta + logotipo</small></div>
+        <input type="number" class="number-input" id="ob_branded_qty" value="0" min="0" max="20" onchange="calc()">
+        <input type="text" class="price-input" id="ob_branded_price" value="500" onchange="calc()">
+      </div>
+      <div class="input-group">
+        <div class="label">Setup Institucional<small>Landing + múltiplos profs.</small></div>
+        <input type="number" class="number-input" id="ob_inst_qty" value="0" min="0" max="10" onchange="calc()">
+        <input type="text" class="price-input" id="ob_inst_price" value="1000" onchange="calc()">
+      </div>
+    </div>
+
+    <!-- AULAS POR TIER -->
+    <div class="panel-section">
+      <div class="panel-section-title"><span>📄</span> Aulas por Tier / Mês</div>
+      <div class="input-group">
+        <div class="label" style="font-size:10px;color:var(--muted)">Tier</div>
+        <div class="col-header">Qtd/mês</div>
+        <div class="col-header">Preço (R$)</div>
+      </div>
+      <div class="input-group">
+        <div class="label"><span class="tier-badge-sm tb-ess">Essencial</span><small>~2.5h/aula</small></div>
+        <input type="number" class="number-input" id="au_ess_qty" value="3" min="0" max="50" onchange="calc()">
+        <input type="text" class="price-input" id="au_ess_price" value="120" onchange="calc()">
+      </div>
+      <div class="input-group">
+        <div class="label"><span class="tier-badge-sm tb-pro">Pro</span><small>~4.7h/aula</small></div>
+        <input type="number" class="number-input" id="au_pro_qty" value="1" min="0" max="30" onchange="calc()">
+        <input type="text" class="price-input" id="au_pro_price" value="250" onchange="calc()">
+      </div>
+      <div class="input-group">
+        <div class="label"><span class="tier-badge-sm tb-pre">Premium</span><small>~8h/aula</small></div>
+        <input type="number" class="number-input" id="au_pre_qty" value="0" min="0" max="20" onchange="calc()">
+        <input type="text" class="price-input" id="au_pre_price" value="450" onchange="calc()">
+      </div>
+    </div>
+
+    <!-- HUBS ATIVOS -->
+    <div class="panel-section">
+      <div class="panel-section-title"><span>🌐</span> Hubs Ativos (mensalidade)</div>
+      <div class="input-group">
+        <div class="label" style="font-size:10px;color:var(--muted)">Plano</div>
+        <div class="col-header">Qtd ativa</div>
+        <div class="col-header">Preço (R$)</div>
+      </div>
+      <div class="input-group">
+        <div class="label">Hub Starter<small>Até 10 aulas publicadas</small></div>
+        <input type="number" class="number-input" id="hub_st_qty" value="0" min="0" max="50" onchange="calc()">
+        <input type="text" class="price-input" id="hub_st_price" value="49" onchange="calc()">
+      </div>
+      <div class="input-group">
+        <div class="label">Hub Pro<small>Até 30 aulas + analytics</small></div>
+        <input type="number" class="number-input" id="hub_pro_qty" value="0" min="0" max="30" onchange="calc()">
+        <input type="text" class="price-input" id="hub_pro_price" value="99" onchange="calc()">
+      </div>
+      <div class="input-group">
+        <div class="label">Hub Institucional<small>Ilimitado + multi-profs</small></div>
+        <input type="number" class="number-input" id="hub_inst_qty" value="0" min="0" max="10" onchange="calc()">
+        <input type="text" class="price-input" id="hub_inst_price" value="249" onchange="calc()">
+      </div>
+    </div>
+
+    <!-- ASSINATURA DE ALUNOS -->
+    <div class="panel-section">
+      <div class="panel-section-title"><span>👩‍🎓</span> Assinatura de Alunos</div>
+      <div class="input-group">
+        <div class="label" style="font-size:10px;color:var(--muted)">Plano</div>
+        <div class="col-header">Qtd ativa</div>
+        <div class="col-header">Preço (R$)</div>
+      </div>
+      <div class="input-group">
+        <div class="label">Estudante Mensal<small></small></div>
+        <input type="number" class="number-input" id="al_men_qty" value="0" min="0" max="500" onchange="calc()">
+        <input type="text" class="price-input" id="al_men_price" value="14.90" onchange="calc()">
+      </div>
+      <div class="input-group">
+        <div class="label">Estudante Anual<small>R$/mês equivalente</small></div>
+        <input type="number" class="number-input" id="al_anu_qty" value="0" min="0" max="500" onchange="calc()">
+        <input type="text" class="price-input" id="al_anu_price" value="9.90" onchange="calc()">
+      </div>
+    </div>
+
+    <!-- CUSTOS -->
+    <div class="panel-section">
+      <div class="panel-section-title"><span>💸</span> Custos Mensais</div>
+      <div class="cost-row">
+        <div class="cost-label">IA / API (Claude, GPT...)</div>
+        <input type="number" class="cost-input" id="c_ia" value="150" min="0" onchange="calc()">
+      </div>
+      <div class="cost-row">
+        <div class="cost-label">Hospedagem (Vercel/VPS)</div>
+        <input type="number" class="cost-input" id="c_host" value="0" min="0" onchange="calc()">
+      </div>
+      <div class="cost-row">
+        <div class="cost-label">Domínio (rateado)</div>
+        <input type="number" class="cost-input" id="c_dom" value="3" min="0" onchange="calc()">
+      </div>
+      <div class="cost-row">
+        <div class="cost-label">Ferramentas (Figma, etc.)</div>
+        <input type="number" class="cost-input" id="c_tools" value="0" min="0" onchange="calc()">
+      </div>
+      <div class="cost-row">
+        <div class="cost-label">Marketing / Tráfego Pago</div>
+        <input type="number" class="cost-input" id="c_mkt" value="0" min="0" onchange="calc()">
+      </div>
+      <div class="cost-row">
+        <div class="cost-label">Gateway de pagamento (%)</div>
+        <input type="number" class="cost-pct" id="c_gateway_pct" value="5" min="0" max="15" step="0.5" onchange="calc()">
+      </div>
+      <div class="cost-row">
+        <div class="cost-label">Outros</div>
+        <input type="number" class="cost-input" id="c_outros" value="0" min="0" onchange="calc()">
+      </div>
+    </div>
+
+    <!-- CAPACIDADE -->
+    <div class="panel-section">
+      <div class="panel-section-title"><span>⏱️</span> Capacidade da Equipe</div>
+      <div class="cap-row">
+        <div class="cap-label">Número de sócios</div>
+        <input type="number" class="cap-input" id="cap_socios" value="3" min="1" max="10" onchange="calc()">
+      </div>
+      <div class="cap-row">
+        <div class="cap-label">Horas/semana por sócio</div>
+        <input type="number" class="cap-input" id="cap_horas" value="10" min="1" max="40" onchange="calc()">
+      </div>
+      <div class="cap-row">
+        <div class="cap-label">Semanas/mês</div>
+        <input type="number" class="cap-input" id="cap_semanas" value="4.3" min="1" max="5" step="0.1" onchange="calc()">
+      </div>
+      <div class="cap-row">
+        <div class="cap-label">Horas/aula Essencial</div>
+        <input type="number" class="cap-input" id="cap_h_ess" value="2.5" min="0.5" max="10" step="0.5" onchange="calc()">
+      </div>
+      <div class="cap-row">
+        <div class="cap-label">Horas/aula Pro</div>
+        <input type="number" class="cap-input" id="cap_h_pro" value="4.7" min="0.5" max="15" step="0.5" onchange="calc()">
+      </div>
+      <div class="cap-row">
+        <div class="cap-label">Horas/aula Premium</div>
+        <input type="number" class="cap-input" id="cap_h_pre" value="8" min="1" max="20" step="0.5" onchange="calc()">
+      </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetDefaults()">↺ Restaurar valores padrão</button>
+  </aside>
+
+  <!-- ═══════════════════════════════
+       PAINEL DIREITO — RESULTADOS
+       ═══════════════════════════════ -->
+  <main class="panel-right">
+
+    <!-- Alertas dinâmicos -->
+    <div class="alert alert-bad" id="alert-overload">
+      <span class="alert-icon">⚠️</span>
+      <span id="alert-overload-text">Carga horária excede a capacidade da equipe.</span>
+    </div>
+    <div class="alert alert-good" id="alert-meta">
+      <span class="alert-icon">✅</span>
+      <span id="alert-meta-text">Meta de R$3.600/mês atingida!</span>
+    </div>
+    <div class="alert alert-warn" id="alert-warn">
+      <span class="alert-icon">💡</span>
+      <span id="alert-warn-text"></span>
+    </div>
+
+    <!-- Cards de resultado -->
+    <div class="result-grid">
+      <div class="result-card" id="card-bruto">
+        <div class="rc-label">Receita Bruta</div>
+        <div class="rc-value amber" id="val-bruto">R$ 0</div>
+        <div class="rc-sub" id="sub-bruto">—</div>
+      </div>
+      <div class="result-card" id="card-custos">
+        <div class="rc-label">Custos Totais</div>
+        <div class="rc-value red" id="val-custos">R$ 0</div>
+        <div class="rc-sub" id="sub-custos">—</div>
+      </div>
+      <div class="result-card" id="card-liquido">
+        <div class="rc-label">Receita Líquida</div>
+        <div class="rc-value green" id="val-liquido">R$ 0</div>
+        <div class="rc-sub" id="sub-liquido">—</div>
+      </div>
+      <div class="result-card" id="card-socio">
+        <div class="rc-label">Por Sócio / Mês</div>
+        <div class="rc-value blue" id="val-socio">R$ 0</div>
+        <div class="rc-sub" id="sub-socio">—</div>
+      </div>
+    </div>
+
+    <!-- Breakdown de receita e custos -->
+    <div class="breakdown-grid">
+      <div class="breakdown-card">
+        <div class="bc-title">Composição da Receita</div>
+        <div class="bc-row"><span class="bc-label">🎓 Onboarding</span><span class="bc-value amber" id="b-onb">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">📄 Aulas</span><span class="bc-value amber" id="b-aulas">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">🌐 Hubs (MRR)</span><span class="bc-value green" id="b-hubs">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">👩‍🎓 Alunos (MRR)</span><span class="bc-value green" id="b-alunos">R$ 0</span></div>
+        <div class="bc-total"><span>Total</span><span class="bc-value amber" id="b-total">R$ 0</span></div>
+        <div style="margin-top:14px">
+          <div style="font-size:10.5px;color:var(--muted);margin-bottom:6px">MRR (Recorrente)</div>
+          <div class="cap-bar-track"><div class="cap-bar-fill fill-green" id="mrr-bar" style="width:0%"></div></div>
+          <div style="font-size:11px;color:var(--muted);margin-top:5px"><span id="mrr-pct">0%</span> da receita é recorrente</div>
+        </div>
+      </div>
+      <div class="breakdown-card">
+        <div class="bc-title">Composição dos Custos</div>
+        <div class="bc-row"><span class="bc-label">🤖 IA / API</span><span class="bc-value red" id="c-ia">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">🖥 Hospedagem</span><span class="bc-value red" id="c-host">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">🌍 Domínio</span><span class="bc-value red" id="c-dom">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">🛠 Ferramentas</span><span class="bc-value red" id="c-tools">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">📢 Marketing</span><span class="bc-value red" id="c-mkt">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">💳 Gateway (%)</span><span class="bc-value red" id="c-gw">R$ 0</span></div>
+        <div class="bc-row"><span class="bc-label">📦 Outros</span><span class="bc-value red" id="c-out">R$ 0</span></div>
+        <div class="bc-total"><span>Total</span><span class="bc-value red" id="c-total">R$ 0</span></div>
+      </div>
+    </div>
+
+    <!-- Capacidade -->
+    <div class="cap-card">
+      <div class="cap-title">⏱️ Análise de Capacidade da Equipe</div>
+      <div class="cap-bar-wrap">
+        <div class="cap-bar-label">
+          <span>Horas em produção de aulas</span>
+          <strong id="cap-horas-aulas">0h</strong>
+        </div>
+        <div class="cap-bar-track">
+          <div class="cap-bar-fill" id="cap-bar-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="cap-summary">
+        <span>Capacidade total: <strong id="cap-total">0h/mês</strong></span>
+        <span>Usadas em aulas: <strong id="cap-used">0h/mês</strong></span>
+        <span>Sobra p/ gestão: <strong id="cap-free">0h/mês</strong></span>
+        <span>Utilização: <strong id="cap-pct">0%</strong></span>
+      </div>
+    </div>
+
+    <!-- Projeção 6 meses -->
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">📈 Projeção — Crescimento Mensal</div>
+        <div class="proj-controls">
+          <button class="proj-mode-btn active" id="btn-cons" onclick="setProjMode('conservador')">Conservador</button>
+          <button class="proj-mode-btn" id="btn-real" onclick="setProjMode('realista')">Realista</button>
+          <button class="proj-mode-btn" id="btn-otim" onclick="setProjMode('otimista')">Otimista</button>
+        </div>
+      </div>
+      <div class="proj-table-wrap">
+        <table class="proj" id="proj-table">
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th>Onboarding</th>
+              <th>Aulas</th>
+              <th>Hubs (MRR)</th>
+              <th>Alunos (MRR)</th>
+              <th>Custos</th>
+              <th>Líquido</th>
+              <th>Por Sócio</th>
+            </tr>
+          </thead>
+          <tbody id="proj-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Break-Even -->
+    <div class="breakeven-card">
+      <div class="be-title">⚖️ Break-Even — Apenas para cobrir os custos fixos</div>
+      <div class="be-scenarios">
+        <div class="be-scenario">
+          <div class="be-scenario-label">Só com Essencial</div>
+          <div class="be-scenario-val amber" id="be-ess">—</div>
+          <div class="be-scenario-sub">aulas/mês</div>
+        </div>
+        <div class="be-scenario">
+          <div class="be-scenario-label">Só com Pro</div>
+          <div class="be-scenario-val purple" id="be-pro">—</div>
+          <div class="be-scenario-sub">aulas/mês</div>
+        </div>
+        <div class="be-scenario">
+          <div class="be-scenario-label">Só com Premium</div>
+          <div class="be-scenario-val" style="color:var(--amber)" id="be-pre">—</div>
+          <div class="be-scenario-sub">aulas/mês</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <div class="be-scenarios">
+          <div class="be-scenario">
+            <div class="be-scenario-label">Meta R$3.600 líq.</div>
+            <div class="be-scenario-val" style="color:var(--green)" id="meta-ess">—</div>
+            <div class="be-scenario-sub">aulas Ess./mês</div>
+          </div>
+          <div class="be-scenario">
+            <div class="be-scenario-label">Meta R$3.600 líq.</div>
+            <div class="be-scenario-val" style="color:var(--green)" id="meta-pro">—</div>
+            <div class="be-scenario-sub">aulas Pro/mês</div>
+          </div>
+          <div class="be-scenario">
+            <div class="be-scenario-label">Meta R$3.600 líq.</div>
+            <div class="be-scenario-val" style="color:var(--green)" id="meta-mix">—</div>
+            <div class="be-scenario-sub">mix equilibrado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <span>MiStudies Simulator · Os valores são estimativas para planejamento.</span>
+  <span><a href="../index.html">← Voltar ao Hub</a></span>
+</footer>
+
+<script>
+// ── STATE ──
+let projMode = 'conservador';
+
+function g(id) { return parseFloat(document.getElementById(id).value) || 0; }
+function fmtBRL(v) { return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+function fmtBRLd(v) { return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function calc() {
+  // ── RECEITA ──
+  const onb  = g('ob_basico_qty') * g('ob_basico_price')
+             + g('ob_branded_qty') * g('ob_branded_price')
+             + g('ob_inst_qty') * g('ob_inst_price');
+
+  const au_ess = g('au_ess_qty') * g('au_ess_price');
+  const au_pro = g('au_pro_qty') * g('au_pro_price');
+  const au_pre = g('au_pre_qty') * g('au_pre_price');
+  const aulas  = au_ess + au_pro + au_pre;
+
+  const hubs = g('hub_st_qty') * g('hub_st_price')
+             + g('hub_pro_qty') * g('hub_pro_price')
+             + g('hub_inst_qty') * g('hub_inst_price');
+
+  const alunos = g('al_men_qty') * g('al_men_price')
+               + g('al_anu_qty') * g('al_anu_price');
+
+  const bruto = onb + aulas + hubs + alunos;
+  const mrr   = hubs + alunos;
+  const mrrPct = bruto > 0 ? (mrr / bruto * 100) : 0;
+
+  // ── CUSTOS ──
+  const custo_fixo = g('c_ia') + g('c_host') + g('c_dom') + g('c_tools') + g('c_mkt') + g('c_outros');
+  const gateway    = bruto * (g('c_gateway_pct') / 100);
+  const custos     = custo_fixo + gateway;
+
+  const liquido = bruto - custos;
+  const socios  = g('cap_socios') || 1;
+  const porSocio = liquido / socios;
+
+  // ── CAPACIDADE ──
+  const cap_total = socios * g('cap_horas') * g('cap_semanas');
+  const h_aulas   = g('au_ess_qty') * g('cap_h_ess')
+                  + g('au_pro_qty') * g('cap_h_pro')
+                  + g('au_pre_qty') * g('cap_h_pre');
+  const cap_free  = cap_total - h_aulas;
+  const cap_pct   = cap_total > 0 ? Math.min(h_aulas / cap_total * 100, 100) : 0;
+
+  // ── UPDATE DOM ──
+  document.getElementById('val-bruto').textContent    = fmtBRL(bruto);
+  document.getElementById('val-custos').textContent   = fmtBRL(custos);
+  document.getElementById('val-liquido').textContent  = fmtBRL(liquido);
+  document.getElementById('val-socio').textContent    = fmtBRL(porSocio);
+
+  const margemPct = bruto > 0 ? (liquido / bruto * 100).toFixed(1) : 0;
+  document.getElementById('sub-bruto').textContent   = `${g('au_ess_qty') + g('au_pro_qty') + g('au_pre_qty')} aulas · ${g('hub_st_qty') + g('hub_pro_qty') + g('hub_inst_qty')} hubs`;
+  document.getElementById('sub-custos').textContent  = `Gateway: ${fmtBRL(gateway)} · Fixo: ${fmtBRL(custo_fixo)}`;
+  document.getElementById('sub-liquido').textContent = `Margem: ${margemPct}%`;
+  document.getElementById('sub-socio').textContent   = `${socios} sócio${socios > 1 ? 's' : ''} · divisão igualitária`;
+
+  // Cards de estado
+  const cardLiq = document.getElementById('card-liquido');
+  cardLiq.className = 'result-card ' + (liquido >= 3600 ? 'good' : liquido > 0 ? 'warn' : 'bad');
+  document.getElementById('val-liquido').className = 'rc-value ' + (liquido >= 3600 ? 'green' : liquido > 0 ? 'amber' : 'red');
+
+  // Breakdown receita
+  document.getElementById('b-onb').textContent     = fmtBRL(onb);
+  document.getElementById('b-aulas').textContent   = fmtBRL(aulas);
+  document.getElementById('b-hubs').textContent    = fmtBRL(hubs);
+  document.getElementById('b-alunos').textContent  = fmtBRL(alunos);
+  document.getElementById('b-total').textContent   = fmtBRL(bruto);
+  document.getElementById('mrr-bar').style.width   = mrrPct + '%';
+  document.getElementById('mrr-pct').textContent   = mrrPct.toFixed(1) + '%';
+
+  // Breakdown custos
+  document.getElementById('c-ia').textContent    = fmtBRL(g('c_ia'));
+  document.getElementById('c-host').textContent  = fmtBRL(g('c_host'));
+  document.getElementById('c-dom').textContent   = fmtBRL(g('c_dom'));
+  document.getElementById('c-tools').textContent = fmtBRL(g('c_tools'));
+  document.getElementById('c-mkt').textContent   = fmtBRL(g('c_mkt'));
+  document.getElementById('c-gw').textContent    = fmtBRLd(gateway);
+  document.getElementById('c-out').textContent   = fmtBRL(g('c_outros'));
+  document.getElementById('c-total').textContent = fmtBRLd(custos);
+
+  // Capacidade
+  document.getElementById('cap-total').textContent       = cap_total.toFixed(1) + 'h/mês';
+  document.getElementById('cap-used').textContent        = h_aulas.toFixed(1) + 'h/mês';
+  document.getElementById('cap-free').textContent        = Math.max(0, cap_free).toFixed(1) + 'h/mês';
+  document.getElementById('cap-pct').textContent         = cap_pct.toFixed(1) + '%';
+  document.getElementById('cap-horas-aulas').textContent = h_aulas.toFixed(1) + 'h';
+  const fill = document.getElementById('cap-bar-fill');
+  fill.style.width = cap_pct + '%';
+  fill.className = 'cap-bar-fill ' + (cap_pct > 90 ? 'fill-red' : cap_pct > 70 ? 'fill-amber' : 'fill-green');
+
+  // Alertas
+  const alertOver = document.getElementById('alert-overload');
+  const alertMeta = document.getElementById('alert-meta');
+  const alertWarn = document.getElementById('alert-warn');
+  alertOver.className = 'alert alert-bad ' + (h_aulas > cap_total ? 'show' : '');
+  document.getElementById('alert-overload-text').textContent =
+    `⚠️ Capacidade excedida! Você precisa de ${h_aulas.toFixed(1)}h mas tem apenas ${cap_total.toFixed(1)}h disponíveis. Reduza aulas ou aumente as horas da equipe.`;
+  alertMeta.className = 'alert alert-good ' + (liquido >= 3600 ? 'show' : '');
+  document.getElementById('alert-meta-text').textContent =
+    `✅ Meta de R$3.600/mês atingida! Receita líquida: ${fmtBRL(liquido)} (${fmtBRL(porSocio)}/sócio)`;
+  if (mrrPct < 15 && bruto > 500) {
+    alertWarn.className = 'alert alert-warn show';
+    document.getElementById('alert-warn-text').textContent =
+      `💡 Apenas ${mrrPct.toFixed(0)}% da receita é recorrente. Ative hubs e assinaturas de alunos para estabilizar o caixa.`;
+  } else {
+    alertWarn.className = 'alert alert-warn';
+  }
+
+  // Break-even
+  const preco_ess = g('au_ess_price'), preco_pro = g('au_pro_price'), preco_pre = g('au_pre_price');
+  const be_ess = custos > 0 && preco_ess > 0 ? Math.ceil(custos / preco_ess) : '—';
+  const be_pro = custos > 0 && preco_pro > 0 ? Math.ceil(custos / preco_pro) : '—';
+  const be_pre = custos > 0 && preco_pre > 0 ? Math.ceil(custos / preco_pre) : '—';
+  document.getElementById('be-ess').textContent = be_ess;
+  document.getElementById('be-pro').textContent = be_pro;
+  document.getElementById('be-pre').textContent = be_pre;
+
+  const meta = 3600;
+  const meta_bruto = custos + meta;
+  document.getElementById('meta-ess').textContent = preco_ess > 0 ? Math.ceil(meta_bruto / preco_ess) : '—';
+  document.getElementById('meta-pro').textContent = preco_pro > 0 ? Math.ceil(meta_bruto / preco_pro) : '—';
+  // Mix: 40% ess + 40% pro + 20% pre
+  const mix_avg = 0.4 * preco_ess + 0.4 * preco_pro + 0.2 * preco_pre;
+  document.getElementById('meta-mix').textContent = mix_avg > 0 ? Math.ceil(meta_bruto / mix_avg) : '—';
+
+  // Projeção
+  renderProjection(bruto, custos, socios, mrr, onb, aulas);
+}
+
+// ── PROJEÇÃO ──
+function renderProjection(bruto_base, custos_base, socios, mrr, onb, aulas) {
+  const multipliers = {
+    conservador: [1, 1.4, 1.9, 2.3, 2.7, 3.0],
+    realista:    [1, 1.6, 2.4, 3.0, 3.6, 4.2],
+    otimista:    [1, 2.0, 3.2, 4.2, 5.2, 6.5],
+  };
+  const mults = multipliers[projMode];
+  const months = ['Mês 1 (Atual)', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6'];
+  const META = 3600;
+
+  let tbody = '';
+  mults.forEach((m, i) => {
+    const b_onb   = onb * m * 0.8;   // onboarding cresce mais devagar
+    const b_aulas = aulas * m;
+    const b_hubs  = mrr > 0 ? mrr * Math.min(m * 1.3, 8) : 0;
+    const b_al    = mrr > 0 ? mrr * 0.4 * Math.max(0, m - 0.5) : 0;
+    const b       = b_onb + b_aulas + b_hubs + b_al;
+
+    const c_gw    = b * (g('c_gateway_pct') / 100);
+    const c_fixed = custos_base - bruto_base * (g('c_gateway_pct') / 100);
+    const c       = Math.max(c_fixed, 0) + c_gw;
+
+    const liq  = b - c;
+    const soc  = liq / socios;
+    const isMeta = liq >= META;
+    const isFirst = i === 0;
+
+    tbody += `<tr class="${isFirst ? 'current-month' : isMeta ? 'highlight' : ''}">
+      <td>${months[i]}${isMeta ? ' ✅' : ''}</td>
+      <td class="td-amber">${fmtBRL(b_onb)}</td>
+      <td class="td-amber">${fmtBRL(b_aulas)}</td>
+      <td class="td-green">${fmtBRL(b_hubs)}</td>
+      <td class="td-green">${fmtBRL(b_al)}</td>
+      <td class="td-red">${fmtBRL(c)}</td>
+      <td class="${liq >= META ? 'td-green' : liq > 0 ? 'td-amber' : 'td-red'}">${fmtBRL(liq)}</td>
+      <td class="td-blue">${fmtBRL(soc)}</td>
+    </tr>`;
+  });
+
+  document.getElementById('proj-tbody').innerHTML = tbody;
+}
+
+function setProjMode(mode) {
+  projMode = mode;
+  document.querySelectorAll('.proj-mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + mode.slice(0,4)).classList.add('active');
+  calc();
+}
+
+// ── RESET ──
+const defaults = {
+  ob_basico_qty: 1, ob_basico_price: 200,
+  ob_branded_qty: 0, ob_branded_price: 500,
+  ob_inst_qty: 0, ob_inst_price: 1000,
+  au_ess_qty: 3, au_ess_price: 120,
+  au_pro_qty: 1, au_pro_price: 250,
+  au_pre_qty: 0, au_pre_price: 450,
+  hub_st_qty: 0, hub_st_price: 49,
+  hub_pro_qty: 0, hub_pro_price: 99,
+  hub_inst_qty: 0, hub_inst_price: 249,
+  al_men_qty: 0, al_men_price: 14.90,
+  al_anu_qty: 0, al_anu_price: 9.90,
+  c_ia: 150, c_host: 0, c_dom: 3, c_tools: 0, c_mkt: 0, c_gateway_pct: 5, c_outros: 0,
+  cap_socios: 3, cap_horas: 10, cap_semanas: 4.3,
+  cap_h_ess: 2.5, cap_h_pro: 4.7, cap_h_pre: 8,
+};
+
+function resetDefaults() {
+  Object.entries(defaults).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+  calc();
+}
+
+// ── INIT ──
+calc();
+</script>
+</body>
+</html>
