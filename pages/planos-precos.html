@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Planos e Preços — MiStudies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary:        #0032b5;
+  --primary-bright: #0344ec;
+  --on-primary:     #ffffff;
+  --secondary:      #006a6a;
+  --tertiary:       #2b3b8d;
+  --amber:          #f59e0b;
+  --amber-light:    #fef3c7;
+  --surface:        #f8f9fa;
+  --on-surface:     #191c1d;
+  --on-surface-var: #454652;
+  --outline:        #757684;
+  --sc-lowest:      #ffffff;
+  --sc-low:         #f3f4f5;
+  --sc-container:   #edeeef;
+  --sc-high:        #e7e8e9;
+  --sc-highest:     #e1e3e4;
+  --gradient:       linear-gradient(135deg, #0032b5, #0344ec);
+  --gradient-warm:  linear-gradient(135deg, #f59e0b, #f97316);
+  --shadow-sm:      0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:      0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
+  --shadow-lg:      0 8px 32px rgba(0,50,181,.12), 0 2px 8px rgba(0,0,0,.06);
+  --radius:         8px;
+  --radius-lg:      12px;
+  --font-head:      'Manrope', system-ui, sans-serif;
+  --font-body:      'Inter', -apple-system, sans-serif;
+  --font-mono:      'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--surface); color: var(--on-surface); line-height: 1.6; }
+
+/* ── NAV ──────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(248,249,250,.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--sc-high);
+  padding: 0 40px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-head); font-weight: 800; font-size: 1.25rem;
+  color: var(--primary); text-decoration: none; letter-spacing: -0.03em;
+}
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: .875rem; font-weight: 500; color: var(--on-surface-var);
+  text-decoration: none; transition: color .2s;
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-cta {
+  background: var(--gradient); color: var(--on-primary);
+  padding: 8px 20px; border-radius: var(--radius);
+  font-size: .875rem; font-weight: 600; text-decoration: none;
+  transition: opacity .2s;
+}
+.nav-cta:hover { opacity: .88; color: var(--on-primary); }
+
+/* ── LAYOUT ───────────────────────────────────────────── */
+.container { max-width: 1160px; margin: 0 auto; padding: 0 40px; }
+section { padding: 80px 0; }
+section + section { border-top: 1px solid var(--sc-high); }
+
+/* ── TYPOGRAPHY ───────────────────────────────────────── */
+.eyebrow {
+  font-size: .75rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--primary);
+  margin-bottom: 12px;
+}
+h1, h2, h3, h4 { font-family: var(--font-head); letter-spacing: -.025em; }
+.section-title { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 800; color: var(--on-surface); margin-bottom: 12px; }
+.section-sub { font-size: 1.0625rem; color: var(--on-surface-var); max-width: 600px; line-height: 1.7; }
+
+/* ── HERO ─────────────────────────────────────────────── */
+.hero {
+  background: var(--gradient);
+  color: white;
+  padding: 100px 40px 80px;
+  text-align: center;
+}
+.hero-eyebrow {
+  font-size: .75rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; opacity: .75; margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: var(--font-head); font-weight: 800;
+  font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -.04em;
+  line-height: 1.05; margin-bottom: 20px;
+}
+.hero-sub {
+  font-size: 1.125rem; opacity: .85; max-width: 580px;
+  margin: 0 auto 40px; line-height: 1.7;
+}
+.hero-steps {
+  display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+  margin-top: 48px;
+}
+.hero-step {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 14px 24px; border-radius: 40px;
+}
+.hero-step + .hero-step { margin-left: -8px; }
+.hero-step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-weight: 800; font-size: .8rem;
+}
+.hero-step-label { font-size: .875rem; font-weight: 600; }
+.hero-arrow {
+  display: flex; align-items: center;
+  color: rgba(255,255,255,.5); font-size: 1.25rem;
+  padding: 0 8px; z-index: 1;
+}
+
+/* ── JOURNEY SECTION ──────────────────────────────────── */
+.journey-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  margin-top: 48px;
+}
+.journey-card {
+  background: var(--sc-lowest); border: 1px solid var(--sc-high);
+  border-radius: var(--radius-lg); padding: 32px;
+  position: relative; overflow: hidden;
+}
+.journey-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--gradient);
+}
+.journey-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gradient); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-weight: 800; font-size: .875rem;
+  margin-bottom: 16px;
+}
+.journey-card h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 8px; }
+.journey-card p { font-size: .9375rem; color: var(--on-surface-var); line-height: 1.65; }
+.journey-price {
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--sc-container);
+  font-size: .8125rem; color: var(--on-surface-var);
+}
+.journey-price strong { color: var(--primary); font-family: var(--font-mono); font-size: .9375rem; }
+.connector {
+  display: none;
+}
+@media (min-width: 768px) {
+  .journey-grid { position: relative; }
+}
+
+/* ── ONBOARDING CARDS ─────────────────────────────────── */
+.plans-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-top: 48px;
+}
+.plan-card {
+  background: var(--sc-lowest); border: 1.5px solid var(--sc-high);
+  border-radius: var(--radius-lg); padding: 32px;
+  display: flex; flex-direction: column;
+  transition: box-shadow .2s, border-color .2s;
+  position: relative;
+}
+.plan-card:hover {
+  box-shadow: var(--shadow-md); border-color: var(--sc-highest);
+}
+.plan-card.featured {
+  border-color: var(--primary); box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+.featured-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--gradient); color: white;
+  font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 16px; border-radius: 20px;
+  white-space: nowrap;
+}
+.plan-icon { font-size: 1.75rem; margin-bottom: 16px; }
+.plan-name { font-family: var(--font-head); font-weight: 700; font-size: 1.125rem; margin-bottom: 6px; }
+.plan-desc { font-size: .875rem; color: var(--on-surface-var); line-height: 1.6; margin-bottom: 24px; }
+.plan-price {
+  display: flex; align-items: baseline; gap: 4px; margin-bottom: 24px;
+}
+.plan-price .currency { font-size: .9rem; font-weight: 600; color: var(--on-surface-var); margin-top: 4px; }
+.plan-price .amount {
+  font-family: var(--font-head); font-weight: 800;
+  font-size: 2.5rem; color: var(--on-surface); letter-spacing: -.04em;
+}
+.plan-price .period { font-size: .875rem; color: var(--on-surface-var); }
+.plan-tag {
+  display: inline-block; background: var(--amber-light); color: #92400e;
+  font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 4px; margin-bottom: 24px;
+}
+.plan-features { list-style: none; flex: 1; }
+.plan-features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: .9rem; color: var(--on-surface-var); padding: 7px 0;
+  border-bottom: 1px solid var(--sc-container);
+}
+.plan-features li:last-child { border-bottom: none; }
+.plan-features .check {
+  color: var(--primary); font-size: 1rem; flex-shrink: 0; margin-top: 1px;
+}
+.plan-features .check-dim { color: var(--outline); }
+.plan-btn {
+  margin-top: 28px; padding: 12px; border-radius: var(--radius);
+  font-size: .9375rem; font-weight: 600; cursor: pointer;
+  border: none; font-family: var(--font-body); transition: opacity .2s;
+  text-align: center;
+}
+.plan-btn-primary { background: var(--gradient); color: white; }
+.plan-btn-secondary {
+  background: transparent; border: 1.5px solid var(--primary);
+  color: var(--primary);
+}
+.plan-btn:hover { opacity: .85; }
+
+/* ── TIERS TABLE ──────────────────────────────────────── */
+.tiers-wrapper { margin-top: 48px; overflow-x: auto; }
+.tiers-table {
+  width: 100%; border-collapse: collapse; min-width: 680px;
+}
+.tiers-table th {
+  font-family: var(--font-head); font-weight: 700; font-size: .875rem;
+  padding: 16px 20px; background: var(--sc-lowest);
+  border: 1px solid var(--sc-high); text-align: center;
+}
+.tiers-table th.col-feature {
+  text-align: left; background: var(--sc-low); color: var(--on-surface-var);
+  font-size: .8125rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.tiers-table th.col-pro { background: #f0f3ff; color: var(--primary); }
+.tiers-table th.col-fs  { background: #eff8ff; color: var(--tertiary); }
+.tier-price-row { display: flex; flex-direction: column; align-items: center; }
+.tier-price {
+  font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em;
+  font-family: var(--font-head);
+}
+.tier-price-sub { font-size: .75rem; color: var(--on-surface-var); font-weight: 400; }
+.tiers-table td {
+  padding: 13px 20px; border: 1px solid var(--sc-container);
+  font-size: .9rem; color: var(--on-surface-var); text-align: center;
+  vertical-align: middle;
+}
+.tiers-table td.feature-name {
+  text-align: left; font-weight: 500; color: var(--on-surface);
+  background: var(--sc-low);
+}
+.tiers-table tbody tr:hover td { background: #f8f9ff; }
+.tiers-table td.col-pro { background: rgba(3,68,236,.03); }
+.tiers-table td.col-fs  { background: rgba(43,59,141,.03); }
+.check-icon { color: var(--primary); font-size: 1rem; }
+.dash-icon  { color: var(--sc-highest); font-size: 1.25rem; font-weight: 300; }
+.badge-ess, .badge-pro, .badge-fs {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: .7rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 4px;
+  margin-bottom: 6px;
+}
+.badge-ess { background: rgba(96,165,250,.12); color: #1d4ed8; }
+.badge-pro { background: rgba(3,68,236,.1); color: var(--primary); }
+.badge-fs  { background: rgba(43,59,141,.1); color: var(--tertiary); }
+
+/* ── VOLUME PACKAGES ──────────────────────────────────── */
+.packages-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-top: 40px;
+}
+.pkg-card {
+  background: var(--sc-lowest); border: 1.5px solid var(--sc-high);
+  border-radius: var(--radius-lg); padding: 24px 20px; text-align: center;
+  transition: box-shadow .2s, border-color .2s;
+}
+.pkg-card:hover { box-shadow: var(--shadow-md); border-color: var(--primary); }
+.pkg-label {
+  font-size: .75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--on-surface-var); margin-bottom: 8px;
+}
+.pkg-qty {
+  font-family: var(--font-head); font-size: 2rem; font-weight: 800;
+  color: var(--on-surface); letter-spacing: -.04em; margin-bottom: 4px;
+}
+.pkg-qty span { font-size: 1rem; font-weight: 600; color: var(--on-surface-var); }
+.pkg-discount {
+  display: inline-block; background: var(--amber-light); color: #92400e;
+  font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 4px; margin: 8px 0 12px;
+}
+.pkg-prices {
+  display: flex; flex-direction: column; gap: 4px; margin-top: 12px;
+}
+.pkg-price-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .8125rem; padding: 4px 0;
+  border-bottom: 1px solid var(--sc-container);
+}
+.pkg-price-row:last-child { border-bottom: none; }
+.pkg-price-tier { color: var(--on-surface-var); }
+.pkg-price-val { font-family: var(--font-mono); font-weight: 500; color: var(--on-surface); }
+
+/* ── HUB SECTION ──────────────────────────────────────── */
+.hub-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-top: 48px;
+}
+
+/* ── BUILDER ──────────────────────────────────────────── */
+.builder {
+  background: var(--sc-lowest); border: 1.5px solid var(--sc-high);
+  border-radius: var(--radius-lg); overflow: hidden;
+  display: grid; grid-template-columns: 1fr 380px;
+  margin-top: 48px; box-shadow: var(--shadow-md);
+}
+.builder-inputs { padding: 40px; }
+.builder-result {
+  background: var(--gradient); color: white;
+  padding: 40px; display: flex; flex-direction: column;
+}
+.builder-section-title {
+  font-family: var(--font-head); font-weight: 700; font-size: .875rem;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--on-surface-var); margin: 28px 0 14px;
+}
+.builder-section-title:first-child { margin-top: 0; }
+
+/* select + number inputs */
+.builder select, .builder input[type="number"] {
+  font-family: var(--font-body); font-size: .9rem; color: var(--on-surface);
+  background: var(--sc-low); border: 1.5px solid var(--sc-high);
+  border-radius: var(--radius); padding: 10px 14px;
+  outline: none; transition: border-color .2s;
+  width: 100%;
+}
+.builder select:focus, .builder input[type="number"]:focus {
+  border-color: var(--primary); background: white;
+}
+.builder-row {
+  display: grid; grid-template-columns: 1fr 80px; gap: 12px;
+  align-items: center; margin-bottom: 10px;
+}
+.builder-row label {
+  font-size: .9rem; color: var(--on-surface); font-weight: 500;
+}
+.builder-row label small {
+  display: block; font-size: .775rem; color: var(--on-surface-var); font-weight: 400;
+}
+.builder-divider {
+  border: none; border-top: 1px solid var(--sc-container);
+  margin: 24px 0 0;
+}
+
+/* result panel */
+.result-title {
+  font-family: var(--font-head); font-weight: 700; font-size: .875rem;
+  text-transform: uppercase; letter-spacing: .08em;
+  opacity: .7; margin-bottom: 32px;
+}
+.result-section {
+  margin-bottom: 20px;
+}
+.result-section-title {
+  font-size: .75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .08em; opacity: .6; margin-bottom: 8px;
+}
+.result-line {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: .9rem; padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.result-line:last-child { border-bottom: none; }
+.result-line .label { opacity: .85; }
+.result-line .val { font-family: var(--font-mono); font-size: .9rem; opacity: .9; }
+.result-divider { border: none; border-top: 1px solid rgba(255,255,255,.2); margin: 20px 0; }
+.result-total-label { font-size: .875rem; opacity: .7; margin-bottom: 6px; }
+.result-total-val {
+  font-family: var(--font-head); font-weight: 800;
+  font-size: 2.75rem; letter-spacing: -.04em; line-height: 1;
+  margin-bottom: 4px;
+}
+.result-total-sub { font-size: .8125rem; opacity: .6; }
+.result-note {
+  margin-top: auto; padding-top: 24px;
+  font-size: .8125rem; opacity: .6; line-height: 1.6;
+}
+.result-empty {
+  opacity: .45; font-size: .9375rem; line-height: 1.7;
+  text-align: center; margin: auto;
+}
+
+/* ── STUDENTS SECTION ─────────────────────────────────── */
+.students-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+  margin-top: 40px; max-width: 680px;
+}
+.student-card {
+  background: var(--sc-lowest); border: 1.5px solid var(--sc-high);
+  border-radius: var(--radius-lg); padding: 28px 28px 32px;
+}
+.student-card.featured { border-color: var(--secondary); }
+.student-tier {
+  font-size: .7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--secondary); margin-bottom: 12px;
+}
+.student-price {
+  font-family: var(--font-head); font-weight: 800;
+  font-size: 1.75rem; letter-spacing: -.04em; margin-bottom: 4px;
+}
+.student-price-sub { font-size: .825rem; color: var(--on-surface-var); margin-bottom: 20px; }
+.student-features { list-style: none; }
+.student-features li {
+  font-size: .875rem; color: var(--on-surface-var);
+  padding: 6px 0; display: flex; gap: 8px; align-items: flex-start;
+  border-bottom: 1px solid var(--sc-container);
+}
+.student-features li:last-child { border-bottom: none; }
+
+/* ── FAQ ──────────────────────────────────────────────── */
+.faq-list { margin-top: 40px; max-width: 760px; }
+.faq-item {
+  border-bottom: 1px solid var(--sc-container);
+}
+.faq-q {
+  width: 100%; text-align: left; background: none; border: none;
+  padding: 20px 0; display: flex; justify-content: space-between;
+  align-items: center; cursor: pointer; gap: 16px;
+}
+.faq-q-text {
+  font-family: var(--font-head); font-weight: 600; font-size: 1rem;
+  color: var(--on-surface);
+}
+.faq-icon {
+  color: var(--primary); font-size: 1.25rem; flex-shrink: 0;
+  transition: transform .25s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height .3s ease;
+}
+.faq-a p {
+  font-size: .9375rem; color: var(--on-surface-var);
+  line-height: 1.7; padding-bottom: 20px;
+}
+
+/* ── CTA FOOTER ───────────────────────────────────────── */
+.cta-section {
+  background: var(--gradient); color: white;
+  padding: 80px 40px; text-align: center;
+}
+.cta-section h2 {
+  font-family: var(--font-head); font-weight: 800;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem); letter-spacing: -.04em;
+  margin-bottom: 16px; line-height: 1.1;
+}
+.cta-section p {
+  font-size: 1.0625rem; opacity: .85; max-width: 520px;
+  margin: 0 auto 36px; line-height: 1.7;
+}
+.cta-btn {
+  display: inline-block; padding: 14px 36px;
+  background: white; color: var(--primary);
+  font-family: var(--font-head); font-weight: 700; font-size: 1rem;
+  border-radius: var(--radius); text-decoration: none;
+  transition: opacity .2s; cursor: pointer; border: none;
+}
+.cta-btn:hover { opacity: .9; }
+
+/* ── FOOTER ───────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--sc-high);
+  padding: 32px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .8125rem; color: var(--on-surface-var);
+}
+.footer-logo {
+  font-family: var(--font-head); font-weight: 800; color: var(--primary);
+  font-size: 1rem; letter-spacing: -.025em; text-decoration: none;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .container { padding: 0 24px; }
+  section { padding: 56px 0; }
+  .journey-grid, .plans-grid, .hub-grid { grid-template-columns: 1fr 1fr; }
+  .packages-grid { grid-template-columns: repeat(2, 1fr); }
+  .builder { grid-template-columns: 1fr; }
+  .builder-result { min-height: 320px; }
+  .tiers-wrapper { overflow-x: scroll; }
+  .plan-card.featured { transform: none; }
+  .hero { padding: 72px 24px 56px; }
+  .hero-steps { flex-direction: column; align-items: center; gap: 8px; }
+  .hero-step + .hero-step { margin-left: 0; }
+  .hero-arrow { transform: rotate(90deg); }
+}
+@media (max-width: 600px) {
+  .journey-grid, .plans-grid, .hub-grid { grid-template-columns: 1fr; }
+  .students-grid { grid-template-columns: 1fr; }
+  .packages-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">MiStudies</a>
+  <div class="nav-links">
+    <a href="hub.html">Acervo</a>
+    <a href="dashboard.html">Área do Professor</a>
+    <a href="#builder">Monte seu plano</a>
+    <a href="#" class="nav-cta">Falar com a equipe</a>
+  </div>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-eyebrow">Professores &amp; Educadores</div>
+  <h1>Transforme suas aulas.<br>Sem complicação.</h1>
+  <p class="hero-sub">Do PDF ao HTML interativo com design premium — você escolhe o nível e a cadência. Tudo em 3 etapas simples.</p>
+
+  <div class="hero-steps">
+    <div class="hero-step">
+      <div class="hero-step-num">1</div>
+      <div class="hero-step-label">Onboarding</div>
+    </div>
+    <div class="hero-arrow">›</div>
+    <div class="hero-step">
+      <div class="hero-step-num">2</div>
+      <div class="hero-step-label">Criação de Aulas</div>
+    </div>
+    <div class="hero-arrow">›</div>
+    <div class="hero-step">
+      <div class="hero-step-num">3</div>
+      <div class="hero-step-label">Hub Mensal</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── JORNADA ──────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="eyebrow">Como funciona</div>
+    <h2 class="section-title">Três etapas para publicar suas aulas</h2>
+    <p class="section-sub">Cada professor percorre o mesmo caminho — desde a criação da sua presença no hub até a publicação contínua de aulas para os alunos.</p>
+
+    <div class="journey-grid">
+      <div class="journey-card">
+        <div class="journey-num">1</div>
+        <h3>Onboarding</h3>
+        <p>Criamos a sua identidade dentro do MiStudies: página pública, bio, configuração de matérias e identidade visual personalizada conforme o plano escolhido.</p>
+        <div class="journey-price">
+          Taxa única a partir de <strong>R$ 200</strong>
+        </div>
+      </div>
+      <div class="journey-card">
+        <div class="journey-num">2</div>
+        <h3>Criação de Aulas</h3>
+        <p>Você envia o PDF ou material de aula. Transformamos em HTML interativo com design editorial de alto nível. Você escolhe o tier de complexidade por aula.</p>
+        <div class="journey-price">
+          A partir de <strong>R$ 40/aula</strong>
+        </div>
+      </div>
+      <div class="journey-card">
+        <div class="journey-num">3</div>
+        <h3>Hub Mensal</h3>
+        <p>Assinatura que mantém sua página ativa, as aulas publicadas e acessíveis aos alunos. Inclui hospedagem, atualizações e analytics de visualização.</p>
+        <div class="journey-price">
+          A partir de <strong>R$ 49/mês</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ONBOARDING ────────────────────────────────────────── -->
+<section id="onboarding">
+  <div class="container">
+    <div class="eyebrow">Etapa 1 — Onboarding</div>
+    <h2 class="section-title">Escolha seu setup inicial</h2>
+    <p class="section-sub">Taxa única paga uma vez. Define a profundidade da sua identidade dentro da plataforma.</p>
+
+    <div class="plans-grid">
+      <!-- BÁSICO -->
+      <div class="plan-card">
+        <div class="plan-icon">📄</div>
+        <div class="plan-name">Setup Básico</div>
+        <div class="plan-desc">Tudo que você precisa para começar a publicar e ser encontrado pelos alunos.</div>
+        <div class="plan-price">
+          <span class="currency">R$</span>
+          <span class="amount">200</span>
+          <span class="period">taxa única</span>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Página pública do professor no hub</li>
+          <li><span class="check">✓</span> Bio, foto e configuração de matérias</li>
+          <li><span class="check">✓</span> Link compartilhável (mistudies/professor)</li>
+          <li><span class="check">✓</span> Design padrão MiStudies</li>
+          <li><span class="check-dim">—</span> Paleta e identidade personalizada</li>
+          <li><span class="check-dim">—</span> Banner hero customizado</li>
+          <li><span class="check-dim">—</span> Logo/marca do professor</li>
+        </ul>
+        <button class="plan-btn plan-btn-secondary">Começar com Básico</button>
+      </div>
+
+      <!-- BRANDED (DESTAQUE) -->
+      <div class="plan-card featured">
+        <div class="featured-badge">⭐ Mais escolhido</div>
+        <div class="plan-icon">🎨</div>
+        <div class="plan-name">Setup Branded</div>
+        <div class="plan-desc">Sua identidade visual aplicada à sua página — alunos reconhecem sua marca antes mesmo de abrir a aula.</div>
+        <div class="plan-price">
+          <span class="currency">R$</span>
+          <span class="amount">500</span>
+          <span class="period">taxa única</span>
+        </div>
+        <div class="plan-tag">Inclui tudo do Básico</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Página pública + bio + configuração</li>
+          <li><span class="check">✓</span> Pesquisa de estilo e identidade</li>
+          <li><span class="check">✓</span> Criação de paleta personalizada</li>
+          <li><span class="check">✓</span> Logotipo / marca do professor</li>
+          <li><span class="check">✓</span> Banner hero customizado</li>
+          <li><span class="check-dim">—</span> Múltiplas disciplinas e subpáginas</li>
+          <li><span class="check-dim">—</span> Integração com identidade institucional</li>
+        </ul>
+        <button class="plan-btn plan-btn-primary">Começar com Branded</button>
+      </div>
+
+      <!-- INSTITUCIONAL -->
+      <div class="plan-card">
+        <div class="plan-icon">🏛️</div>
+        <div class="plan-name">Setup Institucional</div>
+        <div class="plan-desc">Para professores com múltiplas disciplinas ou que representam uma faculdade/departamento.</div>
+        <div class="plan-price">
+          <span class="currency">R$</span>
+          <span class="amount">1.000</span>
+          <span class="period">taxa única</span>
+        </div>
+        <div class="plan-tag">Inclui tudo do Branded</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Tudo do Setup Branded</li>
+          <li><span class="check">✓</span> Integração com identidade da instituição</li>
+          <li><span class="check">✓</span> Múltiplas disciplinas e subpáginas</li>
+          <li><span class="check">✓</span> Landing page dedicada ao professor</li>
+          <li><span class="check">✓</span> Onboarding de até 3 professores</li>
+          <li><span class="check">✓</span> Reunião de alinhamento incluída</li>
+          <li><span class="check">✓</span> Suporte prioritário</li>
+        </ul>
+        <button class="plan-btn plan-btn-secondary">Falar sobre Institucional</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TIERS DE AULAS ────────────────────────────────────── -->
+<section id="aulas">
+  <div class="container">
+    <div class="eyebrow">Etapa 2 — Criação de Aulas</div>
+    <h2 class="section-title">Escolha o tier por aula</h2>
+    <p class="section-sub">Cada aula é cobrada individualmente. Você escolhe o tier conforme a complexidade que quer entregar para os seus alunos.</p>
+
+    <div class="tiers-wrapper">
+      <table class="tiers-table">
+        <thead>
+          <tr>
+            <th class="col-feature" style="width:260px">Características</th>
+            <th>
+              <span class="badge-ess">📝 Essencial</span>
+              <div class="tier-price-row">
+                <div class="tier-price">R$ 40</div>
+                <div class="tier-price-sub">por aula</div>
+              </div>
+            </th>
+            <th class="col-pro">
+              <span class="badge-pro">⚡ Pro</span>
+              <div class="tier-price-row">
+                <div class="tier-price" style="color:var(--primary)">R$ 75</div>
+                <div class="tier-price-sub">por aula</div>
+              </div>
+            </th>
+            <th class="col-fs">
+              <span class="badge-fs">🏆 Full Studio</span>
+              <div class="tier-price-row">
+                <div class="tier-price" style="color:var(--tertiary)">R$ 100</div>
+                <div class="tier-price-sub">por aula</div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feature-name">Formato de entrega</td>
+            <td>HTML estático editorial</td>
+            <td class="col-pro">HTML interativo</td>
+            <td class="col-fs">HTML completo com brand</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Tipografia e hierarquia</td>
+            <td><span class="check-icon">✓</span> Padrão MiStudies</td>
+            <td class="col-pro"><span class="check-icon">✓</span> Padrão MiStudies</td>
+            <td class="col-fs"><span class="check-icon">✓</span> Identidade do professor</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Paleta personalizada</td>
+            <td><span class="dash-icon">—</span></td>
+            <td class="col-pro"><span class="check-icon">✓</span> Cores do professor</td>
+            <td class="col-fs"><span class="check-icon">✓</span> Brand completo</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Acordeões, tabs, tooltips</td>
+            <td><span class="dash-icon">—</span></td>
+            <td class="col-pro"><span class="check-icon">✓</span></td>
+            <td class="col-fs"><span class="check-icon">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Tabelas interativas e timeline</td>
+            <td><span class="dash-icon">—</span></td>
+            <td class="col-pro"><span class="check-icon">✓</span></td>
+            <td class="col-fs"><span class="check-icon">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Quiz com correção automática</td>
+            <td><span class="dash-icon">—</span></td>
+            <td class="col-pro"><span class="dash-icon">—</span></td>
+            <td class="col-fs"><span class="check-icon">✓</span> Até 10 questões</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Flashcards interativos</td>
+            <td><span class="dash-icon">—</span></td>
+            <td class="col-pro"><span class="dash-icon">—</span></td>
+            <td class="col-fs"><span class="check-icon">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Modo apresentação</td>
+            <td><span class="dash-icon">—</span></td>
+            <td class="col-pro"><span class="dash-icon">—</span></td>
+            <td class="col-fs"><span class="check-icon">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Barra de progresso de leitura</td>
+            <td><span class="dash-icon">—</span></td>
+            <td class="col-pro"><span class="dash-icon">—</span></td>
+            <td class="col-fs"><span class="check-icon">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Pesquisa e fontes externas</td>
+            <td>Básica</td>
+            <td class="col-pro">Moderada (3–5 fontes)</td>
+            <td class="col-fs">Profunda + glossário</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Responsivo (mobile/tablet)</td>
+            <td><span class="check-icon">✓</span></td>
+            <td class="col-pro"><span class="check-icon">✓</span></td>
+            <td class="col-fs"><span class="check-icon">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Prazo de entrega</td>
+            <td>3–5 dias úteis</td>
+            <td class="col-pro">5–7 dias úteis</td>
+            <td class="col-fs">7–10 dias úteis</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pacotes por volume -->
+    <div style="margin-top:56px">
+      <div class="eyebrow">Pacotes por Volume</div>
+      <h3 style="font-family:var(--font-head);font-size:1.375rem;font-weight:700;letter-spacing:-.025em;margin-bottom:8px">Quanto mais aulas, maior o desconto</h3>
+      <p style="font-size:.9375rem;color:var(--on-surface-var)">Descontos aplicados sobre o preço unitário de cada tier.</p>
+
+      <div class="packages-grid">
+        <div class="pkg-card">
+          <div class="pkg-label">Avulsa</div>
+          <div class="pkg-qty">1 <span>aula</span></div>
+          <div class="pkg-discount">sem desconto</div>
+          <div class="pkg-prices">
+            <div class="pkg-price-row"><span class="pkg-price-tier">Essencial</span><span class="pkg-price-val">R$ 40</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Pro</span><span class="pkg-price-val">R$ 75</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Full Studio</span><span class="pkg-price-val">R$ 100</span></div>
+          </div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-label">Pacote</div>
+          <div class="pkg-qty">5 <span>aulas</span></div>
+          <div class="pkg-discount">10% off</div>
+          <div class="pkg-prices">
+            <div class="pkg-price-row"><span class="pkg-price-tier">Essencial</span><span class="pkg-price-val">R$ 180</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Pro</span><span class="pkg-price-val">R$ 337</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Full Studio</span><span class="pkg-price-val">R$ 450</span></div>
+          </div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-label">Pacote</div>
+          <div class="pkg-qty">10 <span>aulas</span></div>
+          <div class="pkg-discount">20% off</div>
+          <div class="pkg-prices">
+            <div class="pkg-price-row"><span class="pkg-price-tier">Essencial</span><span class="pkg-price-val">R$ 320</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Pro</span><span class="pkg-price-val">R$ 600</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Full Studio</span><span class="pkg-price-val">R$ 800</span></div>
+          </div>
+        </div>
+        <div class="pkg-card" style="border-color:var(--amber)">
+          <div class="pkg-label">Semestral</div>
+          <div class="pkg-qty">20 <span>aulas</span></div>
+          <div class="pkg-discount" style="background:#fff3cd;color:#78350f">30% off</div>
+          <div class="pkg-prices">
+            <div class="pkg-price-row"><span class="pkg-price-tier">Essencial</span><span class="pkg-price-val">R$ 560</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Pro</span><span class="pkg-price-val">R$ 1.050</span></div>
+            <div class="pkg-price-row"><span class="pkg-price-tier">Full Studio</span><span class="pkg-price-val">R$ 1.400</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HUB MENSAL ─────────────────────────────────────────── -->
+<section id="hub">
+  <div class="container">
+    <div class="eyebrow">Etapa 3 — Hub Mensal</div>
+    <h2 class="section-title">Mantenha suas aulas no ar</h2>
+    <p class="section-sub">Assinatura mensal que hospeda, atualiza e dá visibilidade à sua página no MiStudies. Cancele quando quiser.</p>
+
+    <div class="hub-grid">
+      <div class="plan-card">
+        <div class="plan-icon">🌱</div>
+        <div class="plan-name">Hub Starter</div>
+        <div class="plan-desc">Para professores começando a publicar e validar com os primeiros alunos.</div>
+        <div class="plan-price">
+          <span class="currency">R$</span>
+          <span class="amount">49</span>
+          <span class="period">/mês</span>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Até 10 aulas publicadas</li>
+          <li><span class="check">✓</span> Página pública do professor</li>
+          <li><span class="check">✓</span> Analytics básico (views por aula)</li>
+          <li><span class="check">✓</span> Link compartilhável</li>
+          <li><span class="check-dim">—</span> Analytics avançado</li>
+          <li><span class="check-dim">—</span> Domínio personalizável</li>
+          <li><span class="check-dim">—</span> Destaque no hub</li>
+        </ul>
+        <button class="plan-btn plan-btn-secondary">Assinar Starter</button>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="featured-badge">⭐ Mais popular</div>
+        <div class="plan-icon">🚀</div>
+        <div class="plan-name">Hub Pro</div>
+        <div class="plan-desc">Para professores ativos que precisam de mais espaço, visibilidade e dados de engajamento.</div>
+        <div class="plan-price">
+          <span class="currency">R$</span>
+          <span class="amount">99</span>
+          <span class="period">/mês</span>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Até 30 aulas publicadas</li>
+          <li><span class="check">✓</span> Tudo do Starter</li>
+          <li><span class="check">✓</span> Analytics avançado</li>
+          <li><span class="check">✓</span> Domínio personalizável</li>
+          <li><span class="check">✓</span> Destaque no hub MiStudies</li>
+          <li><span class="check-dim">—</span> Múltiplos professores</li>
+          <li><span class="check-dim">—</span> Relatórios e suporte prioritário</li>
+        </ul>
+        <button class="plan-btn plan-btn-primary">Assinar Pro</button>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-icon">🏛️</div>
+        <div class="plan-name">Hub Institucional</div>
+        <div class="plan-desc">Para departamentos, cursos ou grupos de professores que compartilham um espaço único.</div>
+        <div class="plan-price">
+          <span class="currency">R$</span>
+          <span class="amount">249</span>
+          <span class="period">/mês</span>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Aulas ilimitadas</li>
+          <li><span class="check">✓</span> Tudo do Pro</li>
+          <li><span class="check">✓</span> Múltiplos professores</li>
+          <li><span class="check">✓</span> Relatórios consolidados</li>
+          <li><span class="check">✓</span> Suporte prioritário</li>
+          <li><span class="check">✓</span> Reunião mensal de acompanhamento</li>
+          <li><span class="check">✓</span> SLA de atualização garantido</li>
+        </ul>
+        <button class="plan-btn plan-btn-secondary">Falar sobre Institucional</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BUILDER ─────────────────────────────────────────────── -->
+<section id="builder">
+  <div class="container">
+    <div class="eyebrow">Monte seu plano</div>
+    <h2 class="section-title">Quanto vai custar para você?</h2>
+    <p class="section-sub">Configure o seu cenário real e veja o valor do primeiro mês e os custos recorrentes.</p>
+
+    <div class="builder">
+      <!-- INPUTS -->
+      <div class="builder-inputs">
+
+        <div class="builder-section-title">① Onboarding (taxa única)</div>
+        <select id="b_onboarding" onchange="calcBuilder()">
+          <option value="0">Selecione um plano de onboarding</option>
+          <option value="200">Setup Básico — R$ 200</option>
+          <option value="500" selected>Setup Branded — R$ 500 ⭐</option>
+          <option value="1000">Setup Institucional — R$ 1.000</option>
+        </select>
+
+        <hr class="builder-divider" style="margin-top:28px">
+        <div class="builder-section-title">② Aulas por mês</div>
+        <p style="font-size:.8375rem;color:var(--on-surface-var);margin-bottom:16px">Informe quantas aulas de cada tier você planeja produzir por mês.</p>
+
+        <div class="builder-row">
+          <label>📝 Essencial <small>HTML estático · R$ 40/aula</small></label>
+          <input type="number" id="b_ess" min="0" max="50" value="2" onchange="calcBuilder()">
+        </div>
+        <div class="builder-row">
+          <label>⚡ Pro <small>HTML interativo · R$ 75/aula</small></label>
+          <input type="number" id="b_pro" min="0" max="30" value="1" onchange="calcBuilder()">
+        </div>
+        <div class="builder-row">
+          <label>🏆 Full Studio <small>Brand completo · R$ 100/aula</small></label>
+          <input type="number" id="b_fs" min="0" max="20" value="0" onchange="calcBuilder()">
+        </div>
+
+        <hr class="builder-divider">
+        <div class="builder-section-title">③ Hub mensal</div>
+        <select id="b_hub" onchange="calcBuilder()">
+          <option value="0">Selecione um plano de hub</option>
+          <option value="49">Hub Starter — R$ 49/mês</option>
+          <option value="99" selected>Hub Pro — R$ 99/mês ⭐</option>
+          <option value="249">Hub Institucional — R$ 249/mês</option>
+        </select>
+
+      </div>
+
+      <!-- RESULT -->
+      <div class="builder-result" id="b_result">
+        <div class="result-title">Resumo do plano</div>
+
+        <div class="result-section" id="b_onboarding_section" style="display:none">
+          <div class="result-section-title">Onboarding (mês 1)</div>
+          <div class="result-line"><span class="label" id="b_r_ob_label">—</span><span class="val" id="b_r_ob_val">—</span></div>
+        </div>
+
+        <div class="result-section" id="b_aulas_section" style="display:none">
+          <div class="result-section-title">Aulas — mês atual</div>
+          <div class="result-line" id="b_r_ess_line" style="display:none"><span class="label" id="b_r_ess_label">—</span><span class="val" id="b_r_ess_val">—</span></div>
+          <div class="result-line" id="b_r_pro_line" style="display:none"><span class="label" id="b_r_pro_label">—</span><span class="val" id="b_r_pro_val">—</span></div>
+          <div class="result-line" id="b_r_fs_line" style="display:none"><span class="label" id="b_r_fs_label">—</span><span class="val" id="b_r_fs_val">—</span></div>
+        </div>
+
+        <div class="result-section" id="b_hub_section" style="display:none">
+          <div class="result-section-title">Hub</div>
+          <div class="result-line"><span class="label" id="b_r_hub_label">—</span><span class="val" id="b_r_hub_val">—</span></div>
+        </div>
+
+        <div id="b_empty" class="result-empty">
+          <div style="font-size:2rem;margin-bottom:12px">🧮</div>
+          Configure as opções ao lado para ver o resumo do seu plano.
+        </div>
+
+        <hr class="result-divider" id="b_divider" style="display:none">
+
+        <div id="b_totals" style="display:none">
+          <div class="result-total-label">💳 Primeiro mês (com onboarding)</div>
+          <div class="result-total-val" id="b_total_m1">—</div>
+          <div class="result-total-sub" id="b_total_m1_sub"></div>
+
+          <div style="margin-top:20px">
+            <div class="result-total-label">📅 Recorrente mensal</div>
+            <div class="result-total-val" style="font-size:2rem" id="b_total_rec">—</div>
+            <div class="result-total-sub">aulas + hub (sem onboarding)</div>
+          </div>
+        </div>
+
+        <div class="result-note" id="b_note" style="display:none">
+          Valores sem impostos. Pacotes por volume disponíveis com até 30% de desconto.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ESTUDANTES ─────────────────────────────────────────── -->
+<section id="estudantes">
+  <div class="container">
+    <div class="eyebrow">Para Estudantes</div>
+    <h2 class="section-title">Acesse o acervo</h2>
+    <p class="section-sub">Todo o conteúdo publicado pelos professores é acessível gratuitamente. A assinatura desbloqueia funcionalidades extras para quem quer ir além.</p>
+
+    <div class="students-grid">
+      <div class="student-card">
+        <div class="student-tier">Plano Free</div>
+        <div class="student-price">R$ 0</div>
+        <div class="student-price-sub">para sempre</div>
+        <ul class="student-features">
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Acesso completo ao acervo</li>
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Todas as aulas publicadas</li>
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Busca e filtros básicos</li>
+          <li><span style="color:var(--outline);font-size:.9rem">—</span> Download em PDF</li>
+          <li><span style="color:var(--outline);font-size:.9rem">—</span> Favoritos ilimitados</li>
+          <li><span style="color:var(--outline);font-size:.9rem">—</span> Kits de revisão</li>
+        </ul>
+      </div>
+
+      <div class="student-card featured">
+        <div class="student-tier">Plano Estudante</div>
+        <div class="student-price">R$ 14,90<span style="font-size:1rem;font-weight:500;color:var(--on-surface-var)">/mês</span></div>
+        <div class="student-price-sub">ou R$ 11,92/mês no plano anual (~R$ 143/ano)</div>
+        <ul class="student-features">
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Tudo do plano gratuito</li>
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Download em PDF</li>
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Favoritos ilimitados</li>
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Kits de revisão</li>
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Funcionalidades extras em breve</li>
+          <li><span class="check-icon" style="font-size:.9rem">✓</span> Acesso prioritário a novidades</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ─────────────────────────────────────────────────── -->
+<section id="faq">
+  <div class="container">
+    <div class="eyebrow">Dúvidas frequentes</div>
+    <h2 class="section-title">Perguntas e respostas</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Preciso assinar o Hub para ter aulas publicadas?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Sim. O Hub é a assinatura que mantém sua página ativa e as aulas acessíveis aos alunos. Sem o Hub, as aulas ficam criadas mas não publicadas. Você pode começar com o Hub Starter (R$ 49/mês) e fazer upgrade conforme crescer o volume de conteúdo.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Posso misturar tiers diferentes numa mesma assinatura?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Sim. Cada aula é cobrada individualmente no tier escolhido para aquela aula. Você pode ter 3 aulas Essencial, 2 Pro e 1 Full Studio no mesmo mês — sem nenhuma restrição de mix.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">O que acontece se eu cancelar o Hub?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>As aulas ficam arquivadas no nosso sistema. Ao reativar a assinatura, tudo volta ao ar imediatamente. Não há perda de conteúdo já produzido.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Quanto tempo leva para receber uma aula depois de enviar o PDF?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Essencial: 3–5 dias úteis. Pro: 5–7 dias úteis. Full Studio: 7–10 dias úteis. Prazos contados a partir da confirmação do pagamento e recebimento do material completo.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">O onboarding é cobrado uma única vez?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Sim. A taxa de onboarding é paga uma única vez na entrada. Depois disso, você paga apenas pelas aulas criadas e pela assinatura mensal do Hub.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Posso fazer upgrade do meu plano de onboarding depois?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Sim. Caso queira evoluir do Básico para o Branded ou do Branded para o Institucional, cobramos apenas a diferença de valor entre os planos.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ───────────────────────────────────────────── -->
+<div class="cta-section">
+  <div class="container">
+    <h2>Pronto para transformar suas aulas?</h2>
+    <p>Comece com o Setup Branded e publique as primeiras aulas em até 10 dias. Sem lock-in — cancele quando quiser.</p>
+    <button class="cta-btn">Falar com a equipe</button>
+  </div>
+</div>
+
+<!-- ── FOOTER ──────────────────────────────────────────────── -->
+<footer class="footer">
+  <a href="../index.html" class="footer-logo">MiStudies</a>
+  <span>Seu estudo, bem resolvido. · © 2026 MiStudies</span>
+</footer>
+
+<!-- ── SCRIPTS ─────────────────────────────────────────────── -->
+<script>
+/* ── BUILDER ──────────────────────────────────────────────── */
+function fmt(n) {
+  return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function g(id) {
+  const el = document.getElementById(id);
+  return el ? (parseFloat(el.value) || 0) : 0;
+}
+function show(id, visible) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = visible ? '' : 'none';
+}
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+function calcBuilder() {
+  const ob   = g('b_onboarding');
+  const ess  = g('b_ess');
+  const pro  = g('b_pro');
+  const fs   = g('b_fs');
+  const hub  = g('b_hub');
+
+  const aulaTotal = ess * 40 + pro * 75 + fs * 100;
+  const recorrente = aulaTotal + hub;
+  const primeiroMes = ob + recorrente;
+  const hasAnything = ob > 0 || ess > 0 || pro > 0 || fs > 0 || hub > 0;
+
+  show('b_empty', !hasAnything);
+  show('b_divider', hasAnything);
+  show('b_totals', hasAnything);
+  show('b_note', hasAnything);
+
+  // Onboarding
+  const hasOb = ob > 0;
+  show('b_onboarding_section', hasOb);
+  if (hasOb) {
+    const labels = { 200: 'Setup Básico', 500: 'Setup Branded', 1000: 'Setup Institucional' };
+    setText('b_r_ob_label', labels[ob] || 'Onboarding');
+    setText('b_r_ob_val', fmt(ob));
+  }
+
+  // Aulas
+  const hasAulas = ess > 0 || pro > 0 || fs > 0;
+  show('b_aulas_section', hasAulas);
+
+  show('b_r_ess_line', ess > 0);
+  if (ess > 0) {
+    setText('b_r_ess_label', ess + '× Essencial');
+    setText('b_r_ess_val', fmt(ess * 40));
+  }
+
+  show('b_r_pro_line', pro > 0);
+  if (pro > 0) {
+    setText('b_r_pro_label', pro + '× Pro');
+    setText('b_r_pro_val', fmt(pro * 75));
+  }
+
+  show('b_r_fs_line', fs > 0);
+  if (fs > 0) {
+    setText('b_r_fs_label', fs + '× Full Studio');
+    setText('b_r_fs_val', fmt(fs * 100));
+  }
+
+  // Hub
+  const hasHub = hub > 0;
+  show('b_hub_section', hasHub);
+  if (hasHub) {
+    const hubLabels = { 49: 'Hub Starter', 99: 'Hub Pro', 249: 'Hub Institucional' };
+    setText('b_r_hub_label', hubLabels[hub] || 'Hub');
+    setText('b_r_hub_val', fmt(hub) + '/mês');
+  }
+
+  // Totals
+  if (hasAnything) {
+    setText('b_total_m1', primeiroMes > 0 ? fmt(primeiroMes) : '—');
+    if (ob > 0) {
+      setText('b_total_m1_sub', 'inclui onboarding de ' + fmt(ob));
+    } else {
+      setText('b_total_m1_sub', 'sem onboarding configurado');
+    }
+    setText('b_total_rec', recorrente > 0 ? fmt(recorrente) : '—');
+  }
+}
+
+/* ── FAQ ──────────────────────────────────────────────────── */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+
+  // Fechar todos
+  document.querySelectorAll('.faq-item.open').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.faq-a').style.maxHeight = '0';
+  });
+
+  // Abrir o clicado (se estava fechado)
+  if (!isOpen) {
+    item.classList.add('open');
+    const answer = item.querySelector('.faq-a');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+// Inicializar com os valores padrão
+calcBuilder();
+</script>
+
+</body>
+</html>
