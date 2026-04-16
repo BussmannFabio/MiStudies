@@ -183,10 +183,10 @@ ANTES DE QUALQUER PROFESSOR PILOTO VER O SITE:
   [ ] #F04 — Termos de Uso e Política de Privacidade (mínimo: link para doc externo) · issue #50
 
 ANTES DO LANÇAMENTO PÚBLICO:
-  [ ] #F03 — Criar pages/termos.html + pages/privacidade.html, traduzir footer · issue #49
-  [ ] #F05 — Substituir "Esqueci minha senha" por mensagem de contato · issue #51
+  [ ] #F03 — Criar pages/termos.html + pages/privacidade.html (footer já traduzido) · issue #49
+  [X] #F05 — Substituir "Esqueci minha senha" por mensagem de contato · issue #51
   [X] #F06 — Linkar demos em planos-precos.html
-  [ ] #F07 — Adicionar noindex em plano-rentabilidade.html · issue #52
+  [X] #F07 — Adicionar noindex em plano-rentabilidade.html · issue #52
 
 LIMPEZA DO REPOSITÓRIO:
   [ ] #F08 — Decidir sobre Brandbook.html e conteúdoANA.html · issue #53

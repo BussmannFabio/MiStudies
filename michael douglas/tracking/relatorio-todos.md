@@ -143,14 +143,14 @@
 | T11 | Geral | Sem favicon em nenhuma página | `[ ]` **Pendente** — `P2` · issue #33 |
 | T12 | `pages/acervo.html` | 12 cards clicáveis sem conteúdo (`arquivo:'#'`) | `[X]` **Resolvido** — href removido, pointer-events-none, badge "Em breve" (F01) |
 | T13 | `pages/acervo.html` | 5 slugs de professor gerando links 404 | `[X]` **Resolvido** — nomes exibidos como texto; link só para slugs em `PROFS_COM_PAGINA` (F02) |
-| T14 | `index.html` | Footer com "Terms/Privacy/Support" em inglês apontando para `#` | `[ ]` **Pendente** — `P2` · issue #49 |
+| T14 | `index.html` | Footer com "Terms/Privacy/Support" em inglês apontando para `#` | `[X]` **Resolvido** — traduzido + Suporte via mailto, Termos/Privacidade linkam páginas futuras · issue #49 |
 | T15 | `pages/cadastro.html` | Termos de Uso e Política de Privacidade sem página | `[ ]` **Pendente** — `P1` · issue #50 |
-| T16 | `pages/login.html` | "Esqueci minha senha" sem funcionalidade | `[ ]` **Pendente** — `P2` · issue #51 |
-| T17 | `pages/plano-rentabilidade.html` | Ferramenta interna sem `noindex` | `[ ]` **Pendente** — `P2` · issue #52 |
+| T16 | `pages/login.html` | "Esqueci minha senha" sem funcionalidade | `[X]` **Resolvido** — substituído por `<span>` com tooltip de contato · issue #51 |
+| T17 | `pages/plano-rentabilidade.html` | Ferramenta interna sem `noindex` | `[X]` **Resolvido** — `<meta name="robots" content="noindex, nofollow">` adicionado · issue #52 |
 | T18 | Raiz | `Brandbook.html` e `conteúdoANA.html` órfãos (sem link de entrada) | `[ ]` **Pendente** — `P3` · issue #53 |
 | T19 | Geral | Config Tailwind inline em todas as páginas | `[ ]` **Pendente** — `P3` · issue #43 |
 | T20 | Geral | Dados de conteúdo espalhados nos HTMLs (sem single source of truth) | `[ ]` **Pendente** — `P3` · issue #44 |
-| T21 | `index.html` | Link duplicado do Material Symbols no `<head>` | `[ ]` **Pendente** — `P3` · issue #45 |
+| T21 | `index.html` | Link duplicado do Material Symbols no `<head>` | `[X]` **Resolvido** — segunda tag removida · issue #45 |
 | T22 | Geral | Sem página 404 personalizada | `[ ]` **Pendente** — `P3` · issue #46 |
 | T23 | `index.html` | Tagline do hero diverge da versão oficial da marca | `[ ]` **Pendente** — `P3` · issue #47 |
 
@@ -196,9 +196,9 @@ PRÓXIMOS 30 DIAS — P2:
   [ ] T5   — Meta tags og:* em index.html e planos-precos.html · issue #34
   [ ] T6   — sitemap.xml e robots.txt · issue #39
   [ ] T11  — Favicon em todas as páginas · issue #33
-  [ ] T14  — Corrigir footer index.html (Terms/Privacy em inglês) · issue #49
-  [ ] T16  — Tratar "Esqueci minha senha" no login · issue #51
-  [ ] T17  — noindex em plano-rentabilidade.html · issue #52
+  [X] T14  — Corrigir footer index.html (Terms/Privacy em inglês) · issue #49
+  [X] T16  — Tratar "Esqueci minha senha" no login · issue #51
+  [X] T17  — noindex em plano-rentabilidade.html · issue #52
   [ ] 2.5  — Gateway de pagamento (Stripe / Mercado Pago) · issue #41
   [ ] 2.4  — Gerar documentos de marca faltantes (ICP, Pitch, Templates) · issue #40
   [ ] 2.9  — Prospecção ativa: LinkedIn, grupos acadêmicos, eventos · issue #42
