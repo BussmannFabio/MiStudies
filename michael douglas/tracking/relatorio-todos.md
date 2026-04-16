@@ -128,19 +128,28 @@
 
 ## BACKLOG TÉCNICO — REVISADO ABRIL 2026
 
-| # | Arquivo | Problema original | Status atual |
+| # | Arquivo | Problema | Status |
 |---|---|---|---|
 | T1 | ~~`pages/hub.html`~~ | Sem cards de professores reais | `[X]` **Deletado** — substituído por `acervo.html` + `professor/[slug].html` |
 | T2 | `pages/dashboard.html` | Área do professor não funcional | `[X]` **Resolvido** — 3 abas: Visão Geral / Minhas Aulas / Nova Aula |
 | T3 | ~~`pages/resumos.html`~~ | Não estava linkado ao sistema de aulas | `[X]` **Deletado** — substituído por `pages/acervo.html` com nova taxonomia |
 | T4 | `index.html` | Sem link para landing page de professores | `[X]` **Resolvido** — nav tem link "Planos" → `planos-precos.html` |
-| T5 | Geral | Sem meta tags de SEO completas (og:image, og:title) | `[ ]` **Pendente** — `P2` |
-| T6 | Geral | Sem `sitemap.xml` e `robots.txt` | `[ ]` **Pendente** — `P2` |
-| T7 | `pages/demo/` | Sem índice de comparação das 3 demos | `[ ]` **Pendente** — criar `pages/demo/index.html` — `P3` |
+| T5 | Geral | Sem meta tags de SEO completas (og:image, og:title) | `[ ]` **Pendente** — `P2` · issue #34 |
+| T6 | Geral | Sem `sitemap.xml` e `robots.txt` | `[ ]` **Pendente** — `P2` · issue #39 |
+| T7 | `pages/demo/` | Demos sem ponto de entrada na navegação | `[X]` **Resolvido** — botões "Ver exemplo →" em `planos-precos.html` (F06) |
 | T8 | `pages/login.html` | Não existia | `[X]` **Criado** — formulário e-mail + senha com redirect |
 | T9 | `pages/cadastro.html` | Não existia | `[X]` **Criado** — fluxo 3 etapas: tipo → dados → confirmação |
 | T10 | Geral | URLs de conteúdo ad hoc (`escopo-PI.html` etc.) | `[X]` **Resolvido** — movidos para `pages/acervo/[slug].html` |
-| T11 | Geral | Sem favicon em nenhuma página | `[ ]` **Pendente** — `P2` |
+| T11 | Geral | Sem favicon em nenhuma página | `[ ]` **Pendente** — `P2` · issue #33 |
+| T12 | `pages/acervo.html` | 12 cards clicáveis sem conteúdo (`arquivo:'#'`) | `[X]` **Resolvido** — href removido, pointer-events-none, badge "Em breve" (F01) |
+| T13 | `pages/acervo.html` | 5 slugs de professor gerando links 404 | `[X]` **Resolvido** — nomes exibidos como texto; link só para slugs em `PROFS_COM_PAGINA` (F02) |
+| T14 | `index.html` | Footer com "Terms/Privacy/Support" em inglês apontando para `#` | `[ ]` **Pendente** — `P2` · issue #F03 |
+| T15 | `pages/cadastro.html` | Termos de Uso e Política de Privacidade sem página | `[ ]` **Pendente** — `P1` · issue #F04 |
+| T16 | `pages/login.html` | "Esqueci minha senha" sem funcionalidade | `[ ]` **Pendente** — `P2` · issue #F05 |
+| T17 | `pages/plano-rentabilidade.html` | Ferramenta interna sem `noindex` | `[ ]` **Pendente** — `P2` · issue #F07 |
+| T18 | Raiz | `Brandbook.html` e `conteúdoANA.html` órfãos (sem link de entrada) | `[ ]` **Pendente** — `P3` · issue #F08 |
+
+> Auditoria completa de frontend em `tracking/frontend-inconsistencias.md` · 9 itens · 3 resolvidos
 
 ---
 
@@ -150,35 +159,42 @@
 FEITO ATÉ AGORA:
   [X] Base estratégica (docs/ com Brandbook, Canvas, Plano de Rentabilidade, etc.)
   [X] index.html — landing de marketing para professores
-  [X] pages/acervo.html — acervo com filtros (área, matéria, formato, tier, prof, tags)
-  [X] pages/planos-precos.html — pricing completo com builder interativo
+  [X] pages/acervo.html — acervo com filtros + cards mortos desabilitados + links de prof corrigidos
+  [X] pages/planos-precos.html — pricing completo + botões "Ver exemplo" linkando as demos
   [X] pages/dashboard.html — 3 abas (Visão Geral / Minhas Aulas / Nova Aula)
   [X] pages/login.html — formulário de acesso
   [X] pages/cadastro.html — cadastro em 3 etapas com tipo professor/aluno
   [X] pages/professor/gabriel.html — template de perfil público
   [X] pages/acervo/[slug].html — 3 conteúdos com URLs canônicas
-  [X] pages/demo/ — 3 aulas demo por tier (Essencial / Pro / Full Studio)
-  [X] pages/plano-rentabilidade.html — simulador de receita
+  [X] pages/demo/ — 3 aulas demo por tier, linkadas em planos-precos.html
+  [X] pages/plano-rentabilidade.html — simulador com header compacto, projeção por taxa e cards de plano
   [X] Decisões D1–D4, D6–D7 respondidas pelos sócios
   [X] Marca padronizada — "MiStudies" em todas as páginas, "gaaabriel" removido
+  [X] 23 issues criadas no GitHub (issues #25–#47)
+  [X] Análise de arquitetura sênior — tracking/analise-arquitetura.md
+  [X] Auditoria de frontend — tracking/frontend-inconsistencias.md (9 itens, 3 resolvidos)
 
-PRÓXIMAS 2 SEMANAS (P1):
-  [ ] 1.3 — Criar Skill de Análise B2B (prompt system para PDF de professor)
-  [ ] 1.4 — Definir pipeline manual completo (PDF → análise → produção → entrega)
-  [ ] 1.5 — Criar contrato simples para professores piloto
-  [ ] 1.12 — Escolher e contatar 2–3 professores piloto
-  [ ] 1.15 — Definir canal de entrada dos professores (WhatsApp, e-mail ou formulário)
-  [ ] D5 — Decidir formalização societária
-  [ ] D7 — Definir benefícios exatos da assinatura de aluno
+PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
+  [ ] 1.3  — Criar Skill de Análise B2B · issue #26
+  [ ] 1.4  — Definir pipeline manual completo · issue #27
+  [ ] 1.5  — Criar contrato simples para professores piloto · issue #29
+  [ ] 1.12 — Escolher e contatar 2–3 professores piloto · issue #30
+  [ ] 1.15 — Definir canal de entrada dos professores · issue #28
+  [ ] T15  — Criar páginas Termos de Uso + Política de Privacidade · issue #F04
+  [ ] D5   — Decidir formalização societária (MEI) · issue #31
+  [ ] D7   — Definir benefícios exatos da assinatura de aluno · issue #36
 
-PRÓXIMOS 30 DIAS (P2):
-  [ ] 1.9 — Verificar responsividade em mobile
-  [ ] 1.10 — Configurar domínio + hospedagem em produção
-  [ ] 1.11 — Google Analytics (GA4)
-  [ ] T5 — Meta tags SEO em todas as páginas
-  [ ] T6 — sitemap.xml e robots.txt
-  [ ] T11 — Favicon em todas as páginas
-  [ ] 2.5 — Gateway de pagamento (Stripe / Mercado Pago)
+PRÓXIMOS 30 DIAS — P2:
+  [ ] 1.9  — Verificar responsividade em mobile · issue #37
+  [ ] 1.10 — Configurar domínio + hospedagem (Netlify recomendado) · issue #32
+  [ ] 1.11 — Google Analytics (GA4) · issue #38
+  [ ] T5   — Meta tags og:* em index.html e planos-precos.html · issue #34
+  [ ] T6   — sitemap.xml e robots.txt · issue #39
+  [ ] T11  — Favicon em todas as páginas · issue #33
+  [ ] T14  — Corrigir footer index.html (Terms/Privacy em inglês) · issue #F03
+  [ ] T16  — Tratar "Esqueci minha senha" no login · issue #F05
+  [ ] T17  — noindex em plano-rentabilidade.html · issue #F07
+  [ ] 2.5  — Gateway de pagamento (Stripe / Mercado Pago) · issue #41
 
 META DO MÊS 1 (preços confirmados):
   → 2 professores × Onboarding Básico R$200 = R$400
