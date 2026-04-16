@@ -1,0 +1,162 @@
+<div class="flex flex-1 items-center justify-center px-4 py-12 min-h-[calc(100vh-80px)] mt-20">
+  <div class="w-full max-w-lg">
+
+    <!-- Step indicator -->
+    <div class="flex items-center justify-center gap-2 mb-8">
+      <div class="w-2 h-2 rounded-full transition-colors" [class.bg-primary]="step >= 1" [class.bg-surface-container-highest]="step < 1"></div>
+      <div class="w-2 h-2 rounded-full transition-colors" [class.bg-secondary]="step > 1" [class.bg-primary]="step === 2" [class.bg-surface-container-highest]="step < 2"></div>
+      <div class="w-2 h-2 rounded-full transition-colors" [class.bg-secondary]="step === 3" [class.bg-surface-container-highest]="step < 3"></div>
+    </div>
+
+    <!-- STEP 1: Tipo de conta -->
+    @if (step === 1) {
+      <div class="bg-surface-container-lowest border border-surface-container rounded-3xl p-8 shadow-sm">
+        <div class="mb-6">
+          <h1 class="text-2xl font-extrabold font-headline text-on-surface mb-1">Criar conta</h1>
+          <p class="text-sm text-on-surface-variant">Qual é o seu perfil no MiStudies?</p>
+        </div>
+
+        <div class="space-y-3 mb-8">
+          <!-- Card Professor -->
+          <label (click)="selectTipo('professor')"
+            class="flex items-start gap-4 cursor-pointer border-2 rounded-2xl p-5 transition-all"
+            [class.border-primary]="tipo === 'professor'" [class.bg-primary]="false"
+            [class.border-surface-container-high]="tipo !== 'professor'">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+              [class.bg-primary]="tipo === 'professor'" [class.bg-surface-container]="tipo !== 'professor'">
+              <span class="material-symbols-outlined text-[20px]" [class.text-white]="tipo === 'professor'" [class.text-on-surface-variant]="tipo !== 'professor'">school</span>
+            </div>
+            <div>
+              <div class="font-bold text-on-surface">Professor / Educador</div>
+              <div class="text-xs text-on-surface-variant mt-0.5">Crie e publique aulas, gerencie seu acervo e alcance alunos no MiStudies.</div>
+              <div class="flex flex-wrap gap-1 mt-2">
+                <span class="text-[11px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold">Dashboard</span>
+                <span class="text-[11px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold">Upload de aulas</span>
+                <span class="text-[11px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold">Perfil público</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Card Aluno -->
+          <label (click)="selectTipo('aluno')"
+            class="flex items-start gap-4 cursor-pointer border-2 rounded-2xl p-5 transition-all"
+            [class.border-secondary]="tipo === 'aluno'"
+            [class.border-surface-container-high]="tipo !== 'aluno'">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+              [class.bg-secondary]="tipo === 'aluno'" [class.bg-surface-container]="tipo !== 'aluno'">
+              <span class="material-symbols-outlined text-[20px]" [class.text-white]="tipo === 'aluno'" [class.text-secondary]="tipo !== 'aluno'">menu_book</span>
+            </div>
+            <div>
+              <div class="font-bold text-on-surface">Aluno / Estudante</div>
+              <div class="text-xs text-on-surface-variant mt-0.5">Acesse o acervo de aulas, salve favoritos e acompanhe seu progresso.</div>
+              <div class="flex flex-wrap gap-1 mt-2">
+                <span class="text-[11px] px-2 py-0.5 bg-secondary/10 text-secondary rounded-full font-bold">Acervo gratuito</span>
+                <span class="text-[11px] px-2 py-0.5 bg-secondary/10 text-secondary rounded-full font-bold">Favoritos</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <button (click)="goStep(2)"
+          class="w-full bg-signature-gradient text-on-primary py-3.5 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all">
+          Continuar
+        </button>
+      </div>
+    }
+
+    <!-- STEP 2: Dados básicos -->
+    @if (step === 2) {
+      <div class="bg-surface-container-lowest border border-surface-container rounded-3xl p-8 shadow-sm">
+        <div class="mb-6">
+          <button (click)="goStep(1)" class="text-sm text-on-surface-variant hover:text-primary mb-4 flex items-center gap-1 transition-colors">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span> Voltar
+          </button>
+          <h2 class="text-2xl font-extrabold font-headline text-on-surface mb-1">Seus dados</h2>
+          <p class="text-sm text-on-surface-variant">
+            {{ tipo === 'professor' ? 'Informe seus dados para criar a conta de professor.' : 'Informe seus dados para criar a conta de aluno.' }}
+          </p>
+        </div>
+
+        <form (ngSubmit)="goStep(3)" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-bold text-on-surface mb-2">Nome *</label>
+              <input type="text" [(ngModel)]="nome" name="nome" placeholder="Gabriel" class="input-field" required>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-on-surface mb-2">Sobrenome *</label>
+              <input type="text" name="sobrenome" placeholder="Ferreira" class="input-field" required>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-on-surface mb-2">E-mail *</label>
+            <input type="email" name="email" placeholder="seu@email.com" class="input-field" required>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-on-surface mb-2">Senha *</label>
+            <div class="relative">
+              <input [type]="mostrarSenha ? 'text' : 'password'" name="senha" placeholder="Mínimo 8 caracteres" class="input-field pr-12" required minlength="8">
+              <button type="button" (click)="toggleSenha()"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">{{ mostrarSenha ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
+          </div>
+          @if (tipo === 'professor') {
+            <div>
+              <label class="block text-sm font-bold text-on-surface mb-2">Área de atuação *</label>
+              <select name="area" class="input-field">
+                <option value="">Selecione...</option>
+                <option>Engenharia de Produção</option>
+                <option>Administração</option>
+                <option>Direito</option>
+                <option>T.I. e Tecnologia</option>
+                <option>Exatas e Matemática</option>
+                <option>Humanas e Sociais</option>
+                <option>Outra</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-on-surface mb-2">Instituição (opcional)</label>
+              <input type="text" name="instituicao" placeholder="Universidade, escola ou empresa" class="input-field">
+            </div>
+          }
+          <button type="submit"
+            class="w-full bg-signature-gradient text-on-primary py-3.5 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all mt-2">
+            Continuar
+          </button>
+        </form>
+      </div>
+    }
+
+    <!-- STEP 3: Confirmação -->
+    @if (step === 3) {
+      <div class="bg-surface-container-lowest border border-surface-container rounded-3xl p-8 shadow-sm text-center">
+        <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <span class="material-symbols-outlined text-secondary text-4xl">check_circle</span>
+        </div>
+        <h2 class="text-2xl font-extrabold font-headline text-on-surface mb-2">Conta criada!</h2>
+        <p class="text-sm text-on-surface-variant mb-2">Bem-vindo ao MiStudies, <strong>{{ nome || tipo }}</strong>.</p>
+        <p class="text-sm text-on-surface-variant mb-8">
+          {{ tipo === 'professor' ? 'Sua conta de professor está pronta. Agora você pode publicar suas primeiras aulas.' : 'Sua conta de aluno está pronta. Explore o acervo e comece a estudar.' }}
+        </p>
+        <div class="flex flex-col gap-3">
+          @if (tipo === 'professor') {
+            <a routerLink="/dashboard" class="w-full bg-signature-gradient text-on-primary py-3.5 rounded-xl font-bold text-sm shadow-md block text-center">
+              Ir para o Dashboard
+            </a>
+          }
+          <a routerLink="/acervo" class="w-full border border-surface-container-high text-on-surface py-3.5 rounded-xl font-bold text-sm hover:bg-surface-container-low transition-colors block text-center">
+            Explorar o Acervo
+          </a>
+        </div>
+      </div>
+    }
+
+    <p class="text-center text-xs text-on-surface-variant mt-6">
+      Ao criar conta você concorda com os <a href="#" class="text-primary hover:underline">Termos de Uso</a> e
+      <a href="#" class="text-primary hover:underline">Política de Privacidade</a>.
+    </p>
+
+  </div>
+</div>

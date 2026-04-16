@@ -1,0 +1,141 @@
+<div class="min-h-screen pt-20 bg-surface">
+
+  <!-- Header Dashboard -->
+  <div class="bg-surface-container-lowest border-b border-surface-container-high px-8 py-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-extrabold font-headline text-on-surface">Dashboard</h1>
+        <p class="text-sm text-on-surface-variant">Gerencie seus materiais e acompanhe métricas</p>
+      </div>
+      <button class="bg-signature-gradient text-on-primary px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Nova aula
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-8 py-8">
+
+    <!-- Métricas -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-5">
+        <div class="text-3xl font-extrabold text-primary font-headline">12</div>
+        <div class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-1">Aulas publicadas</div>
+      </div>
+      <div class="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-5">
+        <div class="text-3xl font-extrabold text-secondary font-headline">2.3k</div>
+        <div class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-1">Visualizações</div>
+      </div>
+      <div class="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-5">
+        <div class="text-3xl font-extrabold text-tertiary font-headline">4</div>
+        <div class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-1">Matérias</div>
+      </div>
+      <div class="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-5">
+        <div class="text-3xl font-extrabold text-on-surface font-headline">98%</div>
+        <div class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-1">Satisfação</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="border-b border-surface-container-high mb-8">
+      <div class="flex gap-8">
+        <button (click)="setAba('aulas')" class="tab-btn" [class.active]="abaAtiva === 'aulas'">Minhas Aulas</button>
+        <button (click)="setAba('upload')" class="tab-btn" [class.active]="abaAtiva === 'upload'">Nova Aula</button>
+        <button (click)="setAba('perfil')" class="tab-btn" [class.active]="abaAtiva === 'perfil'">Perfil Público</button>
+      </div>
+    </div>
+
+    <!-- Tab: Minhas Aulas -->
+    @if (abaAtiva === 'aulas') {
+      <div>
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-4 bg-surface-container-lowest border border-surface-container-high rounded-2xl p-4">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold">🏭</div>
+            <div class="flex-1">
+              <div class="font-bold text-on-surface">Escopo da Engenharia de Produção</div>
+              <div class="text-xs text-on-surface-variant">Masterclass · Pro · Mar 2026</div>
+            </div>
+            <span class="badge-publicado text-xs font-bold px-3 py-1 rounded-full">Publicado</span>
+          </div>
+          <div class="flex items-center gap-4 bg-surface-container-lowest border border-surface-container-high rounded-2xl p-4">
+            <div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary font-bold">⚙️</div>
+            <div class="flex-1">
+              <div class="font-bold text-on-surface">TPM & OEE</div>
+              <div class="text-xs text-on-surface-variant">Slide · Essencial · Mar 2026</div>
+            </div>
+            <span class="badge-publicado text-xs font-bold px-3 py-1 rounded-full">Publicado</span>
+          </div>
+          <div class="flex items-center gap-4 bg-surface-container-lowest border border-surface-container-high rounded-2xl p-4 opacity-60">
+            <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">📝</div>
+            <div class="flex-1">
+              <div class="font-bold text-on-surface">Sistemas de Produção — Avançado</div>
+              <div class="text-xs text-on-surface-variant">Aula · Pro</div>
+            </div>
+            <span class="badge-rascunho text-xs font-bold px-3 py-1 rounded-full">Rascunho</span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tab: Nova Aula -->
+    @if (abaAtiva === 'upload') {
+      <div class="max-w-2xl">
+        <form class="space-y-5">
+          <div>
+            <label class="block text-sm font-bold text-on-surface mb-2">Título da aula *</label>
+            <input type="text" placeholder="Ex.: Fundamentos de Gestão de Estoques" class="input-field">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-bold text-on-surface mb-2">Formato *</label>
+              <select class="input-field">
+                <option>Resumo</option>
+                <option>Aula</option>
+                <option>Slide</option>
+                <option>Masterclass</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-on-surface mb-2">Tier *</label>
+              <select class="input-field">
+                <option>Essencial</option>
+                <option>Pro</option>
+                <option>Full Studio</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-on-surface mb-2">Descrição</label>
+            <textarea rows="3" placeholder="Descreva o conteúdo da aula..." class="input-field resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-on-surface mb-2">Tags (separadas por vírgula)</label>
+            <input type="text" placeholder="gestão, estoque, logística" class="input-field">
+          </div>
+          <button type="submit"
+            class="bg-signature-gradient text-on-primary px-8 py-3 rounded-xl font-bold text-sm shadow-sm hover:-translate-y-0.5 transition-all">
+            Publicar aula
+          </button>
+        </form>
+      </div>
+    }
+
+    <!-- Tab: Perfil -->
+    @if (abaAtiva === 'perfil') {
+      <div class="max-w-lg">
+        <div class="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-6 text-center">
+          <div class="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-primary text-4xl">person</span>
+          </div>
+          <h2 class="font-headline font-extrabold text-xl text-on-surface mb-1">{{ authService.getUser()?.nome || 'Professor' }}</h2>
+          <p class="text-sm text-on-surface-variant mb-4">Engenharia de Produção</p>
+          <a routerLink="/professor/gabriel"
+            class="inline-flex items-center gap-2 text-sm text-primary font-bold hover:underline">
+            Ver perfil público <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </a>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>
