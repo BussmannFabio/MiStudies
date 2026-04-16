@@ -81,22 +81,20 @@
 
 ---
 
-### #12 — Custos operacionais possivelmente contados em duplicidade
-**Arquivo:** `docs/08. Plano de Rentabilidade.md` — Seções 5 e 7
+### ✅ #12 — Custos operacionais possivelmente contados em duplicidade — RESOLVIDO
+**Arquivo:** `docs/08. Plano de Rentabilidade.md` — Seções 7 e 8
 
-- Seção 5 (Custos MVP): R$100–150/mês de IA (plano fixo)
-- Seção 7 (Custo por aula): R$2,50–4,50/aula de custo de IA (tokens API)
+- Custos MVP: R$100–150/mês de IA (planos + uso estimado)
+- Custo por aula: Essencial ~R$3, Pro ~R$6, Full Studio ~R$12 de IA/API
 
-Não está claro se o plano fixo já cobre os tokens por aula. Com 20 aulas/mês, o custo de IA pode chegar a R$240 — acima do projetado.
-
-**Ação necessária:** Esclarecer no Plano de Rentabilidade: "O plano fixo cobre até X aulas/mês. Acima, R$Y/aula via API."
+**Fechamento:** o Plano de Rentabilidade agora explicita que o orçamento mensal de IA já inclui planos e APIs estimados. Até 20 aulas/mês em mix equilibrado, usar R$150/mês; acima disso, adicionar buffer variável por aula.
 
 ---
 
-### ✅ #13 — Tiers de aula ausentes do Modelo Freemium — PARCIALMENTE RESOLVIDO
+### ✅ #13 — Tiers de aula ausentes do Modelo Freemium — RESOLVIDO
 `pages/planos-precos.html` foi criada (Abril 2026) com arquitetura completa: Onboarding + Tiers por aula + Hub. Ela substitui funcionalmente o `docs/04. Modelo Freemium.md` como referência de preços para o usuário.
 
-**Ação restante:** `docs/04. Modelo Freemium.md` ainda desatualizado internamente — arquivar ou adicionar nota "substituído por planos-precos.html + Plano de Rentabilidade.md".
+**Fechamento:** `docs/04. Modelo Freemium.md` recebeu nota explícita de documento histórico/desatualizado e aponta para `docs/08. Plano de Rentabilidade.md` como referência oficial.
 
 ---
 
@@ -188,19 +186,17 @@ O cabeçalho não deixa claro: bruto ou líquido? Total ou por sócio? Mês 1 ou
 |---|---|---|---|
 | 🔴 Crítica | 4 | 4 ✅ | 0 |
 | 🟠 Alta | 4 | 4 ✅ | 0 |
-| 🟡 Média | 8 | 5 ✅ | 3 |
+| 🟡 Média | 8 | 7 ✅ | 1 |
 | 🟢 Baixa | 8 | 3 ✅ | 5 |
-| **Total** | **24** | **16 ✅** | **8** |
+| **Total** | **24** | **18 ✅** | **6** |
 
 ### Itens ainda abertos (priorizados)
-1. **#12** — Esclarecer duplicidade de custos de IA no Plano de Rentabilidade *(doc interno)*
-2. **#15** — Alinhar tagline do hero com `docs/05. Naming & Tagline.md` *(copy)*
-3. **#13** — Arquivar ou atualizar `docs/04. Modelo Freemium.md` *(doc interno)*
-4. **#17** — Criar favicon e adicionar em todas as páginas *(código, baixa complexidade)*
-5. **#9** — Atualizar Brandbook para validar Material Symbols como padrão *(doc interno)*
-6. **#16** — Revisar hero copy seguindo Tom de Voz *(copy)*
-7. **#19** — Padronizar max-width (Brandbook vs código) *(doc ou código)*
-8. **#20** — Criar classe `.btn-primary` reutilizável *(CSS, futuro)*
+1. **#15** — Alinhar tagline do hero com `docs/05. Naming & Tagline.md` *(copy)*
+2. **#17** — Criar favicon e adicionar em todas as páginas *(código, baixa complexidade)*
+3. **#9** — Atualizar Brandbook para validar Material Symbols como padrão *(doc interno)*
+4. **#16** — Revisar hero copy seguindo Tom de Voz *(copy)*
+5. **#19** — Padronizar max-width (Brandbook vs código) *(doc ou código)*
+6. **#20** — Criar classe `.btn-primary` reutilizável *(CSS, futuro)*
 
 ---
 

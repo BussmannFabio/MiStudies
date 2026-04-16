@@ -34,7 +34,7 @@
 | P2.2 | Google Analytics GA4 | `P2` |
 | P2.3 | `sitemap.xml` + `robots.txt` | `P2` — pré-requisito para SEO orgânico |
 | P2.4 | Gerar documentos de marca faltantes via prompts do `docs/09` (ICP, Pitch, Templates) | `P2` |
-| P2.5 | Definir benefícios exatos da assinatura de aluno (D7) | `P2` — sem isso, paywall não ativa |
+| P2.5 | Implementar benefícios pagos da assinatura de aluno (D7) | `P2` — sem isso, paywall não ativa |
 | P2.6 | Gateway de pagamento (Stripe ou Mercado Pago) | `P2` — item 2.5 |
 
 ---
@@ -212,9 +212,9 @@ Antes de publicar qualquer página nova ou conteúdo novo, verificar:
 ---
 
 ### D7 — Benefícios da assinatura de aluno
-**Pergunta:** O que o aluno ganha pagando R$14,90/mês além de acesso ao acervo gratuito?
-**Opções a considerar:** download de PDFs, acesso a conteúdo exclusivo (tier Privado), sem anúncios, suporte, histórico de progresso.
-**Por que importa:** Sem resposta, o paywall não pode ser ativado — não tem proposta de valor clara para o aluno.
+**Resposta definida:** o aluno paga por conveniência e organização: download em PDF quando permitido, favoritos ilimitados, kits de revisão, histórico de progresso e acesso prioritário a novidades.
+**O que não entra:** tutoria, correção individual, certificado e conteúdo privado de professor sem autorização específica.
+**Por que importa:** O paywall só deve ser ativado quando esses benefícios estiverem implementados, não apenas prometidos.
 **Decisão necessária antes de:** item 2.6 (ativar assinatura de alunos).
 
 ---

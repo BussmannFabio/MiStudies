@@ -37,10 +37,10 @@
 | # | Item | Status | Prioridade | Responsável |
 |---|---|---|---|---|
 | 1.12 | Escolher 2–3 professores piloto (com interesse demonstrado) | `[ ]` | `P1` | Sócio 3 |
-| 1.13 | Oferecer 1–2 aulas grátis como portfólio / prova de valor para pilotos | `[ ]` | `P1` | Todos |
+| 1.13 | Oferecer diagnóstico gratuito + primeira aula piloto paga de baixo risco | `[ ]` | `P1` | Todos |
 | 1.14 | Coletar feedback dos pilotos e ajustar tiers/preços se necessário | `[ ]` | `P1` | Todos |
 | 1.15 | Definir canal de entrada dos professores (formulário? WhatsApp? e-mail?) | `[ ]` | `P1` | Sócio 3 |
-| 1.16 | Lançar cobrança para novos professores após validação com pilotos | `[ ]` | `P2` | Sócio 3 |
+| 1.16 | Padronizar cobrança para novos professores após validar pilotos pagos | `[ ]` | `P2` | Sócio 3 |
 
 ---
 
@@ -107,11 +107,11 @@
 |---|---|---|
 | D1 | **Preços por aula** | ✅ R$40 Essencial / R$75 Pro / R$100 Full Studio |
 | D2 | **Onboarding gratuito para pilotos?** | ✅ Não — cobrança desde o início |
-| D3 | **Hub (acervo) gratuito?** | ✅ Sim — visualização gratuita permanentemente |
+| D3 | **Acervo gratuito para alunos?** | ✅ Sim — visualização gratuita permanentemente |
 | D4 | **Divisão de lucros** | ✅ Igualitária — 33/33/33 |
 | D5 | **Formalizar sociedade?** | ⏳ Ainda não decidido |
 | D6 | **Nome do tier mais caro** | ✅ "Full Studio" (era "Premium") |
-| D7 | **Assinatura de alunos** | ✅ Possível, mas benefícios extras precisam ser definidos antes de ativar |
+| D7 | **Assinatura de alunos** | ✅ R$14,90/mês ou anual com 20% off; ativar só com benefícios pagos reais |
 
 ### Modelo de Negócio Confirmado
 
@@ -187,7 +187,7 @@ PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
   [ ] 1.15 — Definir canal de entrada dos professores · issue #28
   [ ] T15  — Criar páginas Termos de Uso + Política de Privacidade · issue #50
   [ ] D5   — Decidir formalização societária (MEI) · issue #31
-  [ ] D7   — Definir benefícios exatos da assinatura de aluno · issue #36
+  [ ] D7   — Implementar benefícios pagos da assinatura de aluno (downloads, favoritos, kits, progresso) · issue #36
 
 PRÓXIMOS 30 DIAS — P2:
   [ ] 1.9  — Verificar responsividade em mobile · issue #37
@@ -212,10 +212,11 @@ DÍVIDA TÉCNICA — P3 (não bloqueante):
   [ ] T18  — Decidir destino de Brandbook.html e conteúdoANA.html · issue #53
 
 META DO MÊS 1 (preços confirmados):
-  → 2 professores × Onboarding Básico R$200 = R$400
+  → 2 professores × Setup Básico R$200 = R$400
   → 4 aulas Essencial × R$40 = R$160
-  → Receita bruta estimada: ~R$560
-  → Para atingir R$1.000: incluir 1 professor Branded (R$500) ou mix de tiers Pro/Full Studio
+  → 2 Hubs Starter × R$49 = R$98
+  → Receita bruta estimada: ~R$658
+  → Para atingir R$1.000: incluir 1 professor Branded (R$500), Hub Pro ou mix de tiers Pro/Full Studio
 ```
 
 ---
