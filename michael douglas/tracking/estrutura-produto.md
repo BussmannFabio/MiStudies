@@ -129,7 +129,7 @@ Acervo → ../acervo.html
 | Fontes    | Manrope (headline) + Inter (body)  | Mantém — configurar em `styles.css`  |
 | Ícones    | Material Symbols Outlined (Google) | Mantém — importar via Angular        |
 | Auth      | Placeholder (redirect via JS)      | `AuthGuard` no Angular Router        |
-| Dados     | Arrays JS inline em cada página    | Services + integração com API REST   |
+| Dados     | Arrays JS inline em cada página    | Services + integração com API REST (integração com backend)  |
 | URLs      | `/pages/acervo/[slug].html`        | Rotas Angular (`/acervo/:slug`)      |
 | Deploy    | GitHub Pages / Netlify (pendente)  | Netlify com `_redirects` para SPA    |
 
