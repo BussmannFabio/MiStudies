@@ -1,0 +1,102 @@
+## 1. Segmentos de Clientes
+- **Universitários de Administração e Engenharia de Produção** — alunos que precisam entender rápido matérias densas, revisar para provas e acessar conteúdo mais claro do que apostilas e slides tradicionais.
+- **Professores e criadores de conteúdo educacional** — docentes com duplo papel: como *clientes*, assinam a plataforma para ter seus conteúdos reformulados com padrão visual premium e disponibilizados no MiStudies; como *parceiros de distribuição*, indicam materiais aos alunos e ampliam o alcance orgânico da plataforma (ver também Bloco 8).
+- **Empresários, empreendedores e profissionais em início ou transição de carreira** — pessoas que querem aprender fundamentos de gestão, operações e produtividade de forma prática, visual e sem excesso acadêmico.
+
+## 2. Proposta de Valor
+- **Para universitários** — resumos e apresentações com linguagem clara, estrutura lógica e visual premium, reduzindo o atrito de estudar por materiais confusos ou mal diagramados.
+- **Para professores** — um acervo que pode funcionar como complemento didático moderno, com conteúdo confiável, visualmente bem resolvido e mais atrativo para a nova geração de alunos alem de uma forma de divulgaçao academica/pessoal dos seus conhecimentos.
+- **Para profissionais e empreendedores** — aprendizado rápido e aplicável em temas de gestão e operações, com formato que lembra material de consultoria e facilita absorção prática.
+- **Como marca/produto** — o MiStudies transforma estudo em experiência mais organizada, bonita e eficiente, unindo método, curadoria e design editorial em um único hub.
+
+## 3. Canais
+- **Landing page e hub próprio** — principal canal de descoberta e consumo, concentrando posicionamento da marca, navegação por conteúdos, busca, filtros e conversão para plano premium.
+- **SEO e conteúdo orgânico** — artigos, páginas de matérias, resumos indexáveis e conteúdos educativos pensados para atrair buscas como “resumo TPM”, “OEE explicado” ou “gestão da produção”.
+- **Redes sociais e conteúdo curto** — Instagram, LinkedIn, TikTok ou Reels com recortes visuais, carrosséis e mini-explicações para gerar autoridade e levar tráfego ao hub.
+- **Comunidades e indicação** — compartilhamento em grupos universitários, professores parceiros, colegas de curso e networking acadêmico-profissional como motor inicial de aquisição.
+- **E-mail e notificações** — canal de retenção e pós-venda para avisar novos conteúdos, trilhas liberadas, melhorias do produto e oportunidades de upgrade.
+
+## 4. Relacionamento com Clientes
+- **Autoatendimento guiado** — o usuário entra, encontra o conteúdo por matéria, tema ou filtro e consome sem depender de suporte humano constante.
+- **Relacionamento de confiança e curadoria** — a marca atua como uma referência de conteúdo bem organizado, criando percepção de qualidade e consistência ao longo do tempo.
+- **Comunidade em construção** — interação com usuários para captar feedback, priorizar novas matérias, entender dores de estudo e validar evolução do MVP para plataforma.
+- **Relacionamento educacional contínuo** — não é só acesso pontual a um PDF; a proposta é acompanhar a rotina de estudo e revisão com novos materiais e melhorias frequentes.
+- **Suporte leve e próximo** — atendimento via e-mail, formulário ou redes para resolver dúvidas, ouvir sugestões e fortalecer a sensação de produto autoral e bem cuidado.
+
+## 5. Fontes de Receita
+
+### MVP (fase atual)
+- **Setup do Professor** — taxa única de entrada para criar perfil, identidade, taxonomia e base de publicação do professor no MiStudies.
+- **Criação de Aulas MiStudies** — cobrança por aula transformada em HTML, nos tiers Essencial, Pro e Full Studio.
+- **Hub do Professor** — assinatura mensal que mantém aulas publicadas, perfil ativo, links, organização e analytics.
+- **Acervo gratuito para alunos** — visualização aberta das aulas publicadas, funcionando como distribuição, prova de valor e aquisição orgânica.
+
+### v1 (3-6 meses)
+- **Pacotes de aulas para professores** — créditos pré-pagos por tier, com desconto progressivo para 5, 10 ou 20 aulas.
+- **Plano Estudante** — assinatura complementar para downloads, favoritos, kits de revisão, progresso e conveniência, ativada apenas quando houver acervo e funcionalidades suficientes.
+- **Oferta institucional** — Setup Institucional + Hub Institucional para cursos, departamentos ou grupos de professores.
+
+### v2+ (6-12 meses)
+- **Licenciamento educacional institucional** — planos para turmas ou instituições que desejem usar o material como apoio didático estruturado.
+- **Funcionalidades avançadas** — videoaulas, consultorias 1x1, mentorias e conteúdo ao vivo como camadas premium de alto valor.
+- **Parcerias e produtos derivados** — templates, planners de estudo, materiais complementares e colaborações com creators ou docentes.
+
+## 6. Recursos-Chave
+- **Biblioteca de conteúdo original** — os resumos, apresentações e materiais estruturados são o núcleo de valor do produto e o principal ativo intelectual do MiStudies.
+- **Capacidade de design e edição visual** — o diferencial estético depende de uma linguagem editorial consistente, boa diagramação e direção visual acima da média do mercado educacional.
+- **Infraestrutura digital** — site, hub, sistema de busca, filtros, hospedagem, analytics e futura camada de autenticação/pagamento são essenciais para operação e escala.
+- **Conhecimento do criador** — a combinação de repertório em Administração, BI, web e design permite produzir conteúdos com clareza, aplicação prática e acabamento superior.
+- **IA e automação como multiplicador** — uso estratégico de LLMs (GPT, Claude, Gemini) para acelerar pesquisa, estruturação e produção de conteúdo, permitindo que um time enxuto (ou solo) produza em escala sem perder qualidade editorial.
+- **Marca e posicionamento** — o tom, a identidade visual e a promessa de clareza com método são ativos importantes para diferenciar o MiStudies num mercado saturado de material genérico.
+
+## 7. Atividades-Chave
+- **Produzir e atualizar conteúdos** — criar novos resumos, revisar materiais existentes, expandir disciplinas e manter consistência didática e visual ao longo do acervo.
+- **Melhorar continuamente o produto** — evoluir a landing page, o hub, a experiência de navegação, os filtros, a busca e as funcionalidades premium com base em uso real.
+- **Atrair e converter audiência** — executar estratégias de SEO, distribuição em redes, captação de leads e otimização da jornada de upgrade do gratuito para o pago.
+- **Analisar comportamento do usuário** — medir acessos, retenção, temas mais consumidos, conversão e feedback para priorizar conteúdos e funcionalidades com mais potencial.
+- **Fortalecer o posicionamento da marca** — manter a identidade editorial, a coerência do tom e a percepção de qualidade em todos os pontos de contato.
+
+## 8. Parcerias-Chave
+- **Professores e especialistas por disciplina** — ajudam a validar conteúdo, ampliar credibilidade e acelerar a expansão para novas matérias além do repertório inicial do criador.
+- **Universitários monitores ou colaboradores** — podem contribuir com pesquisa, revisão e organização de conteúdos, ajudando a escalar o acervo sem perder proximidade com o público.
+- **Plataformas tecnológicas** — provedores de hospedagem, analytics, pagamentos, automação e ferramentas de design/web são parceiros indiretos essenciais para viabilizar a operação.
+- **Influenciadores e páginas de estudo** — parcerias de distribuição podem ampliar alcance entre nichos universitários e profissionais que valorizam conteúdo visual e objetivo.
+- **Instituições de ensino e comunidades acadêmicas** — centros acadêmicos, ligas, grupos de estudo e professores podem funcionar como canais de validação, distribuição e reputação.
+
+## 9. Estrutura de Custos
+
+### MVP (estimativas de referência)
+- **Custos fixos de tecnologia** — domínio (~R$40/ano), hospedagem (~R$0-50/mês no MVP com planos gratuitos/starter), ferramentas de analytics (R$0 com GA4/Plausible free), armazenamento e automações básicas.
+- **Custos de produção de conteúdo** — majoritariamente tempo do criador no MVP. Ferramentas de IA (ChatGPT Plus ~R$100/mês, Claude Pro ~R$100/mês) como aceleradores de produção.
+- **Custos de design e branding** — R$0 no MVP usando Figma free + Canva free. Investimento futuro em assets premium e padronização editorial conforme escalar.
+
+### Escala (v1/v2)
+- **Custos de aquisição** — investimento em distribuição orgânica e, eventualmente, mídia paga, testes de campanhas e ações para captar usuários qualificados.
+- **Custos de plataforma** — autenticação, gateway de pagamento (~2-5% por transação), área logada, CDN para conteúdo pesado.
+- **Custos de expansão e colaboração** — pagamento a revisores, parceiros acadêmicos, especialistas ou colaboradores externos conforme o MiStudies ampliar escopo e profundidade.
+
+---
+
+## 10. Métricas-Chave por Bloco
+
+| Bloco | KPI | Meta MVP |
+|-------|-----|----------|
+| Canais | Tráfego orgânico mensal | 500+ visitas/mês |
+| Canais | Posicionamento SEO (termos-alvo) | Top 20 para 3+ termos |
+| Relacionamento | Taxa de retorno em 30 dias | >15% |
+| Receita | Cadastros na lista de espera | 100+ nos primeiros 3 meses |
+| Receita | Taxa de conversão free → paid | 3-5% (benchmark EdTech) |
+| Atividades | Novos conteúdos publicados/mês | 2-4 materiais |
+| Produto | Tempo médio na página | >3 minutos |
+
+---
+
+## 11. Riscos e Hipóteses a Validar
+
+| # | Hipótese | Risco se falsa | Como validar |
+|---|----------|----------------|--------------|
+| 1 | Professores pagam por Setup + Aula + Hub desde o piloto | Modelo B2B não valida | Abordagem direta com 5-10 professores; vender primeira oferta mínima publicada |
+| 2 | Alunos usam o acervo gratuito com frequência | Hub não gera distribuição orgânica | Publicar demos e aulas reais; medir acessos, tempo de leitura e compartilhamentos |
+| 3 | O diferencial visual é percebido como valor real (não apenas "bonito") | Usuários não enxergam razão para pagar | Teste A/B: mesmo conteúdo com design premium vs. padrão; medir engajamento |
+| 4 | SEO educacional gera tráfego qualificado para termos de nicho | Dependência de redes sociais para aquisição | Monitorar Search Console nos primeiros 3 meses; comparar canais |
+| 5 | Um criador solo + IA consegue manter ritmo de produção com qualidade | Gargalo de conteúdo trava crescimento | Medir tempo médio por material; definir limiar para buscar colaboradores |
