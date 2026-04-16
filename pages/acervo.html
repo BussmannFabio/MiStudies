@@ -550,15 +550,21 @@ function render() {
     const isAvail = c.arquivo !== '#';
 
     const row = document.createElement('a');
-    row.href  = href;
+    if (isAvail) row.href = href;
     row.className = `group flex items-start gap-4 p-4 rounded-2xl border border-surface-container-high bg-surface-container-lowest
       hover:border-secondary hover:bg-surface-container-low hover:shadow-md transition-all duration-300
-      ${!isAvail ? 'opacity-70 cursor-not-allowed' : 'hover:translate-x-1'}`;
+      ${!isAvail ? 'opacity-60 cursor-not-allowed pointer-events-none select-none' : 'hover:translate-x-1'}`;
 
+    // Slugs com página pública criada — adicionar aqui conforme novos professores forem cadastrados
+    const PROFS_COM_PAGINA = new Set(['gabriel']);
     const profHtml = c.prof && c.prof !== '—'
-      ? `<a href="professor/${c.prof_slug}.html" class="text-outline text-[10px] flex items-center gap-1 hover:text-primary transition-colors" onclick="event.stopPropagation()">
-           <span class="w-1 h-1 rounded-full bg-outline"></span>${c.prof}
-         </a>`
+      ? (c.prof_slug && PROFS_COM_PAGINA.has(c.prof_slug)
+          ? `<a href="professor/${c.prof_slug}.html" class="text-outline text-[10px] flex items-center gap-1 hover:text-primary transition-colors" onclick="event.stopPropagation()">
+               <span class="w-1 h-1 rounded-full bg-outline"></span>${c.prof}
+             </a>`
+          : `<span class="text-outline text-[10px] flex items-center gap-1">
+               <span class="w-1 h-1 rounded-full bg-outline"></span>${c.prof}
+             </span>`)
       : '';
 
     row.innerHTML = `
