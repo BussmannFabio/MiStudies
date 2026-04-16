@@ -47,38 +47,23 @@ body {
 
 /* ── HEADER ── */
 .header {
-  background: linear-gradient(135deg, var(--bg-dark) 0%, #1A2840 100%);
+  background: var(--bg-mid);
   border-bottom: 1px solid var(--border);
-  padding: 40px 32px 32px;
-  text-align: center;
-  position: relative; overflow: hidden;
+  padding: 10px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
-.header::before {
-  content: ''; position: absolute;
-  top: -100px; left: 50%; transform: translateX(-50%);
-  width: 500px; height: 300px; border-radius: 50%;
-  background: var(--amber); opacity: .04;
-}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.header-sep { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
 .header-eyebrow {
-  font-size: 10.5px; font-weight: 700; letter-spacing: .22em;
+  font-size: 10px; font-weight: 700; letter-spacing: .2em;
   text-transform: uppercase; color: var(--amber);
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  margin-bottom: 14px;
-}
-.header-eyebrow::before, .header-eyebrow::after {
-  content: ''; display: block; width: 28px; height: 1px; background: var(--amber); opacity: .5;
 }
 .header h1 {
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: #fff;
-  margin-bottom: 10px;
+  font-size: 1.2rem; font-weight: 700; color: #fff; margin: 0;
 }
-.header-sub { color: var(--muted); font-size: 13.5px; max-width: 480px; margin: 0 auto 20px; }
-.header-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.hb {
-  background: rgba(255,255,255,.05); border: 1px solid var(--border);
-  color: var(--muted); font-size: 11.5px; padding: 4px 12px; border-radius: 20px;
-}
+.header-sub { color: var(--muted); font-size: 12px; margin: 0; max-width: none; }
+.header-badges { display: none; }
 
 /* ── LAYOUT ── */
 .header { flex-shrink: 0; }
@@ -177,6 +162,37 @@ body {
   transition: border-color var(--t);
 }
 .cap-input:focus { border-color: var(--blue); }
+
+/* ── PLAN CARDS ── */
+.plan-card {
+  background: rgba(255,255,255,.025);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 13px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.plan-card:last-of-type { margin-bottom: 0; }
+.plan-info { flex: 1; min-width: 0; }
+.plan-name {
+  font-size: 12.5px; font-weight: 700;
+  color: var(--text); margin-bottom: 5px;
+  display: flex; align-items: center; gap: 6px;
+}
+.plan-desc {
+  font-size: 11px; color: var(--muted);
+  line-height: 1.55; white-space: pre-line;
+}
+.plan-inputs {
+  display: flex; align-items: flex-end; gap: 8px; flex-shrink: 0;
+}
+.plan-input-col { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.plan-input-label {
+  font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
 
 /* ── RESET BUTTON ── */
 .reset-btn {
@@ -485,15 +501,12 @@ table.proj .td-muted  { color: var(--muted); }
 
 <!-- Header -->
 <header class="header">
-  <div class="header-eyebrow">MiStudies · Ferramenta de Planejamento</div>
-  <h1>Simulador de Rentabilidade</h1>
-  <p class="header-sub">Ajuste as variáveis e veja em tempo real o impacto na receita, capacidade e projeção de 6 meses.</p>
-  <div class="header-badges">
-    <span class="hb">3 Sócios</span>
-    <span class="hb">Professores B2B</span>
-    <span class="hb">Assinatura de Alunos</span>
-    <span class="hb">Cenários de Escala</span>
+  <div class="header-left">
+    <span class="header-eyebrow">MiStudies</span>
+    <div class="header-sep"></div>
+    <h1>Simulador de Rentabilidade</h1>
   </div>
+  <p class="header-sub">Ajuste as variáveis e veja o impacto em tempo real.</p>
 </header>
 
 <div class="app">
@@ -506,95 +519,207 @@ table.proj .td-muted  { color: var(--muted); }
     <!-- ONBOARDING -->
     <div class="panel-section">
       <div class="panel-section-title"><span>🎓</span> Onboarding de Professores</div>
-      <div class="input-group">
-        <div class="label" style="font-size:10px;color:var(--muted)">Tipo</div>
-        <div class="col-header">Qtd/mês</div>
-        <div class="col-header">Preço (R$)</div>
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Setup Básico</div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd/mês</div>
+            <input type="number" class="number-input" id="ob_basico_qty" value="1" min="0" max="20" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$</div>
+            <input type="text" class="price-input" id="ob_basico_price" value="200" onchange="calc()">
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <div class="label">Setup Básico<small>Página + bio + link</small></div>
-        <input type="number" class="number-input" id="ob_basico_qty" value="1" min="0" max="20" onchange="calc()">
-        <input type="text" class="price-input" id="ob_basico_price" value="200" onchange="calc()">
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Setup Branded</div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd/mês</div>
+            <input type="number" class="number-input" id="ob_branded_qty" value="0" min="0" max="20" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$</div>
+            <input type="text" class="price-input" id="ob_branded_price" value="500" onchange="calc()">
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <div class="label">Setup Branded<small>Paleta + logotipo</small></div>
-        <input type="number" class="number-input" id="ob_branded_qty" value="0" min="0" max="20" onchange="calc()">
-        <input type="text" class="price-input" id="ob_branded_price" value="500" onchange="calc()">
-      </div>
-      <div class="input-group">
-        <div class="label">Setup Institucional<small>Landing + múltiplos profs.</small></div>
-        <input type="number" class="number-input" id="ob_inst_qty" value="0" min="0" max="10" onchange="calc()">
-        <input type="text" class="price-input" id="ob_inst_price" value="1000" onchange="calc()">
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Setup Institucional</div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd/mês</div>
+            <input type="number" class="number-input" id="ob_inst_qty" value="0" min="0" max="10" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$</div>
+            <input type="text" class="price-input" id="ob_inst_price" value="1000" onchange="calc()">
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- AULAS POR TIER -->
     <div class="panel-section">
       <div class="panel-section-title"><span>📄</span> Aulas por Tier / Mês</div>
-      <div class="input-group">
-        <div class="label" style="font-size:10px;color:var(--muted)">Tier</div>
-        <div class="col-header">Qtd/mês</div>
-        <div class="col-header">Preço (R$)</div>
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name"><span class="tier-badge-sm tb-ess">Essencial</span> <span style="font-size:10px;color:var(--muted)">~2.5h/aula</span></div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd/mês</div>
+            <input type="number" class="number-input" id="au_ess_qty" value="3" min="0" max="50" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$</div>
+            <input type="text" class="price-input" id="au_ess_price" value="40" onchange="calc()">
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <div class="label"><span class="tier-badge-sm tb-ess">Essencial</span><small>~2.5h/aula</small></div>
-        <input type="number" class="number-input" id="au_ess_qty" value="3" min="0" max="50" onchange="calc()">
-        <input type="text" class="price-input" id="au_ess_price" value="40" onchange="calc()">
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name"><span class="tier-badge-sm tb-pro">Pro</span> <span style="font-size:10px;color:var(--muted)">~4.7h/aula</span></div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd/mês</div>
+            <input type="number" class="number-input" id="au_pro_qty" value="1" min="0" max="30" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$</div>
+            <input type="text" class="price-input" id="au_pro_price" value="75" onchange="calc()">
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <div class="label"><span class="tier-badge-sm tb-pro">Pro</span><small>~4.7h/aula</small></div>
-        <input type="number" class="number-input" id="au_pro_qty" value="1" min="0" max="30" onchange="calc()">
-        <input type="text" class="price-input" id="au_pro_price" value="75" onchange="calc()">
-      </div>
-      <div class="input-group">
-        <div class="label"><span class="tier-badge-sm tb-pre">Full Studio</span><small>~8h/aula</small></div>
-        <input type="number" class="number-input" id="au_pre_qty" value="0" min="0" max="20" onchange="calc()">
-        <input type="text" class="price-input" id="au_pre_price" value="100" onchange="calc()">
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name"><span class="tier-badge-sm tb-pre">Full Studio</span> <span style="font-size:10px;color:var(--muted)">~8h/aula</span></div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd/mês</div>
+            <input type="number" class="number-input" id="au_pre_qty" value="0" min="0" max="20" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$</div>
+            <input type="text" class="price-input" id="au_pre_price" value="100" onchange="calc()">
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- HUBS ATIVOS -->
     <div class="panel-section">
-      <div class="panel-section-title"><span>🌐</span> Hubs Ativos (mensalidade)</div>
-      <div class="input-group">
-        <div class="label" style="font-size:10px;color:var(--muted)">Plano</div>
-        <div class="col-header">Qtd ativa</div>
-        <div class="col-header">Preço (R$)</div>
+      <div class="panel-section-title"><span>🌐</span> Hub do Professor (mensalidade)</div>
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Hub Starter</div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd ativa</div>
+            <input type="number" class="number-input" id="hub_st_qty" value="0" min="0" max="50" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$/mês</div>
+            <input type="text" class="price-input" id="hub_st_price" value="49" onchange="calc()">
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <div class="label">Hub Starter<small>Até 10 aulas publicadas</small></div>
-        <input type="number" class="number-input" id="hub_st_qty" value="0" min="0" max="50" onchange="calc()">
-        <input type="text" class="price-input" id="hub_st_price" value="49" onchange="calc()">
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Hub Pro</div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd ativa</div>
+            <input type="number" class="number-input" id="hub_pro_qty" value="0" min="0" max="30" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$/mês</div>
+            <input type="text" class="price-input" id="hub_pro_price" value="99" onchange="calc()">
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <div class="label">Hub Pro<small>Até 30 aulas + analytics</small></div>
-        <input type="number" class="number-input" id="hub_pro_qty" value="0" min="0" max="30" onchange="calc()">
-        <input type="text" class="price-input" id="hub_pro_price" value="99" onchange="calc()">
-      </div>
-      <div class="input-group">
-        <div class="label">Hub Institucional<small>Ilimitado + multi-profs</small></div>
-        <input type="number" class="number-input" id="hub_inst_qty" value="0" min="0" max="10" onchange="calc()">
-        <input type="text" class="price-input" id="hub_inst_price" value="249" onchange="calc()">
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Hub Institucional</div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd ativa</div>
+            <input type="number" class="number-input" id="hub_inst_qty" value="0" min="0" max="10" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$/mês</div>
+            <input type="text" class="price-input" id="hub_inst_price" value="249" onchange="calc()">
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ASSINATURA DE ALUNOS -->
     <div class="panel-section">
       <div class="panel-section-title"><span>👩‍🎓</span> Assinatura de Alunos</div>
-      <div class="input-group">
-        <div class="label" style="font-size:10px;color:var(--muted)">Plano</div>
-        <div class="col-header">Qtd ativa</div>
-        <div class="col-header">Preço (R$)</div>
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Plano Mensal</div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd ativa</div>
+            <input type="number" class="number-input" id="al_men_qty" value="0" min="0" max="500" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$/mês</div>
+            <input type="text" class="price-input" id="al_men_price" value="14.90" onchange="calc()">
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <div class="label">Estudante Mensal<small></small></div>
-        <input type="number" class="number-input" id="al_men_qty" value="0" min="0" max="500" onchange="calc()">
-        <input type="text" class="price-input" id="al_men_price" value="14.90" onchange="calc()">
-      </div>
-      <div class="input-group">
-        <div class="label">Estudante Anual<small>R$/mês equivalente</small></div>
-        <input type="number" class="number-input" id="al_anu_qty" value="0" min="0" max="500" onchange="calc()">
-        <input type="text" class="price-input" id="al_anu_price" value="9.90" onchange="calc()">
+
+      <div class="plan-card">
+        <div class="plan-info">
+          <div class="plan-name">Plano Anual <span style="font-size:10px;color:var(--green);font-weight:600">−20%</span></div>
+          <div class="plan-desc">—</div>
+        </div>
+        <div class="plan-inputs">
+          <div class="plan-input-col">
+            <div class="plan-input-label">Qtd ativa</div>
+            <input type="number" class="number-input" id="al_anu_qty" value="0" min="0" max="500" onchange="calc()">
+          </div>
+          <div class="plan-input-col">
+            <div class="plan-input-label">R$/mês</div>
+            <input type="text" class="price-input" id="al_anu_price" value="9.90" onchange="calc()">
+          </div>
+        </div>
       </div>
     </div>
 
@@ -657,6 +782,24 @@ table.proj .td-muted  { color: var(--muted); }
       <div class="cap-row">
         <div class="cap-label">Horas/aula Full Studio</div>
         <input type="number" class="cap-input" id="cap_h_pre" value="8" min="1" max="20" step="0.5" onchange="calc()">
+      </div>
+    </div>
+
+    <!-- PROJEÇÃO -->
+    <div class="panel-section">
+      <div class="panel-section-title"><span>📈</span> Parâmetros da Projeção</div>
+      <div class="cap-row">
+        <div class="cap-label">Taxa de crescimento mensal
+          <small style="display:block;font-size:10px;color:var(--muted);margin-top:1px">onboarding e aulas (composto)</small>
+        </div>
+        <div style="display:flex;align-items:center;gap:5px">
+          <input type="number" class="cap-input" id="proj_growth_rate" value="15" min="0" max="200" step="1" style="width:54px;color:var(--amber)" onchange="calc()">
+          <span style="font-size:12px;color:var(--muted)">%</span>
+        </div>
+      </div>
+      <div style="font-size:10.5px;color:var(--muted);margin-top:6px;line-height:1.6">
+        Hubs crescem a 70% · Alunos a 50% da taxa.<br>
+        Presets: Conservador 8% · Realista 15% · Otimista 30%.
       </div>
     </div>
 
@@ -1084,38 +1227,43 @@ function calc() {
     bruto > 0 ? `${segs.hubs.toFixed(0)}% hubs + ${segs.alunos.toFixed(0)}% alunos = ${mrr_pct2.toFixed(0)}% recorrente` : '—';
 
   // Projeção + gráfico
-  renderProjection(bruto, custos, socios, mrr, onb, aulas);
+  renderProjection(bruto, custos, socios, hubs, alunos, onb, aulas);
 }
 
 // ── PROJEÇÃO ──
-function renderProjection(bruto_base, custos_base, socios, mrr, onb, aulas) {
-  const multipliers = {
-    conservador: [1, 1.4, 1.9, 2.3, 2.7, 3.0],
-    realista:    [1, 1.6, 2.4, 3.0, 3.6, 4.2],
-    otimista:    [1, 2.0, 3.2, 4.2, 5.2, 6.5],
-  };
-  const mults = multipliers[projMode];
-  const months = ['Mês 1 (Atual)', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6'];
-  const META = 3600;
+// Modelo de crescimento composto por taxa configurável.
+// Onboarding e Aulas crescem à taxa definida (novos projetos a cada mês).
+// Hubs crescem a 70% da taxa (assinantes acumulam com menor churn).
+// Alunos crescem a 50% da taxa (dependem de volume de conteúdo e alcance).
+function renderProjection(bruto_base, custos_base, socios, hubs, alunos, onb, aulas) {
+  const rate     = Math.max(0, parseFloat(document.getElementById('proj_growth_rate').value) || 15) / 100;
+  const months   = ['Mês 1 (Atual)', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6'];
+  const META     = 3600;
+  const c_gw_pct = g('c_gateway_pct') / 100;
+  const c_fixed  = Math.max(custos_base - bruto_base * c_gw_pct, 0);
 
   let tbody = '';
-  mults.forEach((m, i) => {
-    const b_onb   = onb * m * 0.8;   // onboarding cresce mais devagar
-    const b_aulas = aulas * m;
-    const b_hubs  = mrr > 0 ? mrr * Math.min(m * 1.3, 8) : 0;
-    const b_al    = mrr > 0 ? mrr * 0.4 * Math.max(0, m - 0.5) : 0;
+  const chartData = { labels: months, onb: [], aul: [], hub: [], al: [], liq: [], brut: [] };
+
+  for (let i = 0; i < 6; i++) {
+    const b_onb   = onb    * Math.pow(1 + rate,        i);
+    const b_aulas = aulas  * Math.pow(1 + rate,        i);
+    const b_hubs  = hubs   * Math.pow(1 + rate * 0.70, i);
+    const b_al    = alunos * Math.pow(1 + rate * 0.50, i);
     const b       = b_onb + b_aulas + b_hubs + b_al;
+    const c       = c_fixed + b * c_gw_pct;
+    const liq     = b - c;
+    const soc     = liq / socios;
+    const isMeta  = liq >= META;
 
-    const c_gw    = b * (g('c_gateway_pct') / 100);
-    const c_fixed = custos_base - bruto_base * (g('c_gateway_pct') / 100);
-    const c       = Math.max(c_fixed, 0) + c_gw;
+    chartData.onb.push(Math.round(b_onb));
+    chartData.aul.push(Math.round(b_aulas));
+    chartData.hub.push(Math.round(b_hubs));
+    chartData.al.push(Math.round(b_al));
+    chartData.liq.push(Math.round(liq));
+    chartData.brut.push(Math.round(b));
 
-    const liq  = b - c;
-    const soc  = liq / socios;
-    const isMeta = liq >= META;
-    const isFirst = i === 0;
-
-    tbody += `<tr class="${isFirst ? 'current-month' : isMeta ? 'highlight' : ''}">
+    tbody += `<tr class="${i === 0 ? 'current-month' : isMeta ? 'highlight' : ''}">
       <td>${months[i]}${isMeta ? ' ✅' : ''}</td>
       <td class="td-amber">${fmtBRL(b_onb)}</td>
       <td class="td-amber">${fmtBRL(b_aulas)}</td>
@@ -1125,24 +1273,10 @@ function renderProjection(bruto_base, custos_base, socios, mrr, onb, aulas) {
       <td class="${liq >= META ? 'td-green' : liq > 0 ? 'td-amber' : 'td-red'}">${fmtBRL(liq)}</td>
       <td class="td-blue">${fmtBRL(soc)}</td>
     </tr>`;
-  });
+  }
 
   document.getElementById('proj-tbody').innerHTML = tbody;
-
-  // Alimentar gráfico com os mesmos dados
-  const chartLabels = months;
-  const chartLiq    = mults.map((m, i) => {
-    const b = (onb * m * 0.8) + (aulas * m) + (mrr > 0 ? mrr * Math.min(m*1.3,8) : 0) + (mrr > 0 ? mrr*0.4*Math.max(0,m-0.5) : 0);
-    const c_gw = b * (g('c_gateway_pct')/100);
-    const c_fixed = Math.max(custos_base - bruto_base*(g('c_gateway_pct')/100), 0);
-    return Math.round(b - c_fixed - c_gw);
-  });
-  const chartOnb  = mults.map(m => Math.round(onb  * m * 0.8));
-  const chartAul  = mults.map(m => Math.round(aulas * m));
-  const chartHub  = mults.map(m => Math.round(mrr > 0 ? mrr * Math.min(m*1.3,8) : 0));
-  const chartAl   = mults.map(m => Math.round(mrr > 0 ? mrr*0.4*Math.max(0,m-0.5) : 0));
-  const chartBrut = mults.map((_,i) => chartOnb[i] + chartAul[i] + chartHub[i] + chartAl[i]);
-  lastChartData = { labels: chartLabels, liq: chartLiq, onb: chartOnb, aul: chartAul, hub: chartHub, al: chartAl, brut: chartBrut };
+  lastChartData = chartData;
   renderChart();
 }
 
@@ -1272,6 +1406,7 @@ function getState() {
     'al_men_qty','al_men_price','al_anu_qty','al_anu_price',
     'c_ia','c_host','c_dom','c_tools','c_mkt','c_gateway_pct','c_outros',
     'cap_socios','cap_horas','cap_semanas','cap_h_ess','cap_h_pro','cap_h_pre',
+    'proj_growth_rate',
   ];
   const state = {};
   ids.forEach(id => { const el = document.getElementById(id); if (el) state[id] = el.value; });
@@ -1370,6 +1505,8 @@ function exportCSV() {
 
 function setProjMode(mode) {
   projMode = mode;
+  const rates = { conservador: 8, realista: 15, otimista: 30 };
+  document.getElementById('proj_growth_rate').value = rates[mode];
   document.querySelectorAll('.proj-mode-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('btn-' + mode.slice(0,4)).classList.add('active');
   calc();
@@ -1391,6 +1528,7 @@ const defaults = {
   c_ia: 150, c_host: 0, c_dom: 3, c_tools: 0, c_mkt: 0, c_gateway_pct: 5, c_outros: 0,
   cap_socios: 3, cap_horas: 10, cap_semanas: 4.3,
   cap_h_ess: 2.5, cap_h_pro: 4.7, cap_h_pre: 8,
+  proj_growth_rate: 15,
 };
 
 function resetDefaults() {
