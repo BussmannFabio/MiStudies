@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /pages/dashboard.html
+Disallow: /pages/plano-rentabilidade.html
+Disallow: /michael douglas/
+
+Sitemap: https://mistudies.com.br/sitemap.xml
