@@ -110,7 +110,7 @@ Clique não faz nada. Não há lógica de reset de senha implementada (esperado 
 
 ---
 
-### #F06 — Páginas demo sem ponto de entrada na navegação
+### ✅ #F06 — Páginas demo sem ponto de entrada na navegação — RESOLVIDO
 
 **Arquivos:** `pages/demo/aula-essencial.html`, `pages/demo/aula-pro.html`, `pages/demo/aula-full-studio.html`
 
@@ -167,10 +167,10 @@ Botões de exemplo do sistema de design (Explorar biblioteca, Começar agora, Ve
 
 | Severidade | Total | Resolvidos | Em aberto |
 |---|---|---|---|
-| 🔴 Alta | 2 | 0 | 2 |
-| 🟠 Média | 5 | 0 | 5 |
+| 🔴 Alta | 2 | 2 ✅ | 0 |
+| 🟠 Média | 5 | 1 ✅ | 4 |
 | 🟡 Baixa | 2 | 0 | 2 |
-| **Total** | **9** | **0** | **9** |
+| **Total** | **9** | **3 ✅** | **6** |
 
 ---
 
