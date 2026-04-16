@@ -1,4 +1,4 @@
-# Relatório de Inconsistências — MiStudies
+﻿# Relatório de Inconsistências — MiStudies
 > Gerado em: Abril 2026 · 24 itens identificados · **Última revisão: Abril 2026 (pós-implementação MVP)**
 
 ---
@@ -15,14 +15,14 @@
 ## 🔴 CRÍTICAS
 
 ### ✅ #1 — Dois modelos de negócio simultâneos e incompatíveis — RESOLVIDO
-**Arquivos:** `docs/01. Business Model Canvas.md`, `docs/02. Lean Canvas.md`, `docs/04. Modelo Freemium.md` vs `docs/08. Plano de Rentabilidade.md`
+**Arquivos:** `docs/estrategia/02. Business Model Canvas.md`, `docs/estrategia/03. Lean Canvas.md`, `docs/arquivo/04. Modelo Freemium.md` vs `docs/produto/10. Catálogo de Produtos e Preços.md` + `docs/produto/11. Plano de Rentabilidade.md`
 
-**✅ Resolvido (Abril 2026):** Modelo híbrido B2B+B2C confirmado. Professor tem 3 etapas (Onboarding → Criação de Aulas → Hub mensal). Acervo gratuito para alunos, assinatura R$14,90 para extras. Preços: R$40/75/100 por aula. Tier "Full Studio" (era Premium). Documentado em `relatorio-todos.md`.
+**✅ Resolvido (Abril 2026):** Modelo híbrido B2B+B2C confirmado. Professor tem 3 etapas (Onboarding → Criação de Aulas → Hub mensal). Acervo gratuito para alunos, assinatura R$14,90 para extras. Preços: R$40/75/100 por aula. Tier "Full Studio" (era Premium). Documentado em `backlog-geral.md`.
 
 ---
 
 ### ✅ #2 — Preço da assinatura de aluno — RESOLVIDO
-**✅ Resolvido:** R$14,90/mês · Anual com 20% off (~R$11,92/mês). Simulador e `docs/08. Plano de Rentabilidade.md` atualizados. `pages/planos-precos.html` reflete valores corretos.
+**✅ Resolvido:** R$14,90/mês · Anual com 20% off (~R$11,92/mês). Simulador e `docs/produto/11. Plano de Rentabilidade.md` atualizados. `pages/planos-precos.html` reflete valores corretos.
 
 ---
 
@@ -36,24 +36,24 @@
 ---
 
 ### ✅ #4 — As 7 decisões dos sócios — RESOLVIDO (D1–D4, D6–D7)
-**✅ Resolvido:** Ver tabela de decisões em `relatorio-todos.md`. D5 (formalização societária) ainda em aberto.
+**✅ Resolvido:** Ver tabela de decisões em `backlog-geral.md`. D5 (formalização societária) ainda em aberto.
 
 ---
 
 ## 🟠 ALTAS
 
 ### ✅ #5 — Dois nomes de marca: "MiStudies" e "gaaabriel" — RESOLVIDO
-**✅ Resolvido:** Todas as páginas usam apenas "MiStudies". Referências a "gaaabriel" removidas de `index.html`, `dashboard.html`, `escopo-PI.html`, `sistema-producao.html`, `docs/07. Brandbook.md`.
+**✅ Resolvido:** Todas as páginas usam apenas "MiStudies". Referências a "gaaabriel" removidas de `index.html`, `dashboard.html`, `escopo-PI.html`, `sistema-producao.html`, `docs/marca/22. Brandbook.md`.
 
 ---
 
 ### ✅ #6 — Quatro paletas de cores — RESOLVIDO
-**✅ Resolvido:** Paleta oficial = azul `#0032b5` + tokens MD3. `docs/07. Brandbook.md` atualizado. Todas as páginas principais usam os mesmos tokens Tailwind.
+**✅ Resolvido:** Paleta oficial = azul `#0032b5` + tokens MD3. `docs/marca/22. Brandbook.md` atualizado. Todas as páginas principais usam os mesmos tokens Tailwind.
 
 ---
 
 ### ✅ #7 — Quatro famílias tipográficas diferentes — RESOLVIDO
-**✅ Resolvido:** Fonte oficial = **Manrope** (headlines) + **Inter** (body). `docs/07. Brandbook.md` atualizado. Consistente em `index.html`, `dashboard.html`, `acervo.html`, `planos-precos.html`, `login.html`, `cadastro.html`.
+**✅ Resolvido:** Fonte oficial = **Manrope** (headlines) + **Inter** (body). `docs/marca/22. Brandbook.md` atualizado. Consistente em `index.html`, `dashboard.html`, `acervo.html`, `planos-precos.html`, `login.html`, `cadastro.html`.
 
 ---
 
@@ -64,8 +64,8 @@
 
 ## 🟡 MÉDIAS
 
-### ✅ #9 — Sistema de ícones inconsistente — RESOLVIDO
-**Resolução adotada:** **Material Symbols Outlined** (Google) é o sistema padrão — já em uso em todas as páginas principais. `docs/07. Brandbook.md` deve ser atualizado para remover referência ao Lucide.
+### #9 — Sistema de ícones inconsistente — PARCIALMENTE RESOLVIDO
+**Resolução adotada:** **Material Symbols Outlined** (Google) é o sistema padrão — já em uso em todas as páginas principais. `docs/marca/22. Brandbook.md` deve ser atualizado para remover referência ao Lucide.
 
 **Ação restante:** Atualizar seção de ícones do Brandbook para validar Material Symbols como padrão oficial.
 
@@ -82,7 +82,7 @@
 ---
 
 ### ✅ #12 — Custos operacionais possivelmente contados em duplicidade — RESOLVIDO
-**Arquivo:** `docs/08. Plano de Rentabilidade.md` — Seções 7 e 8
+**Arquivo:** `docs/produto/11. Plano de Rentabilidade.md` — Seções 1 e 2
 
 - Custos MVP: R$100–150/mês de IA (planos + uso estimado)
 - Custo por aula: Essencial ~R$3, Pro ~R$6, Full Studio ~R$12 de IA/API
@@ -92,19 +92,19 @@
 ---
 
 ### ✅ #13 — Tiers de aula ausentes do Modelo Freemium — RESOLVIDO
-`pages/planos-precos.html` foi criada (Abril 2026) com arquitetura completa: Onboarding + Tiers por aula + Hub. Ela substitui funcionalmente o `docs/04. Modelo Freemium.md` como referência de preços para o usuário.
+`pages/planos-precos.html` foi criada (Abril 2026) com arquitetura completa: Onboarding + Tiers por aula + Hub. Ela substitui funcionalmente o `docs/arquivo/04. Modelo Freemium.md` como referência de preços para o usuário.
 
-**Fechamento:** `docs/04. Modelo Freemium.md` recebeu nota explícita de documento histórico/desatualizado e aponta para `docs/08. Plano de Rentabilidade.md` como referência oficial.
+**Fechamento:** `docs/arquivo/04. Modelo Freemium.md` recebeu nota explícita de documento histórico/desatualizado e aponta para `docs/produto/10. Catálogo de Produtos e Preços.md` como referência oficial de produto e preços.
 
 ---
 
-### ✅ #14 — `relatorio-todos.md` com status técnicos desatualizados — RESOLVIDO NESTA REVISÃO
-Todos os itens T1–T7 foram revisados e atualizados nesta sessão. Ver `relatorio-todos.md`.
+### ✅ #14 — `backlog-geral.md` com status técnicos desatualizados — RESOLVIDO NESTA REVISÃO
+Todos os itens T1–T7 foram revisados e atualizados nesta sessão. Ver `backlog-geral.md`.
 
 ---
 
 ### #15 — Tagline no site difere da tagline oficial nos documentos
-**Arquivos:** `docs/05. Naming & Tagline.md`, `index.html`
+**Arquivos:** `docs/marca/20. Naming e Tagline.md`, `index.html`
 
 - `Naming & Tagline.md`: **"Seu estudo, bem resolvido"**
 - `index.html` hero h1: **"Estudo Bem Resolvido para Educadores"**
@@ -116,18 +116,18 @@ A variação adiciona "para Educadores" (restringe público implícito) e perde 
 ---
 
 ### #16 — Copy do hero do `index.html` genérica e fora do tom de voz
-**Arquivo:** `index.html` linha ~114, `docs/06. Tom de Voz.md`
+**Arquivo:** `index.html` linha ~114, `docs/marca/21. Tom de Voz.md`
 
 O subtítulo atual: *"Transforme conteúdos brutos em experiências de aprendizagem estruturadas..."* é adequado mas pode ser mais direto. O Tom de Voz pede linguagem concreta, sem abstrações.
 
-**Ação necessária:** Revisar hero copy seguindo `docs/06. Tom de Voz.md`. Prioridade baixa — não bloqueia MVP.
+**Ação necessária:** Revisar hero copy seguindo `docs/marca/21. Tom de Voz.md`. Prioridade baixa — não bloqueia MVP.
 
 ---
 
 ## 🟢 BAIXAS
 
 ### #17 — Logo/Wordmark não finalizado, sem favicon
-**Arquivo:** `docs/07. Brandbook.md`
+**Arquivo:** `docs/marca/22. Brandbook.md`
 
 Todas as páginas usam wordmark tipográfico puro (texto "MiStudies"). Nenhuma tem `<link rel="favicon">`.
 
@@ -141,7 +141,7 @@ Todas as páginas usam wordmark tipográfico puro (texto "MiStudies"). Nenhuma t
 ---
 
 ### #19 — Grid com max-width diferente do Brandbook
-- `docs/07. Brandbook.md` define: **1200px**
+- `docs/marca/22. Brandbook.md` define: **1200px**
 - Tailwind `max-w-7xl` = **1280px**
 
 Diferença de 80px. Pode ser resolvido atualizando o Brandbook para aceitar 1280px (mais simples).
@@ -158,20 +158,18 @@ Páginas criadas recentemente (`dashboard.html`, `login.html`, `cadastro.html`) 
 
 ---
 
-### #22 — Segmentação de público diverge entre BMC e Lean Canvas
-- **BMC:** Universitários Adm/Eng, Professores, Empreendedores
-- **Lean Canvas:** Mais preciso, com early adopter explícito
+### ✅ #22 — Segmentação de público diverge entre BMC e Lean Canvas — RESOLVIDO
+- **BMC:** atualizado para refletir o modelo B2B+B2C com professor como cliente primário.
+- **Lean Canvas:** atualizado para o mesmo modelo, mantendo foco em validação do MVP.
 
-Lean Canvas é mais atualizado. BMC pode ser arquivado ou brevemente atualizado.
+**Fechamento:** ambos os documentos agora apontam para o modelo comercial confirmado e para as fontes oficiais em `docs/produto/`.
 
 ---
 
-### #23 — Meta de R$3.600/mês sem contexto claro no cabeçalho
-**Arquivo:** `docs/08. Plano de Rentabilidade.md`
+### ✅ #23 — Meta de R$3.600/mês sem contexto claro no cabeçalho — RESOLVIDO
+**Arquivo:** `docs/produto/11. Plano de Rentabilidade.md`
 
-O cabeçalho não deixa claro: bruto ou líquido? Total ou por sócio? Mês 1 ou semestre 1?
-
-**Ação necessária:** Adicionar nota explicativa: "Meta do mês 5 · Receita líquida total · ~R$1.200/sócio."
+**Fechamento:** cabeçalho atualizado para deixar claro que a meta S1 é R$3.600/mês de receita líquida total, equivalente a aproximadamente R$1.200 por sócio.
 
 ---
 
@@ -186,12 +184,12 @@ O cabeçalho não deixa claro: bruto ou líquido? Total ou por sócio? Mês 1 ou
 |---|---|---|---|
 | 🔴 Crítica | 4 | 4 ✅ | 0 |
 | 🟠 Alta | 4 | 4 ✅ | 0 |
-| 🟡 Média | 8 | 7 ✅ | 1 |
-| 🟢 Baixa | 8 | 3 ✅ | 5 |
+| 🟡 Média | 8 | 5 ✅ | 3 |
+| 🟢 Baixa | 8 | 5 ✅ | 3 |
 | **Total** | **24** | **18 ✅** | **6** |
 
 ### Itens ainda abertos (priorizados)
-1. **#15** — Alinhar tagline do hero com `docs/05. Naming & Tagline.md` *(copy)*
+1. **#15** — Alinhar tagline do hero com `docs/marca/20. Naming e Tagline.md` *(copy)*
 2. **#17** — Criar favicon e adicionar em todas as páginas *(código, baixa complexidade)*
 3. **#9** — Atualizar Brandbook para validar Material Symbols como padrão *(doc interno)*
 4. **#16** — Revisar hero copy seguindo Tom de Voz *(copy)*

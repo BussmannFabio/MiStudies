@@ -1,4 +1,4 @@
-# Relatório de To-Dos — MiStudies
+﻿# Relatório de To-Dos — MiStudies
 > Gerado em: Abril 2026 · **Última revisão: Abril 2026 (pós-implementação MVP)**
 
 ---
@@ -154,7 +154,7 @@
 | T22 | Geral | Sem página 404 personalizada | `[ ]` **Pendente** — `P3` · issue #46 |
 | T23 | `index.html` | Tagline do hero diverge da versão oficial da marca | `[ ]` **Pendente** — `P3` · issue #47 |
 
-> Auditoria completa de frontend em `tracking/frontend-inconsistencias.md` · 9 itens · 3 resolvidos
+> Auditoria completa de frontend em `tracking/audits/frontend-inconsistencias.md` · 9 itens · 3 resolvidos
 
 ---
 
@@ -176,8 +176,8 @@ FEITO ATÉ AGORA:
   [X] Decisões D1–D4, D6–D7 respondidas pelos sócios
   [X] Marca padronizada — "MiStudies" em todas as páginas, "gaaabriel" removido
   [X] 23 issues criadas no GitHub (issues #25–#47)
-  [X] Análise de arquitetura sênior — tracking/analise-arquitetura.md
-  [X] Auditoria de frontend — tracking/frontend-inconsistencias.md (9 itens, 3 resolvidos)
+  [X] Análise de arquitetura sênior — tracking/audits/analise-arquitetura.md
+  [X] Auditoria de frontend — tracking/audits/frontend-inconsistencias.md (9 itens, 3 resolvidos)
 
 PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
   [ ] 1.3  — Criar Skill de Análise B2B · issue #26
