@@ -143,11 +143,16 @@
 | T11 | Geral | Sem favicon em nenhuma página | `[ ]` **Pendente** — `P2` · issue #33 |
 | T12 | `pages/acervo.html` | 12 cards clicáveis sem conteúdo (`arquivo:'#'`) | `[X]` **Resolvido** — href removido, pointer-events-none, badge "Em breve" (F01) |
 | T13 | `pages/acervo.html` | 5 slugs de professor gerando links 404 | `[X]` **Resolvido** — nomes exibidos como texto; link só para slugs em `PROFS_COM_PAGINA` (F02) |
-| T14 | `index.html` | Footer com "Terms/Privacy/Support" em inglês apontando para `#` | `[ ]` **Pendente** — `P2` · issue #F03 |
-| T15 | `pages/cadastro.html` | Termos de Uso e Política de Privacidade sem página | `[ ]` **Pendente** — `P1` · issue #F04 |
-| T16 | `pages/login.html` | "Esqueci minha senha" sem funcionalidade | `[ ]` **Pendente** — `P2` · issue #F05 |
-| T17 | `pages/plano-rentabilidade.html` | Ferramenta interna sem `noindex` | `[ ]` **Pendente** — `P2` · issue #F07 |
-| T18 | Raiz | `Brandbook.html` e `conteúdoANA.html` órfãos (sem link de entrada) | `[ ]` **Pendente** — `P3` · issue #F08 |
+| T14 | `index.html` | Footer com "Terms/Privacy/Support" em inglês apontando para `#` | `[ ]` **Pendente** — `P2` · issue #49 |
+| T15 | `pages/cadastro.html` | Termos de Uso e Política de Privacidade sem página | `[ ]` **Pendente** — `P1` · issue #50 |
+| T16 | `pages/login.html` | "Esqueci minha senha" sem funcionalidade | `[ ]` **Pendente** — `P2` · issue #51 |
+| T17 | `pages/plano-rentabilidade.html` | Ferramenta interna sem `noindex` | `[ ]` **Pendente** — `P2` · issue #52 |
+| T18 | Raiz | `Brandbook.html` e `conteúdoANA.html` órfãos (sem link de entrada) | `[ ]` **Pendente** — `P3` · issue #53 |
+| T19 | Geral | Config Tailwind inline em todas as páginas | `[ ]` **Pendente** — `P3` · issue #43 |
+| T20 | Geral | Dados de conteúdo espalhados nos HTMLs (sem single source of truth) | `[ ]` **Pendente** — `P3` · issue #44 |
+| T21 | `index.html` | Link duplicado do Material Symbols no `<head>` | `[ ]` **Pendente** — `P3` · issue #45 |
+| T22 | Geral | Sem página 404 personalizada | `[ ]` **Pendente** — `P3` · issue #46 |
+| T23 | `index.html` | Tagline do hero diverge da versão oficial da marca | `[ ]` **Pendente** — `P3` · issue #47 |
 
 > Auditoria completa de frontend em `tracking/frontend-inconsistencias.md` · 9 itens · 3 resolvidos
 
@@ -180,7 +185,7 @@ PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
   [ ] 1.5  — Criar contrato simples para professores piloto · issue #29
   [ ] 1.12 — Escolher e contatar 2–3 professores piloto · issue #30
   [ ] 1.15 — Definir canal de entrada dos professores · issue #28
-  [ ] T15  — Criar páginas Termos de Uso + Política de Privacidade · issue #F04
+  [ ] T15  — Criar páginas Termos de Uso + Política de Privacidade · issue #50
   [ ] D5   — Decidir formalização societária (MEI) · issue #31
   [ ] D7   — Definir benefícios exatos da assinatura de aluno · issue #36
 
@@ -191,10 +196,20 @@ PRÓXIMOS 30 DIAS — P2:
   [ ] T5   — Meta tags og:* em index.html e planos-precos.html · issue #34
   [ ] T6   — sitemap.xml e robots.txt · issue #39
   [ ] T11  — Favicon em todas as páginas · issue #33
-  [ ] T14  — Corrigir footer index.html (Terms/Privacy em inglês) · issue #F03
-  [ ] T16  — Tratar "Esqueci minha senha" no login · issue #F05
-  [ ] T17  — noindex em plano-rentabilidade.html · issue #F07
+  [ ] T14  — Corrigir footer index.html (Terms/Privacy em inglês) · issue #49
+  [ ] T16  — Tratar "Esqueci minha senha" no login · issue #51
+  [ ] T17  — noindex em plano-rentabilidade.html · issue #52
   [ ] 2.5  — Gateway de pagamento (Stripe / Mercado Pago) · issue #41
+  [ ] 2.4  — Gerar documentos de marca faltantes (ICP, Pitch, Templates) · issue #40
+  [ ] 2.9  — Prospecção ativa: LinkedIn, grupos acadêmicos, eventos · issue #42
+
+DÍVIDA TÉCNICA — P3 (não bloqueante):
+  [ ] T19  — Extrair config Tailwind para arquivo externo · issue #43
+  [ ] T20  — Extrair dados de conteúdo para data.js (single source of truth) · issue #44
+  [ ] T21  — Remover link duplicado Material Symbols em index.html · issue #45
+  [ ] T22  — Criar 404.html personalizado · issue #46
+  [ ] T23  — Corrigir tagline do hero em index.html · issue #47
+  [ ] T18  — Decidir destino de Brandbook.html e conteúdoANA.html · issue #53
 
 META DO MÊS 1 (preços confirmados):
   → 2 professores × Onboarding Básico R$200 = R$400

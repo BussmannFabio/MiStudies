@@ -178,18 +178,18 @@ Botões de exemplo do sistema de design (Explorar biblioteca, Começar agora, Ve
 
 ```
 ANTES DE QUALQUER PROFESSOR PILOTO VER O SITE:
-  [ ] #F04 — Termos de Uso e Política de Privacidade (mínimo: link para doc externo)
-  [ ] #F02 — Remover links de professor sem página (exibir nome sem link)
-  [ ] #F01 — Desabilitar cursor nos 12 cards sem conteúdo (pointer-events: none + badge "Em breve")
+  [X] #F01 — Desabilitar cursor nos 12 cards sem conteúdo (pointer-events: none + badge "Em breve")
+  [X] #F02 — Remover links de professor sem página (exibir nome sem link)
+  [ ] #F04 — Termos de Uso e Política de Privacidade (mínimo: link para doc externo) · issue #50
 
 ANTES DO LANÇAMENTO PÚBLICO:
-  [ ] #F03 — Criar pages/termos.html + pages/privacidade.html, traduzir footer
-  [ ] #F05 — Substituir "Esqueci minha senha" por mensagem de contato
-  [ ] #F06 — Linkar demos em planos-precos.html
-  [ ] #F07 — Adicionar noindex em plano-rentabilidade.html
+  [ ] #F03 — Criar pages/termos.html + pages/privacidade.html, traduzir footer · issue #49
+  [ ] #F05 — Substituir "Esqueci minha senha" por mensagem de contato · issue #51
+  [X] #F06 — Linkar demos em planos-precos.html
+  [ ] #F07 — Adicionar noindex em plano-rentabilidade.html · issue #52
 
 LIMPEZA DO REPOSITÓRIO:
-  [ ] #F08 — Decidir sobre Brandbook.html e conteúdoANA.html
+  [ ] #F08 — Decidir sobre Brandbook.html e conteúdoANA.html · issue #53
   [ ] #F09 — Comentar bloco de demos no Brandbook.html
 ```
 
