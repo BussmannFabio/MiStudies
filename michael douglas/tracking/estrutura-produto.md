@@ -118,34 +118,115 @@ Acervo → ../acervo.html
 
 ---
 
-## Decisões técnicas do MVP
+## Decisões técnicas
 
-| Decisão   | Escolha                            | Motivo                      |
-| --------- | ---------------------------------- | --------------------------- |
-| Framework | Nenhum — HTML/CSS/JS puro          | Sem infraestrutura de build |
-| CSS       | Tailwind via CDN + tokens inline   | Rápido para prototipagem    |
-| Fontes    | Manrope (headline) + Inter (body)  | Definido no Brandbook       |
-| Ícones    | Material Symbols Outlined (Google) | Já em uso, variáveis CSS    |
-| Auth      | Placeholder (redirect via JS)      | Backend fora do escopo MVP  |
-| Dados     | Arrays JS inline em cada página    | Sem banco de dados no MVP   |
-| URLs      | `/pages/acervo/[slug].html`        | Canônico, escalável         |
-| Deploy    | GitHub Pages / Netlify (pendente)  | Estático, sem servidor      |
+### Frontend (migração em andamento → Angular)
+
+| Decisão   | Escolha atual (MVP)                | Decisão futura (Fase 2)              |
+| --------- | ---------------------------------- | ------------------------------------ |
+| Framework | HTML/CSS/JS puro                   | **Angular** (migração planejada)     |
+| CSS       | Tailwind via CDN + tokens inline   | Tailwind com build (tree-shaking)    |
+| Fontes    | Manrope (headline) + Inter (body)  | Mantém — configurar em `styles.css`  |
+| Ícones    | Material Symbols Outlined (Google) | Mantém — importar via Angular        |
+| Auth      | Placeholder (redirect via JS)      | `AuthGuard` no Angular Router        |
+| Dados     | Arrays JS inline em cada página    | Services + integração com API REST   |
+| URLs      | `/pages/acervo/[slug].html`        | Rotas Angular (`/acervo/:slug`)      |
+| Deploy    | GitHub Pages / Netlify (pendente)  | Netlify com `_redirects` para SPA    |
+
+> **Status da migração:** planejada — ver passo a passo completo em [`backlog-geral.md`](backlog-geral.md) (seção Frontend Angular).
+
+### Backend (em implementação — `BeckEnd/`)
+
+| Decisão       | Escolha                                   |
+| ------------- | ----------------------------------------- |
+| Runtime       | Node.js (CommonJS)                        |
+| Framework     | Express 5                                 |
+| ORM           | Sequelize                                 |
+| Banco         | PostgreSQL (pendente decisão dev: MySQL/SQLite?) |
+| Auth          | JWT + bcrypt                              |
+| Upload        | multer (local `/uploads`; S3 para produção via `multer-s3`) |
+| Pagamento     | Webhook externo (Stripe / Hotmart / Pagar.me — provedor a decidir) |
+| Porta padrão  | 3000 (via `process.env.PORT`)             |
 
 ---
 
-## O que ainda não existe (pós-MVP)
+## Arquitetura de Backend — `BeckEnd/`
 
-| Feature                                                | Prioridade | Fase     |
-| ------------------------------------------------------ | ---------- | -------- |
-| Auth real (login/sessão)                               | P1         | Fase 2   |
-| Gateway de pagamento                                   | P1         | Fase 2   |
-| Upload de PDF pelo professor                           | P2         | Fase 2   |
-| Skill de Análise B2B (IA)                              | P1         | Fase 1   |
-| Analytics por aula                                     | P2         | Fase 3   |
-| SEO (meta tags, sitemap)                               | P2         | Fase 1/2 |
-| Favicon                                                | P2         | Fase 1   |
-| Página de detalhe `/acervo/[slug]` (antes do conteúdo) | P3         | Fase 3   |
-| Favoritos do aluno                                     | P3         | Fase 3   |
+### Estrutura de pastas planejada
+
+```
+BeckEnd/
+├── index.js               # Entry point (Express + middlewares)
+├── .env                   # Variáveis de ambiente
+├── src/
+│   ├── config/
+│   │   └── database.js    # Configuração Sequelize
+│   ├── models/
+│   │   ├── index.js       # Associações centralizadas
+│   │   ├── Professor.js
+│   │   ├── Plano.js
+│   │   ├── Assinatura.js
+│   │   ├── Aula.js
+│   │   └── Materia.js
+│   ├── routes/
+│   │   ├── auth.routes.js
+│   │   ├── professor.routes.js
+│   │   ├── aulas.routes.js
+│   │   ├── materias.routes.js
+│   │   ├── planos.routes.js
+│   │   └── webhook.routes.js
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── professor.controller.js
+│   │   ├── aulas.controller.js
+│   │   ├── materias.controller.js
+│   │   └── planos.controller.js
+│   ├── middlewares/
+│   │   ├── auth.middleware.js    # Verifica JWT
+│   │   └── plano.middleware.js   # Verifica plano ativo
+│   └── uploads/                 # Arquivos de aula (PDF/HTML)
+└── package.json
+```
+
+### Models e campos principais
+
+| Model | Campos-chave |
+|---|---|
+| **Professor** | id (UUID), nome, email, senha_hash, bio, foto_url, slug, setup_tier, setup_pago |
+| **Materia** | id, professor_id (FK), nome, descricao, tags |
+| **Aula** | id, professor_id (FK), materia_id (FK), titulo, tier (essencial/pro/full_studio), status (rascunho/em_producao/publicado), arquivo_url |
+| **Plano** | id, nome, preco_mensal, features (JSON) |
+| **Assinatura** | id, professor_id (FK), plano_id (FK), status (ativa/cancelada/pendente), external_id |
+
+### Rotas da API
+
+| Grupo | Base | Endpoints principais |
+|---|---|---|
+| Auth | `/api/auth` | POST /register, POST /login, GET /me |
+| Professores | `/api/professores` | GET /:slug (público), PUT /me, GET /me/dashboard |
+| Matérias | `/api/materias` | GET / (público), POST, PUT /:id, DELETE /:id |
+| Aulas | `/api/aulas` | GET / (público), POST (upload), PATCH /:id/publicar, GET /me |
+| Planos | `/api/planos` | GET / (público), GET /minha-assinatura, POST /assinar |
+| Webhook | `/api/webhook` | POST /pagamento (chave secreta) |
+
+Detalhamento completo em [`BeckEnd/documentacao/implementation_plan.md`](../../../BeckEnd/documentacao/implementation_plan.md).
+
+---
+
+## O que ainda não existe
+
+| Feature                                                | Prioridade | Fase     | Situação |
+| ------------------------------------------------------ | ---------- | -------- | -------- |
+| Auth real (login/sessão) com JWT                       | P1         | Fase 2   | 🟡 Planejado — models + rotas definidos |
+| Gateway de pagamento + webhook                         | P1         | Fase 2   | 🟡 Planejado — provedor a decidir |
+| Upload de PDF pelo professor                           | P2         | Fase 2   | 🟡 Planejado — multer definido |
+| Integração frontend ↔ API                             | P1         | Fase 2   | ⬜ Não iniciado |
+| Skill de Análise B2B (IA)                              | P1         | Fase 1   | ⬜ Não iniciado |
+| Analytics por aula                                     | P2         | Fase 3   | ⬜ Não iniciado |
+| SEO (meta tags, sitemap)                               | P2         | Fase 1/2 | ⬜ Não iniciado |
+| Favicon                                                | P2         | Fase 1   | ⬜ Não iniciado |
+| Página de detalhe `/acervo/[slug]` (antes do conteúdo) | P3         | Fase 3   | ⬜ Não iniciado |
+| Favoritos do aluno                                     | P3         | Fase 3   | ⬜ Não iniciado |
 
 ---
 

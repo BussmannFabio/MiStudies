@@ -58,10 +58,35 @@
 ### Hub & Tecnologia
 | # | Item | Status | Prioridade | Responsável |
 |---|---|---|---|---|
-| 2.5 | Implementar gateway de pagamento (Stripe ou Mercado Pago) para professores | `[ ]` | `P1` | Sócio 1 |
+| 2.5 | Implementar gateway de pagamento (Stripe / Hotmart / Pagar.me) via webhook | `[ ]` Planejado — decidir provedor | `P1` | Sócio 1 |
 | 2.6 | Ativar assinatura de alunos (paywall) — aguardar volume de conteúdo | `[ ]` | `P1` | Sócio 1/3 |
-| 2.7 | Criar sistema de upload de PDF (formulário para professores enviarem material) | `[ ]` | `P2` | Sócio 1 |
+| 2.7 | Upload de PDF pelo professor — multer definido no backend | `[ ]` Planejado — implementar controller | `P2` | Sócio 1 |
 | 2.8 | Página pública de cada professor (`professor/[slug].html`) | `[X]` Feito — template em `pages/professor/gabriel.html` | — | Sócio 1 |
+
+### Backend — Implementação (`BeckEnd/`)
+| # | Item | Status | Prioridade | Responsável |
+|---|---|---|---|---|
+| B1 | Decidir banco de dados: PostgreSQL / MySQL / SQLite para dev | `[ ]` | `P1` | Sócio 1 |
+| B2 | Decidir provedor de pagamento: Stripe / Hotmart / Pagar.me | `[ ]` | `P1` | Todos |
+| B3 | Instalar dependências: `sequelize`, `pg`, `bcrypt`, `jsonwebtoken`, `multer`, `express-validator` | `[ ]` | `P1` | Sócio 1 |
+| B4 | Criar todos os models e associações (Professor, Materia, Aula, Plano, Assinatura) | `[ ]` | `P1` | Sócio 1 |
+| B5 | Implementar controllers (auth, professor, aulas, materias, planos) | `[ ]` | `P1` | Sócio 1 |
+| B6 | Registrar todas as rotas no `index.js` | `[ ]` | `P1` | Sócio 1 |
+| B7 | Testar endpoints no Insomnia / Postman | `[ ]` | `P1` | Sócio 1 |
+| B8 | Integrar frontend (login/cadastro) com `POST /api/auth` | `[ ]` | `P1` | Sócio 1 |
+| B9 | Criar `src/routes.js` no frontend com mapeamento de páginas para endpoints | `[ ]` | `P2` | Sócio 1 |
+
+### Frontend — Migração para Angular
+| # | Item | Status | Prioridade | Responsável |
+|---|---|---|---|---|
+| A1 | Setup: `ng new mistudies-app --routing --style=css` + instalar Tailwind com build | `[ ]` | `P1` | Sócio 1 |
+| A2 | Criar componentes de página: Home, Login, Cadastro, Dashboard, Planos, Acervo | `[ ]` | `P1` | Sócio 1 |
+| A3 | Criar `NavbarComponent` e `FooterComponent` compartilhados (resolver nav duplicada) | `[ ]` | `P1` | Sócio 1 |
+| A4 | Configurar rotas em `app.routes.ts` (mapeando páginas atuais) | `[ ]` | `P1` | Sócio 1 |
+| A5 | Migrar HTML de cada página para os `.component.html` correspondentes | `[ ]` | `P1` | Sócio 1 |
+| A6 | Implementar `AuthGuard` para proteger `/dashboard` | `[ ]` | `P1` | Sócio 1 |
+| A7 | Criar Services para consumir a API do backend (`/api/aulas`, `/api/auth`, etc.) | `[ ]` | `P2` | Sócio 1 |
+| A8 | Build de produção + deploy no Netlify com `_redirects` para SPA | `[ ]` | `P2` | Sócio 1 |
 
 ### Negócio & Growth
 | # | Item | Status | Prioridade | Responsável |
@@ -178,6 +203,8 @@ FEITO ATÉ AGORA:
   [X] 23 issues criadas no GitHub (issues #25–#47)
   [X] Análise de arquitetura sênior — tracking/audits/analise-arquitetura.md
   [X] Auditoria de frontend — tracking/audits/frontend-inconsistencias.md (9 itens, 3 resolvidos)
+  [X] BeckEnd/ — estrutura de backend criada: Express + Sequelize + JWT + multer + webhook
+  [X] BeckEnd/documentacao/implementation_plan.md — plano completo de rotas, models e API
 
 PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
   [ ] 1.3  — Criar Skill de Análise B2B · issue #26
@@ -188,6 +215,10 @@ PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
   [ ] T15  — Criar páginas Termos de Uso + Política de Privacidade · issue #50
   [ ] D5   — Decidir formalização societária (MEI) · issue #31
   [ ] D7   — Implementar benefícios pagos da assinatura de aluno (downloads, favoritos, kits, progresso) · issue #36
+
+BACKEND — DECISÕES URGENTES (desbloqueiam B3–B9):
+  [ ] B1   — Decidir banco: PostgreSQL / MySQL / SQLite para dev
+  [ ] B2   — Decidir provedor de pagamento: Stripe / Hotmart / Pagar.me
 
 PRÓXIMOS 30 DIAS — P2:
   [ ] 1.9  — Verificar responsividade em mobile · issue #37
