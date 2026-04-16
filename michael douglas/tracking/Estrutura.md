@@ -103,11 +103,11 @@ Acervo → ../acervo.html
 
 ### Professor — 3 etapas
 
-| Etapa | Opções | Valores |
-|---|---|---|
+| Etapa                       | Opções                             | Valores                 |
+| --------------------------- | ---------------------------------- | ----------------------- |
 | **Onboarding** (taxa única) | Básico / Branded ⭐ / Institucional | R$200 / R$500 / R$1.000 |
-| **Aulas** (por aula) | Essencial / Pro / Full Studio | R$40 / R$75 / R$100 |
-| **Hub** (mensal) | Starter / Pro ⭐ / Institucional | R$49 / R$99 / R$249 |
+| **Aulas** (por aula)        | Essencial / Pro / Full Studio      | R$40 / R$75 / R$100     |
+| **Hub** (mensal)            | Starter / Pro ⭐ / Institucional    | R$49 / R$99 / R$249     |
 
 ### Aluno
 
@@ -120,32 +120,32 @@ Acervo → ../acervo.html
 
 ## Decisões técnicas do MVP
 
-| Decisão | Escolha | Motivo |
-|---|---|---|
-| Framework | Nenhum — HTML/CSS/JS puro | Sem infraestrutura de build |
-| CSS | Tailwind via CDN + tokens inline | Rápido para prototipagem |
-| Fontes | Manrope (headline) + Inter (body) | Definido no Brandbook |
-| Ícones | Material Symbols Outlined (Google) | Já em uso, variáveis CSS |
-| Auth | Placeholder (redirect via JS) | Backend fora do escopo MVP |
-| Dados | Arrays JS inline em cada página | Sem banco de dados no MVP |
-| URLs | `/pages/acervo/[slug].html` | Canônico, escalável |
-| Deploy | GitHub Pages / Netlify (pendente) | Estático, sem servidor |
+| Decisão   | Escolha                            | Motivo                      |
+| --------- | ---------------------------------- | --------------------------- |
+| Framework | Nenhum — HTML/CSS/JS puro          | Sem infraestrutura de build |
+| CSS       | Tailwind via CDN + tokens inline   | Rápido para prototipagem    |
+| Fontes    | Manrope (headline) + Inter (body)  | Definido no Brandbook       |
+| Ícones    | Material Symbols Outlined (Google) | Já em uso, variáveis CSS    |
+| Auth      | Placeholder (redirect via JS)      | Backend fora do escopo MVP  |
+| Dados     | Arrays JS inline em cada página    | Sem banco de dados no MVP   |
+| URLs      | `/pages/acervo/[slug].html`        | Canônico, escalável         |
+| Deploy    | GitHub Pages / Netlify (pendente)  | Estático, sem servidor      |
 
 ---
 
 ## O que ainda não existe (pós-MVP)
 
-| Feature | Prioridade | Fase |
-|---|---|---|
-| Auth real (login/sessão) | P1 | Fase 2 |
-| Gateway de pagamento | P1 | Fase 2 |
-| Upload de PDF pelo professor | P2 | Fase 2 |
-| Skill de Análise B2B (IA) | P1 | Fase 1 |
-| Analytics por aula | P2 | Fase 3 |
-| SEO (meta tags, sitemap) | P2 | Fase 1/2 |
-| Favicon | P2 | Fase 1 |
-| Página de detalhe `/acervo/[slug]` (antes do conteúdo) | P3 | Fase 3 |
-| Favoritos do aluno | P3 | Fase 3 |
+| Feature                                                | Prioridade | Fase     |
+| ------------------------------------------------------ | ---------- | -------- |
+| Auth real (login/sessão)                               | P1         | Fase 2   |
+| Gateway de pagamento                                   | P1         | Fase 2   |
+| Upload de PDF pelo professor                           | P2         | Fase 2   |
+| Skill de Análise B2B (IA)                              | P1         | Fase 1   |
+| Analytics por aula                                     | P2         | Fase 3   |
+| SEO (meta tags, sitemap)                               | P2         | Fase 1/2 |
+| Favicon                                                | P2         | Fase 1   |
+| Página de detalhe `/acervo/[slug]` (antes do conteúdo) | P3         | Fase 3   |
+| Favoritos do aluno                                     | P3         | Fase 3   |
 
 ---
 
