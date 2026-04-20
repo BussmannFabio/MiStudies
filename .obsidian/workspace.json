@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "13ccabf6672ec3f2",
+    "type": "split",
+    "children": [
+      {
+        "id": "1c97d8c05ac9c1c0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "08af2d9ca56d42fe",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "michael douglas/docs/02-oferta-e-financeiro/calculo-custos-ia-api.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "calculo-custos-ia-api"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b73a4c88cc3658ec",
+    "type": "split",
+    "children": [
+      {
+        "id": "04c5fab603787895",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b9530fc96d6bc9d1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "01a7a029e2ee4a60",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "f5dab64e01612ad3",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 241.5
+  },
+  "right": {
+    "id": "7381a690c49ea5c9",
+    "type": "split",
+    "children": [
+      {
+        "id": "1e945a8b4a069ece",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "35463676c0229944",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "michael douglas/docs/02-oferta-e-financeiro/calculo-custos-ia-api.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos para calculo-custos-ia-api"
+            }
+          },
+          {
+            "id": "d4dd2520112e2102",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "michael douglas/docs/02-oferta-e-financeiro/calculo-custos-ia-api.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída para calculo-custos-ia-api"
+            }
+          },
+          {
+            "id": "a4587b1ce2c6a543",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "455a4b56eefeccb4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "4d2a8bcc2e0933c5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "michael douglas/docs/02-oferta-e-financeiro/calculo-custos-ia-api.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário de calculo-custos-ia-api"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "08af2d9ca56d42fe",
+  "lastOpenFiles": [
+    "michael douglas/docs/02-oferta-e-financeiro/catalogo-produtos-e-precos.md",
+    "michael douglas/docs/02-oferta-e-financeiro/plano-de-rentabilidade.md",
+    "michael douglas/docs/02-oferta-e-financeiro/precificacao-recomendada.md",
+    "michael douglas/docs/02-oferta-e-financeiro/calculo-custos-ia-api.md",
+    "michael douglas/docs/02-oferta-e-financeiro/README.md",
+    "michael douglas/docs/02-oferta-e-financeiro/roadmap-de-produto.md",
+    "michael douglas/docs/01-fundacao/proposta-de-valor.md",
+    "michael douglas/docs/01-fundacao/product-brief.md",
+    "michael douglas/docs/01-fundacao/business-model-canvas.md",
+    "michael douglas/docs/01-fundacao/lean-canvas.md",
+    "BeckEnd/documentacao/02_rotas_e_controllers.md",
+    "michael douglas/README.md",
+    "michael douglas/docs/08-gestao/README.md",
+    "michael douglas/docs/00-indice.md",
+    "michael douglas/docs/04-comercial/pitch-comercial.md",
+    "michael douglas/docs/04-comercial/icp-professor-ideal.md",
+    "michael douglas/docs/04-comercial/README.md",
+    "michael douglas/docs/03-operacao/guia-de-producao-de-conteudo.md",
+    "michael douglas/docs/03-operacao/pipeline-manual-de-entrega.md",
+    "michael douglas/docs/06-legal/politica-de-privacidade.md",
+    "michael douglas/docs/06-legal/termos-de-uso.md",
+    "michael douglas/docs/06-legal/README.md",
+    "michael douglas/docs/05-marca/guia-de-social-media.md",
+    "michael douglas/docs/05-marca/brandbook.md",
+    "michael douglas/docs/05-marca/tom-de-voz.md",
+    "michael douglas/docs/05-marca/naming-e-tagline.md",
+    "michael douglas/playbooks/skills",
+    "michael douglas/playbooks",
+    "michael douglas/docs/99-arquivo",
+    "michael douglas/docs/90-prompts",
+    "michael douglas/docs/08-gestao",
+    "michael douglas/docs/07-tecnologia/auditorias",
+    "michael douglas/docs/07-tecnologia",
+    "michael douglas/docs/06-legal",
+    "michael douglas/docs/05-marca",
+    "michael douglas/docs/04-comercial"
+  ]
+}
