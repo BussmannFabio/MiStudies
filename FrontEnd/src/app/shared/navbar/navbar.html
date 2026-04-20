@@ -1,0 +1,83 @@
+<!-- TopAppBar — aparece em todas as páginas -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-sm glass-nav">
+  <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+
+    <!-- Logo -->
+    <a routerLink="/" class="text-2xl font-black text-primary tracking-tighter font-headline">
+      MiStudies
+    </a>
+
+    <!-- Links Desktop -->
+    <div class="hidden md:flex items-center gap-8">
+      <a routerLink="/" routerLinkActive="text-primary border-b-2 border-primary pb-1 font-bold"
+         [routerLinkActiveOptions]="{exact: true}"
+         class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors">
+        Home
+      </a>
+      <a routerLink="/acervo" routerLinkActive="text-primary border-b-2 border-primary pb-1 font-bold"
+         class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors">
+        Acervo
+      </a>
+      <a routerLink="/planos" routerLinkActive="text-primary border-b-2 border-primary pb-1 font-bold"
+         class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors">
+        Planos
+      </a>
+      @if (authService.isLoggedIn()) {
+        <a routerLink="/dashboard" routerLinkActive="text-primary border-b-2 border-primary pb-1 font-bold"
+           class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors">
+          Dashboard
+        </a>
+      }
+    </div>
+
+    <!-- Ações Desktop -->
+    <div class="hidden md:flex items-center gap-3">
+      @if (authService.isLoggedIn()) {
+        <span class="text-sm text-on-surface-variant font-medium">
+          {{ authService.getUser()?.nome }}
+        </span>
+        <button (click)="logout()"
+          class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors px-4 py-2">
+          Sair
+        </button>
+      } @else {
+        <a routerLink="/login"
+          class="text-on-surface-variant hover:text-primary font-body font-medium transition-colors px-4 py-2">
+          Entrar
+        </a>
+        <a routerLink="/cadastro"
+          class="bg-signature-gradient text-on-primary px-6 py-2.5 rounded-lg font-semibold transition-all hover:opacity-90 active:scale-95">
+          Criar conta
+        </a>
+      }
+    </div>
+
+    <!-- Botão Mobile Hamburger -->
+    <button class="md:hidden text-on-surface" (click)="toggleMenu()" aria-label="Abrir menu">
+      <span class="material-symbols-outlined">{{ menuAberto ? 'close' : 'menu' }}</span>
+    </button>
+
+  </div>
+
+  <!-- Menu Mobile -->
+  @if (menuAberto) {
+    <div class="md:hidden bg-white/95 backdrop-blur-md border-t border-surface-container px-8 py-4 flex flex-col gap-4">
+      <a routerLink="/" (click)="toggleMenu()"
+         class="text-on-surface-variant hover:text-primary font-medium py-2 transition-colors">Home</a>
+      <a routerLink="/acervo" (click)="toggleMenu()"
+         class="text-on-surface-variant hover:text-primary font-medium py-2 transition-colors">Acervo</a>
+      <a routerLink="/planos" (click)="toggleMenu()"
+         class="text-on-surface-variant hover:text-primary font-medium py-2 transition-colors">Planos</a>
+      @if (authService.isLoggedIn()) {
+        <a routerLink="/dashboard" (click)="toggleMenu()"
+           class="text-on-surface-variant hover:text-primary font-medium py-2 transition-colors">Dashboard</a>
+        <button (click)="logout()" class="text-left text-on-surface-variant font-medium py-2">Sair</button>
+      } @else {
+        <a routerLink="/login" (click)="toggleMenu()"
+           class="text-on-surface-variant hover:text-primary font-medium py-2 transition-colors">Entrar</a>
+        <a routerLink="/cadastro" (click)="toggleMenu()"
+           class="bg-signature-gradient text-on-primary px-6 py-3 rounded-xl font-semibold text-center">Criar conta</a>
+      }
+    </div>
+  }
+</nav>
