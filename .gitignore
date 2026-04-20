@@ -1,0 +1,23 @@
+# ── Obsidian ──────────────────────────────────────────────
+.obsidian/
+
+# ── Node (raiz, caso rode scripts fora das subpastas) ─────
+node_modules/
+
+# ── Variáveis de ambiente ──────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Build outputs ─────────────────────────────────────────
+dist/
+build/
+
+# ── SO ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editores ──────────────────────────────────────────────
+*.swp
+*.swo
