@@ -30,14 +30,14 @@ O **Angular** resolve todos esses problemas:
 
 ## Stack Tecnológica
 
-| Tecnologia | Versão | Papel |
-|---|---|---|
-| **Angular** | 19 | Framework principal (componentes, rotas, DI) |
-| **TypeScript** | 5.x | Linguagem (tipagem estática, classes, interfaces) |
-| **Tailwind CSS** | 3.x | Estilização via classes utilitárias |
-| **Zone.js** | 0.15.x | Detecção de mudanças (Change Detection) |
-| **RxJS** | 7.x | Programação reativa (Observable, pipe, tap) |
-| **Angular Signals** | built-in | Estado reativo moderno (usado no Acervo) |
+| Tecnologia          | Versão   | Papel                                             |
+| ------------------- | -------- | ------------------------------------------------- |
+| **Angular**         | 19       | Framework principal (componentes, rotas, DI)      |
+| **TypeScript**      | 5.x      | Linguagem (tipagem estática, classes, interfaces) |
+| **Tailwind CSS**    | 3.x      | Estilização via classes utilitárias               |
+| **Zone.js**         | 0.15.x   | Detecção de mudanças (Change Detection)           |
+| **RxJS**            | 7.x      | Programação reativa (Observable, pipe, tap)       |
+| **Angular Signals** | built-in | Estado reativo moderno (usado no Acervo)          |
 
 ---
 
