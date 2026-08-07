@@ -3,7 +3,7 @@
 > **Objetivo:** A partir de uma descrição de processo repetitivo, gerar um arquivo `.md` de skill completo, pronto para uso — seguindo o padrão MiStudies.
 > **Quando usar:** sempre que um processo se repetir mais de 2 vezes e puder ser sistematizado.
 > **Entradas:** descrição do processo (pode ser vaga — a skill faz as perguntas certas)
-> **Saídas:** arquivo `.md` de skill completo, salvo em `michael douglas/playbooks/skills/`
+> **Saídas:** arquivo `.md` de skill completo, salvo em `Documentação/skills/`
 
 ---
 
@@ -140,14 +140,14 @@ Produza o arquivo `.md` completo seguindo a estrutura padrão abaixo.
 - **Nunca** deixe a seção "Formato de saída" vaga — ela deve ter um template real ou exemplo concreto
 - **Sempre** inclua pelo menos 5 itens no checklist de qualidade
 - **Sempre** que a skill produzir um arquivo (HTML, MD, JS), especifique o caminho exato onde deve ser salvo
-- **Se o processo descrito já existir** (total ou parcialmente) em `playbooks/skills/`, sinalize antes de criar — pode ser expansão, não skill nova
+- **Se o processo descrito já existir** (total ou parcialmente) em `Documentação/skills/`, sinalize antes de criar — pode ser expansão, não skill nova
 - **Se a skill for muito ampla** (ex: "fazer todo o pipeline de produção"), quebre em skills menores e liste quais criar
 
 ---
 
 ## Checklist de qualidade da skill gerada
 
-- [ ] Nome do arquivo em snake_case sem acentos?
+- [ ] Nome do arquivo em kebab-case sem acentos?
 - [ ] Objetivo em 1 frase clara e específica?
 - [ ] Gatilho de uso é concreto (não "quando necessário")?
 - [ ] Entradas e saídas são listas concretas, não abstratas?
@@ -155,5 +155,5 @@ Produza o arquivo `.md` completo seguindo a estrutura padrão abaixo.
 - [ ] Regras têm pelo menos 1 proibitiva ("nunca") e 1 obrigatória ("sempre")?
 - [ ] Formato de saída tem template ou exemplo real?
 - [ ] Checklist tem no mínimo 5 itens verificáveis?
-- [ ] A skill não duplica nenhuma já existente em `playbooks/skills/`?
-- [ ] O nome do arquivo foi sugerido para salvar em `michael douglas/playbooks/skills/`?
+- [ ] A skill não duplica nenhuma já existente em `Documentação/skills/`?
+- [ ] O nome do arquivo foi sugerido para salvar em `Documentação/skills/`?

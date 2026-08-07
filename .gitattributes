@@ -1,0 +1,15 @@
+# Normaliza final de linha para LF em todo o repositório.
+# Evita que edições no Windows marquem centenas de arquivos como "modificados"
+# só por causa de CRLF x LF (sem mudança real de conteúdo).
+* text=auto eol=lf
+
+# Arquivos binários — nunca normalizar
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.pbix binary
+*.xlsx binary
+*.docx binary

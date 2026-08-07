@@ -149,7 +149,7 @@ export const routes: Routes = [
 ---
 
 ### Etapa 5 — Migração do HTML de cada página
-> **Status:** `[ ]` Pendente — componentes criados mas conteúdo HTML ainda não migrado do `HTML Zite/`
+> **Status:** `[~]` Parcial · 6 de 8 páginas migradas com conteúdo real (Home, Login, Cadastro, Planos, Acervo, Dashboard). Faltam `AulaDetalheComponent` e `ProfessorComponent`, que ainda têm o HTML gerado padrão do Angular CLI.
 
 Para cada página, copiar o conteúdo dentro do `<main>` (sem `<head>`, sem nav, sem footer) para o `.component.html` correspondente.
 
@@ -246,7 +246,7 @@ Necessário para o roteamento Angular funcionar ao recarregar a página diretame
 | 2 | Tailwind com build + tokens MiStudies | `[X]` |
 | 3 | `NavbarComponent` e `FooterComponent` | `[X]` |
 | 4 | Componentes de página + rotas com lazy loading | `[X]` |
-| 5 | Migrar HTML de cada página (8 páginas) do `HTML Zite/` | `[ ]` |
+| 5 | Migrar HTML de cada página (8 páginas) do `HTML/` | `[~]` 6/8 — faltam Aula Detalhe e Professor |
 | 6 | `AuthGuard` para `/dashboard` | `[X]` |
 | 7 | Services: `auth` e `aulas` feitos; `professor` e `planos` pendentes | `[~]` |
 | 8 | Build de produção + deploy Netlify | `[ ]` |

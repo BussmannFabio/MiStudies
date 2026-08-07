@@ -18,22 +18,22 @@
 ### Prioridade 1 — Core do negócio (produção de aulas)
 
 ```
-analisar_pdf_professor   →  produzir_aula  →  revisar_aula  →  gerar_metadados_acervo
+analisar-pdf-professor   →  produzir-aula  →  revisar-aula  →  gerar-metadados-acervo
         ↑                                                               ↓
-   briefing_professor                                          publicar_aula (checklist)
+   briefing-professor                                          publicar_aula (checklist)
 ```
 
 ### Prioridade 2 — Vendas e operações
 
 ```
-qualificar_lead  →  briefing_professor  →  gerar_proposta  →  gerar_contrato_simples
+qualificar-lead  →  briefing-professor  →  gerar-proposta  →  gerar_contrato_simples
 ```
 
 ### Prioridade 3 — Marketing e conteúdo
 
 ```
-aula publicada  →  gerar_post_social
-                →  gerar_preview_card
+aula publicada  →  gerar-post-social
+                →  gerar-preview-card
 ```
 
 ---
@@ -46,7 +46,7 @@ aula publicada  →  gerar_post_social
 
 ---
 
-#### `analisar_pdf_professor.md`
+#### `analisar-pdf-professor.md`
 **Prioridade:** P1 — Bloqueante para começar qualquer projeto
 
 **Quando usar:** sempre que um professor envia material para ser transformado em aula.
@@ -79,14 +79,14 @@ Essa é a "Skill de Análise B2B" mencionada no `docs/08-gestao/backlog-geral.md
 
 ---
 
-#### `produzir_aula.md`
+#### `produzir-aula.md`
 **Prioridade:** P1
 
 **Quando usar:** após análise aprovada e briefing completo. Produz o HTML da aula.
 Uma skill única com o tier como parâmetro (não 3 skills separadas).
 
 **Entradas:**
-- Output de `analisar_pdf_professor.md`
+- Output de `analisar-pdf-professor.md`
 - Tier: Essencial | Pro | Full Studio
 - Briefing do professor (nome, área, matéria, nível do aluno, tom)
 - Material complementar adicional (se houver)
@@ -119,7 +119,7 @@ Uma skill única com o tier como parâmetro (não 3 skills separadas).
 
 ---
 
-#### `revisar_aula.md`
+#### `revisar-aula.md`
 **Prioridade:** P1
 
 **Quando usar:** antes de entregar qualquer aula ao professor. QA obrigatório.
@@ -163,7 +163,7 @@ QUALIDADE FINAL
 
 ---
 
-#### `gerar_metadados_acervo.md`
+#### `gerar-metadados-acervo.md`
 **Prioridade:** P1
 
 **Quando usar:** para gerar o objeto JS que vai no array `CONTEUDOS` do `acervo.html`.
@@ -208,7 +208,7 @@ QUALIDADE FINAL
 
 ---
 
-#### `briefing_professor.md`
+#### `briefing-professor.md`
 **Prioridade:** P1
 
 **Quando usar:** no início de cada projeto, antes de analisar o material.
@@ -253,7 +253,7 @@ SOBRE O PROJETO
 
 ---
 
-#### `qualificar_lead.md`
+#### `qualificar-lead.md`
 **Prioridade:** P2
 
 **Quando usar:** para avaliar rapidamente se um professor potencial é um bom fit antes de investir tempo em pitch.
@@ -277,7 +277,7 @@ SOBRE O PROJETO
 
 ---
 
-#### `gerar_proposta.md`
+#### `gerar-proposta.md`
 **Prioridade:** P2
 
 **Quando usar:** após briefing completo, para gerar a proposta comercial formal.
@@ -298,7 +298,7 @@ SOBRE O PROJETO
 
 ---
 
-#### `checklist_publicacao.md`
+#### `checklist-publicacao.md`
 **Prioridade:** P1
 
 **Quando usar:** antes de fazer `git add` em qualquer nova aula. Processo obrigatório.
@@ -335,7 +335,7 @@ GIT
 
 ---
 
-#### `gerar_post_social.md`
+#### `gerar-post-social.md`
 **Prioridade:** P3
 
 **Quando usar:** para divulgar uma aula publicada nas redes sociais do MiStudies.
@@ -365,7 +365,7 @@ GIT
 
 ---
 
-#### `gerar_preview_card.md`
+#### `gerar-preview-card.md`
 **Prioridade:** P2
 
 **Quando usar:** para gerar a descrição de um card no acervo quando a aula já existe mas os metadados de marketing estão fracos ou genéricos.
@@ -384,7 +384,7 @@ GIT
 
 ---
 
-#### `gerar_exercicios.md`
+#### `gerar-exercicios.md`
 **Prioridade:** P3
 
 **Quando usar:** para complementar uma aula já produzida com exercícios de fixação (pode ser adicionado a uma aula Pro ou Full Studio).
@@ -401,7 +401,7 @@ GIT
 
 ---
 
-#### `gerar_trilha_estudo.md`
+#### `gerar-trilha-estudo.md`
 **Prioridade:** P3
 
 **Quando usar:** para sugerir uma sequência de aulas do acervo para um aluno com objetivo específico.
@@ -422,34 +422,34 @@ GIT
 
 | Skill | Momento de uso |
 |---|---|
-| `analisar_pdf_professor.md` | Ao receber o material do professor |
-| `briefing_professor.md` | Antes de analisar qualquer material |
-| `produzir_aula.md` | Após análise e briefing aprovados |
-| `revisar_aula.md` | Antes de entregar ao professor |
-| `gerar_metadados_acervo.md` | Antes de publicar no acervo |
-| `checklist_publicacao.md` | Antes de fazer commit |
+| `analisar-pdf-professor.md` | Ao receber o material do professor |
+| `briefing-professor.md` | Antes de analisar qualquer material |
+| `produzir-aula.md` | Após análise e briefing aprovados |
+| `revisar-aula.md` | Antes de entregar ao professor |
+| `gerar-metadados-acervo.md` | Antes de publicar no acervo |
+| `checklist-publicacao.md` | Antes de fazer commit |
 
 ### P2 — Criar conforme necessidade operacional
 
 | Skill | Momento de uso |
 |---|---|
-| `qualificar_lead.md` | Ao receber um novo lead de professor |
-| `gerar_proposta.md` | Após briefing, antes de assinar |
-| `gerar_preview_card.md` | Para refinar metadados de aulas existentes |
+| `qualificar-lead.md` | Ao receber um novo lead de professor |
+| `gerar-proposta.md` | Após briefing, antes de assinar |
+| `gerar-preview-card.md` | Para refinar metadados de aulas existentes |
 
 ### P3 — Criar na fase de crescimento/escala
 
 | Skill | Momento de uso |
 |---|---|
-| `gerar_post_social.md` | Ao publicar nova aula (divulgação) |
-| `gerar_exercicios.md` | Para adicionar exercícios a aulas Pro/Full Studio |
-| `gerar_trilha_estudo.md` | Para orientar alunos no acervo |
+| `gerar-post-social.md` | Ao publicar nova aula (divulgação) |
+| `gerar-exercicios.md` | Para adicionar exercícios a aulas Pro/Full Studio |
+| `gerar-trilha-estudo.md` | Para orientar alunos no acervo |
 
 ---
 
 ## Estrutura recomendada de cada arquivo de skill
 
-Todo arquivo de skill deve seguir este padrão para manter consistência com `gerar_resumo.md`:
+Todo arquivo de skill deve seguir este padrão para manter consistência com `gerar-resumo.md`:
 
 ```markdown
 # Skill: [Nome]

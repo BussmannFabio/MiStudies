@@ -1,9 +1,9 @@
 # 👨‍🏫 Skill de Professor — Template
 
 > **Instruções**: Duplique este arquivo para cada professor/disciplina.
-> Nomeie como `professor_[sobrenome].md` (ex: `professor_silva.md`).
+> Nomeie como `professor-[sobrenome].md` (ex: `professor-silva.md`).
 > Preencha cada seção com as informações relevantes.
-> Esta skill será carregada automaticamente pela skill `gerar_resumo.md`.
+> Esta skill será carregada automaticamente pela skill `gerar-resumo.md`.
 
 ---
 
@@ -121,7 +121,7 @@
 
 ## 🔗 Impacto no Resumo
 
-> **Quando a skill `gerar_resumo.md` carregar este arquivo, ela deve:**
+> **Quando a skill `gerar-resumo.md` carregar este arquivo, ela deve:**
 >
 > 1. Priorizar os **tópicos que o professor destaca** com mais profundidade e exemplos
 > 2. Adaptar a **Revisão Rápida** ao formato de prova (ex: se prova é cálculo, incluir exercícios resolvidos; se é dissertativa, incluir argumentos completos)

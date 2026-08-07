@@ -22,7 +22,7 @@ Os arquivos não usam numeração. A ordem fica nas pastas, para manter leitura 
 | `08-gestao/` | Backlog, acompanhamento e histórico de tracking | Para priorizar execução e acompanhar pendências |
 | `90-prompts/` | Prompts usados para gerar documentos pendentes | Para criar ou revisar documentação com IA |
 | `99-arquivo/` | Documentos históricos substituídos | Para consultar contexto antigo sem usar como fonte atual |
-| `../playbooks/skills/` | Skills e playbooks operacionais | Para padronizar fluxos de IA e produção |
+| `../skills/` | Skills e playbooks operacionais | Para padronizar fluxos de IA e produção |
 
 ---
 
@@ -113,8 +113,8 @@ Os arquivos não usam numeração. A ordem fica nas pastas, para manter leitura 
 | [arquitetura-produto.md](07-tecnologia/arquitetura-produto.md) | Feito | Arquitetura técnica, frontend e backend |
 | [migracao-angular.md](07-tecnologia/migracao-angular.md) | Feito | Etapas da migração HTML → Angular |
 | [auditorias/analise-arquitetura.md](07-tecnologia/auditorias/analise-arquitetura.md) | Feito | Auditoria de arquitetura |
-| [auditorias/frontend-inconsistencias.md](07-tecnologia/auditorias/frontend-inconsistencias.md) | Feito | Inconsistências de frontend |
-| [auditorias/inconsistencias.md](07-tecnologia/auditorias/inconsistencias.md) | Feito | Relatório geral de inconsistências |
+| [auditorias/frontend-inconsistencias.md](07-tecnologia/auditorias/frontend-inconsistencias.md) | Feito · condensado Jul/2026 | Inconsistências de frontend (6 abertos de 9) |
+| [auditorias/inconsistencias.md](07-tecnologia/auditorias/inconsistencias.md) | Feito · condensado Jul/2026 | Relatório geral de inconsistências (6 abertos de 24) |
 
 ### Gestão e Apoio
 

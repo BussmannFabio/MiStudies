@@ -141,11 +141,11 @@ Uso quando o material vem ruim, há muita tentativa, ou modelos caros entram em 
 - retrabalho alto;
 - professor pede ajustes que quase viram nova entrega.
 
-| Tier | Custo estimado IA/API | Sinal de alerta |
-|---|---:|---|
-| Essencial | R$ 8-15 | Se passar disso, provavelmente virou Pro |
-| Pro | R$ 20-40 | Se passar disso, cobrar crédito extra ou ajustar escopo |
-| Full Studio | R$ 45-90 | Se passar disso, tratar como projeto especial |
+| Tier        | Custo estimado IA/API | Sinal de alerta                                         |
+| ----------- | --------------------: | ------------------------------------------------------- |
+| Essencial   |               R$ 8-15 | Se passar disso, provavelmente virou Pro                |
+| Pro         |              R$ 20-40 | Se passar disso, cobrar crédito extra ou ajustar escopo |
+| Full Studio |              R$ 45-90 | Se passar disso, tratar como projeto especial           |
 
 ---
 
