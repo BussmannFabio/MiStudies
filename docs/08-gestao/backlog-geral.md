@@ -63,7 +63,7 @@
 | 2.7 | Upload de PDF pelo professor — multer definido no backend | `[ ]` Planejado — implementar controller | `P2` | Sócio 1 |
 | 2.8 | Página pública de cada professor (`professor/[slug].html`) | `[X]` Feito — template em `pages/professor/gabriel.html` | — | Sócio 1 |
 
-### Backend — Implementação (`BeckEnd/`)
+### Backend — Implementação (`app/backend/`)
 | # | Item | Status | Prioridade | Responsável |
 |---|---|---|---|---|
 | B1 | Decidir banco de dados: PostgreSQL / MySQL / SQLite para dev | `[ ]` | `P1` | Sócio 1 |
@@ -203,8 +203,8 @@ FEITO ATÉ AGORA:
   [X] 23 issues criadas no GitHub (issues #25–#47)
   [X] Análise de arquitetura sênior — docs/07-tecnologia/auditorias/analise-arquitetura.md
   [X] Auditoria de frontend — docs/07-tecnologia/auditorias/frontend-inconsistencias.md (9 itens, 3 resolvidos)
-  [X] BeckEnd/ — estrutura de backend criada: Express + Sequelize + JWT + multer + webhook
-  [X] BeckEnd/documentacao/implementation_plan.md — plano completo de rotas, models e API
+  [X] app/backend/ — estrutura de backend criada: Express + Sequelize + JWT + multer + webhook
+  [X] docs/backend/implementation_plan.md — plano completo de rotas, models e API
 
 PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
   [ ] 1.3  — Criar Skill de Análise B2B · issue #26

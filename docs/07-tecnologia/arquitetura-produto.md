@@ -135,7 +135,7 @@ Acervo → ../acervo.html
 
 > **Status da migração:** planejada — ver passo a passo completo em [`backlog-geral.md`](../08-gestao/backlog-geral.md) (seção Frontend Angular).
 
-### Backend (em implementação — `BeckEnd/`)
+### Backend (em implementação — `app/backend/`)
 
 | Decisão       | Escolha                                   |
 | ------------- | ----------------------------------------- |
@@ -150,12 +150,12 @@ Acervo → ../acervo.html
 
 ---
 
-## Arquitetura de Backend — `BeckEnd/`
+## Arquitetura de Backend — `app/backend/`
 
 ### Estrutura de pastas planejada
 
 ```
-BeckEnd/
+app/backend/
 ├── index.js               # Entry point (Express + middlewares)
 ├── .env                   # Variáveis de ambiente
 ├── src/
@@ -209,7 +209,7 @@ BeckEnd/
 | Planos | `/api/planos` | GET / (público), GET /minha-assinatura, POST /assinar |
 | Webhook | `/api/webhook` | POST /pagamento (chave secreta) |
 
-Detalhamento completo em [`BeckEnd/documentacao/implementation_plan.md`](../../../BeckEnd/documentacao/implementation_plan.md).
+Detalhamento completo em [`backend/implementation_plan.md`](../backend/implementation_plan.md).
 
 ---
 

@@ -1,6 +1,6 @@
 # 01 — Visão Geral
 
-## O que é o MiStudies FrontEnd?
+## O que é o MiStudies app/frontend?
 
 O MiStudies é uma plataforma que transforma o material bruto de professores em aulas interativas bem estruturadas. Este documento descreve o **front-end** — a interface que os usuários veem e interagem.
 
@@ -92,7 +92,7 @@ Lazy Load: carrega o componente da página
         ↓
 Componente chama Service (ex: AuthService.login())
         ↓
-Service faz HttpClient.post() → API do BeckEnd
+Service faz HttpClient.post() → API do app/backend
         ↓
 Observable retorna response
         ↓

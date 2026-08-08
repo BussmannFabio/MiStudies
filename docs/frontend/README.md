@@ -25,7 +25,7 @@
 
 ```bash
 # Entrar na pasta do front-end
-cd FrontEnd
+cd app/frontend
 
 # Instalar dependências
 npm install

@@ -3,7 +3,7 @@
 Data: 16 de Abril de 2026
 
 ## Resumo das Alterações
-Nesta primeira etapa da construção do backend (`BeckEnd`), configuramos a base de dados utilizando PostgreSQL (focado no Supabase) e criamos toda a estrutura de Models utilizando o Sequelize, conforme definido no `implementation_plan.md`.
+Nesta primeira etapa da construção do backend (`app/backend`), configuramos a base de dados utilizando PostgreSQL (focado no Supabase) e criamos toda a estrutura de Models utilizando o Sequelize, conforme definido no `implementation_plan.md`.
 
 ## 1. Dependências Instaladas
 Foram instalados no projeto os seguintes pacotes via `npm`:
@@ -19,7 +19,7 @@ Foram instalados no projeto os seguintes pacotes via `npm`:
 Criamos a pasta `src/` e dentro dela as pastas `config/` e `models/`.
 
 ```text
-BeckEnd/
+app/backend/
 ├── index.js                  (Atualizado)
 ├── .env.example              (Criado)
 └── src/

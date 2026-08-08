@@ -59,7 +59,7 @@ Referência para o MVP:
 
 ## 2. Projeções Financeiras
 
-> **Nota de cálculo (atualizado Abril 2026):** projeções refletem o modelo canônico de 4 produtos: Setup + Aulas + Hub + Plano Estudante. O Hub passa a entrar a partir da primeira publicação, porque sem Hub a aula não fica pública. Usar o [Simulador de Rentabilidade](../../../HTML%20Zite/pages/plano-rentabilidade.html) para cenários detalhados.
+> **Nota de cálculo (atualizado Abril 2026):** projeções refletem o modelo canônico de 4 produtos: Setup + Aulas + Hub + Plano Estudante. O Hub passa a entrar a partir da primeira publicação, porque sem Hub a aula não fica pública. Usar o [Simulador de Rentabilidade](../../site/pages/plano-rentabilidade.html) para cenários detalhados.
 
 ### Premissas de projeção
 

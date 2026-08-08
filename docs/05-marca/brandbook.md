@@ -4,7 +4,7 @@
 >
 > **Fase:** MVP | **Versão:** 1.0 | **Última atualização:** Abril 2026
 >
-> **Versão visual:** [Brandbook.html](../../../HTML%20Zite/pages/login/Brandbook.html)
+> **Versão visual:** [Brandbook.html](../../site/pages/login/Brandbook.html)
 
 ---
 

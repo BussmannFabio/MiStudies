@@ -4,7 +4,7 @@
 > Objetivo original: revisar e ajustar todos os textos antes de migrar para o Angular
 
 > [!NOTE]
-> **Esta pasta está superada.** As 6 páginas abaixo já foram migradas para `FrontEnd/` com conteúdo real
+> **Esta pasta está superada.** As 6 páginas abaixo já foram migradas para `app/frontend/` com conteúdo real
 > (ver `docs/07-tecnologia/migracao-angular.md`, Etapa 5). Manter esta cópia junto do conteúdo já vivo no
 > Angular é duplicação sem função — os textos de origem seguem disponíveis no histórico do Git.
 > Não foi possível mover esta pasta para `99-arquivo/` automaticamente por uma limitação do ambiente

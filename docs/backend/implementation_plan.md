@@ -24,10 +24,10 @@ Plataforma para professores publicarem aulas interativas em HTML para alunos. O 
 
 ---
 
-## Estrutura de Pastas — Backend (`BeckEnd/`)
+## Estrutura de Pastas — Backend (`app/backend/`)
 
 ```
-BeckEnd/
+app/backend/
 ├── index.js               # Entry point
 ├── .env                   # Variáveis de ambiente
 ├── src/

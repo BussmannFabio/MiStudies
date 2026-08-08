@@ -45,7 +45,7 @@ Os arquivos não usam numeração. A ordem fica nas pastas, para manter leitura 
 | Arquitetura técnica, stack e decisões de produto | [arquitetura-produto.md](07-tecnologia/arquitetura-produto.md) |
 | Migração do frontend HTML para Angular | [migracao-angular.md](07-tecnologia/migracao-angular.md) |
 | Backlog e prioridades de execução | [backlog-geral.md](08-gestao/backlog-geral.md) |
-| Plano de rotas, models e API do backend | [BeckEnd/documentacao/implementation_plan.md](../../BeckEnd/documentacao/implementation_plan.md) |
+| Plano de rotas, models e API do backend | [backend/implementation_plan.md](backend/implementation_plan.md) |
 | Próximos documentos a gerar | [prompts-documentos-pendentes.md](90-prompts/prompts-documentos-pendentes.md) |
 
 **Regra de prioridade:** se houver conflito entre documentos, preço, escopo, tier, cobrança e regra comercial seguem o [Catálogo de Produtos e Preços](02-oferta-e-financeiro/catalogo-produtos-e-precos.md). Custos, metas, capacidade produtiva e projeções seguem o [Plano de Rentabilidade](02-oferta-e-financeiro/plano-de-rentabilidade.md).

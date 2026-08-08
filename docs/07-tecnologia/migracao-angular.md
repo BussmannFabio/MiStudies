@@ -1,6 +1,6 @@
 # Migração para Angular — MiStudies
 > Documento de execução passo a passo · Criado: Abril 2026
-> Pasta de destino: `FrontEnd/` (raiz do repositório)
+> Pasta de destino: `app/frontend/` (raiz do repositório)
 
 ---
 
@@ -45,16 +45,16 @@ npm install -g @angular/cli
 ng new mistudies-app --routing=true --style=css --ssr=false
 ```
 
-Após criado, mover o conteúdo gerado para `FrontEnd/`:
+Após criado, mover o conteúdo gerado para `app/frontend/`:
 ```bash
-mv mistudies-app/* FrontEnd/
-mv mistudies-app/.* FrontEnd/ 2>/dev/null || true
+mv mistudies-app/* app/frontend/
+mv mistudies-app/.* app/frontend/ 2>/dev/null || true
 rmdir mistudies-app
 ```
 
 **Resultado esperado:**
 ```
-FrontEnd/
+app/frontend/
 ├── src/
 │   ├── app/
 │   ├── assets/
@@ -71,7 +71,7 @@ FrontEnd/
 > **Status:** `[X]` Concluído · tokens do MiStudies já configurados em `tailwind.config.js`
 
 ```bash
-cd FrontEnd
+cd app/frontend
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init
 ```
@@ -184,7 +184,7 @@ export const authGuard: CanActivateFn = () => {
 ---
 
 ### Etapa 7 — Services para consumir a API do backend
-> **Status:** `[~]` Parcial · `auth.ts` e `aulas.ts` criados e conectados ao `BeckEnd/`; `professor.ts` e `planos.ts` ainda não existem
+> **Status:** `[~]` Parcial · `auth.ts` e `aulas.ts` criados e conectados ao `app/backend/`; `professor.ts` e `planos.ts` ainda não existem
 
 ```bash
 ng generate service services/auth
@@ -193,7 +193,7 @@ ng generate service services/professor
 ng generate service services/planos
 ```
 
-Cada service usa `HttpClient` para consumir os endpoints do `BeckEnd/`:
+Cada service usa `HttpClient` para consumir os endpoints do `app/backend/`:
 
 ```typescript
 // aulas.service.ts (exemplo)
@@ -223,13 +223,13 @@ export const environment = {
 > **Status:** `[ ]` Não iniciado · Depende de: Etapa 7
 
 ```bash
-cd FrontEnd
+cd app/frontend
 ng build --configuration=production
 ```
 
-Saída em `FrontEnd/dist/mistudies-app/browser/`. Fazer deploy no Netlify.
+Saída em `app/frontend/dist/mistudies-app/browser/`. Fazer deploy no Netlify.
 
-Criar `FrontEnd/public/_redirects`:
+Criar `app/frontend/public/_redirects`:
 ```
 /* /index.html 200
 ```
@@ -242,7 +242,7 @@ Necessário para o roteamento Angular funcionar ao recarregar a página diretame
 
 | Etapa | Descrição | Status |
 |---|---|---|
-| 1 | Setup Angular CLI + `ng new` em `FrontEnd/` | `[X]` |
+| 1 | Setup Angular CLI + `ng new` em `app/frontend/` | `[X]` |
 | 2 | Tailwind com build + tokens MiStudies | `[X]` |
 | 3 | `NavbarComponent` e `FooterComponent` | `[X]` |
 | 4 | Componentes de página + rotas com lazy loading | `[X]` |

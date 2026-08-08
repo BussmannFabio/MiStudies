@@ -3,7 +3,7 @@
 ## Mapa de Pastas
 
 ```
-FrontEnd/
+app/frontend/
 ├── docs/                          ← Esta documentação
 │   ├── README.md
 │   ├── 01_visao_geral.md

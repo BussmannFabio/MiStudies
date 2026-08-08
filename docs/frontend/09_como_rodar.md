@@ -23,11 +23,11 @@ npm install -g @angular/cli
 
 ```bash
 # Se já está no projeto:
-cd MiStudies/FrontEnd
+cd MiStudies/app/frontend
 
 # Se for clonar do zero:
 git clone https://github.com/BussmannFabio/MiStudies.git
-cd MiStudies/FrontEnd
+cd MiStudies/app/frontend
 ```
 
 ### 2. Instalar as dependências
@@ -50,11 +50,11 @@ O arquivo `src/environments/environment.ts` aponta para o backend local:
 // src/environments/environment.ts (atual)
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000'   // ← Backend do BeckEnd deve estar nesta porta
+  apiUrl: 'http://localhost:3000'   // ← Backend do app/backend deve estar nesta porta
 };
 ```
 
-Se o backend do BeckEnd estiver em outra porta, altere aqui.
+Se o backend do app/backend estiver em outra porta, altere aqui.
 
 ### 4. Iniciar o servidor de desenvolvimento
 
@@ -111,14 +111,14 @@ Para a aplicação funcionar completamente, você precisa de **dois terminais**:
 
 **Terminal 1 — Backend:**
 ```bash
-cd MiStudies/BeckEnd
+cd MiStudies/app/backend
 npm run dev
 # Rodando em: http://localhost:3000
 ```
 
 **Terminal 2 — Frontend:**
 ```bash
-cd MiStudies/FrontEnd
+cd MiStudies/app/frontend
 npm run start
 # Rodando em: http://localhost:4200
 ```
@@ -169,7 +169,7 @@ ng serve --port 4201
 
 **Causa:** O backend não está permitindo requests de `localhost:4200`.
 
-**Solução:** Configure o CORS no BeckEnd para aceitar a origem `http://localhost:4200`. Consulte a documentação do BeckEnd.
+**Solução:** Configure o CORS no app/backend para aceitar a origem `http://localhost:4200`. Consulte a documentação do app/backend.
 
 ---
 

@@ -9,9 +9,9 @@
 
 | # | Ação | Motivo |
 |---|---|---|
-| P0.1 | Criar `Documentação/skills/analisar-pdf-professor.md` | É o ponto de entrada de todo projeto B2B — sem ela, a análise do material do professor é ad hoc e inconsistente |
-| P0.2 | Criar `Documentação/skills/briefing-professor.md` | Precede a análise — sem briefing estruturado, a análise começa do zero toda vez |
-| P0.3 | Criar `Documentação/skills/produzir-aula.md` + `revisar-aula.md` | Pipeline de produção sem documentação = qualidade inconsistente entre projetos |
+| P0.1 | Criar `docs/skills-conteudo/analisar-pdf-professor.md` | É o ponto de entrada de todo projeto B2B — sem ela, a análise do material do professor é ad hoc e inconsistente |
+| P0.2 | Criar `docs/skills-conteudo/briefing-professor.md` | Precede a análise — sem briefing estruturado, a análise começa do zero toda vez |
+| P0.3 | Criar `docs/skills-conteudo/produzir-aula.md` + `revisar-aula.md` | Pipeline de produção sem documentação = qualidade inconsistente entre projetos |
 | P0.4 | Definir canal de entrada do professor | WhatsApp? Formulário no site? E-mail? Sem canal definido, o funil não fecha |
 | P0.5 | Criar contrato simples para professores piloto | Sem contrato, propriedade intelectual do material produzido fica em aberto |
 | P0.6 | Contatar 2–3 professores piloto (item 1.12) | Meta do Mês 1 depende disso — toda a estrutura existe, falta o cliente |
@@ -23,7 +23,7 @@
 | P1.1 | Configurar deploy (Vercel ou Netlify) | Sem URL pública, o produto não existe para o mercado. GitHub Pages funciona mas tem limitações de rewrite |
 | P1.2 | Adicionar favicon em todas as páginas | Detalhe que afeta credibilidade percebida — tab sem ícone parece inacabado para professor avaliando a plataforma |
 | P1.3 | Meta tags `og:title`, `og:description`, `og:image` em pelo menos `index.html` e `planos-precos.html` | Primeiro link enviado para um professor via WhatsApp vai aparecer sem preview — perda de credibilidade |
-| P1.4 | Criar `Documentação/skills/gerar-metadados-acervo.md` + `checklist-publicacao.md` | Publicar conteúdo novo sem checklist = risco de inconsistência na taxonomia e nas URLs |
+| P1.4 | Criar `docs/skills-conteudo/gerar-metadados-acervo.md` + `checklist-publicacao.md` | Publicar conteúdo novo sem checklist = risco de inconsistência na taxonomia e nas URLs |
 | P1.5 | Resolver D5 — formalização societária | Sem CNPJ/MEI, como emitir nota fiscal para os professores? Pode travar a primeira cobrança real |
 
 ### P2 — Importantes para crescimento

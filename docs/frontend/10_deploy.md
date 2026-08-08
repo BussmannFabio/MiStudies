@@ -5,7 +5,7 @@
 Para gerar os arquivos estáticos otimizados para produção:
 
 ```bash
-cd FrontEnd
+cd app/frontend
 
 # Build de produção
 npm run build
@@ -13,7 +13,7 @@ npm run build
 
 Os arquivos gerados ficam em:
 ```
-FrontEnd/dist/mistudies-app/browser/
+app/frontend/dist/mistudies-app/browser/
 ├── index.html
 ├── main-HASH.js
 ├── styles-HASH.css
@@ -171,4 +171,4 @@ Antes de publicar em produção, verifique:
 
 **Nunca coloque chaves de API ou outros segredos nos arquivos de environment do Angular** — eles ficam visíveis no bundle JavaScript que é enviado ao browser.
 
-Segredos devem sempre ficar no **backend** (BeckEnd), que os usa server-side. O frontend apenas se comunica com os endpoints da API.
+Segredos devem sempre ficar no **backend** (app/backend), que os usa server-side. O frontend apenas se comunica com os endpoints da API.
