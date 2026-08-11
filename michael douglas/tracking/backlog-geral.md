@@ -1,5 +1,5 @@
 ﻿# Relatório de To-Dos — MiStudies
-> Gerado em: Abril 2026 · **Última revisão: Abril 2026 (pós-implementação MVP)**
+> Gerado em: Abril 2026 · **Última revisão: Agosto 2026 (execução do backlog documental)**
 
 ---
 
@@ -21,8 +21,8 @@
 | 1.2 | 3 aulas demo por tier (Essencial / Pro / Full Studio) | `[X]` Feito | — | Sócio 1 |
 | 1.3 | Criar a **Skill de Análise B2B** — prompt system para diagnóstico de PDF de professor | `[ ]` | `P1` | Sócio 1/2 |
 | 1.4 | Definir pipeline manual: receber PDF → analisar → produzir → revisar → publicar | `[X]` Feito — [produto/13. Pipeline Manual de Entrega.md](../docs/produto/13.%20Pipeline%20Manual%20de%20Entrega.md) | `P1` | Todos |
-| 1.4b | Calcular custo real (bottom-up) e validar/ajustar preços do Catálogo — hoje sem base de custo | `[ ]` | `P1` | Todos |
-| 1.5 | Criar contrato simples / termos de serviço para professores piloto | `[ ]` | `P1` | Sócio 3 |
+| 1.4b | Calcular custo real (bottom-up) e validar/ajustar preços do Catálogo | `[!]` Modelo concluído; decisão de preços pendente — [doc 15](../docs/produto/15.%20Modelo%20de%20Custo%20e%20Precificação%20Real.md) | `P1` | Todos |
+| 1.5 | Criar contrato simples / termos de serviço para professores piloto | `[X]` Minuta criada; revisão jurídica obrigatória — [doc 33](../docs/comercial/33.%20Contrato%20Professores%20Piloto.md) | `P1` | Sócio 3 |
 
 ### Hub & Tecnologia
 | # | Item | Status | Prioridade | Responsável |
@@ -94,7 +94,7 @@
 |---|---|---|---|---|
 | 2.9 | Prospecção ativa: LinkedIn, grupos acadêmicos, eventos universitários | `[ ]` | `P1` | Sócio 3 |
 | 2.10 | Landing page de vendas para professores (tiers, preços, exemplos) | `[X]` Feito — `pages/planos-precos.html` | — | Sócio 1/3 |
-| 2.11 | Criar proposta comercial / pitch deck para apresentar a professores | `[ ]` | `P2` | Sócio 3 |
+| 2.11 | Criar proposta comercial / pitch para apresentar a professores | `[X]` Pitch textual criado — [doc 31](../docs/comercial/31.%20Pitch%20Comercial.md); deck visual opcional | `P2` | Sócio 3 |
 
 ---
 
@@ -208,10 +208,10 @@ FEITO ATÉ AGORA:
   [X] BeckEnd/documentacao/implementation_plan.md — plano completo de rotas, models e API
 
 PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
-  [ ] 1.4b — Calcular custo real e validar preços (preços atuais sem base de custo) · prompt em `prompts/90.md` item 19 · doc alvo `produto/15. Modelo de Custo e Precificação Real.md`
+  [!] 1.4b — Modelo de custo concluído; aprovar/testar recomendações antes de alterar Catálogo e páginas públicas
   [ ] 1.3  — Criar Skill de Análise B2B · issue #26
   [X] 1.4  — Definir pipeline manual completo · issue #27 · doc `produto/13. Pipeline Manual de Entrega.md`
-  [ ] 1.5  — Criar contrato simples para professores piloto · issue #29
+  [X] 1.5  — Minuta de contrato criada; revisão jurídica e preenchimento ainda obrigatórios
   [ ] 1.12 — Escolher e contatar 2–3 professores piloto · issue #30
   [ ] 1.15 — Definir canal de entrada dos professores · issue #28
   [ ] T15  — Criar páginas Termos de Uso + Política de Privacidade · issue #50
@@ -233,7 +233,7 @@ PRÓXIMOS 30 DIAS — P2:
   [X] T16  — Tratar "Esqueci minha senha" no login · issue #51
   [X] T17  — noindex em plano-rentabilidade.html · issue #52
   [ ] 2.5  — Gateway de pagamento (Stripe / Mercado Pago) · issue #41
-  [ ] 2.4  — Gerar documentos de marca faltantes (ICP, Pitch, Templates) · issue #40
+  [X] 2.4  — Documentos comerciais/posicionamento concluídos (ICP, Pitch, Templates e Concorrentes)
   [ ] 2.9  — Prospecção ativa: LinkedIn, grupos acadêmicos, eventos · issue #42
 
 DÍVIDA TÉCNICA — P3 (não bloqueante):
@@ -255,4 +255,4 @@ META DO MÊS 1 (preços confirmados):
 ---
 
 *Documento mantido por Sócio 1 (Produto & Tech) · Atualizar ao concluir cada item*
-*Última atualização: Abril 2026*
+*Última atualização: Agosto 2026*

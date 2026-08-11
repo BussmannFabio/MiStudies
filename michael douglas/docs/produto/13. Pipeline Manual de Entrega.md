@@ -90,9 +90,9 @@ O SLA corre a partir da confirmação de que o material está completo (fim da E
 - [ ] Tier e forma de pagamento confirmados
 - [ ] Prazo comunicado ao professor
 
-### Sobre a pasta `/faculdade` como fonte de conteúdo
+### Sobre o acervo acadêmico local como fonte de conteúdo
 
-Enquanto não há professores externos suficientes, o pipeline pode (e deve) ser testado com o próprio acervo pessoal de PDFs/resumos de faculdade do fundador — é a forma mais barata de gerar as próximas aulas do acervo (`pages/acervo/`) e validar o pipeline ponta a ponta antes de rodar com material pago de terceiros. Essa pasta vive localmente na máquina do fundador (é a mesma referenciada em `skills/gerar_resumo.md`, que salva resumos em `.../faculdade/resumos faculdade/`), não neste repositório — então qualquer automação (n8n, etc.) que precise "ver" esses arquivos automaticamente vai precisar que a pasta esteja sincronizada num lugar que a automação alcance (Google Drive, Dropbox ou um bucket S3), já que uma automação rodando em VPS/nuvem não lê o disco local do fundador diretamente. Para o MVP manual, isso não é bloqueante: os arquivos são colados/enviados manualmente na Etapa 2.
+Enquanto não há professores externos suficientes, o pipeline pode (e deve) ser testado com o acervo pessoal de PDFs e resumos acadêmicos do fundador — é a forma mais barata de gerar as próximas aulas do acervo (`pages/acervo/`) e validar o fluxo ponta a ponta antes de rodar com material pago de terceiros. O caminho local desse acervo **ainda precisa ser definido** e não faz parte deste repositório; nenhuma automação deve depender de um caminho absoluto presumido. Quando a equipe precisar processar esses arquivos a partir de uma VPS ou serviço em nuvem, deverá escolher uma origem acessível e controlada (por exemplo, Google Drive, bucket S3 ou upload manual), pois a automação remota não lê o disco local do fundador diretamente. Para o MVP manual, isso não é bloqueante: os arquivos podem ser enviados manualmente na Etapa 2.
 
 ---
 
