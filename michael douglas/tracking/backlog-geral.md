@@ -21,6 +21,7 @@
 | 1.2 | 3 aulas demo por tier (Essencial / Pro / Full Studio) | `[X]` Feito | — | Sócio 1 |
 | 1.3 | Criar a **Skill de Análise B2B** — prompt system para diagnóstico de PDF de professor | `[ ]` | `P1` | Sócio 1/2 |
 | 1.4 | Definir pipeline manual: receber PDF → analisar → produzir → revisar → publicar | `[X]` Feito — [produto/13. Pipeline Manual de Entrega.md](../docs/produto/13.%20Pipeline%20Manual%20de%20Entrega.md) | `P1` | Todos |
+| 1.4b | Calcular custo real (bottom-up) e validar/ajustar preços do Catálogo — hoje sem base de custo | `[ ]` | `P1` | Todos |
 | 1.5 | Criar contrato simples / termos de serviço para professores piloto | `[ ]` | `P1` | Sócio 3 |
 
 ### Hub & Tecnologia
@@ -207,6 +208,7 @@ FEITO ATÉ AGORA:
   [X] BeckEnd/documentacao/implementation_plan.md — plano completo de rotas, models e API
 
 PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
+  [ ] 1.4b — Calcular custo real e validar preços (preços atuais sem base de custo) · prompt em `prompts/90.md` item 19 · doc alvo `produto/15. Modelo de Custo e Precificação Real.md`
   [ ] 1.3  — Criar Skill de Análise B2B · issue #26
   [X] 1.4  — Definir pipeline manual completo · issue #27 · doc `produto/13. Pipeline Manual de Entrega.md`
   [ ] 1.5  — Criar contrato simples para professores piloto · issue #29
