@@ -37,6 +37,7 @@ Os arquivos não usam numeração. A ordem fica nas pastas, para manter leitura 
 | Custo de IA/API por aula | [calculo-custos-ia-api.md](02-oferta-e-financeiro/calculo-custos-ia-api.md) |
 | Revisão de preços, pacotes e lógica comercial | [precificacao-recomendada.md](02-oferta-e-financeiro/precificacao-recomendada.md) |
 | Custos, metas, capacidade produtiva e projeções | [plano-de-rentabilidade.md](02-oferta-e-financeiro/plano-de-rentabilidade.md) |
+| Custo real e preço mínimo viável | [modelo-de-custo-e-precificacao-real.md](02-oferta-e-financeiro/modelo-de-custo-e-precificacao-real.md) |
 | Operação de entrega após venda | [pipeline-manual-de-entrega.md](03-operacao/pipeline-manual-de-entrega.md) |
 | Padrão editorial e qualidade das aulas | [guia-de-producao-de-conteudo.md](03-operacao/guia-de-producao-de-conteudo.md) |
 | Nome, tagline e assinatura verbal | [naming-e-tagline.md](05-marca/naming-e-tagline.md) |
@@ -71,13 +72,14 @@ Os arquivos não usam numeração. A ordem fica nas pastas, para manter leitura 
 | [calculo-custos-ia-api.md](02-oferta-e-financeiro/calculo-custos-ia-api.md) | Feito | Fórmula e cenários para estimar custo de IA/API por aula |
 | [precificacao-recomendada.md](02-oferta-e-financeiro/precificacao-recomendada.md) | Em revisão | Proposta para corrigir preços, pacotes e oferta mínima |
 | [plano-de-rentabilidade.md](02-oferta-e-financeiro/plano-de-rentabilidade.md) | Feito | Fonte financeira principal |
+| [modelo-de-custo-e-precificacao-real.md](02-oferta-e-financeiro/modelo-de-custo-e-precificacao-real.md) | Pendente | Bloqueante para validar preços reais |
 | [roadmap-de-produto.md](02-oferta-e-financeiro/roadmap-de-produto.md) | Pendente | Evolução do produto em fases |
 
 ### Operação
 
 | Documento | Status | Observação |
 |---|---|---|
-| [pipeline-manual-de-entrega.md](03-operacao/pipeline-manual-de-entrega.md) | Pendente | Bloqueante antes de assinar pilotos |
+| [pipeline-manual-de-entrega.md](03-operacao/pipeline-manual-de-entrega.md) | Feito | Fluxo operacional e arquitetura de automação |
 | [guia-de-producao-de-conteudo.md](03-operacao/guia-de-producao-de-conteudo.md) | Pendente | Necessário antes de escalar produção |
 
 ### Comercial

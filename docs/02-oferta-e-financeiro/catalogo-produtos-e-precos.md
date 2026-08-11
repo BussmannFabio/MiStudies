@@ -5,6 +5,8 @@
 > **Data:** Abril 2026 · **Fase:** MVP → Tração
 >
 > Usado por pitch, ICP, templates, contrato, pipeline de entrega e página de preços. O plano financeiro fica em [plano-de-rentabilidade.md](plano-de-rentabilidade.md).
+>
+> ⚠️ **Preços ainda não validados por um cálculo de custo real.** Os valores de Setup, Aula e Hub foram definidos por comparação de mercado e estimativa, não por levantamento bottom-up de tempo, ferramentas e custos fixos. Até o [Modelo de Custo e Precificação Real](modelo-de-custo-e-precificacao-real.md) ser concluído, trate-os como hipóteses — especialmente antes de contratos de longo prazo.
 
 ---
 

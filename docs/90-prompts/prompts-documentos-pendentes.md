@@ -26,10 +26,11 @@
 
 | Pasta | Documento | Por que é urgente |
 |---|---|---|
+| `02-oferta-e-financeiro/` | modelo-de-custo-e-precificacao-real.md | Os preços em vigor não têm base de custo real — risco de cobrar errado para professores reais |
 | `04-comercial/` | icp-professor-ideal.md | Sem isso, a prospecção é no escuro |
 | `04-comercial/` | pitch-comercial.md | Script para abordar os pilotos |
 | `04-comercial/` | templates-de-comunicacao.md | E-mail, WhatsApp e LinkedIn prontos para usar |
-| `03-operacao/` | pipeline-manual-de-entrega.md | O que acontece depois que o professor assina |
+| `03-operacao/` | pipeline-manual-de-entrega.md | Feito — fluxo operacional e arquitetura de automação |
 | `06-legal/` | contrato-professores-piloto.md | Formalizar o acordo com pilotos |
 
 ### Prioridade 2 — Qualidade do produto entregue
@@ -544,6 +545,79 @@ Formato: markdown com tabelas e seções por fase.
 
 ---
 
+---
+
+### 19 — Modelo de Custo e Precificação Real
+
+**Quando usar:** antes de cobrar de qualquer professor fora do círculo de teste interno. Todos os preços do Catálogo hoje (Setup R$200/500/1.000, Aula R$40/75/100, Hub R$49/99/249) e as margens do Plano de Rentabilidade (~88–92%) foram estimados, não calculados a partir de custo real — este prompt existe para corrigir isso.
+
+**Ferramenta recomendada:** um agente com pesquisa web real (não confie em preços "de memória" de nenhum modelo — APIs, VPS e taxas de gateway mudam o tempo todo). Se o Hermes tiver acesso a busca, usar; se não tiver, pedir explicitamente para o operador colar os preços atuais de cada ferramenta antes de calcular.
+
+```
+Você vai me ajudar a construir o modelo de custo real do MiStudies — não uma estimativa, um cálculo auditável.
+
+CONTEXTO DO PRODUTO (sem levar os preços abaixo como corretos — eles são o que está EM VIGOR hoje, é isso que este exercício vai auditar):
+
+- MiStudies transforma PDFs/materiais de aula de professores em páginas HTML editoriais, vendido em 3 etapas: Setup (taxa única) → Aulas (por unidade, 3 tiers) → Hub (assinatura mensal). Alunos acessam o acervo de graça, com assinatura opcional futura.
+- Preços atualmente praticados (a validar, não a repetir sem checar): Setup Básico R$200 / Branded R$500 / Institucional R$1.000. Aula: Essencial R$40 / Pro R$75 / Full Studio R$100. Hub: Starter R$49/mês / Pro R$99/mês / Institucional R$249/mês. Aluno assinante: R$14,90/mês.
+- Operação: 3 sócios, 30h/semana total (10h cada), hoje sem remuneração em caixa — o tempo deles é tratado como "custo zero", o que provavelmente esconde o custo real do serviço.
+- O pipeline de produção de uma aula tem 8 etapas, com tempo estimado por tier (ver tabela abaixo). Fonte completa: docs/produto/13. Pipeline Manual de Entrega.md.
+
+TEMPO POR ETAPA (Essencial / Pro / Full Studio):
+1. Recepção + briefing — 15 / 20 / 30 min
+2. Análise do conteúdo (IA) — 20 / 30 / 45 min
+3. Escopo + tier — 10 / 15 / 20 min
+4. Pesquisa complementar (Perplexity/Deep Research/NotebookLM) — 15 / 45 / 90 min
+5. Geração do Markdown (IA) — 30 / 60 / 90 min
+6. Validação (revisão humana + professor) — 15 / 25 / 40 min
+7. Geração do HTML — 45 / 90 / 150 min
+8. QA final + publicação — 15 / 30 / 45 min
+Total: ~2,5h / ~4,7h / ~8h por aula
+
+CUSTOS FIXOS MENSAIS HOJE ESTIMADOS (não validados): IA (API+planos) R$100–150, hospedagem R$0–30, domínio R$3, ferramentas R$0. Fonte: docs/produto/11. Plano de Rentabilidade.md — seção 1.
+
+Agora construa o "Modelo de Custo e Precificação Real — MiStudies" cobrindo, NESTA ORDEM, com TODAS as contas visíveis (nunca só o resultado final):
+
+1. VALOR-HORA DE REFERÊNCIA PARA O TEMPO DOS SÓCIOS
+   - Não aceite "R$0" como custo de hora. Proponha pelo menos 2 cenários de valor-hora (ex.: custo de oportunidade conservador e valor de mercado de uma hora de trabalho equivalente — redator técnico + design + dev, o que for mais adequado a cada etapa).
+   - Justifique o valor escolhido em cada cenário.
+
+2. CUSTO REAL DE FERRAMENTAS E APIS (PESQUISAR PREÇO ATUAL, NÃO ESTIMAR)
+   - Levantar preço vigente de: API de IA usada na Análise/Geração do MD (ex. Claude ou GPT, custo por token/request), Perplexity API (Sonar e, se aplicável, Deep Research), NotebookLM (gratuito? limites?), n8n (self-hosted vs. cloud), VPS básica (cotar 2–3 provedores reais, ex. Hetzner/DigitalOcean/Contabo, em R$), GPU sob demanda se for avaliar modelo local maior (ex. Paperspace/RunPod, custo por hora), banco de imagens/geração de imagem por IA, hospedagem do site, domínio, gateway de pagamento (taxa % real do provedor escolhido), custo de MEI/Simples Nacional se aplicável, qualquer ferramenta SaaS fixa (CRM, analytics pago, etc.).
+   - Para cada item: nome, provedor, preço encontrado, fonte/data da cotação, e se é custo fixo (mensal) ou variável (por uso/por aula).
+
+3. CUSTO VARIÁVEL POR AULA, ETAPA A ETAPA (BOTTOM-UP)
+   - Para cada uma das 8 etapas do pipeline e para cada tier (Essencial/Pro/Full Studio): custo de tempo humano (tempo da etapa × valor-hora do item 1) + custo de ferramenta/API daquela etapa (item 2).
+   - Somar por etapa e depois por aula. Mostrar a tabela completa, não só o total.
+
+4. CUSTO FIXO MENSAL REAL DO NEGÓCIO
+   - Somar todos os custos fixos levantados no item 2 (infra, domínio, ferramentas, eventual contabilidade) + qualquer custo fixo não relacionado a ferramentas que o negócio tenha (ex. taxa de MEI).
+   - Ratear esse custo fixo por aula, usando os cenários de volume mensal já existentes no Plano de Rentabilidade (conservador: ~4–8 aulas/mês crescendo até ~20 no mês 6; otimista: ~6–10 crescendo até ~20+ no mês 6) — mostrar como o custo fixo por aula muda com o volume.
+
+5. CUSTO TOTAL REAL POR AULA, POR TIER
+   - Custo variável (item 3) + custo fixo rateado (item 4), para pelo menos: (a) cenário atual — tempo dos sócios não remunerado, (b) cenário com tempo dos sócios pago a valor-hora de mercado, para expor a diferença.
+
+6. CUSTO REAL DO SETUP E DO HUB
+   - Repetir a lógica bottom-up para o Setup (tempo de onboarding por plano: Básico/Branded/Institucional) e para o Hub (tempo de manutenção/suporte mensal por plano: Starter/Pro/Institucional). Estes dois produtos ainda não têm nenhuma quebra de custo em nenhum documento existente — não pule esta parte.
+
+7. MARGEM REAL E PREÇO MÍNIMO VIÁVEL
+   - A partir do custo total real (item 5 e 6), calcular a margem real de cada preço hoje praticado, nos dois cenários do item 5.
+   - Definir e justificar uma margem-alvo (ex.: 60%, 70%, 80% — testar mais de uma) e calcular o preço mínimo correspondente por tier/plano.
+   - Comparar lado a lado: preço atual × custo real × margem real × preço recomendado pela margem-alvo.
+
+8. SENSIBILIDADE POR VOLUME
+   - Mostrar como o custo total por aula cai (ou não) com 5, 15, 30 e 60 aulas/mês, isolando o efeito da diluição do custo fixo.
+
+9. RECOMENDAÇÃO FINAL
+   - Tabela final: preço atual, preço recomendado (se diferente), e para cada mudança sugerida, o motivo específico apontando para qual conta do modelo justifica.
+   - Se algum preço atual já bater com o cálculo real (dentro de uma margem de segurança razoável), dizer explicitamente que está validado — não é obrigatório mudar tudo.
+   - Fechar com uma lista do que precisa ser atualizado em outros documentos caso a recomendação seja aceita: 10. Catálogo de Produtos e Preços, 11. Plano de Rentabilidade, 13. Pipeline Manual de Entrega (seção 10.5/10.6), pages/planos-precos.html, pages/plano-rentabilidade.html.
+
+Formato: markdown, com todas as tabelas e contas expostas (documento precisa ser auditável por qualquer sócio, não uma caixa-preta). Tom: direto, cético com os números atuais, sem arredondar para "parecer bonito" — se uma conta der margem negativa ou preço abaixo do custo, dizer isso claramente.
+```
+
+---
+
 ## Como usar estes prompts
 
 1. Abra o Codex ou o ChatGPT.
@@ -556,16 +630,17 @@ Formato: markdown com tabelas e seções por fase.
 **Ordem sugerida de geração**
 
 ```text
-04-comercial/icp-professor-ideal.md          antes de prospectar
-04-comercial/pitch-comercial.md              antes de abordar
-04-comercial/templates-de-comunicacao.md     antes de mandar mensagem
-03-operacao/pipeline-manual-de-entrega.md    antes de assinar piloto
-06-legal/contrato-professores-piloto.md      antes de assinar piloto
-03-operacao/guia-de-producao-de-conteudo.md  antes de produzir a 1ª aula paga
-01-fundacao/proposta-de-valor.md             refinamento de comunicação
-04-comercial/analise-de-concorrentes.md      posicionamento
-05-marca/guia-de-social-media.md             quando começar a publicar
-02-oferta-e-financeiro/roadmap-de-produto.md quando tiver dados reais
+02-oferta-e-financeiro/modelo-de-custo-e-precificacao-real.md antes de cobrar fora do teste interno
+04-comercial/icp-professor-ideal.md                         antes de prospectar
+04-comercial/pitch-comercial.md                             antes de abordar
+04-comercial/templates-de-comunicacao.md                    antes de mandar mensagem
+03-operacao/pipeline-manual-de-entrega.md                   feito
+06-legal/contrato-professores-piloto.md                     antes de assinar piloto
+03-operacao/guia-de-producao-de-conteudo.md                 antes de produzir a 1ª aula paga
+01-fundacao/proposta-de-valor.md                            refinamento de comunicação
+04-comercial/analise-de-concorrentes.md                     posicionamento
+05-marca/guia-de-social-media.md                            quando começar a publicar
+02-oferta-e-financeiro/roadmap-de-produto.md                quando tiver dados reais
 ```
 
 ---
