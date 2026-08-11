@@ -209,7 +209,7 @@ BeckEnd/
 | Planos | `/api/planos` | GET / (público), GET /minha-assinatura, POST /assinar |
 | Webhook | `/api/webhook` | POST /pagamento (chave secreta) |
 
-Detalhamento completo em [`BeckEnd/documentacao/implementation_plan.md`](../../../BeckEnd/documentacao/implementation_plan.md).
+Detalhamento completo em [`BeckEnd/documentacao/implementation_plan.md`](../../BeckEnd/documentacao/implementation_plan.md).
 
 ---
 
