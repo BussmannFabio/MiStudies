@@ -20,7 +20,7 @@
 | 1.1 | Base de documentos estratégicos (Brandbook, Canvas, Tom de Voz, etc.) | `[X]` Feito | — | Sócio 2 |
 | 1.2 | 3 aulas demo por tier (Essencial / Pro / Full Studio) | `[X]` Feito | — | Sócio 1 |
 | 1.3 | Criar a **Skill de Análise B2B** — prompt system para diagnóstico de PDF de professor | `[ ]` | `P1` | Sócio 1/2 |
-| 1.4 | Definir pipeline manual: receber PDF → analisar → produzir → revisar → publicar | `[ ]` | `P1` | Todos |
+| 1.4 | Definir pipeline manual: receber PDF → analisar → produzir → revisar → publicar | `[X]` Feito — [produto/13. Pipeline Manual de Entrega.md](../docs/produto/13.%20Pipeline%20Manual%20de%20Entrega.md) | `P1` | Todos |
 | 1.5 | Criar contrato simples / termos de serviço para professores piloto | `[ ]` | `P1` | Sócio 3 |
 
 ### Hub & Tecnologia
@@ -208,7 +208,7 @@ FEITO ATÉ AGORA:
 
 PRÓXIMAS 2 SEMANAS — P0/P1 (bloqueantes):
   [ ] 1.3  — Criar Skill de Análise B2B · issue #26
-  [ ] 1.4  — Definir pipeline manual completo · issue #27
+  [X] 1.4  — Definir pipeline manual completo · issue #27 · doc `produto/13. Pipeline Manual de Entrega.md`
   [ ] 1.5  — Criar contrato simples para professores piloto · issue #29
   [ ] 1.12 — Escolher e contatar 2–3 professores piloto · issue #30
   [ ] 1.15 — Definir canal de entrada dos professores · issue #28
