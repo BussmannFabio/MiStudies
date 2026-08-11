@@ -1,10 +1,12 @@
 # Prompts de Documentos Pendentes — MiStudies
-> Mapeamento do que falta criar + prompts para gerar cada documento na estrutura nova
-> Fase: MVP · Abril 2026
+> Registro do backlog documental e dos prompts usados na estrutura reorganizada
+> Criado em Abril 2026 · Backlog executado em Agosto 2026
+
+> **Status:** os dez documentos-alvo foram concluídos. O modelo de custos gerou recomendações que ainda precisam de decisão dos sócios; a minuta contratual ainda exige revisão jurídica.
 
 ---
 
-## O que já existe
+## O que já existia antes desta execução
 
 | Pasta | Documento | Status |
 |---|---|---|
@@ -20,33 +22,33 @@
 
 ---
 
-## O que está faltando
+## O que estava faltando — concluído em Agosto 2026
 
 ### Prioridade 1 — Bloqueante para ir a mercado
 
 | Pasta | Documento | Por que é urgente |
 |---|---|---|
-| `02-oferta-e-financeiro/` | modelo-de-custo-e-precificacao-real.md | Os preços em vigor não têm base de custo real — risco de cobrar errado para professores reais |
-| `04-comercial/` | icp-professor-ideal.md | Sem isso, a prospecção é no escuro |
-| `04-comercial/` | pitch-comercial.md | Script para abordar os pilotos |
-| `04-comercial/` | templates-de-comunicacao.md | E-mail, WhatsApp e LinkedIn prontos para usar |
-| `03-operacao/` | pipeline-manual-de-entrega.md | Feito — fluxo operacional e arquitetura de automação |
-| `06-legal/` | contrato-professores-piloto.md | Formalizar o acordo com pilotos |
+| `02-oferta-e-financeiro/` | modelo-de-custo-e-precificacao-real.md | Concluído; decisão de preços pendente |
+| `04-comercial/` | icp-professor-ideal.md | Concluído; pronto para qualificação e prospecção |
+| `04-comercial/` | pitch-comercial.md | Concluído; sujeito à decisão final de preços |
+| `04-comercial/` | templates-de-comunicacao.md | Concluído; mensagens prontas com placeholders |
+| `03-operacao/` | pipeline-manual-de-entrega.md | Concluído; fluxo operacional e automação documentados |
+| `06-legal/` | contrato-professores-piloto.md | Minuta concluída; revisão jurídica obrigatória |
 
 ### Prioridade 2 — Qualidade do produto entregue
 
 | Pasta | Documento | Por que importa |
 |---|---|---|
-| `03-operacao/` | guia-de-producao-de-conteudo.md | Garante consistência entre tiers e produtores |
-| `01-fundacao/` | proposta-de-valor.md | Value Proposition Canvas para professor e aluno |
+| `03-operacao/` | guia-de-producao-de-conteudo.md | Concluído; padrão editorial e checklists definidos |
+| `01-fundacao/` | proposta-de-valor.md | Concluído; canvas de professor e aluno definido |
 
 ### Prioridade 3 — Crescimento e posicionamento
 
 | Pasta | Documento | Por que importa |
 |---|---|---|
-| `04-comercial/` | analise-de-concorrentes.md | Entender onde o MiStudies se diferencia |
-| `05-marca/` | guia-de-social-media.md | Como a marca se comporta em Instagram e LinkedIn |
-| `02-oferta-e-financeiro/` | roadmap-de-produto.md | Versão limpa do que será construído e quando |
+| `04-comercial/` | analise-de-concorrentes.md | Concluído; fontes consultadas em 11/08/2026 |
+| `05-marca/` | guia-de-social-media.md | Concluído; canais, formatos, voz e métricas definidos |
+| `02-oferta-e-financeiro/` | roadmap-de-produto.md | Concluído; roadmap por fases e gates definido |
 
 ---
 
@@ -627,22 +629,22 @@ Formato: markdown, com todas as tabelas e contas expostas (documento precisa ser
 5. Salve o resultado no arquivo destino indicado em cada prompt, por exemplo `docs/04-comercial/icp-professor-ideal.md`.
 6. Atualize o índice em `docs/00-indice.md` e o backlog em `docs/08-gestao/backlog-geral.md`.
 
-**Ordem sugerida de geração**
+**Estado da execução:**
 
 ```text
-02-oferta-e-financeiro/modelo-de-custo-e-precificacao-real.md antes de cobrar fora do teste interno
-04-comercial/icp-professor-ideal.md                         antes de prospectar
-04-comercial/pitch-comercial.md                             antes de abordar
-04-comercial/templates-de-comunicacao.md                    antes de mandar mensagem
-03-operacao/pipeline-manual-de-entrega.md                   feito
-06-legal/contrato-professores-piloto.md                     antes de assinar piloto
-03-operacao/guia-de-producao-de-conteudo.md                 antes de produzir a 1ª aula paga
-01-fundacao/proposta-de-valor.md                            refinamento de comunicação
-04-comercial/analise-de-concorrentes.md                     posicionamento
-05-marca/guia-de-social-media.md                            quando começar a publicar
-02-oferta-e-financeiro/roadmap-de-produto.md                quando tiver dados reais
+02-oferta-e-financeiro/modelo-de-custo-e-precificacao-real.md concluído — decisão de preços pendente
+04-comercial/icp-professor-ideal.md                         concluído
+04-comercial/pitch-comercial.md                             concluído
+04-comercial/templates-de-comunicacao.md                    concluído
+03-operacao/pipeline-manual-de-entrega.md                   concluído
+06-legal/contrato-professores-piloto.md                     minuta pronta — revisão jurídica pendente
+03-operacao/guia-de-producao-de-conteudo.md                 concluído
+01-fundacao/proposta-de-valor.md                            concluído
+04-comercial/analise-de-concorrentes.md                     concluído
+05-marca/guia-de-social-media.md                            concluído
+02-oferta-e-financeiro/roadmap-de-produto.md                concluído
 ```
 
 ---
 
-*Criado em Abril 2026 · Atualizar conforme documentos forem gerados*
+*Criado em Abril 2026 · Backlog executado e revisado em Agosto 2026*

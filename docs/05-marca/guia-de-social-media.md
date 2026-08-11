@@ -1,7 +1,132 @@
-# Guia de Social Media — MiStudies
+﻿# Guia de Social Media — MiStudies
 
-> **Status:** Pendente.
+> Guia operacional para presença orgânica no MVP. A rede demonstra o produto, educa e abre conversa; não substitui validação comercial nem cria prova social inexistente.
 >
-> Criar com o prompt em [prompts-documentos-pendentes.md](../90-prompts/prompts-documentos-pendentes.md).
+> Fontes: [Naming](naming-e-tagline.md), [Tom de Voz](tom-de-voz.md), [Brandbook](brandbook.md) e [Catálogo](../02-oferta-e-financeiro/catalogo-produtos-e-precos.md).
 
-Fontes obrigatórias: [naming-e-tagline.md](naming-e-tagline.md), [tom-de-voz.md](tom-de-voz.md) e [brandbook.md](brandbook.md).
+## 1. Objetivos por canal
+
+### Instagram
+
+Demonstração visual e utilidade para alunos e professores: antes/depois, recortes de aula, microexplicações e bastidores. Alcance só importa quando leva a salvamentos, compartilhamentos, demos ou conversas qualificadas.
+
+### LinkedIn
+
+Canal principal de autoridade B2B e prospecção indireta. Discute design da informação, material didático, processo editorial e aprendizados reais, levando professores/coordenadores a uma demo ou diagnóstico.
+
+### TikTok e YouTube
+
+Não são prioridade enquanto o time valida venda, produção e publicação. Vídeo exige linguagem e cadência próprias; replicar posts dispersa a operação. Reservar handles é prudente. Entrar quando houver formato repetível, responsável e evidência de valor para a meta atual.
+
+## 2. Seguidor ideal
+
+| Canal | Perfil | Busca | Ação desejada |
+|---|---|---|---|
+| Instagram | Aluno de Administração/Eng. de Produção e professor atento à apresentação | Entender/revisar e ver material bem resolvido | Salvar, compartilhar, abrir aula/demo |
+| LinkedIn | Professor, coordenador ou profissional de educação | Melhorar material sem assumir design/dev | Ver demo, iniciar diagnóstico, conversar sobre piloto pago |
+
+Não adaptar a voz para quem busca promessa de aprovação fácil, “hack” de estudo ou entretenimento sem relação com o produto.
+
+## 3. Conteúdo — Instagram
+
+| Formato | Objetivo | Exemplo | Frequência de teste |
+|---|---|---|---|
+| Antes/depois editorial | Prova de processo | “Do slide denso a uma aula que guia a leitura” | Por conteúdo aprovado |
+| Conceito bem resolvido | Educação/salvamento | “OEE: o que cada fator mede” | 1/semana se houver fonte |
+| Anatomia de aula | Educação de produto | “Por que esta tabela virou fluxo” | Quinzenal |
+| Bastidor do método | Confiança | “Por que aprovamos o MD antes do HTML” | Quinzenal |
+| Aula/professor | Distribuição | “Nova aula: [TEMA], com [PROFESSOR]” | Por publicação real |
+
+Carrossel para sequência; post único para uma ideia; stories para processo/pergunta. Não criar professor, depoimento ou resultado fictício para preencher calendário.
+
+## 4. Conteúdo — LinkedIn
+
+| Formato | Objetivo | Exemplo | Frequência de teste |
+|---|---|---|---|
+| Nota editorial | Autoridade | “Material difícil nem sempre significa tema difícil” | 1/semana |
+| Caso de processo | Prova/conversão | “O que mudou do bruto à aula publicada” | Por caso autorizado |
+| Decisão de produto | Transparência | “Por que o piloto não é gratuito” | Quando relevante |
+| Guia ao professor | Educação | “5 sinais de que a aula precisa de estrutura” | Quinzenal |
+| Diagnóstico | Conversão | “Tem um PDF que evita enviar à turma?” | Se houver capacidade |
+
+Frequência é hipótese operacional, não meta de volume. Sem fonte validada ou capacidade de responder, publicar menos.
+
+## 5. Tom de voz
+
+Voz do **colega organizado**: clareza calma, técnica acessível, proximidade sem excesso e sofisticação funcional.
+
+Instagram é mais curto e visual, sem ridicularizar quem usa PDF/slide. LinkedIn é mais analítico, com decisão, evidência e limite; sem corporativês ou “revolução da educação”.
+
+| Não | Use |
+|---|---|
+| “Revolucione suas aulas.” | “Transformamos um tema em aula HTML clara e compartilhável.” |
+| “Chega de PDF feio.” | “Quando a hierarquia falha, o aluno procura o essencial.” |
+| “Hackeie os estudos.” | “Uma estrutura clara ajuda a revisar sem voltar ao zero.” |
+| “Resultados incríveis.” | “Validamos o conteúdo antes do HTML para reduzir retrabalho.” |
+| “Teste grátis.” | “Comece com uma aula paga, de escopo definido.” |
+
+Priorizar: clareza, estrutura, método, síntese, densidade, curadoria, visual limpo, menos ruído, bem resolvido. Evitar: revolucionário, disruptivo, hackear, segredo da aprovação, solução definitiva, conteúdo absurdo, urgência artificial.
+
+## 6. Elementos visuais
+
+- Nome: **MiStudies**; assinatura: **Seu estudo, bem resolvido**.
+- Primary `#0032b5`; Primary Bright `#0344ec`; Secondary `#006a6a`; Amber `#f59e0b` só em microdestaques.
+- Fundo `#f8f9fa`, cards brancos, texto `#191c1d`, secundário `#454652`.
+- Manrope em títulos; Inter em corpo; JetBrains Mono só em código/dados.
+- Contraste adequado; estado nunca comunicado só por cor.
+
+### Templates mínimos
+
+1. **Capa:** categoria, título curto, uma ideia visual, marca discreta.
+2. **Desenvolvimento:** uma afirmação por tela, numeração e hierarquia.
+3. **Antes/depois:** mesma escala/recorte, rótulos objetivos, sem depreciar.
+4. **Citação/dado:** fonte visível na peça ou legenda.
+5. **Encerramento:** síntese e um CTA.
+
+Mockups devem mostrar páginas reais ou demos identificadas. Preferir capturas desktop/mobile e detalhes do processo. Evitar stock genérico, 3D exagerado, sombras pesadas e feed só de frases. O feed comunica ordem, densidade e continuidade — não precisa formar grade perfeita.
+
+## 7. Fluxo e gate
+
+1. Definir canal, pilar, público e ação esperada.
+2. Vincular a fonte: aula aprovada, documento ou dado referenciado.
+3. Escrever mensagem e CTA único.
+4. Aplicar template e testar mobile.
+5. Revisar fato, autoria, permissão, tom e promessa.
+6. Obter autorização do professor quando necessário.
+7. Publicar com destino real.
+8. Registrar métrica e aprendizado.
+
+- [ ] Não há professor, aluno, depoimento, número ou resultado inventado.
+- [ ] Demo, piloto e aula publicada estão distinguidos.
+- [ ] Uso de nome/imagem/material foi autorizado.
+- [ ] Preço/escopo conferem com o Catálogo e são tratados como hipótese até validação de custo.
+- [ ] CTA funciona e pode ser atendido.
+- [ ] Visual passa por marca e acessibilidade.
+
+## 8. Métricas que importam
+
+| Canal | Indicador | Decisão |
+|---|---|---|
+| Instagram | Salvamentos/compartilhamentos qualificados | Repetir utilidade, não só estética |
+| Instagram | Cliques para aula/demo | Ajustar CTA/continuidade |
+| Instagram | DMs de público-alvo | Levar a diagnóstico/pesquisa |
+| LinkedIn | Cliques de professores/coordenadores | Aprofundar argumento |
+| LinkedIn | Conversas qualificadas | Registrar origem, objeção e passo |
+| Ambos | Diagnósticos, propostas e vendas | Priorizar canal/formato útil |
+| Ambos | Capacidade de resposta | Reduzir frequência se afetar entrega |
+
+Curtidas, seguidores e impressões são contexto, não conclusão. No MVP, funcionar é gerar aprendizado sobre mensagem, tráfego a ativos reais e conversas com o público certo; depois, vendas e uso atribuíveis sem exagero.
+
+## 9. Bios e CTAs
+
+**Instagram**
+
+> MiStudies — Seu estudo, bem resolvido<br>
+> Aulas digitais com clareza visual<br>
+> Administração e Eng. de Produção
+
+**LinkedIn**
+
+> O MiStudies transforma materiais de professores em aulas HTML claras, estruturadas e prontas para compartilhar.
+
+CTAs: “Veja a aula”, “Compare as demos”, “Envie um material para diagnóstico”, “Converse sobre uma primeira aula”. Usar somente com destino e atendimento disponíveis.
