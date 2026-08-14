@@ -1,0 +1,165 @@
+﻿# Roadmap de Produto — MiStudies
+
+> Roadmap orientado por evidência e gates, sem datas arbitrárias. Fontes: implementação atual, tracking técnico, [Catálogo](catalogo-produtos-e-precos.md), [Pipeline](../03-operacao/pipeline-manual-de-entrega.md) e [Product Brief](../01-fundacao/product-brief.md).
+
+## 1. Estado real de partida
+
+O MiStudies está em transição; três camadas coexistem:
+
+| Camada | Estado verificável | Leitura |
+|---|---|---|
+| Legado estático | Landing, acervo, conta, dashboard, preços, perfis, demos e aulas em HTML/CSS/JS; ainda há placeholders. | Referência visual/demo; não equivale a operação autenticada. |
+| Frontend Angular | Angular 21 em `FrontEnd/`, rotas lazy, páginas, navbar/footer, AuthGuard e services HTTP. | Implementado em código; integração ponta a ponta e substituição do legado ainda exigem gate. |
+| Backend | Express 5/Sequelize em `BeckEnd/`; models Professor, Matéria, Aula, Plano e Assinatura; rotas/controllers; PostgreSQL configurado. | Base existente/em transição; auth, upload, pagamento, deploy e produção não estão comprovados. |
+
+### Restrições observáveis
+
+- Legado e Angular continuam separados.
+- Há divergências de contrato: cadastro `/cadastro` no service × `/register` na API; detalhe por slug no frontend × ID na rota atual.
+- AuthGuard verifica token local, o que não prova sessão válida/autorização no servidor.
+- Rotas de escrita não demonstram middleware de autenticação aplicado.
+- Há webhook, mas provedor e pagamento real não estão comprovados.
+- Não há evidência de ambiente de produção ou migrações executadas.
+- A operação depende do pipeline manual e de gates editoriais.
+
+## 2. Regras de priorização
+
+1. Provar venda e entrega antes de automatizar escala.
+2. Fechar um fluxo vertical: professor entra → material registrado → produção → aprovação → publicação.
+3. Não prometer na interface o que backend/operação não sustentam.
+4. Manter o legado até o Angular ter equivalência funcional.
+5. Ativar B2C pago apenas com acervo e benefícios reais.
+6. Esforço: **P** localizado; **M** integração; **G** fluxo transversal/segurança. Não é prazo.
+
+## 3. Fase 0 — Baseline estático
+
+**Estado:** existente, com dívidas/placeholders.
+**Objetivo:** preservar demo coerente e referência para a transição.
+
+| Feature | Descrição | Usuário | Esforço |
+|---|---|---|---|
+| Landing/navegação | Apresentam proposta, acervo, planos e conta. | Todos | Existente |
+| Acervo/demos | Demonstram filtros e três tiers. | Todos | Existente |
+| Preços | Expõem Setup + Aula + Hub e B2C futuro. | Todos | Existente |
+| Conta/dashboard | Demonstram jornada, sem auth real. | Professor | Existente |
+| Correção de promessa | Rotula/remove fluxos mortos ou fictícios. | Todos | P |
+
+**Fora:** backend, pagamento, upload e analytics reais. O legado não receberá uma segunda arquitetura de app.
+
+**Gate:** demos navegáveis; sem promessa falsa; preços/tiers alinhados; real e placeholder distinguidos.
+
+## 4. Fase 1 — Operação real assistida
+
+**Objetivo:** provar venda paga e entrega aprovada, com custo/qualidade acompanhados. Software apoia; processo pode ser manual.
+
+| Feature | Descrição | Usuário | Esforço |
+|---|---|---|---|
+| Registro de pedido | Professor, oferta, material, tier, privacidade, status e responsável. | Interno | P |
+| Pipeline com MD | Diagnóstico, pesquisa, MD, aprovação, HTML, QA e publicação. | Professor/interno | M |
+| Publicação controlada | Setup + Aula + Hub ativo ou preview privado. | Interno | P |
+| Aceite/revisão | Feedback, rodada e aprovação rastreáveis. | Professor/interno | P |
+| Medição operacional | Tempo, custo, retrabalho e exceção por etapa. | Interno | M |
+| Analytics básico | Acesso suficiente para aprender, sem relatório avançado. | Interno/professor | P |
+
+**Fora:** self-service completo, assinatura de aluno e IA sem revisão.
+
+**Gate:** os primeiros 2–3 pilotos previstos passaram por oferta paga; escopo, horas, custo, revisões, aceite e Hub foram registrados; exceções viraram regras. Sem venda/entrega sustentável, rever oferta e preço.
+
+## 5. Fase 2 — Consolidar Angular + API
+
+**Objetivo:** tornar o código existente uma aplicação integrada, sem desligar o legado antes da paridade.
+
+| Feature | Descrição | Usuário | Esforço |
+|---|---|---|---|
+| Contrato canônico | Alinha rotas, payloads, erros, slug/ID e nomes. | Interno | M |
+| Banco/migrações | PostgreSQL por ambiente; migrações controladas fora de dev. | Interno | G |
+| Auth integrada | Registro, login, JWT, expiração e `/me`. | Professor | G |
+| Autorização | Protege escrita/dados privados no servidor. | Professor/interno | G |
+| Acervo dinâmico | Lista/detalhe via API, com loading/erro/vazio. | Todos | M |
+| Perfil/planos | Usam a mesma fonte de dados. | Todos | M |
+| Paridade | Conteúdo, responsividade, SEO e acessibilidade. | Todos | M |
+| Build/ambientes | API URL, CORS, secrets e fallback SPA. | Interno | M |
+
+**Fora:** pagamento, upload irrestrito e desligamento imediato dos HTMLs.
+
+**Gate:** cadastro/login/logout/expiração funcionam; backend nega acesso indevido; acervo por slug/perfil usam API; build e smoke test passam; secrets ficam fora do Git. Só então substituir rota equivalente do legado.
+
+## 6. Fase 3 — Cobrança e estado comercial
+
+**Objetivo:** automatizar pagamento respeitando Setup + Aula + Hub.
+
+| Feature | Descrição | Usuário | Esforço |
+|---|---|---|---|
+| Escolha do provedor | Taxas, recorrência, webhook e operação brasileira. | Interno | M |
+| Checkout | Cobra a oferta aprovada. | Professor | G |
+| Webhook idempotente | Valida assinatura e evita duplicidade. | Interno | G |
+| Assinatura | Estado pendente/ativa/cancelada governa publicação. | Professor/interno | M |
+| Conciliação | Resolve falha, estorno e divergência. | Interno | M |
+| Aceite legal | Registra versão de termos/privacidade. | Professor | M |
+
+**Fora:** marketplace, split, cupons complexos, múltiplos gateways e Plano Estudante.
+
+**Gate:** sucesso, falha, duplicação, cancelamento e estorno testados em sandbox; valores conferem; webhook/secrets protegidos; ativação do Hub auditável; recuperação manual documentada.
+
+## 7. Fase 4 — Dashboard operacional
+
+**Objetivo:** reduzir mensagens manuais e dar visibilidade sem transferir ao professor o trabalho editorial.
+
+| Feature | Descrição | Usuário | Esforço |
+|---|---|---|---|
+| Onboarding guiado | Perfil, bio, foto, matérias e identidade do Setup. | Professor | M |
+| Upload controlado | Formatos/tamanhos permitidos e armazenamento seguro. | Professor | G |
+| Pedidos/status | Briefing, tier, etapa, pendência e próximo passo. | Professor/interno | M |
+| Aprovação do MD | Comentar/aprovar antes do HTML. | Professor/interno | G |
+| Gestão de aulas | Preview, privacidade, publicação e ajustes permitidos. | Professor | M |
+| Hub/assinatura | Plano, limites, cobrança e status. | Professor | M |
+| Painel interno | Fila, responsável, SLA, revisão e exceção. | Interno | G |
+
+**Fora:** editor visual, IA sem curadoria, colaboração em tempo real e LMS.
+
+**Gate:** professor autorizado conclui onboarding, envia material, acompanha, aprova MD e recebe aula; equipe opera sem planilha paralela obrigatória; upload tem validação, acesso, retenção e remoção definidos.
+
+## 8. Fase 5 — Escala com controle
+
+**Objetivo:** aumentar capacidade/recorrência sem perder rigor, margem ou coerência.
+
+| Feature | Descrição | Usuário | Esforço |
+|---|---|---|---|
+| Automação assistida | Ingestão, extração e rascunho com gates humanos. | Interno | G |
+| Componentes versionados | Padrões reutilizáveis por tier. | Interno | M |
+| Multi-professor | Papéis/equipes do plano Institucional. | Instituição | G |
+| Analytics | Métricas definidas por aula/Hub. | Professor/interno | G |
+| Observabilidade | Falhas, eventos, custos e auditoria. | Interno | M |
+| SEO escalável | Metadados/sitemap da fonte canônica. | Aluno | M |
+| B2C validado | Favoritos, progresso, downloads e kits antes da cobrança. | Aluno | G |
+
+**Fora:** expansão irrestrita, publicação sem revisão, publicidade como motor e features sem uso medido.
+
+**Gate:** checklist por tier preservado; custo/tempo medidos; retrabalho controlado; analytics com definição/consentimento; recursos B2C usados antes de ativar o Plano Estudante.
+
+## 9. Gates transversais
+
+- **Produto:** resolve o risco da fase e respeita Catálogo/Pipeline.
+- **Conteúdo:** estados reais; demos/placeholders identificados.
+- **Segurança:** autorização no servidor, secrets fora do Git, upload/webhook validados.
+- **Qualidade:** build, fluxo crítico, erro/vazio/loading e rollback.
+- **Acessibilidade:** teclado, foco, semântica, contraste e formulários.
+- **Operação:** responsável, evidência, suporte e exceção manual.
+- **Migração:** paridade antes de retirar rota estática.
+
+## 10. O que nunca vai entrar
+
+- Banco de provas/gabaritos ou atalho para estudar sem entender.
+- Substituição de professor, aula, formação ou validação acadêmica.
+- Publicação de IA sem revisão humana/aprovação.
+- Repositório indiscriminado de PDFs ou conteúdo sem curadoria.
+- LMS generalista, sistema de notas ou gestão completa de turmas.
+- Rede social/feed de entretenimento ou gamificação sem função.
+- Marketplace aberto sem padrão editorial.
+- Editor genérico para competir com Canva/PowerPoint.
+- Vídeo, mentoria e integrações como padrão de todo plano.
+- Cobrança do aluno por benefícios inexistentes.
+
+## 11. Próxima decisão
+
+Fechar um fluxo vertical mínimo Angular–Express, reconciliando contratos e segurança, enquanto a validação comercial segue assistida. O legado permanece como demo até esse fluxo atingir paridade e passar pelos gates.

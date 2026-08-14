@@ -1,0 +1,163 @@
+﻿# Pitch Comercial — MiStudies para Professores
+
+> **Uso:** roteiro para abordagem, reunião e proposta a professores piloto.
+>
+> **Dependência:** construído a partir do [30. ICP Professor Ideal](icp-professor-ideal.md).
+>
+> **Nota de preço:** todos os valores são **provisórios** até a aprovação do [15. Modelo de Custo e Precificação Real](../02-oferta-e-financeiro/modelo-de-custo-e-precificacao-real.md). Confirmar por escrito o valor do piloto e não prometer preço futuro.
+
+---
+
+## 1. Pitch de 30 segundos
+
+> O MiStudies transforma o PDF, DOCX ou slides que você já usa em uma aula HTML clara, responsiva e fácil de compartilhar. Você valida o conteúdo antes do design final, continua como autor e não precisa cuidar de estrutura, programação ou publicação. Começamos com um tema fechado. A oferta mínima publicada combina Setup Básico, uma Aula Essencial e Hub Starter por **R$ 289 no primeiro mês, valor provisório**, com **R$ 49/mês provisórios** para manter o Hub ativo.
+
+## 2. Pitch de 3 minutos
+
+### Abertura
+
+Você já fez a parte mais difícil: domina o tema e construiu o material. O problema é que transformar isso em algo claro, consistente e bom de usar no celular exige um tempo que compete com aula, pesquisa e orientação.
+
+### O que fazemos
+
+O MiStudies recebe o material, diagnostica, propõe o recorte e reorganiza o conteúdo. Antes da página final, você aprova uma versão em Markdown. Assim, ajustes acontecem cedo e sua autoria é preservada. Depois produzimos o HTML responsivo, fazemos QA e publicamos no Hub, quando contratado.
+
+### Três tiers
+
+- **Essencial:** 4–6 seções, visual editorial e baixa interatividade.
+- **Pro:** 6–10 seções, pesquisa moderada e componentes interativos.
+- **Full Studio:** 8–12 seções, pesquisa profunda e recursos como quiz, flashcards, modo apresentação, progresso ou glossário.
+
+Uma aula corresponde normalmente a um tema fechado com até 20 páginas de PDF/DOCX ou 35 slides. Material maior é dividido ou orçado separadamente.
+
+### Próximo passo
+
+Vamos escolher uma aula que você já ministra e fazer um diagnóstico gratuito. Se o escopo fizer sentido, fechamos a primeira aula paga com tier, prazo, privacidade, revisões e **valor provisório** registrados antes de iniciar.
+
+## 3. Pitch completo
+
+### Problema
+
+Uma boa aula pode perder clareza quando vira PDF denso, slides sem hierarquia ou arquivo difícil de revisar no celular. Ferramentas de apresentação ajudam a editar telas, mas deixam com o professor o trabalho de recortar, pesquisar, organizar, adaptar, publicar e manter.
+
+### Solução em três etapas comerciais
+
+1. **Setup do Professor:** cria perfil, taxonomia e identidade.
+2. **Aula MiStudies:** transforma um tema em página HTML educacional.
+3. **Hub do Professor:** mantém perfil, aulas, links e recursos ativos.
+
+Para publicação no acervo:
+
+```text
+Setup do Professor + pelo menos 1 Aula MiStudies + Hub ativo
+```
+
+Uma aula sem Hub pode ser entregue como preview privado, sem acervo público.
+
+### Como funciona
+
+```text
+Material + briefing
+→ diagnóstico e confirmação do tier
+→ pesquisa proporcional
+→ Markdown validado pelo professor
+→ HTML no padrão MiStudies
+→ QA, aprovação e publicação/entrega
+```
+
+O SLA começa quando material e briefing estão completos: **3–5 dias úteis no Essencial, 5–7 no Pro e 7–10 no Full Studio**. Essencial e Pro incluem uma rodada de revisão; Full Studio, duas.
+
+### Antes e depois
+
+| Antes | Depois |
+|---|---|
+| PDF, DOCX ou slides lineares | Página HTML responsiva e navegável |
+| Hierarquia irregular | Seções, destaques e progressão didática |
+| Versões e links dispersos | Aula vinculada ao perfil e Hub |
+| Professor acumula edição e publicação | MiStudies produz; professor valida conteúdo |
+
+**Demonstrações:** usar somente links reais e verificados.
+
+- Essencial: `[LINK_DEMO_ESSENCIAL]`
+- Pro: `[LINK_DEMO_PRO]`
+- Full Studio: `[LINK_DEMO_FULL_STUDIO]`
+
+### Preços e escopo provisórios
+
+#### Setup
+
+| Plano | Escopo resumido | Prazo | Preço provisório |
+|---|---|---:|---:|
+| Básico | Perfil, bio, foto, slug, até 3 matérias e visual padrão | 2–3 dias úteis | R$ 200 |
+| Branded | Básico + paleta, marca simples e hero | 3–5 dias úteis | R$ 500 |
+| Institucional | Branded + identidade, landing e até 3 professores | 5–10 dias úteis | R$ 1.000 |
+
+#### Aula
+
+| Tier | Melhor uso | Prazo | Preço provisório |
+|---|---|---:|---:|
+| Essencial | Tema claro e direto | 3–5 dias úteis | R$ 40 |
+| Pro | Conteúdo denso, comparações e fluxo | 5–7 dias úteis | R$ 75 |
+| Full Studio | Aula vitrine e alta interatividade | 7–10 dias úteis | R$ 100 |
+
+#### Hub
+
+| Plano | Escopo resumido | Preço provisório |
+|---|---|---:|
+| Starter | Até 10 aulas, perfil, busca, link e analytics básico | R$ 49/mês |
+| Pro | Até 30 aulas, analytics avançado e 3 atualizações simples/mês | R$ 99/mês |
+| Institucional | Aulas produzidas pelo MiStudies sem limite no plano, múltiplos professores e relatórios | R$ 249/mês |
+
+> Oferta mínima publicada provisória: **R$ 289 no primeiro mês**. Confirmar catálogo vigente e doc 15 antes de fechar descontos, pacotes ou recorrência longa.
+
+### Prova social
+
+Não usar depoimento inventado. Enquanto não houver autorização real:
+
+> **Prova disponível:** demos navegáveis e comparação antes/depois.
+> **Depoimento:** `[INSERIR SOMENTE APÓS AUTORIZAÇÃO EXPRESSA]`.
+
+### Redução de risco
+
+- Diagnóstico gratuito, limitado a material, recorte e tier.
+- Primeira aula paga com escopo fechado, sem pacote obrigatório.
+- Aprovação em Markdown antes do HTML.
+- Preview privado quando não houver autorização pública.
+- Escopo, prazo, revisões, privacidade e valor documentados.
+
+Não prometer resultado pedagógico, “satisfação garantida” ou reembolso automático sem condição contratual aprovada.
+
+### CTA
+
+> Vamos começar com uma aula para você ver o resultado. Envie um PDF, DOCX ou PPTX de um tema fechado; fazemos o diagnóstico e devolvemos uma proposta antes de produzir.
+
+## 4. Respostas às cinco objeções
+
+### “Meu conteúdo é específico demais.”
+
+Você continua responsável intelectualmente. Validamos diagnóstico e Markdown antes do HTML e não publicamos sem aprovação.
+
+### “Não tenho orçamento.”
+
+Começamos por uma aula, sem pacote. O diagnóstico é gratuito, mas a primeira aula publicada é paga. O valor é provisório até o doc 15 e fica registrado antes do início.
+
+### “Meu aluno não liga para design.”
+
+Design aqui é hierarquia, leitura no celular, navegação e destaque de conceitos; não decoração.
+
+### “Eu já faço no PowerPoint ou Canva.”
+
+Essas ferramentas criam peças. O MiStudies assume diagnóstico, estrutura, pesquisa, validação, HTML, QA, publicação e Hub.
+
+### “Não quero perder controle.”
+
+O conteúdo original continua sendo seu. Autorização, privacidade, publicação e retirada constam na contratação; a aula pode ficar privada.
+
+---
+
+## Fontes internas
+
+- [30. ICP Professor Ideal](icp-professor-ideal.md)
+- [10. Catálogo de Produtos e Preços](../02-oferta-e-financeiro/catalogo-produtos-e-precos.md)
+- [13. Pipeline Manual de Entrega](../03-operacao/pipeline-manual-de-entrega.md)
+- [21. Tom de Voz](../05-marca/tom-de-voz.md)
